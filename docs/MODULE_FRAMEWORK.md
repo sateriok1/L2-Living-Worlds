@@ -133,6 +133,12 @@ it must be created.
 - Handler registration (available). `ItemHandler`, `SkillHandler`, `BypassHandler`, `VoicedCommandHandler`,
   `AdminCommandHandler`, `EffectHandler`, and `TargetHandler` each expose `registerHandler(...)`. A module
   registers through `context.handlers()`, never by editing `MasterHandler`.
+- Community Board pages and tabs (available). `context.handlers().registerBoard(handler)` registers an
+  `IParseBoardHandler` (commands are matched by prefix, so pick a prefix no stock board command starts with), and
+  `registerBoardTab(label, bypass)` adds a button for it to the board's navigation column. The column is
+  `navigation.html`; its `%moduleTabs%` marker is filled in when a board page is sent and renders as nothing
+  when no module adds a tab, so a server without such modules is unchanged. A page built by a module should
+  load `navigation.html` and replace its own `%navigation%` marker the way the stock board pages do.
 - Event listeners (available). The event system (`@RegisterEvent`, `ListenerRegisterType`, the `On*` holders)
   lets a module react to game moments without touching the class that fires them. This is the first tool to
   reach for. If an event exists, no platform change is needed. A module registers through `context.events()`,
