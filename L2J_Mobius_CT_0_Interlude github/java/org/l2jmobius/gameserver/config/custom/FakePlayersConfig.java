@@ -189,10 +189,10 @@ public class FakePlayersConfig
 		};
 		final int[] weightDefaults = { 40, 30, 18, 9, 3 };
 		final int[] unlockDefaults = { 20, 20, 30, 40, 40 };
-		final int[] levelMinDefaults = { -3, 0, 3, 6, 11 };
-		final int[] levelMaxDefaults = { -2, 0, 3, 6, 11 };
-		final int[] enchantMinDefaults = { 0, 0, 3, 7, 16 };
-		final int[] enchantMaxDefaults = { 0, 3, 4, 10, 16 };
+		final int[] levelMinDefaults = { -3, 0, 3, 5, 11 };
+		final int[] levelMaxDefaults = { -2, 0, 3, 5, 11 };
+		final int[] enchantMinDefaults = { 0, 0, 3, 5, 16 };
+		final int[] enchantMaxDefaults = { 0, 3, 4, 7, 16 };
 		final int[] lootDefaults = { 0, 0, 50, 100, 100 };
 		for (int i = 0; i < encounterTiers.length; i++)
 		{
