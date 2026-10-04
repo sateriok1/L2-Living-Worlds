@@ -41,6 +41,11 @@ public class ConditionLogicNot extends Condition
 		}
 	}
 	
+	public Condition getCondition()
+	{
+		return _condition;
+	}
+
 	@Override
 	void setListener(ConditionListener listener)
 	{

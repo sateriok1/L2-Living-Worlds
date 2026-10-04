@@ -560,6 +560,13 @@ const PANELS = [
        help:"OFF (default): drops and adena stay with you (phantoms never roll, and can't quietly eat an adena cut). ON: phantoms roll for loot like a real member."},
       {key:"FakePlayerPartyPickup", label:"Phantoms pick up party drops", type:"bool", default:"True",
        help:"ON (default): after a fight, when nothing is attacking the party, recruited party members pick up nearby drops. The party loot mode decides who gets them: Finders keepers leaves items with the phantom until you say \"return loot\", Random and By turn hand them out (to you while loot share is OFF). Herbs are left for you. OFF: phantoms never pick anything up."},
+      {heading:"Raids"},
+      {key:"FakePlayerRaidTankHate", label:"Phantom tank holds raid aggro", type:"bool", default:"True",
+       help:"ON (default): a recruited phantom tank fighting a raid boss keeps its hate above everyone else's by the margin below, so damage dealers (you included) do not pull the boss off it between taunts. OFF: hate comes from damage and taunts only."},
+      {key:"FakePlayerRaidTankHateMargin", label:"Tank hate margin", type:"float", default:"1.5",
+       help:"How far above the second highest attacker the phantom tank's hate is kept. 1.5 = 50% more. 1.0 adds nothing."},
+      {key:"FakePlayerRaidHumanTankGraceSeconds", label:"Pause when you lose raid aggro (s)", type:"int", default:"5",
+       help:"When you tank a raid boss and lose its aggro, damage dealers stop attacking it for this many seconds so you can taunt it back, then resume. A member the boss turned on eases off for the same time. 0: they never stop."},
       {heading:"Gear"},
       {key:"FakePlayerRecruitEnchantChance", label:"Enchanted gear chance %", type:"int", default:"100",
        help:"Percent chance a phantom arrives with enchanted weapon and armor. Covers party recruits, field hunters, friends and Olympiad nobles, not support buddies. 0 = never, 100 = always."},
@@ -571,9 +578,11 @@ const PANELS = [
       {key:"PhantomAutoHuntingZones", label:"Auto-generated hunting zones", type:"bool", default:"True",
        help:"Also load the field hunter zones in data/PhantomPopulations.generated.xml, on top of your own PhantomPopulations.xml. A zone stays asleep until a real player comes near."},
       {key:"PhantomHunterPlaystyles", label:"Field hunters use playstyles", type:"bool", default:"True",
-       help:"Field hunters use the skill rotations from the Phantom Playstyles tab, like party members do. OFF: they fall back to plain auto-cast."},
+       help:"Field hunters and Olympiad nobles use class tactics from the Phantom Playstyles tab. With the combat controller enabled, learned attacks also provide a baseline for classes without a playstyle. OFF: field offensive casting returns to native auto-cast."},
+      {key:"PhantomCombatController", label:"Role-aware combat controller", type:"bool", default:"True",
+       help:"Use shared cast tracking, per-skill tactical pacing, sustainable weapon attacks and spell-range positioning in solo and party combat. OFF: use the previous playstyle selector and fallback for comparison. Restart for a clean comparison."},
       {key:"PhantomSkillFallback", label:"Use unlisted attack skills", type:"bool", default:"True",
-       help:"When its playstyle has nothing to cast, a phantom may use one of its own single-target attack or debuff skills that the playstyle does not list. Never dances, songs, heals, buffs, area skills, Sleep, Root or Spoil."},
+       help:"Let learned, unlisted direct attacks complement class tactics. The controller considers damage, cast time, MP and weapon attacks; archers favor normal shots on ordinary mobs. Listed skills keep their conditions and level limits. With the controller OFF, this enables the older attack/debuff fallback. Area attacks are considered only in Olympiad matches."},
       {key:"PhantomHunterRetaliate", label:"Turn on monsters that attack them", type:"bool", default:"True",
        help:"A field hunter that gets jumped by a monster it was ignoring turns to fight it. OFF: hunters stay on their first target."},
     ]},
@@ -1387,7 +1396,7 @@ function psSerialize(doc){
   return out.join(doc.eol);
 }
 function psList(){ return psState.doc ? psState.doc.items.filter(i => i.t === "ps") : []; }
-function psDirty(){ return !!psState.doc && psSerialize(psState.doc) !== psState.original; }
+function psDirty(){ return psState.safe && !!psState.doc && psSerialize(psState.doc) !== psState.original; }
 
 // The safety gate: if we can't reproduce the file we loaded, we must not be allowed to rewrite it.
 function psRoundTripOk(){
@@ -1665,8 +1674,8 @@ function psBuildPanel(){
   const sec = document.createElement("section");
   sec.className = "panel"; sec.dataset.panel = "__ps";
   sec.innerHTML = '<div class="panel-head"><h2>Phantom Playstyles</h2>' +
-    '<p>How phantoms fight: party members always, field hunters when "Field hunters use playstyles" is on in the Phantoms tab. The list is a priority order - the engine casts the first entry whose ' +
-    'conditions pass. <span class="muted">&middot; data/PhantomPlaystyles.xml</span></p></div>' +
+    '<p>Class tactics for party members, field hunters and Olympiad nobles. With the combat controller on, action types set tactical priority and ordinary attacks compete with the learned-skill baseline. ' +
+    'Conditions and level limits still apply; row order breaks tactical ties. With the controller off, the first eligible row wins. <span class="muted">&middot; data/PhantomPlaystyles.xml</span></p></div>' +
     '<div id="psBody"></div>';
   return sec;
 }
@@ -1930,7 +1939,7 @@ function psRowEditor(ps, e, i){
     '<input type="number" data-k="' + key + '" value="' + escapeHtml(e.attrs[key] || "") + '" placeholder="' + (ph||"") + '"></div>';
 
   wrap.innerHTML = '<div class="ps-grid">' + useSel + num("minLevel","Min level","1") +
-    num("maxLevel","Max level","80") + num("paceMs","Pace floor (ms)","default") + '</div>' +
+    num("maxLevel","Max level","80") + num("paceMs","Skill repeat floor (ms)","default") + '</div>' +
     '<div style="margin-top:14px"><label style="display:block;font-size:11px;letter-spacing:.05em;' +
     'text-transform:uppercase;color:var(--stone);margin-bottom:6px">Conditions (all must hold)</label>' +
     '<div class="ps-conds" id="psConds"></div></div>' +
@@ -2273,8 +2282,13 @@ function psDeletePlaystyle(){
 /* ---------- self-test: prove we can reproduce the file we loaded ---------- */
 function psSelfTest(){
   if (!psState.doc){ toast("Nothing loaded.", true); return; }
+  const serialized = psSerialize(psParse(psState.original));
+  if (serialized === psState.original){
+    toast("Round-trip clean: " + psState.original.split(/\r?\n/).length + " lines reproduced exactly.");
+    return;
+  }
   const before = psState.original.split(/\r?\n/);
-  const after = psSerialize(psParse(psState.original)).split(/\r?\n/);
+  const after = serialized.split(/\r?\n/);
   for (let i = 0; i < Math.max(before.length, after.length); i++){
     if (before[i] !== after[i]){
       console.warn("round-trip differs at line " + (i+1) + "\nfile: " + before[i] + "\nours: " + after[i]);
@@ -2282,7 +2296,11 @@ function psSelfTest(){
       return;
     }
   }
-  toast("Round-trip clean: " + before.length + " lines reproduced exactly.");
+  let offset = 0;
+  while (offset < psState.original.length && psState.original[offset] === serialized[offset]) offset++;
+  const line = psState.original.slice(0, offset).split(/\r?\n/).length;
+  console.warn("round-trip differs in line endings at line " + line);
+  toast("Round-trip differs in line endings at line " + line + " - editing remains disabled.", true);
 }
 
 /* ============================================================
@@ -2374,8 +2392,8 @@ async function psReopenRemembered(){
 }
 
 async function psSave(){
-  if (!psDirty()) return;
   if (!psState.safe) throw new Error("round-trip guard active - refusing to write " + PS_FILE);
+  if (!psDirty()) return;
   const text = psSerialize(psState.doc);
   if (psState.fileHandle && state.mode !== "download"){
     const w = await psState.fileHandle.createWritable();

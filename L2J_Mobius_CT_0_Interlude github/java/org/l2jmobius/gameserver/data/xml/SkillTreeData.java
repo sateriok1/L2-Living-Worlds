@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +95,7 @@ public class SkillTreeData implements IXmlReader
 	private Map<Integer, int[]> _skillsByClassIdHashCodes; // Occupation skills
 	private Map<Integer, int[]> _skillsByRaceHashCodes; // Race-specific Transformations
 	private int[] _allSkillsHashCodes; // Fishing, Collection, Transformations, Common Skills.
+	private int[] _anyClassSkillsHashCodes; // Skills of every class tree, accepted when AltGameSkillLearn is enabled.
 	
 	/** Parent class Ids are read from XML and stored in this map, to allow easy customization. */
 	private final Map<PlayerClass, PlayerClass> _parentClassMap = new LinkedHashMap<>();
@@ -892,6 +894,7 @@ public class SkillTreeData implements IXmlReader
 		Map<Integer, SkillLearn> skillLearnMap;
 		final Set<PlayerClass> playerClassSet = _classSkillTrees.keySet();
 		_skillsByClassIdHashCodes = new HashMap<>(playerClassSet.size());
+		final Set<Integer> anyClassHashes = new HashSet<>();
 		for (PlayerClass playerClass : playerClassSet)
 		{
 			index = 0;
@@ -905,7 +908,20 @@ public class SkillTreeData implements IXmlReader
 			skillLearnMap.clear();
 			Arrays.sort(skillHashes);
 			_skillsByClassIdHashCodes.put(playerClass.getId(), skillHashes);
+			for (int skillHash : skillHashes)
+			{
+				anyClassHashes.add(skillHash);
+			}
 		}
+		
+		_anyClassSkillsHashCodes = new int[anyClassHashes.size()];
+		index = 0;
+		for (int skillHash : anyClassHashes)
+		{
+			_anyClassSkillsHashCodes[index++] = skillHash;
+		}
+		
+		Arrays.sort(_anyClassSkillsHashCodes);
 		
 		// Race-specific skills from Fishing and Transformation skill trees.
 		final List<Integer> skillHashList = new LinkedList<>();
@@ -997,6 +1013,13 @@ public class SkillTreeData implements IXmlReader
 		}
 		
 		if (Arrays.binarySearch(_allSkillsHashCodes, hashCode) >= 0)
+		{
+			return true;
+		}
+		
+		// Living World: with cross-class learning enabled, a skill from any class tree is legitimate.
+		// Without this, the login skill check deleted those skills from the character on every relog.
+		if (PlayerConfig.ALT_GAME_SKILL_LEARN && (Arrays.binarySearch(_anyClassSkillsHashCodes, hashCode) >= 0))
 		{
 			return true;
 		}

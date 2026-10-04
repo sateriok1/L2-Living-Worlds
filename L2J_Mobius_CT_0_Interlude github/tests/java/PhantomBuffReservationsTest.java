@@ -57,6 +57,7 @@ public class PhantomBuffReservationsTest
 		testExpiry();
 		testIndependentSlots();
 		testKeyUniqueness();
+		testRefusedCastRelease();
 
 		System.out.println();
 		System.out.println("Ran " + checks + " checks, " + failures + " failure(s).");
@@ -113,6 +114,21 @@ public class PhantomBuffReservationsTest
 		neq(tMight, PhantomBuffReservations.key(TARGET, SHIELD), "same target, different skill -> different key");
 		neq(tMight, PhantomBuffReservations.key(OTHER_TARGET, MIGHT), "different target, same skill -> different key");
 		eq(tMight, PhantomBuffReservations.key(TARGET, MIGHT), "same pair -> same key");
+	}
+
+	private static void testRefusedCastRelease()
+	{
+		final PhantomBuffReservations r = new PhantomBuffReservations();
+		final long key = PhantomBuffReservations.key(TARGET, MIGHT);
+		r.reserve(key, 1000, PROPHET, HOLD);
+		r.release(key, BUDDY);
+		eq(false, r.reserve(key, 1001, BUDDY, HOLD), "a non-holder cannot release another caster's claim");
+		r.release(key, PROPHET);
+		eq(true, r.reserve(key, 1002, BUDDY, HOLD), "a refused cast immediately frees the buff for another support");
+		r.release(key, PROPHET);
+		eq(true, r.isHeldByOther(key, 1003, PROPHET), "a late release cannot erase another caster's replacement claim");
+		r.release(key, BUDDY);
+		eq(0, r.size(), "releasing the holder removes the reservation");
 	}
 
 	// ===== tiny assertion helpers =====

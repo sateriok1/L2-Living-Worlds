@@ -89,14 +89,29 @@ public class FakePlayerStoreListBuy extends ServerPacket
 			// FPC-016: pick an ELIGIBLE (tradeable, unequipped) copy among all the viewer's instances of this item.
 			// getItemByItemId returns the first match from an unordered set, so with one copy equipped and another
 			// carried unequipped it could return the equipped one and wrongly grey out a sellable copy.
+			// FPC-186: an enchanted demand line only offers a copy at exactly that enchant; a +0 line prefers a +0 copy
+			// and falls back to any eligible copy, as before.
 			Item owned = null;
+			Item fallback = null;
 			for (Item candidate : player.getInventory().getAllItemsByItemId(demand.getItemId()))
 			{
-				if (candidate.isTradeable() && !candidate.isEquipped())
+				if (!candidate.isTradeable() || candidate.isEquipped())
+				{
+					continue;
+				}
+				if (candidate.getEnchantLevel() == demand.getEnchant())
 				{
 					owned = candidate;
 					break;
 				}
+				if ((demand.getEnchant() <= 0) && (fallback == null))
+				{
+					fallback = candidate;
+				}
+			}
+			if (owned == null)
+			{
+				owned = fallback;
 			}
 			final boolean canSell = owned != null;
 			final int objectId = canSell ? owned.getObjectId() : 0;

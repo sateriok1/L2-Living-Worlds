@@ -183,6 +183,13 @@ public class FakePlayerStorePricingTest
 		eq(Arrays.asList("soulshot", "d"), FakePlayerStorePricing.matchTokens("Soulshots: D-grade"), "shot phrase tokenises to [soulshot, d]");
 		eq(Arrays.asList("iron", "ore"), FakePlayerStorePricing.matchTokens("iron ore"), "plain two-word item");
 		eq(Arrays.asList("arrow"), FakePlayerStorePricing.matchTokens("arrows"), "plural folded to singular");
+		// FPC-198: a small typo per word is accepted only in fuzzy mode, and never for short words.
+		final java.util.List<String> homunkulus = FakePlayerStorePricing.matchTokens("Homunkulus's Sword");
+		eq(-1, FakePlayerStorePricing.tokenMatchCost(homunkulus, FakePlayerStorePricing.matchTokens("Homunculus Sword"), false), "exact mode rejects the c/k typo");
+		eq(1, FakePlayerStorePricing.tokenMatchCost(homunkulus, FakePlayerStorePricing.matchTokens("Homunculus Sword"), true), "fuzzy mode accepts one typo");
+		eq(0, FakePlayerStorePricing.tokenMatchCost(homunkulus, FakePlayerStorePricing.matchTokens("homunkulus sword"), true), "exact words cost nothing");
+		eq(-1, FakePlayerStorePricing.tokenMatchCost(homunkulus, FakePlayerStorePricing.matchTokens("homo sword"), true), "a short nickname is not a typo");
+		eq(-1, FakePlayerStorePricing.tokenMatchCost(FakePlayerStorePricing.matchTokens("Soulshot: D-grade"), FakePlayerStorePricing.matchTokens("soulshot c"), true), "a grade letter never fuzzes");
 		eq(Arrays.asList("bss"), FakePlayerStorePricing.matchTokens("cheap bss pls pm"), "stopwords cheap/pls/pm dropped");
 		eq(0, FakePlayerStorePricing.matchTokens("   ").size(), "blank phrase -> no tokens");
 		eq(0, FakePlayerStorePricing.matchTokens(null).size(), "null phrase -> no tokens");

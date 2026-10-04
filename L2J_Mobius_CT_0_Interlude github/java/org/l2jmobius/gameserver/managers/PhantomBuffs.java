@@ -454,6 +454,12 @@ public final class PhantomBuffs
 		return BUFF_RESERVATIONS.reserve(PhantomBuffReservations.key(targetObjectId, skillId), System.currentTimeMillis(), casterObjectId, holdMillis);
 	}
 
+	/** A refused native cast must leave another support free to supply this buff. */
+	public static void releaseBuff(int targetObjectId, int skillId, int casterObjectId)
+	{
+		BUFF_RESERVATIONS.release(PhantomBuffReservations.key(targetObjectId, skillId), casterObjectId);
+	}
+
 	/** How long to hold a buff reservation: the skill's cast time plus a margin for the effect to actually land. */
 	public static int buffHoldMillis(Skill buff)
 	{
