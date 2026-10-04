@@ -33,7 +33,7 @@ import org.l2jmobius.gameserver.model.zone.ZoneId;
 
 /**
  * The PvP danger director. On a slow tick it looks at each real player in the field and, once that player's random
- * timer is due, sends one encounter: a single phantom that walks up and fights once (see {@link Tier}). The actor's
+ * timer is due, sends one encounter: a phantom (or a group) that walks up and fights once (see {@link Tier}). The actor's
  * script (approach, fight, leave) lives in {@link PhantomManager#serviceEncounter}; the rules are in
  * {@link PhantomEncounterRules}. Everything is gated by {@code PhantomEncounters} in FakePlayers.ini.
  */
@@ -54,7 +54,7 @@ public class PhantomEncounterManager
 		PartyRole.MONK
 	};
 
-	private final Map<Integer, Long> _nextAt = new ConcurrentHashMap<>();
+	private final Map<Integer, long[]> _nextAt = new ConcurrentHashMap<>(); // per player, one due-time per kind (0 = kind not running yet)
 	private boolean _started;
 
 	protected PhantomEncounterManager()
@@ -96,29 +96,50 @@ public class PhantomEncounterManager
 					continue;
 				}
 				final int oid = player.getObjectId();
-				final Long due = _nextAt.get(oid);
-				if (due == null)
+				final long[] due = _nextAt.computeIfAbsent(oid, k -> new long[Tier.values().length]);
+				int pick = -1;
+				for (int i = 0; i < due.length; i++)
 				{
-					_nextAt.put(oid, now + nextDelay()); // first sighting: start the clock, no instant ambush on login
-					continue;
+					if ((FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_MINUTES[i] <= 0) || (player.getLevel() < FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_LEVEL[i]))
+					{
+						due[i] = 0; // off, or not unlocked yet
+						continue;
+					}
+					if (due[i] == 0)
+					{
+						due[i] = now + nextDelay(i); // first eligibility: start this kind's clock, no instant ambush
+						continue;
+					}
+					if (now >= due[i])
+					{
+						pick = i; // the rarer kind wins when several are due
+					}
 				}
-				if ((now < due) || phantoms.hasEncounterFor(player))
+				if ((pick < 0) || phantoms.hasEncounterFor(player))
 				{
 					continue;
 				}
 				if (active >= FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_ACTIVE)
 				{
-					_nextAt.put(oid, now + RETRY_MS);
+					due[pick] = now + RETRY_MS;
 					continue;
 				}
-				if (trigger(player, phantoms))
+				if (trigger(player, phantoms, Tier.values()[pick]))
 				{
 					active++;
-					_nextAt.put(oid, now + nextDelay());
+					due[pick] = now + nextDelay(pick);
+					final long quiet = now + (FakePlayersConfig.PHANTOM_ENCOUNTER_GAP_MINUTES * 60_000L);
+					for (int i = 0; i < due.length; i++)
+					{
+						if ((due[i] != 0) && (due[i] < quiet))
+						{
+							due[i] = quiet; // nothing else starts right behind it
+						}
+					}
 				}
 				else
 				{
-					_nextAt.put(oid, now + RETRY_MS);
+					due[pick] = now + RETRY_MS;
 				}
 			}
 		}
@@ -128,9 +149,9 @@ public class PhantomEncounterManager
 		}
 	}
 
-	private static long nextDelay()
+	private static long nextDelay(int kind)
 	{
-		return PhantomEncounterRules.delayMs(FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_MINUTES * 60_000L, FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_MINUTES * 60_000L, Rnd.get(1000));
+		return PhantomEncounterRules.delayMs(FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_MINUTES[kind] * 60_000L, FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_MINUTES[kind] * 60_000L, Rnd.get(1000));
 	}
 
 	/** In the open field and free to be bothered: not in town, a duel, a store, an instance, the Olympiad, or a siege. */
@@ -147,21 +168,8 @@ public class PhantomEncounterManager
 		return (player.getLevel() >= FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL) && !player.isNewbie();
 	}
 
-	private boolean trigger(Player player, PhantomManager phantoms)
+	private boolean trigger(Player player, PhantomManager phantoms, Tier tier)
 	{
-		final Tier[] tiers = Tier.values();
-		final int[] weights = new int[tiers.length];
-		int total = 0;
-		for (int i = 0; i < tiers.length; i++)
-		{
-			weights[i] = PhantomEncounterRules.weightFor(FakePlayersConfig.PHANTOM_ENCOUNTER_WEIGHT[i], player.getLevel(), FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_LEVEL[i]);
-			total += weights[i];
-		}
-		final Tier tier = (total <= 0) ? null : PhantomEncounterRules.pickTier(weights, Rnd.get(total));
-		if (tier == null)
-		{
-			return false;
-		}
 		final int partySize = (player.getParty() == null) ? 1 : player.getParty().getMemberCount();
 		final int size = PhantomEncounterRules.groupSize(tier, partySize, FakePlayersConfig.PHANTOM_ENCOUNTER_HORSEMEN_MIN_SIZE, FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_ACTORS);
 		final int index = tier.ordinal();

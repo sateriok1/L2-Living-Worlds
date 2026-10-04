@@ -85,11 +85,11 @@ public class FakePlayersConfig
 	// PvP danger encounters (a phantom comes for the player and fights once).
 	public static boolean PHANTOM_ENCOUNTERS_ENABLED;
 	public static int PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL;
-	public static int PHANTOM_ENCOUNTER_MIN_MINUTES;
-	public static int PHANTOM_ENCOUNTER_MAX_MINUTES;
+	public static int PHANTOM_ENCOUNTER_GAP_MINUTES; // quiet time after any encounter before the next can start
 	public static int PHANTOM_ENCOUNTER_MAX_ACTIVE;
 	// Per tier, in PhantomEncounterRules.Tier order: Wimp, Normie, Hard, Horsemen, Pker.
-	public static final int[] PHANTOM_ENCOUNTER_WEIGHT = new int[5];
+	public static final int[] PHANTOM_ENCOUNTER_MIN_MINUTES = new int[5]; // per-kind wait between encounters (0 = kind off)
+	public static final int[] PHANTOM_ENCOUNTER_MAX_MINUTES = new int[5];
 	public static final int[] PHANTOM_ENCOUNTER_MIN_LEVEL = new int[5]; // player level at which the tier unlocks
 	public static final int[] PHANTOM_ENCOUNTER_LEVEL_MIN = new int[5]; // actor level offset from the player (low end)
 	public static final int[] PHANTOM_ENCOUNTER_LEVEL_MAX = new int[5]; // actor level offset from the player (high end)
@@ -177,8 +177,7 @@ public class FakePlayersConfig
 		FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE = Math.min(100, Math.max(0, config.getInt("FakePlayerBotChatReplyChance", 15)));
 		PHANTOM_ENCOUNTERS_ENABLED = config.getBoolean("PhantomEncounters", false);
 		PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL = Math.max(1, config.getInt("PhantomEncounterMinPlayerLevel", 20));
-		PHANTOM_ENCOUNTER_MIN_MINUTES = Math.max(1, config.getInt("PhantomEncounterMinMinutes", 40));
-		PHANTOM_ENCOUNTER_MAX_MINUTES = Math.max(PHANTOM_ENCOUNTER_MIN_MINUTES, config.getInt("PhantomEncounterMaxMinutes", 80));
+		PHANTOM_ENCOUNTER_GAP_MINUTES = Math.max(0, config.getInt("PhantomEncounterGapMinutes", 5));
 		PHANTOM_ENCOUNTER_MAX_ACTIVE = Math.max(1, config.getInt("PhantomEncounterMaxActive", 2));
 		final String[] encounterTiers =
 		{
@@ -188,7 +187,8 @@ public class FakePlayersConfig
 			"Horsemen",
 			"Pker"
 		};
-		final int[] weightDefaults = { 40, 30, 18, 9, 3 };
+		final int[] minMinutesDefaults = { 30, 30, 120, 270, 420 };
+		final int[] maxMinutesDefaults = { 40, 40, 180, 330, 540 };
 		final int[] unlockDefaults = { 20, 20, 30, 40, 40 };
 		final int[] levelMinDefaults = { -3, 0, 3, 5, 11 };
 		final int[] levelMaxDefaults = { -2, 0, 3, 5, 11 };
@@ -199,7 +199,8 @@ public class FakePlayersConfig
 		for (int i = 0; i < encounterTiers.length; i++)
 		{
 			final String name = "PhantomEncounter" + encounterTiers[i];
-			PHANTOM_ENCOUNTER_WEIGHT[i] = Math.max(0, config.getInt(name + "Weight", weightDefaults[i]));
+			PHANTOM_ENCOUNTER_MIN_MINUTES[i] = Math.max(0, config.getInt(name + "MinMinutes", minMinutesDefaults[i]));
+			PHANTOM_ENCOUNTER_MAX_MINUTES[i] = Math.max(PHANTOM_ENCOUNTER_MIN_MINUTES[i], config.getInt(name + "MaxMinutes", maxMinutesDefaults[i]));
 			PHANTOM_ENCOUNTER_MIN_LEVEL[i] = Math.max(1, config.getInt(name + "MinPlayerLevel", unlockDefaults[i]));
 			PHANTOM_ENCOUNTER_LEVEL_MIN[i] = config.getInt(name + "LevelMin", levelMinDefaults[i]);
 			PHANTOM_ENCOUNTER_LEVEL_MAX[i] = Math.max(PHANTOM_ENCOUNTER_LEVEL_MIN[i], config.getInt(name + "LevelMax", levelMaxDefaults[i]));
