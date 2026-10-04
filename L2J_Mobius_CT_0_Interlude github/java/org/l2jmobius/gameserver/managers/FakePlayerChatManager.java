@@ -169,8 +169,7 @@ public class FakePlayerChatManager implements IXmlReader
 	// panel) rather than hardcoded: the public rate cap and the two spontaneous-chatter intervals come from
 	// FakePlayersConfig. The rate cap is read live at each use, so a //reload config applies it; the two intervals are
 	// read once when the timers are scheduled at startup (see startSocial), so a change to them applies on restart.
-	private static final int MAX_TRADE_OFFERS_PER_MINUTE = 20; // important WTB/WTS responder PM cap
-	private static final AtomicInteger MESSAGES_THIS_MINUTE = new AtomicInteger();
+		private static final AtomicInteger MESSAGES_THIS_MINUTE = new AtomicInteger();
 	private static final AtomicInteger TRADE_OFFERS_THIS_MINUTE = new AtomicInteger();
 	private static boolean SOCIAL_STARTED = false;
 	// Base ambient intervals in ms, captured once at startup from config; each cycle self-reschedules with jitter.
@@ -461,6 +460,12 @@ public class FakePlayerChatManager implements IXmlReader
 			return;
 		}
 
+		// A "which one did you mean?" this bot asked: if the whisper picks an option, the offer follows instead of chat.
+		if (maybeResolveClarify(player, message, fpcName))
+		{
+			return;
+		}
+
 		// If this bot has a pending deal that was waiting on a quantity ("how many?"), read the amount from this
 		// whisper first and lock it in, so the deal context the brain sees (and the shop opened later) reflect it.
 		maybeSetDealCount(player, fpcName, bot, message);
@@ -623,12 +628,13 @@ public class FakePlayerChatManager implements IXmlReader
 		{
 			// A WTS/WTB ad may make one relevant bot PM the player to set up a real trade. The responder
 			// calls the LLM (to read slang) so it runs off-thread; plain banter handles everything else.
-			if (TRADE_AD.matcher(text).find())
+			final boolean isAd = FakePlayersConfig.TRADE_AD_PARSER_V2 ? (FakePlayerChatParsing.parseTradeAd(text) != null) : TRADE_AD.matcher(text).find();
+			if (isAd)
 			{
 				final Player who = speaker;
-				scheduleBrainWork(() -> respondToTradeAd(who, text), Rnd.get(MIN_DELAY, MAX_DELAY));
+				scheduleBrainWork(() -> respondToTradeAd(who, text), Rnd.get(FakePlayersConfig.TRADE_AD_REPLY_MIN_MS, FakePlayersConfig.TRADE_AD_REPLY_MAX_MS));
 			}
-			else
+			else if (!maybeResolveClarify(speaker, text, null))
 			{
 				reactToChat(speaker, speaker.getName(), text, false, "TRADE");
 			}
@@ -639,10 +645,205 @@ public class FakePlayerChatManager implements IXmlReader
 	// Pattern + quantity parsing live in FakePlayerChatParsing (unit-tested there); aliased so call sites are unchanged.
 	private static final Pattern TRADE_AD = FakePlayerChatParsing.TRADE_AD;
 
+	// ---- WTS/WTB reliability state ------------------------------------------------------------------------------
+
+	/** One item a player wants to trade: the template, the enchant (linked items only), and the stack they own. */
+	private static final class TradeRequest
+	{
+		final ItemTemplate item;
+		final int enchant;
+		final int linkedCount; // 0 = not a linked item
+		final String phrase; // the words that belong to this item (amount / price live here)
+
+		TradeRequest(ItemTemplate item, int enchant, int linkedCount, String phrase)
+		{
+			this.item = item;
+			this.enchant = enchant;
+			this.linkedCount = linkedCount;
+			this.phrase = phrase == null ? "" : phrase;
+		}
+	}
+
+	private enum DealOutcome
+	{
+		OK,
+		NO_BOT,
+		NO_STOCK,
+		PLAYER_CAP,
+		GLOBAL_CAP,
+		RACE
+	}
+
+	/** A "which one did you mean?" the bot asked, waiting for the player's pick. */
+	private static final class PendingClarify
+	{
+		final String botName;
+		final boolean selling;
+		final List<Integer> itemIds;
+		final String phrase;
+		final long expire;
+
+		PendingClarify(String botName, boolean selling, List<Integer> itemIds, String phrase, long expire)
+		{
+			this.botName = botName;
+			this.selling = selling;
+			this.itemIds = itemIds;
+			this.phrase = phrase;
+			this.expire = expire;
+		}
+	}
+
+	private static final long CLARIFY_TTL_MS = 120_000;
+	private static final Map<String, PendingClarify> PENDING_CLARIFY = new ConcurrentHashMap<>();
+	// Enchant level of the item an active deal is about, keyed like ACTIVE_DEALS (enchant is not part of the brain context).
+	private static final Map<String, Integer> DEAL_ENCHANT = new ConcurrentHashMap<>();
+	// Per-player offer timestamps (last minute), for the per-player cap.
+	private static final Map<String, java.util.ArrayDeque<Long>> PLAYER_OFFER_TIMES = new ConcurrentHashMap<>();
+
+	private static boolean tryReservePlayerOffer(String playerName)
+	{
+		final java.util.ArrayDeque<Long> times = PLAYER_OFFER_TIMES.computeIfAbsent(playerName.toLowerCase(), k -> new java.util.ArrayDeque<>());
+		final long now = System.currentTimeMillis();
+		synchronized (times)
+		{
+			while (!times.isEmpty() && ((now - times.peekFirst()) > 60_000))
+			{
+				times.pollFirst();
+			}
+			if (times.size() >= FakePlayersConfig.TRADE_AD_OFFERS_PER_PLAYER_PER_MINUTE)
+			{
+				return false;
+			}
+			times.addLast(now);
+			return true;
+		}
+	}
+
+	private static void refundPlayerOffer(String playerName)
+	{
+		final java.util.ArrayDeque<Long> times = PLAYER_OFFER_TIMES.get(playerName.toLowerCase());
+		if (times != null)
+		{
+			synchronized (times)
+			{
+				times.pollLast();
+			}
+		}
+	}
+
 	/**
-	 * Handles a WTS/WTB ad (off the network thread): the AI translates the slang to an item name, we
-	 * ground it to a real item, then arm a nearby roaming bot to PM the player, walk to a meet spot, and
-	 * open a real store on arrival. Falls back to plain trade banter if nothing usable matched.
+	 * Tells the player why nothing happened, instead of silence. A nearby bot says it in character; with no bot in
+	 * range it is a plain system line. No-op when status replies are switched off.
+	 */
+	private void tradeStatus(Player player, String botLine, String systemLine)
+	{
+		if (!FakePlayersConfig.TRADE_AD_STATUS_REPLIES || (player == null))
+		{
+			return;
+		}
+		final Npc bot = FakePlayerBehaviorManager.getInstance().pickTradeResponder(player);
+		if (bot != null)
+		{
+			sendChat(player, bot.getName(), botLine);
+		}
+		else
+		{
+			player.sendMessage("[Trade] " + systemLine);
+		}
+	}
+
+	private void statusForOutcome(Player player, DealOutcome outcome, String itemName)
+	{
+		switch (outcome)
+		{
+			case NO_BOT:
+			{
+				tradeStatus(player, "give me a sec, nobody free to deal rn - try again in a minute", "No trader is free nearby right now. Try again in a minute.");
+				break;
+			}
+			case NO_STOCK:
+			{
+				tradeStatus(player, "cant set that one up rn - " + itemName, "A trader could not set up a deal for " + itemName + ".");
+				break;
+			}
+			case PLAYER_CAP:
+			{
+				tradeStatus(player, "one at a time - sort out the offers u already have first", "You already have several open offers. Finish or cancel one first.");
+				break;
+			}
+			case GLOBAL_CAP:
+			{
+				tradeStatus(player, "bit busy rn, ask again in a min", "Traders are busy. Ask again in a minute.");
+				break;
+			}
+			case RACE:
+			{
+				tradeStatus(player, "sorry someone got me first, ask again", "That trader just got busy. Ask again.");
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
+
+	private static final class Resolution
+	{
+		ItemTemplate item; // resolved, tradeable
+		List<ItemTemplate> options; // ambiguous: several equally close matches
+		ItemTemplate known; // a real item the bots do not trade
+	}
+
+	private Resolution resolvePiece(String piece, String adText)
+	{
+		final Resolution r = new Resolution();
+		final String raw = piece.replaceAll("[0-9]+(k|kk)?", " ").replaceAll("[^a-zA-Z ]", " ").trim();
+		// Stage 1: ask the AI to turn shorthand ("ssd") into a plain item name; fall back to the raw words.
+		final String aiName = askBrainItem(adText);
+		// Stage 2: ground whatever we got to a real datapack item (deterministic search).
+		if (aiName != null)
+		{
+			r.item = FakePlayerStoreFactory.findItemByName(aiName);
+		}
+		if (r.item == null)
+		{
+			if (FakePlayersConfig.TRADE_AD_CLARIFY)
+			{
+				final List<ItemTemplate> close = FakePlayerStoreFactory.findCloseMatches(raw, 3);
+				if (close.size() > 1)
+				{
+					r.options = close;
+					return r;
+				}
+				if (close.size() == 1)
+				{
+					r.item = close.get(0);
+					return r;
+				}
+			}
+			else
+			{
+				r.item = FakePlayerStoreFactory.findItemByName(raw);
+			}
+		}
+		if (r.item == null)
+		{
+			// The player named a real item that bots simply do not trade (not in the allow-list): hint that it will
+			// not sell, in-character, instead of silent banter. A phrase that names no real item falls through.
+			r.known = (aiName == null) ? null : FakePlayerStoreFactory.findKnownItemByName(aiName);
+			if (r.known == null)
+			{
+				r.known = FakePlayerStoreFactory.findKnownItemByName(raw);
+			}
+		}
+		return r;
+	}
+
+	/**
+	 * Handles a WTS/WTB ad (off the network thread): reads the ad (linked items first, then the AI and the item
+	 * search), then arms one nearby roaming bot per item to PM the player, walk to a meet spot, and open a real store
+	 * on arrival. Every dead end tells the player why instead of staying silent (when status replies are on).
 	 */
 	private void respondToTradeAd(Player player, String text)
 	{
@@ -650,73 +851,203 @@ public class FakePlayerChatManager implements IXmlReader
 		{
 			return;
 		}
-		if (TRADE_OFFERS_THIS_MINUTE.get() >= MAX_TRADE_OFFERS_PER_MINUTE)
+		final boolean selling;
+		final String phrase;
+		List<Integer> linkedIds = new ArrayList<>();
+		if (FakePlayersConfig.TRADE_AD_PARSER_V2)
 		{
-			return;
-		}
-		final Matcher matcher = TRADE_AD.matcher(text);
-		if (!matcher.find())
-		{
-			return;
-		}
-		final String token = matcher.group(1).toLowerCase();
-		final boolean playerSelling = token.startsWith("wts") || token.startsWith("selling") || token.equals("s>");
-
-		// Stage 1: ask the AI to turn shorthand ("ssd") into a plain item name; fall back to the raw words.
-		final String rawPhrase = matcher.group(2).replaceAll("[0-9]+(k|kk)?", " ").replaceAll("[^a-zA-Z ]", " ").trim();
-		final String aiName = askBrainItem(text);
-		// Stage 2: ground whatever we got to a real datapack item (deterministic search).
-		ItemTemplate item = aiName == null ? null : FakePlayerStoreFactory.findItemByName(aiName);
-		if (item == null)
-		{
-			item = FakePlayerStoreFactory.findItemByName(rawPhrase);
-		}
-		if (item == null)
-		{
-			// The player named a real item that bots simply do not trade (not in the allow-list): hint that it will
-			// not sell, in-character, instead of silent banter. A phrase that names no real item falls through to banter.
-			ItemTemplate known = (aiName == null) ? null : FakePlayerStoreFactory.findKnownItemByName(aiName);
-			if (known == null)
+			final FakePlayerChatParsing.TradeAd ad = FakePlayerChatParsing.parseTradeAd(text);
+			if (ad == null)
 			{
-				known = FakePlayerStoreFactory.findKnownItemByName(rawPhrase);
-			}
-			if (known != null)
-			{
-				noSellHint(player, known, playerSelling);
 				return;
 			}
-			reactToChat(player, player.getName(), text, false, "TRADE"); // nothing recognisable -> banter
+			selling = ad.selling;
+			phrase = ad.phrase;
+			if (FakePlayersConfig.TRADE_AD_LINKED_ITEMS)
+			{
+				linkedIds = ad.linkedObjectIds;
+			}
+		}
+		else
+		{
+			final Matcher matcher = TRADE_AD.matcher(text);
+			if (!matcher.find())
+			{
+				return;
+			}
+			final String token = matcher.group(1).toLowerCase();
+			selling = token.startsWith("wts") || token.startsWith("selling") || token.equals("s>");
+			phrase = matcher.group(2);
+		}
+		// A fresh ad supersedes any unanswered "which one?" from before.
+		PENDING_CLARIFY.remove(player.getName().toLowerCase());
+		if (TRADE_OFFERS_THIS_MINUTE.get() >= FakePlayersConfig.TRADE_AD_OFFERS_PER_MINUTE)
+		{
+			statusForOutcome(player, DealOutcome.GLOBAL_CAP, "");
 			return;
 		}
 
+		final String cleanText = FakePlayerChatParsing.stripItemLinks(text);
+		final List<TradeRequest> requests = new ArrayList<>();
+		boolean handled = false; // some reply (no-sell hint / question / status) already went to the player
+
+		// Linked items: exact id, enchant and stack, straight from the player's own inventory.
+		final int maxItems = FakePlayersConfig.TRADE_AD_PARSER_V2 ? FakePlayersConfig.TRADE_AD_MAX_ITEMS : 1;
+		final String linkedPhrase = (linkedIds.size() == 1) ? phrase : "";
+		for (Integer objectId : linkedIds)
+		{
+			if (requests.size() >= maxItems)
+			{
+				break;
+			}
+			final org.l2jmobius.gameserver.model.item.instance.Item owned = player.getInventory().getItemByObjectId(objectId);
+			if (owned == null)
+			{
+				continue; // not in their inventory: ignore the link, fall back to the words
+			}
+			final ItemTemplate template = owned.getTemplate();
+			if (!FakePlayerStoreEligibility.isAllowed(template.getId()))
+			{
+				noSellHint(player, template, selling);
+				handled = true;
+				continue;
+			}
+			if (selling && owned.isEquipped())
+			{
+				tradeStatus(player, "take " + spokenItemName(template) + " off first and ask again", "Unequip " + spokenItemName(template) + " first, then post the ad again.");
+				handled = true;
+				continue;
+			}
+			requests.add(new TradeRequest(template, owned.getEnchantLevel(), (int) Math.min(Integer.MAX_VALUE, owned.getCount()), linkedPhrase));
+		}
+
+		if (requests.isEmpty() && !handled)
+		{
+			final List<String> pieces = (maxItems > 1) ? FakePlayerChatParsing.splitTradeItems(phrase, maxItems) : new ArrayList<>(List.of(phrase));
+			final boolean multi = pieces.size() > 1;
+			int unknown = 0;
+			for (String piece : pieces)
+			{
+				final String adText = (FakePlayersConfig.TRADE_AD_PARSER_V2 || multi) ? ((selling ? "WTS " : "WTB ") + piece) : text;
+				final Resolution r = resolvePiece(piece, adText);
+				if (r.item != null)
+				{
+					requests.add(new TradeRequest(r.item, 0, 0, piece));
+				}
+				else if (r.options != null)
+				{
+					askClarify(player, selling, r.options, piece);
+					handled = true;
+				}
+				else if (r.known != null)
+				{
+					noSellHint(player, r.known, selling);
+					handled = true;
+				}
+				else
+				{
+					unknown++;
+				}
+			}
+			if (requests.isEmpty() && !handled)
+			{
+				if (FakePlayersConfig.TRADE_AD_FORMAT_HINT && FakePlayersConfig.TRADE_AD_STATUS_REPLIES && (unknown > 0))
+				{
+					tradeStatus(player, "didnt catch the item - " + FakePlayerChatParsing.FORMAT_HINT, "Item not recognised - " + FakePlayerChatParsing.FORMAT_HINT);
+				}
+				else
+				{
+					reactToChat(player, player.getName(), text, false, "TRADE"); // nothing recognisable -> banter
+				}
+				return;
+			}
+		}
+		if (requests.isEmpty())
+		{
+			return;
+		}
+
+		DealOutcome firstFailure = null;
+		String failedItem = "";
+		int started = 0;
+		for (TradeRequest request : requests)
+		{
+			final DealOutcome outcome = startTradeDeal(player, cleanText, selling, request, null);
+			if (outcome == DealOutcome.OK)
+			{
+				started++;
+			}
+			else if (firstFailure == null)
+			{
+				firstFailure = outcome;
+				failedItem = spokenItemName(request.item);
+			}
+		}
+		if (firstFailure != null)
+		{
+			if (FakePlayersConfig.TRADE_AD_STATUS_REPLIES)
+			{
+				statusForOutcome(player, firstFailure, failedItem);
+			}
+			else if ((started == 0) && (firstFailure == DealOutcome.NO_BOT))
+			{
+				reactToChat(player, player.getName(), text, false, "TRADE"); // no roaming bot around -> banter
+			}
+		}
+	}
+
+	/**
+	 * Claims a bot and sets up one deal for one item: stock, offer slot, the deal context the brain reads, and the
+	 * opening line. Returns why it did not happen, so the caller can tell the player.
+	 * @param preferredBot a bot that already spoke with the player and should make the offer, or {@code null}
+	 */
+	private DealOutcome startTradeDeal(Player player, String adText, boolean playerSelling, TradeRequest request, Npc preferredBot)
+	{
+		final ItemTemplate item = request.item;
 		// FPC-066: atomically claim the responder, so two concurrent trade ads cannot both select the same bot and set
 		// up two deals (with two ACTIVE_DEALS entries) against one reservation. setupDeal below supersedes the claim.
-		final Npc bot = FakePlayerBehaviorManager.getInstance().tryClaimTradeResponder(player);
+		Npc bot = (preferredBot != null) ? FakePlayerBehaviorManager.getInstance().tryClaimSpecificTradeResponder(player, preferredBot) : null;
 		if (bot == null)
 		{
-			reactToChat(player, player.getName(), text, false, "TRADE"); // no roaming bot around -> banter
-			return;
+			bot = FakePlayerBehaviorManager.getInstance().tryClaimTradeResponder(player);
+		}
+		if (bot == null)
+		{
+			return DealOutcome.NO_BOT;
 		}
 
 		// Player selling -> bot buys it; player buying -> bot sells it.
 		final int storeType = playerSelling ? PrivateStoreType.BUY.getId() : PrivateStoreType.SELL.getId();
-		final int requestedCount = parseTradeQuantity(FakePlayerChatParsing.stripStatedPrices(matcher.group(2)), item);
+		int requestedCount = parseTradeQuantity(FakePlayerChatParsing.stripStatedPrices(request.phrase), item);
+		if (request.linkedCount > 0)
+		{
+			// A linked stack: with no amount named the bot takes the whole stack; never more than they hold.
+			final int held = item.isStackable() ? request.linkedCount : 1;
+			requestedCount = playerSelling ? ((requestedCount > 0) ? Math.min(requestedCount, held) : held) : requestedCount;
+		}
 		// Honor the price the player named in the ad ("wtb ssd 300 adena") when they gave one; the factory clamps it
 		// into a sane band around the item's value, so the bot deals at the desired price without opening an exploit.
 		// A bare quantity is never read as a price; 0 here means "no stated price", so the factory auto-prices.
-		final int playerUnitPrice = FakePlayerChatParsing.parseTradeUnitPrice(matcher.group(2));
-		final List<FakePlayerStoreItem> stock = playerSelling ? FakePlayerStoreFactory.dealBuyStock(item.getId(), playerUnitPrice, requestedCount) : FakePlayerStoreFactory.dealSellStock(item.getId(), playerUnitPrice, requestedCount);
+		final int playerUnitPrice = FakePlayerChatParsing.parseTradeUnitPrice(request.phrase);
+		final int enchant = request.enchant;
+		final List<FakePlayerStoreItem> stock = playerSelling ? FakePlayerStoreFactory.dealBuyStock(item.getId(), playerUnitPrice, requestedCount, enchant) : FakePlayerStoreFactory.dealSellStock(item.getId(), playerUnitPrice, requestedCount, enchant);
 		if (stock.isEmpty())
 		{
 			FakePlayerBehaviorManager.getInstance().releaseTradeClaim(bot, player); // FPC-066: no deal after all, free the claim now
-			return;
+			return DealOutcome.NO_STOCK;
 		}
 		// FPC-021: reserve a trade-offer slot atomically before arming the bot and calling the brain, so concurrent
 		// responders cannot all pass a check-then-increment and overshoot the per-minute offer cap.
-		if (!tryReserve(TRADE_OFFERS_THIS_MINUTE, MAX_TRADE_OFFERS_PER_MINUTE))
+		if (!tryReservePlayerOffer(player.getName()))
 		{
+			FakePlayerBehaviorManager.getInstance().releaseTradeClaim(bot, player);
+			return DealOutcome.PLAYER_CAP;
+		}
+		if (!tryReserve(TRADE_OFFERS_THIS_MINUTE, FakePlayersConfig.TRADE_AD_OFFERS_PER_MINUTE))
+		{
+			refundPlayerOffer(player.getName());
 			FakePlayerBehaviorManager.getInstance().releaseTradeClaim(bot, player); // FPC-066: offer cap hit, free the claim now
-			return;
+			return DealOutcome.GLOBAL_CAP;
 		}
 		final String title = FakePlayerStoreFactory.title(playerSelling ? "BUY" : "SELL", stock);
 		// Stash the deal terms and reserve the bot, but do NOT walk yet. The bot quotes a price and waits;
@@ -727,7 +1058,8 @@ public class FakePlayerChatManager implements IXmlReader
 		if (!FakePlayerBehaviorManager.getInstance().setupDeal(bot, player, storeType, stock, title))
 		{
 			FakePlayerBehaviorManager.getInstance().releaseTradeClaim(bot, player);
-			return;
+			refundPlayerOffer(player.getName());
+			return DealOutcome.RACE;
 		}
 
 		final int unit = stock.get(0).getPrice();
@@ -745,23 +1077,33 @@ public class FakePlayerChatManager implements IXmlReader
 		// The spoken name never carries the '*' Common Item marker (FPC-043/FPC-052), and it is what we store on the
 		// deal, hand the brain, and match its reply against, so chat, X-Deal-Item and any SHOP re-resolution stay clean.
 		final String itemName = spokenItemName(item);
+		final String shownName = ((stock.get(0).getEnchant() > 0) ? ("+" + stock.get(0).getEnchant() + " ") : "") + itemName;
 		// The opener only quotes a price and asks if they want to deal. The player already named the item in their
 		// post, so the bot must not repeat it, and the meeting place is settled later (only after a price is agreed),
 		// so the opener never asks where to meet (FPC-054).
 		final String deal = needsCount //
-			? ((playerSelling ? "buy their " : "sell them ") + itemName + " for about " + unitText
+			? ((playerSelling ? "buy their " : "sell them ") + shownName + " for about " + unitText
 				+ " adena each; ask HOW MANY they want and state your price, and ask if they want to deal - do NOT"
 				+ " repeat the item name (they already posted it), do NOT ask where to meet yet, and do not commit to"
 				+ " an amount or to walking anywhere yet") //
 			: ((playerSelling ? "buy their " : "sell them ")
 				+ (actualCount > 1 ? (FakePlayerStorePricing.priceText(actualCount) + "x ") : "")
-				+ itemName + " for about " + unitText + " adena" + eachWord
+				+ shownName + " for about " + unitText + " adena" + eachWord
 				+ (perUnit ? "" : " (a single item - state one flat price, do not say 'each')")
 				+ "; state your price and ask if they want to deal - do NOT repeat the item name (they already posted"
 				+ " it), do NOT ask where to meet yet, and do not commit to walking anywhere yet");
 		final String fpcName = bot.getName();
 		final BrainDealContext dealContext = new BrainDealContext(botSide, itemName, item.getId(), actualCount, unit, needsCount);
-		ACTIVE_DEALS.put(dealKey(player.getName(), fpcName), dealContext);
+		final String key = dealKey(player.getName(), fpcName);
+		ACTIVE_DEALS.put(key, dealContext);
+		if (stock.get(0).getEnchant() > 0)
+		{
+			DEAL_ENCHANT.put(key, stock.get(0).getEnchant());
+		}
+		else
+		{
+			DEAL_ENCHANT.remove(key);
+		}
 		final String fallback = needsCount //
 			? ("saw ur post - i " + (playerSelling ? "buy" : "sell") + " at " + unitText + " adena each, how many u want?") //
 			: ("saw ur post - i can do " + unitText + " adena" + eachWord + ", wanna deal?");
@@ -772,17 +1114,95 @@ public class FakePlayerChatManager implements IXmlReader
 		// conversation executor keyed (player, bot-name), with the blocking call on the shared brain executor and a
 		// guaranteed completion callback that releases the next queued turn on every path.
 		final String convKey = BrainConversationExecutor.key(player.getName(), fpcName);
+		final Npc offerBot = bot;
 		BrainConversationExecutor.submit(convKey, onComplete -> BrainExecutor.runBrainWork(() ->
 		{
-			final String line = callBridge(fpcName, "OFFER", player.getName(), "", text, nearestLocation(bot), deal, dealContext, BotIdentity.of(bot));
-			// Prefer the model's natural line and fall back to the canned one only when it gave nothing. An OFFER is a
-			// direct reply to the player's own post, so the line need not repeat the item name to be clear; requiring it
-			// forced the canned template on every reply that phrased the deal naturally (FPC-043 follow-up). The store
-			// Java opens always uses the authoritative item, and sanitize()/spokenItemName keep a corrupted name out of
-			// chat, so trusting the line here costs at most an occasionally vague line, never a wrong deal.
+			final String line = callBridge(fpcName, "OFFER", player.getName(), "", adText, nearestLocation(offerBot), deal, dealContext, BotIdentity.of(offerBot));
+			// Prefer the model's natural line and fall back to the canned one only when it gave nothing. The store
+			// Java opens always uses the authoritative item, and sanitize()/spokenItemName keep a corrupted name out
+			// of chat, so trusting the line here costs at most an occasionally vague line, never a wrong deal.
 			sendChat(player, fpcName, ((line == null) || line.isEmpty()) ? fallback : line);
 		}, onComplete));
 		// The offer slot was reserved atomically before the brain call (FPC-021); it is not counted again here.
+		return DealOutcome.OK;
+	}
+
+	/** Asks the player which of several equally close items they meant, and remembers the question. */
+	private void askClarify(Player player, boolean selling, List<ItemTemplate> options, String phrase)
+	{
+		final Npc bot = FakePlayerBehaviorManager.getInstance().pickTradeResponder(player);
+		if (bot == null)
+		{
+			tradeStatus(player, "", "Several items match '" + phrase + "' and no trader is free to ask which. Be more specific.");
+			return;
+		}
+		final List<Integer> ids = new ArrayList<>();
+		final StringBuilder question = new StringBuilder("which one - ");
+		for (int i = 0; i < options.size(); i++)
+		{
+			ids.add(options.get(i).getId());
+			question.append(i == 0 ? "" : (i == (options.size() - 1) ? " or " : ", ")).append(i + 1).append(") ").append(spokenItemName(options.get(i)));
+		}
+		question.append("?");
+		PENDING_CLARIFY.put(player.getName().toLowerCase(), new PendingClarify(bot.getName(), selling, ids, phrase, System.currentTimeMillis() + CLARIFY_TTL_MS));
+		sendChat(player, bot.getName(), question.toString());
+	}
+
+	/**
+	 * If the player has an open "which one?" and this message picks an option, carry on with that item. Returns
+	 * {@code true} when the message was consumed as the answer.
+	 * @param fromBot the bot the player whispered, or {@code null} for a trade-chat line
+	 */
+	private boolean maybeResolveClarify(Player player, String message, String fromBot)
+	{
+		if ((player == null) || (message == null))
+		{
+			return false;
+		}
+		final String key = player.getName().toLowerCase();
+		final PendingClarify pending = PENDING_CLARIFY.get(key);
+		if (pending == null)
+		{
+			return false;
+		}
+		if (System.currentTimeMillis() > pending.expire)
+		{
+			PENDING_CLARIFY.remove(key);
+			return false;
+		}
+		if ((fromBot != null) && !fromBot.equalsIgnoreCase(pending.botName))
+		{
+			return false;
+		}
+		final List<String> names = new ArrayList<>();
+		for (int id : pending.itemIds)
+		{
+			final ItemTemplate t = ItemData.getInstance().getTemplate(id);
+			names.add(t == null ? "" : spokenItemName(t));
+		}
+		final int pick = FakePlayerChatParsing.pickClarifiedOption(message, names);
+		if (pick < 0)
+		{
+			return false;
+		}
+		PENDING_CLARIFY.remove(key);
+		final ItemTemplate item = ItemData.getInstance().getTemplate(pending.itemIds.get(pick));
+		if (item == null)
+		{
+			return true;
+		}
+		final String phrase = pending.phrase + " " + FakePlayerChatParsing.stripItemLinks(message);
+		scheduleBrainWork(() ->
+		{
+			final Npc preferred = resolveBot(pending.botName);
+			final String adText = (pending.selling ? "WTS " : "WTB ") + spokenItemName(item);
+			final DealOutcome outcome = startTradeDeal(player, adText, pending.selling, new TradeRequest(item, 0, 0, pending.phrase), preferred);
+			if (outcome != DealOutcome.OK)
+			{
+				statusForOutcome(player, outcome, spokenItemName(item));
+			}
+		}, Rnd.get(FakePlayersConfig.TRADE_AD_REPLY_MIN_MS, FakePlayersConfig.TRADE_AD_REPLY_MAX_MS));
+		return true;
 	}
 
 	/**
@@ -810,7 +1230,11 @@ public class FakePlayerChatManager implements IXmlReader
 		final Npc bot = FakePlayerBehaviorManager.getInstance().pickTradeResponder(player);
 		if (bot == null)
 		{
-			return; // no bot nearby to answer - stay quiet rather than force a line
+			if (FakePlayersConfig.TRADE_AD_STATUS_REPLIES)
+			{
+				player.sendMessage("[Trade] Traders here do not " + (playerSelling ? "buy " : "sell ") + spokenItemName(item) + ".");
+			}
+			return; // no bot nearby to answer - stay quiet in chat rather than force a line
 		}
 		final String fpcName = bot.getName();
 		final String itemName = spokenItemName(item);
@@ -846,6 +1270,7 @@ public class FakePlayerChatManager implements IXmlReader
 		if ((playerName != null) && (fpcName != null))
 		{
 			ACTIVE_DEALS.remove(dealKey(playerName, fpcName));
+			DEAL_ENCHANT.remove(dealKey(playerName, fpcName));
 		}
 	}
 
@@ -895,7 +1320,7 @@ public class FakePlayerChatManager implements IXmlReader
 		// A vague "some / a stack / whatever" answer means "a normal amount", so let the factory auto-size (0).
 		final int requested = (spoken == FakePlayerChatParsing.SPOKEN_QUANTITY_DEFAULT) ? 0 : spoken;
 		final boolean botSells = "SELL".equalsIgnoreCase(deal.side);
-		final List<FakePlayerStoreItem> stock = botSells ? FakePlayerStoreFactory.dealSellStock(deal.itemId, deal.unitPrice, requested) : FakePlayerStoreFactory.dealBuyStock(deal.itemId, deal.unitPrice, requested);
+		final List<FakePlayerStoreItem> stock = botSells ? FakePlayerStoreFactory.dealSellStock(deal.itemId, deal.unitPrice, requested, DEAL_ENCHANT.getOrDefault(key, 0)) : FakePlayerStoreFactory.dealBuyStock(deal.itemId, deal.unitPrice, requested, DEAL_ENCHANT.getOrDefault(key, 0));
 		if (stock.isEmpty())
 		{
 			return;
@@ -973,7 +1398,7 @@ public class FakePlayerChatManager implements IXmlReader
 		}
 		// Exact-ACCEPT invariant (FPC-041): an accepted price must be exactly executable. A counter outside the economy
 		// band would be silently clamped to a different number, so it is REJECTED here rather than accepted-then-changed.
-		if (!FakePlayerStoreFactory.dealPriceWithinBand(deal.itemId, counter, botSells))
+		if (!FakePlayerStoreFactory.dealPriceWithinBand(deal.itemId, counter, botSells, DEAL_ENCHANT.getOrDefault(key, 0)))
 		{
 			ACTIVE_DEALS.put(key, new BrainDealContext(deal.side, deal.item, deal.itemId, deal.count, deal.unitPrice, deal.needsCount, deal.priceLocked, "REJECT", counter));
 			return;
@@ -986,7 +1411,7 @@ public class FakePlayerChatManager implements IXmlReader
 			return;
 		}
 		// ACCEPT at a new in-band price: restock at exactly the agreed price (the clamp is a no-op here) and lock it.
-		final List<FakePlayerStoreItem> stock = botSells ? FakePlayerStoreFactory.dealSellStock(deal.itemId, counter, deal.count) : FakePlayerStoreFactory.dealBuyStock(deal.itemId, counter, deal.count);
+		final List<FakePlayerStoreItem> stock = botSells ? FakePlayerStoreFactory.dealSellStock(deal.itemId, counter, deal.count, DEAL_ENCHANT.getOrDefault(key, 0)) : FakePlayerStoreFactory.dealBuyStock(deal.itemId, counter, deal.count, DEAL_ENCHANT.getOrDefault(key, 0));
 		if (stock.isEmpty())
 		{
 			return;
@@ -1991,6 +2416,11 @@ public class FakePlayerChatManager implements IXmlReader
 				// brain's deal_note). Empty when no counter was made this turn.
 				builder.header("X-Deal-Decision", dealContext.counterDecision == null ? "" : dealContext.counterDecision);
 				builder.header("X-Deal-Last-Counter", Integer.toString(dealContext.lastCounter));
+				// The worst price this bot would still settle at after haggling (lowest for a seller, highest for a buyer),
+				// so a refusal can name the real number; and the enchant level of the item, if any.
+				builder.header("X-Deal-Limit-Price", Integer.toString(FakePlayerChatParsing.counterLimit(dealContext.unitPrice, "SELL".equalsIgnoreCase(dealContext.side))));
+				final Integer dealEnchant = DEAL_ENCHANT.get(dealKey(playerName, fpcName));
+				builder.header("X-Deal-Enchant", Integer.toString(dealEnchant == null ? 0 : dealEnchant));
 			}
 
 			final HttpRequest request = builder //
@@ -2725,7 +3155,7 @@ public class FakePlayerChatManager implements IXmlReader
 					final int storeType = botSells ? PrivateStoreType.SELL.getId() : PrivateStoreType.BUY.getId();
 					final FakePlayerBehaviorManager behavior = FakePlayerBehaviorManager.getInstance();
 					final int requestedCount = behavior.getPendingDealCount(bot, item.getId());
-					final List<FakePlayerStoreItem> stock = botSells ? FakePlayerStoreFactory.dealSellStock(item.getId(), price, requestedCount) : FakePlayerStoreFactory.dealBuyStock(item.getId(), price, requestedCount);
+					final List<FakePlayerStoreItem> stock = botSells ? FakePlayerStoreFactory.dealSellStock(item.getId(), price, requestedCount, DEAL_ENCHANT.getOrDefault(dealKey(player.getName(), bot.getName()), 0)) : FakePlayerStoreFactory.dealBuyStock(item.getId(), price, requestedCount, DEAL_ENCHANT.getOrDefault(dealKey(player.getName(), bot.getName()), 0));
 					if (!stock.isEmpty())
 					{
 						final String title = FakePlayerStoreFactory.title(botSells ? "SELL" : "BUY", stock);

@@ -52,6 +52,11 @@ public class FakePlayersConfig
 	public static int FAKE_PLAYER_RECRUIT_ENCHANT_MIN;
 	public static int FAKE_PLAYER_RECRUIT_ENCHANT_MAX;
 	public static boolean FAKE_PLAYER_AUTO_HUNTING_ZONES;
+	public static boolean FAKE_PLAYER_MEET_RECALL;
+	public static int FAKE_PLAYER_MEET_RECALL_CAST_SECONDS;
+	public static int FAKE_PLAYER_MEET_RECALL_MIN_DISTANCE;
+	public static int FAKE_PLAYER_MEET_RECALL_STUCK_SECONDS;
+	public static boolean FAKE_PLAYER_MEET_NEAR_PLAYER;
 	public static boolean PHANTOM_HUNTER_PLAYSTYLES;
 	public static boolean PHANTOM_SKILL_FALLBACK;
 	public static boolean PHANTOM_ARCHER_KITING;
@@ -77,6 +82,19 @@ public class FakePlayersConfig
 	public static int FAKE_PLAYER_MAX_PUBLIC_CHATS_PER_MINUTE;
 	public static int FAKE_PLAYER_BOT_CHAT_CHAIN_DEPTH;
 	public static int FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE;
+	// WTS/WTB reliability (all switchable; defaults on, set False to get the old behaviour back).
+	public static boolean TRADE_AD_PARSER_V2;
+	public static boolean TRADE_AD_LINKED_ITEMS;
+	public static boolean TRADE_AD_STATUS_REPLIES;
+	public static boolean TRADE_AD_FORMAT_HINT;
+	public static int TRADE_AD_OFFERS_PER_MINUTE;
+	public static int TRADE_AD_OFFERS_PER_PLAYER_PER_MINUTE;
+	public static int TRADE_AD_REPLY_MIN_MS;
+	public static int TRADE_AD_REPLY_MAX_MS;
+	public static boolean TRADE_AD_CLARIFY;
+	public static int TRADE_AD_MAX_ITEMS;
+	public static boolean TRADE_AD_ENCHANT_PRICING;
+	public static int TRADE_OFFER_TIMEOUT_SECONDS;
 
 	public static void load(String baseConfigPath)
 	{
@@ -105,6 +123,11 @@ public class FakePlayersConfig
 		FAKE_PLAYER_RECRUIT_ENCHANT_MIN = config.getInt("FakePlayerRecruitEnchantMin", 3);
 		FAKE_PLAYER_RECRUIT_ENCHANT_MAX = config.getInt("FakePlayerRecruitEnchantMax", 6);
 		FAKE_PLAYER_AUTO_HUNTING_ZONES = config.getBoolean("PhantomAutoHuntingZones", true);
+		FAKE_PLAYER_MEET_RECALL = config.getBoolean("FakePlayerMeetRecall", false);
+		FAKE_PLAYER_MEET_RECALL_CAST_SECONDS = Math.max(1, config.getInt("FakePlayerMeetRecallCastSeconds", 4));
+		FAKE_PLAYER_MEET_RECALL_MIN_DISTANCE = Math.max(0, config.getInt("FakePlayerMeetRecallMinDistance", 1500));
+		FAKE_PLAYER_MEET_RECALL_STUCK_SECONDS = Math.max(5, config.getInt("FakePlayerMeetRecallStuckSeconds", 15));
+		FAKE_PLAYER_MEET_NEAR_PLAYER = config.getBoolean("FakePlayerMeetNearPlayer", false);
 		PHANTOM_HUNTER_PLAYSTYLES = config.getBoolean("PhantomHunterPlaystyles", true);
 		PHANTOM_SKILL_FALLBACK = config.getBoolean("PhantomSkillFallback", true);
 		PHANTOM_ARCHER_KITING = config.getBoolean("PhantomArcherKiting", true);
@@ -130,5 +153,17 @@ public class FakePlayersConfig
 		FAKE_PLAYER_MAX_PUBLIC_CHATS_PER_MINUTE = config.getInt("FakePlayerMaxPublicChatsPerMinute", 8);
 		FAKE_PLAYER_BOT_CHAT_CHAIN_DEPTH = Math.max(0, config.getInt("FakePlayerBotChatChainDepth", 2));
 		FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE = Math.min(100, Math.max(0, config.getInt("FakePlayerBotChatReplyChance", 15)));
+		TRADE_AD_PARSER_V2 = config.getBoolean("TradeAdParserV2", true);
+		TRADE_AD_LINKED_ITEMS = config.getBoolean("TradeAdLinkedItems", true);
+		TRADE_AD_STATUS_REPLIES = config.getBoolean("TradeAdStatusReplies", true);
+		TRADE_AD_FORMAT_HINT = config.getBoolean("TradeAdFormatHint", true);
+		TRADE_AD_OFFERS_PER_MINUTE = Math.max(1, config.getInt("TradeAdOffersPerMinute", 60));
+		TRADE_AD_OFFERS_PER_PLAYER_PER_MINUTE = Math.max(1, config.getInt("TradeAdOffersPerPlayerPerMinute", 4));
+		TRADE_AD_REPLY_MIN_MS = Math.max(0, config.getInt("TradeAdReplyMinMs", 3000));
+		TRADE_AD_REPLY_MAX_MS = Math.max(TRADE_AD_REPLY_MIN_MS, config.getInt("TradeAdReplyMaxMs", 7000));
+		TRADE_AD_CLARIFY = config.getBoolean("TradeAdClarify", true);
+		TRADE_AD_MAX_ITEMS = Math.max(1, Math.min(3, config.getInt("TradeAdMaxItems", 3)));
+		TRADE_AD_ENCHANT_PRICING = config.getBoolean("TradeAdEnchantPricing", true);
+		TRADE_OFFER_TIMEOUT_SECONDS = Math.max(30, config.getInt("TradeOfferTimeoutSeconds", 180));
 	}
 }

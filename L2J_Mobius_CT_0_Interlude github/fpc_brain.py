@@ -1564,6 +1564,9 @@ def deal_note_from_headers():
     # Java has already decided whether to accept the player's last price counteroffer; the bot only voices it.
     decision = request.headers.get("X-Deal-Decision", "").strip().upper()
     last_counter = request.headers.get("X-Deal-Last-Counter", "").strip()
+    # Worst price this bot would still settle at (lowest for a seller, highest for a buyer), and the item's enchant.
+    limit_price = request.headers.get("X-Deal-Limit-Price", "").strip()
+    enchant = request.headers.get("X-Deal-Enchant", "0").strip()
 
     if not side or not item or not unit:
         return ""
@@ -1596,7 +1599,8 @@ def deal_note_from_headers():
         lines.append(f"- Item: {item} - the player has NOT said how many they want yet; ask them how many before agreeing.")
     else:
         qty = f"{fmt_amount(count)}x " if qty_n > 1 else ""
-        lines.append(f"- Item: {qty}{item}")
+        plus = f"+{enchant} " if enchant.isdigit() and int(enchant) > 0 else ""
+        lines.append(f"- Item: {qty}{plus}{item}")
     if per_unit:
         lines.append(f"- Unit price: {fmt_amount(unit)} adena each.")
     else:
@@ -1618,6 +1622,10 @@ def deal_note_from_headers():
         lines.append(f"- The player asked for {fmt_amount(last_counter)}{each}, but that is too low for you. Politely "
                      f"turn it down and restate your price of {fmt_amount(unit)}{each}. Do NOT agree to their number "
                      "and do NOT add a SHOP tag this turn.")
+        if limit_price.isdigit() and int(limit_price) > 0:
+            word = "lowest" if side == "SELL" else "highest"
+            lines.append(f"- The {word} you would actually go is {fmt_amount(limit_price)}{each}; you may say so if "
+                         "they ask how low (or high) you can go, but never go past it.")
     elif decision == "CLARIFY":
         # The player typed a bare number Java could not safely read as a price (FPC-042); ask, do not guess.
         lines.append(f"- The player named a number that might mean {fmt_amount(last_counter)}{each}, but it was "

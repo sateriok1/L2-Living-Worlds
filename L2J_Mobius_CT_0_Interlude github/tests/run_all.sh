@@ -57,6 +57,7 @@ PROD_SOURCES=(
 )
 JAVA_MAIN_CLASSES=(
 	"FakePlayerChatParsingTest"
+	"TradeAdParserTest"
 	"FakePlayerStorePricingTest"
 	"FakePlayerStoreMathTest"
 	"FakePlayerStoreEligibilityTest"
