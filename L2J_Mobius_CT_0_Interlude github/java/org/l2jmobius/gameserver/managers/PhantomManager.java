@@ -5614,6 +5614,13 @@ public class PhantomManager implements IXmlReader
 		{
 			PhantomEncounterRules.clearHostile(phantom.getObjectId());
 			data.encounterEndAt = now + ENC_CORPSE_MS; // it lost: the body lies there a moment, then goes
+			final int perLevel = FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_PER_LEVEL[tier.ordinal()];
+			if ((perLevel > 0) && (victim != null) && victim.isOnline() && !victim.isDead())
+			{
+				final int reward = (int) Math.min(Integer.MAX_VALUE, (long) perLevel * phantom.getLevel()); // each kill pays its level times the tier rate
+				victim.addAdena(ItemProcessType.REWARD, reward, phantom, true);
+				LOGGER.info(getClass().getSimpleName() + ": Encounter adena reward: " + reward + " to " + victim.getName() + " for " + phantom.getName() + " (level " + phantom.getLevel() + ").");
+			}
 			if (group.memberDied())
 			{
 				dropEncounterLoot(phantom, tier, group, victim); // the whole group is down: at most one piece drops
@@ -5743,22 +5750,7 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void dropEncounterLoot(Player phantom, PhantomEncounterRules.Tier tier, PhantomEncounterRules.EncounterGroup group, Player victim)
 	{
-		final int adenaMax = FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_MAX[tier.ordinal()];
-		final boolean wantGear = Rnd.get(100) < FakePlayersConfig.PHANTOM_ENCOUNTER_LOOT_PERCENT[tier.ordinal()];
-		if (((adenaMax <= 0) && !wantGear) || !group.claimLoot())
-		{
-			return;
-		}
-		if ((adenaMax > 0) && (victim != null))
-		{
-			final int reward = Rnd.get(FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_MIN[tier.ordinal()], adenaMax);
-			if (reward > 0)
-			{
-				victim.addAdena(ItemProcessType.REWARD, reward, phantom, true);
-				LOGGER.info(getClass().getSimpleName() + ": Encounter adena reward: " + reward + " to " + victim.getName() + " from " + phantom.getName() + ".");
-			}
-		}
-		if (!wantGear)
+		if ((Rnd.get(100) >= FakePlayersConfig.PHANTOM_ENCOUNTER_LOOT_PERCENT[tier.ordinal()]) || !group.claimLoot())
 		{
 			return;
 		}
