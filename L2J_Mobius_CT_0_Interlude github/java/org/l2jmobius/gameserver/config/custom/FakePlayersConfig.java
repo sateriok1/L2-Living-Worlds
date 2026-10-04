@@ -176,7 +176,7 @@ public class FakePlayersConfig
 		FAKE_PLAYER_BOT_CHAT_CHAIN_DEPTH = Math.max(0, config.getInt("FakePlayerBotChatChainDepth", 2));
 		FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE = Math.min(100, Math.max(0, config.getInt("FakePlayerBotChatReplyChance", 15)));
 		PHANTOM_ENCOUNTERS_ENABLED = config.getBoolean("PhantomEncounters", false);
-		PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL = Math.max(1, config.getInt("PhantomEncounterMinPlayerLevel", 20));
+		PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL = Math.max(1, config.getInt("PhantomEncounterMinPlayerLevel", 10));
 		PHANTOM_ENCOUNTER_GAP_MINUTES = Math.max(0, config.getInt("PhantomEncounterGapMinutes", 5));
 		PHANTOM_ENCOUNTER_MAX_ACTIVE = Math.max(1, config.getInt("PhantomEncounterMaxActive", 2));
 		final String[] encounterTiers =
@@ -189,7 +189,7 @@ public class FakePlayersConfig
 		};
 		final int[] minMinutesDefaults = { 30, 30, 120, 270, 420 };
 		final int[] maxMinutesDefaults = { 40, 40, 180, 330, 540 };
-		final int[] unlockDefaults = { 20, 20, 30, 40, 40 };
+		final int[] unlockDefaults = { 10, 10, 20, 20, 20 };
 		final int[] levelMinDefaults = { -3, 0, 3, 5, 11 };
 		final int[] levelMaxDefaults = { -2, 0, 3, 5, 11 };
 		final int[] enchantMinDefaults = { 0, 0, 3, 5, 16 };

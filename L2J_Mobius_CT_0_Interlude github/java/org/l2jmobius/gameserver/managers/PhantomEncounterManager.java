@@ -165,7 +165,7 @@ public class PhantomEncounterManager
 		{
 			return false;
 		}
-		return (player.getLevel() >= FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL) && !player.isNewbie();
+		return (player.getLevel() >= FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL);
 	}
 
 	private boolean trigger(Player player, PhantomManager phantoms, Tier tier)
