@@ -95,6 +95,8 @@ public class FakePlayersConfig
 	public static final int[] PHANTOM_ENCOUNTER_LEVEL_MAX = new int[5]; // actor level offset from the player (high end)
 	public static final int[] PHANTOM_ENCOUNTER_ENCHANT_MIN = new int[5];
 	public static final int[] PHANTOM_ENCOUNTER_ENCHANT_MAX = new int[5];
+	public static final int[] PHANTOM_ENCOUNTER_ADENA_MIN = new int[5]; // adena paid to the winner when the whole group is down
+	public static final int[] PHANTOM_ENCOUNTER_ADENA_MAX = new int[5];
 	public static final int[] PHANTOM_ENCOUNTER_LOOT_PERCENT = new int[5]; // chance the wiped group drops one piece
 	public static String PHANTOM_ENCOUNTER_PKER_NAME;
 	public static int PHANTOM_ENCOUNTER_HORSEMEN_MIN_SIZE;
@@ -193,7 +195,9 @@ public class FakePlayersConfig
 		final int[] levelMaxDefaults = { -2, 0, 3, 5, 11 };
 		final int[] enchantMinDefaults = { 0, 0, 3, 5, 16 };
 		final int[] enchantMaxDefaults = { 0, 3, 4, 7, 16 };
-		final int[] lootDefaults = { 0, 0, 50, 100, 100 };
+		final int[] lootDefaults = { 0, 0, 50, 100, 0 };
+		final int[] adenaMinDefaults = { 0, 0, 0, 0, 500000 };
+		final int[] adenaMaxDefaults = { 0, 0, 0, 0, 1000000 };
 		for (int i = 0; i < encounterTiers.length; i++)
 		{
 			final String name = "PhantomEncounter" + encounterTiers[i];
@@ -203,6 +207,8 @@ public class FakePlayersConfig
 			PHANTOM_ENCOUNTER_LEVEL_MAX[i] = Math.max(PHANTOM_ENCOUNTER_LEVEL_MIN[i], config.getInt(name + "LevelMax", levelMaxDefaults[i]));
 			PHANTOM_ENCOUNTER_ENCHANT_MIN[i] = Math.max(0, config.getInt(name + "EnchantMin", enchantMinDefaults[i]));
 			PHANTOM_ENCOUNTER_LOOT_PERCENT[i] = Math.max(0, Math.min(100, config.getInt(name + "LootPercent", lootDefaults[i])));
+			PHANTOM_ENCOUNTER_ADENA_MIN[i] = Math.max(0, config.getInt(name + "AdenaMin", adenaMinDefaults[i]));
+			PHANTOM_ENCOUNTER_ADENA_MAX[i] = Math.max(PHANTOM_ENCOUNTER_ADENA_MIN[i], config.getInt(name + "AdenaMax", adenaMaxDefaults[i]));
 			PHANTOM_ENCOUNTER_ENCHANT_MAX[i] = Math.max(PHANTOM_ENCOUNTER_ENCHANT_MIN[i], config.getInt(name + "EnchantMax", enchantMaxDefaults[i]));
 		}
 		PHANTOM_ENCOUNTER_PKER_NAME = config.getString("PhantomEncounterPkerName", "AssMuncher").trim();

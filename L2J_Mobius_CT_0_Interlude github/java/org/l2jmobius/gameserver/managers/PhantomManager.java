@@ -5743,7 +5743,22 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void dropEncounterLoot(Player phantom, PhantomEncounterRules.Tier tier, PhantomEncounterRules.EncounterGroup group, Player victim)
 	{
-		if ((Rnd.get(100) >= FakePlayersConfig.PHANTOM_ENCOUNTER_LOOT_PERCENT[tier.ordinal()]) || !group.claimLoot())
+		final int adenaMax = FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_MAX[tier.ordinal()];
+		final boolean wantGear = Rnd.get(100) < FakePlayersConfig.PHANTOM_ENCOUNTER_LOOT_PERCENT[tier.ordinal()];
+		if (((adenaMax <= 0) && !wantGear) || !group.claimLoot())
+		{
+			return;
+		}
+		if ((adenaMax > 0) && (victim != null))
+		{
+			final int reward = Rnd.get(FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_MIN[tier.ordinal()], adenaMax);
+			if (reward > 0)
+			{
+				victim.addAdena(ItemProcessType.REWARD, reward, phantom, true);
+				LOGGER.info(getClass().getSimpleName() + ": Encounter adena reward: " + reward + " to " + victim.getName() + " from " + phantom.getName() + ".");
+			}
+		}
+		if (!wantGear)
 		{
 			return;
 		}
