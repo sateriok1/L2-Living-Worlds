@@ -59,6 +59,7 @@ import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData;
 import org.l2jmobius.gameserver.data.xml.PlayerTemplateData;
 import org.l2jmobius.gameserver.data.xml.SkillData;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.GearContext;
+import org.l2jmobius.gameserver.taskmanagers.AttackStanceTaskManager;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.WeaponKind;
 import org.l2jmobius.gameserver.geoengine.GeoEngine;
 import org.l2jmobius.gameserver.model.Location;
@@ -1097,6 +1098,20 @@ public class PhantomManager implements IXmlReader
 		long emptySince; // when the last observer left this area (0 while a player is near)
 	}
 
+	// PvP danger encounters.
+	private static final int ENC_APPROACH = 1;
+	private static final int ENC_WARN = 2;
+	private static final int ENC_FIGHT = 3;
+	private static final int ENC_CLOSE_RANGE = 180; // a Wimp stops and speaks this close
+	private static final int ENC_STRIKE_RANGE = 350; // a Normie waits this close for its moment
+	private static final int ENC_LEASH = 2500; // victim farther than this (recall, escape): the encounter is over
+	private static final long ENC_CORPSE_MS = 15000;
+	private static final long ENC_LEAVE_MS = 6000;
+	private static final String[] ENC_WIMP_LINES = { "are you a bot?", "u a bot?", "hey.. are you a bot?", "wait are you a bot" };
+	private static final String[] ENC_WIN_LINES = { "gg", "ez", "lol rip", "gg wp" };
+	// Gear override for the actor being built right now: {grade shift, enchant}. Set only around spawnEncounterActor.
+	private static final ThreadLocal<int[]> ENCOUNTER_GEAR = new ThreadLocal<>();
+
 	private static class PhantomData
 	{
 		final Player player;
@@ -1163,6 +1178,16 @@ public class PhantomManager implements IXmlReader
 		boolean companion;
 		Runnable onCompanionLeave; // run once after the companion is saved and removed from the world (may be null)
 		int companionOwnerId; // objectId of the player who summoned this companion
+		// PvP danger encounter actor (see PhantomEncounterManager): exists only to fight one player once, then leaves.
+		volatile int encounterTier; // 0 = not an encounter actor, else PhantomEncounterRules.Tier ordinal + 1
+		volatile int encounterVictimOid; // the real player this actor came for
+		volatile int encounterPhase; // ENC_APPROACH / ENC_WARN / ENC_FIGHT
+		volatile long encounterDeadline; // when this phase gives up (approach timeout, then fight cap)
+		volatile long encounterWarnedAt; // Wimp: when it asked "are you a bot?"
+		volatile long encounterEndAt; // > 0 once over: when to despawn
+		long encounterLastMoveAt; // last time the victim was seen moving (Normie waits for them to stand still)
+		int encounterLastX; // victim position at that sample
+		int encounterLastY;
 
 		PhantomData(Player player, Location home, Population population, boolean mage, BuddyRole role)
 		{
@@ -1256,6 +1281,7 @@ public class PhantomManager implements IXmlReader
 		LOGGER.info(getClass().getSimpleName() + ": Loaded " + _populations.size() + " phantom population(s), " + _craftedFriends.size() + " crafted-friend order(s).");
 		// The Olympiad roster runs on its own tick; it idles whenever the feature or the competition is off.
 		PhantomOlympiadManager.getInstance().start();
+		PhantomEncounterManager.getInstance().start();
 		if (!_populations.isEmpty() || !_craftedFriends.isEmpty())
 		{
 			// Populations are spawned on demand (when a real player approaches), not at boot - the supervisor
@@ -2875,13 +2901,16 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void gearParty(Player phantom, int level, boolean mage, PartyRole role, GearContext context)
 	{
-		final CrystalType grade = gradeForLevel(level);
+		final int[] encounterGear = ENCOUNTER_GEAR.get();
+		final CrystalType[] grades = CrystalType.values();
+		final CrystalType grade = (encounterGear == null) ? gradeForLevel(level) : grades[PhantomEncounterRules.shiftedGrade(gradeForLevel(level).ordinal(), encounterGear[0], grades.length - 1)];
 		// A chance this member is an enchanted player; if so, a modest uniform enchant on weapon + armor (jewelry is
 		// not enchantable in Interlude, so it stays +0). Chance and +min..+max range are configurable
 		// (FakePlayerRecruitEnchant* in FakePlayers.ini); values are clamped so bad config can't throw.
 		final int enchantMin = Math.max(0, FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_MIN);
 		final int enchantMax = Math.max(enchantMin, FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_MAX);
-		final int enchant = (Rnd.get(100) < FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_CHANCE) ? Rnd.get(enchantMin, enchantMax + 1) : 0;
+		// An encounter actor carries exactly the enchant its tier calls for (see PhantomEncounterRules.enchantFor).
+		final int enchant = (encounterGear != null) ? encounterGear[1] : ((Rnd.get(100) < FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_CHANCE) ? Rnd.get(enchantMin, enchantMax + 1) : 0);
 
 		// Weapon (randomly chosen among the strongest role-compatible options) + matching shots (+ arrows for a bow).
 		final ItemTemplate weapon = partyWeapon(phantom.getPlayerClass(), role, mage, grade, context);
@@ -3959,6 +3988,7 @@ public class PhantomManager implements IXmlReader
 	private void despawn(PhantomData data)
 	{
 		final int objectId = data.player.getObjectId();
+		PhantomEncounterRules.clearHostile(objectId);
 		// FPC-113: a phantom leaving the world must not leave its duel challenge open for the player to accept late.
 		// (A duel already running cancels itself on the stock side once this phantom is offline.)
 		if (data.duelPhase == DUEL_ASKED)
@@ -4925,6 +4955,12 @@ public class PhantomManager implements IXmlReader
 			}
 			try
 			{
+				// A danger-encounter actor runs its own one-fight script (approach, fight, leave).
+				if (data.encounterTier != 0)
+				{
+					serviceEncounter(phantom, data, now);
+					continue;
+				}
 				// Peace zone, dead, dormant, or mid-disperse: drop any engagement and skip (applies to every role).
 				if (phantom.isDead() || data.dormant || data.dispersing || phantom.isInsideZone(ZoneId.PEACE))
 				{
@@ -5469,6 +5505,231 @@ public class PhantomManager implements IXmlReader
 		return best;
 	}
 
+	// ---------------------------------------------------------------------
+	// PvP danger encounters: an actor exists only to fight one player once (see PhantomEncounterManager).
+	// ---------------------------------------------------------------------
+
+	/**
+	 * Spawns an encounter actor: a fully geared recruit-style phantom outside any party, already pointed at {@code victim}.
+	 * @param tier {@link PhantomEncounterRules.Tier}
+	 * @param gradeShift grades above (+) or below (-) its level's normal gear
+	 * @param enchant the enchant on its weapon and armor
+	 * @return the actor, or {@code null} if it could not be spawned
+	 */
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, PhantomEncounterRules.Tier tier, int gradeShift, int enchant)
+	{
+		if ((victim == null) || (where == null))
+		{
+			return null;
+		}
+		final Player actor;
+		ENCOUNTER_GEAR.set(new int[]
+		{
+			gradeShift,
+			enchant
+		});
+		try
+		{
+			actor = spawnPartyMember(where, level, role, 0, null);
+		}
+		finally
+		{
+			ENCOUNTER_GEAR.remove();
+		}
+		if (actor == null)
+		{
+			return null;
+		}
+		final PhantomData data = _phantoms.get(actor.getObjectId());
+		if (data == null)
+		{
+			return actor;
+		}
+		final long now = System.currentTimeMillis();
+		data.encounterVictimOid = victim.getObjectId();
+		data.encounterPhase = ENC_APPROACH;
+		data.encounterDeadline = now + (FakePlayersConfig.PHANTOM_ENCOUNTER_APPROACH_SECONDS * 1000L);
+		data.encounterLastMoveAt = now;
+		data.encounterLastX = victim.getX();
+		data.encounterLastY = victim.getY();
+		data.encounterTier = tier.ordinal() + 1; // last: the pvp tick treats it as an encounter actor from here on
+		return actor;
+	}
+
+	/** @return how many encounter actors are alive in the world (including ones about to leave). */
+	public int activeEncounterCount()
+	{
+		int count = 0;
+		for (PhantomData data : _phantoms.values())
+		{
+			if (data.encounterTier != 0)
+			{
+				count++;
+			}
+		}
+		return count;
+	}
+
+	/** @return {@code true} if an encounter actor is currently out for this player. */
+	public boolean hasEncounterFor(Player victim)
+	{
+		if (victim == null)
+		{
+			return false;
+		}
+		final int oid = victim.getObjectId();
+		for (PhantomData data : _phantoms.values())
+		{
+			if ((data.encounterTier != 0) && (data.encounterVictimOid == oid))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private Player encounterVictim(PhantomData data)
+	{
+		final WorldObject object = World.getInstance().findObject(data.encounterVictimOid);
+		return (object instanceof Player) ? (Player) object : null;
+	}
+
+	/** One tick of an encounter actor's script: walk up, (Wimp: ask), fight once, then leave. */
+	private void serviceEncounter(Player phantom, PhantomData data, long now)
+	{
+		if (data.encounterEndAt > 0)
+		{
+			if (now >= data.encounterEndAt)
+			{
+				data.encounterTier = 0;
+				despawnRecruit(phantom);
+			}
+			return;
+		}
+		if (phantom.isDead())
+		{
+			PhantomEncounterRules.clearHostile(phantom.getObjectId());
+			data.encounterEndAt = now + ENC_CORPSE_MS; // it lost: the body lies there a moment, then goes
+			return;
+		}
+		final Player victim = encounterVictim(data);
+		final boolean gone = (victim == null) || !victim.isOnline() || victim.isInsideZone(ZoneId.PEACE) || (victim.getInstanceId() != 0) //
+			|| phantom.isInsideZone(ZoneId.PEACE) || (phantom.calculateDistance2D(victim) > ENC_LEASH);
+		if (gone || (now >= data.encounterDeadline))
+		{
+			endEncounter(phantom, data, victim, now, 1500, false); // victim escaped or the clock ran out: it simply leaves
+			return;
+		}
+		if (victim.isDead())
+		{
+			endEncounter(phantom, data, victim, now, ENC_LEAVE_MS, true); // it won
+			return;
+		}
+		final double distance = phantom.calculateDistance2D(victim);
+		switch (data.encounterPhase)
+		{
+			case ENC_APPROACH:
+			{
+				if (data.encounterTier == (PhantomEncounterRules.Tier.WIMP.ordinal() + 1))
+				{
+					if (distance > ENC_CLOSE_RANGE)
+					{
+						walkToward(phantom, victim);
+						return;
+					}
+					phantom.getAI().setIntention(Intention.IDLE);
+					phantom.setTarget(victim);
+					sayNearby(phantom, ENC_WIMP_LINES);
+					data.encounterWarnedAt = now;
+					data.encounterPhase = ENC_WARN;
+					return;
+				}
+				// Normie: close in quietly, then pick its moment.
+				if (distance > ENC_STRIKE_RANGE)
+				{
+					walkToward(phantom, victim);
+					return;
+				}
+				if ((Math.abs(victim.getX() - data.encounterLastX) + Math.abs(victim.getY() - data.encounterLastY)) > 40)
+				{
+					data.encounterLastX = victim.getX();
+					data.encounterLastY = victim.getY();
+					data.encounterLastMoveAt = now;
+				}
+				final boolean busy = (victim.getTarget() != null) && victim.getTarget().isMonster() && AttackStanceTaskManager.getInstance().hasAttackStanceTask(victim);
+				if (PhantomEncounterRules.normieStrikeReady(busy, now - data.encounterLastMoveAt, FakePlayersConfig.PHANTOM_ENCOUNTER_STILL_SECONDS * 1000L))
+				{
+					startEncounterFight(phantom, data, victim, now);
+				}
+				else if (distance > (ENC_CLOSE_RANGE * 2))
+				{
+					walkToward(phantom, victim); // keep on its tail while it moves
+				}
+				return;
+			}
+			case ENC_WARN:
+			{
+				final boolean hitFirst = hostilePvpAttacker(phantom, data, now) == victim;
+				if (PhantomEncounterRules.wimpMayStrike(now, data.encounterWarnedAt, FakePlayersConfig.PHANTOM_ENCOUNTER_WARN_SECONDS * 1000L, hitFirst))
+				{
+					startEncounterFight(phantom, data, victim, now);
+				}
+				return;
+			}
+			default:
+			{
+				if (data.pvpTargetOid != 0)
+				{
+					continuePvp(phantom, data, now);
+				}
+				else if (distance <= PVP_LEASH_RANGE)
+				{
+					beginPvp(phantom, data, victim, now); // the 60 s engagement cap lapsed mid-fight: it is still one fight
+				}
+				else
+				{
+					endEncounter(phantom, data, victim, now, 1500, false);
+				}
+			}
+		}
+	}
+
+	private void startEncounterFight(Player phantom, PhantomData data, Player victim, long now)
+	{
+		data.encounterPhase = ENC_FIGHT;
+		data.encounterDeadline = now + (FakePlayersConfig.PHANTOM_ENCOUNTER_FIGHT_SECONDS * 1000L);
+		PhantomEncounterRules.markHostile(phantom.getObjectId(), victim.getObjectId());
+		LOGGER.info(getClass().getSimpleName() + ": Encounter fight starts: " + phantom.getName() + " (lvl " + phantom.getLevel() + ") vs " + victim.getName() + " (lvl " + victim.getLevel() + ").");
+		beginPvp(phantom, data, victim, now);
+	}
+
+	private void endEncounter(Player phantom, PhantomData data, Player victim, long now, long leaveMs, boolean won)
+	{
+		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		if (data.pvpTargetOid != 0)
+		{
+			endPvp(phantom, data, victim);
+		}
+		phantom.setTarget(null);
+		phantom.getAI().setIntention(Intention.IDLE);
+		if (won)
+		{
+			sayNearby(phantom, ENC_WIN_LINES);
+		}
+		LOGGER.info(getClass().getSimpleName() + ": Encounter over: " + phantom.getName() + (won ? " won" : " left") + ".");
+		data.encounterEndAt = now + leaveMs;
+	}
+
+	private static void walkToward(Player phantom, Player victim)
+	{
+		if (phantom.isCastingNow())
+		{
+			return;
+		}
+		phantom.setRunning();
+		phantom.getAI().setIntention(Intention.MOVE_TO, new Location(victim.getX(), victim.getY(), victim.getZ()));
+	}
+
 	/** Begins a PvP engagement: records the opponent, detaches the phantom from the hunt, and drives the first decision. */
 	private void beginPvp(Player phantom, PhantomData data, Player attacker, long now)
 	{
@@ -5541,7 +5802,7 @@ public class PhantomManager implements IXmlReader
 			// and an out-of-mana caster flees sooner. allyAdvantage is nearby allies minus nearby hostiles.
 			final int allyAdvantage = pvpAllyAdvantage(phantom);
 			final boolean casterLowMp = data.mage && (phantom.getCurrentMpPercent() < PVP_CASTER_LOW_MP_PERCENT);
-			final boolean flee = !cornered && PhantomPvpManager.shouldFlee((int) phantom.getCurrentHpPercent(), FakePlayersConfig.PHANTOM_PVP_FLEE_HP_PERCENT, data.bravery, phantom.getLevel(), target.getLevel(), allyAdvantage, casterLowMp);
+			final boolean flee = (data.encounterTier == 0) && !cornered && PhantomPvpManager.shouldFlee((int) phantom.getCurrentHpPercent(), FakePlayersConfig.PHANTOM_PVP_FLEE_HP_PERCENT, data.bravery, phantom.getLevel(), target.getLevel(), allyAdvantage, casterLowMp);
 			data.pvpFleeing = flee;
 		}
 		if (data.pvpFleeing)

@@ -82,6 +82,19 @@ public class FakePlayersConfig
 	public static int FAKE_PLAYER_MAX_PUBLIC_CHATS_PER_MINUTE;
 	public static int FAKE_PLAYER_BOT_CHAT_CHAIN_DEPTH;
 	public static int FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE;
+	// PvP danger encounters (a phantom comes for the player and fights once).
+	public static boolean PHANTOM_ENCOUNTERS_ENABLED;
+	public static int PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL;
+	public static int PHANTOM_ENCOUNTER_MIN_MINUTES;
+	public static int PHANTOM_ENCOUNTER_MAX_MINUTES;
+	public static int PHANTOM_ENCOUNTER_MAX_ACTIVE;
+	public static int PHANTOM_ENCOUNTER_WIMP_WEIGHT;
+	public static int PHANTOM_ENCOUNTER_NORMIE_WEIGHT;
+	public static int PHANTOM_ENCOUNTER_APPROACH_SECONDS;
+	public static int PHANTOM_ENCOUNTER_FIGHT_SECONDS;
+	public static int PHANTOM_ENCOUNTER_WARN_SECONDS;
+	public static int PHANTOM_ENCOUNTER_STILL_SECONDS;
+	public static int PHANTOM_ENCOUNTER_MAX_PARTY_FOR_SOLO;
 	// WTS/WTB reliability (all switchable; defaults on, set False to get the old behaviour back).
 	public static boolean TRADE_AD_PARSER_V2;
 	public static boolean TRADE_AD_LINKED_ITEMS;
@@ -153,6 +166,18 @@ public class FakePlayersConfig
 		FAKE_PLAYER_MAX_PUBLIC_CHATS_PER_MINUTE = config.getInt("FakePlayerMaxPublicChatsPerMinute", 8);
 		FAKE_PLAYER_BOT_CHAT_CHAIN_DEPTH = Math.max(0, config.getInt("FakePlayerBotChatChainDepth", 2));
 		FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE = Math.min(100, Math.max(0, config.getInt("FakePlayerBotChatReplyChance", 15)));
+		PHANTOM_ENCOUNTERS_ENABLED = config.getBoolean("PhantomEncounters", false);
+		PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL = Math.max(1, config.getInt("PhantomEncounterMinPlayerLevel", 20));
+		PHANTOM_ENCOUNTER_MIN_MINUTES = Math.max(1, config.getInt("PhantomEncounterMinMinutes", 40));
+		PHANTOM_ENCOUNTER_MAX_MINUTES = Math.max(PHANTOM_ENCOUNTER_MIN_MINUTES, config.getInt("PhantomEncounterMaxMinutes", 80));
+		PHANTOM_ENCOUNTER_MAX_ACTIVE = Math.max(1, config.getInt("PhantomEncounterMaxActive", 2));
+		PHANTOM_ENCOUNTER_WIMP_WEIGHT = Math.max(0, config.getInt("PhantomEncounterWimpWeight", 55));
+		PHANTOM_ENCOUNTER_NORMIE_WEIGHT = Math.max(0, config.getInt("PhantomEncounterNormieWeight", 45));
+		PHANTOM_ENCOUNTER_APPROACH_SECONDS = Math.max(10, config.getInt("PhantomEncounterApproachSeconds", 60));
+		PHANTOM_ENCOUNTER_FIGHT_SECONDS = Math.max(30, config.getInt("PhantomEncounterFightSeconds", 240));
+		PHANTOM_ENCOUNTER_WARN_SECONDS = Math.max(1, config.getInt("PhantomEncounterWarnSeconds", 7));
+		PHANTOM_ENCOUNTER_STILL_SECONDS = Math.max(1, config.getInt("PhantomEncounterStillSeconds", 4));
+		PHANTOM_ENCOUNTER_MAX_PARTY_FOR_SOLO = Math.max(1, config.getInt("PhantomEncounterMaxPartyForSolo", 4));
 		TRADE_AD_PARSER_V2 = config.getBoolean("TradeAdParserV2", true);
 		TRADE_AD_LINKED_ITEMS = config.getBoolean("TradeAdLinkedItems", true);
 		TRADE_AD_STATUS_REPLIES = config.getBoolean("TradeAdStatusReplies", true);
