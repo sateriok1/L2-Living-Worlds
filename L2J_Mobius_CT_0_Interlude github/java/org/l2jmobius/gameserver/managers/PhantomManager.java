@@ -1098,7 +1098,7 @@ public class PhantomManager implements IXmlReader
 		long emptySince; // when the last observer left this area (0 while a player is near)
 	}
 
-	// PvP danger encounters.
+	// Phantom encounters (engine only; a module decides when and what, see ModuleEncounters).
 	private static final int ENC_APPROACH = 1;
 	private static final int ENC_WARN = 2;
 	private static final int ENC_FIGHT = 3;
@@ -1107,8 +1107,6 @@ public class PhantomManager implements IXmlReader
 	private static final int ENC_LEASH = 2500; // victim farther than this (recall, escape): the encounter is over
 	private static final long ENC_CORPSE_MS = 15000;
 	private static final long ENC_LEAVE_MS = 6000;
-	private static final String[] ENC_WIMP_LINES = { "are you a bot?", "u a bot?", "hey.. are you a bot?", "wait are you a bot" };
-	private static final String[] ENC_WIN_LINES = { "gg", "ez", "lol rip", "gg wp" };
 	// Enchant for the actor being built right now. Set only around spawnEncounterActor.
 	private static final ThreadLocal<Integer> ENCOUNTER_ENCHANT = new ThreadLocal<>();
 	// Fixed name for the actor being built right now (the lone PKer); null = a normal random name.
@@ -1180,8 +1178,8 @@ public class PhantomManager implements IXmlReader
 		boolean companion;
 		Runnable onCompanionLeave; // run once after the companion is saved and removed from the world (may be null)
 		int companionOwnerId; // objectId of the player who summoned this companion
-		// PvP danger encounter actor (see PhantomEncounterManager): exists only to fight one player once, then leaves.
-		volatile int encounterTier; // 0 = not an encounter actor, else PhantomEncounterRules.Tier ordinal + 1
+		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
+		volatile boolean encounterActor;
 		volatile int encounterVictimOid; // the real player this actor came for
 		volatile int encounterPhase; // ENC_APPROACH / ENC_WARN / ENC_FIGHT
 		volatile long encounterDeadline; // when this phase gives up (approach timeout, then fight cap)
@@ -1283,7 +1281,6 @@ public class PhantomManager implements IXmlReader
 		LOGGER.info(getClass().getSimpleName() + ": Loaded " + _populations.size() + " phantom population(s), " + _craftedFriends.size() + " crafted-friend order(s).");
 		// The Olympiad roster runs on its own tick; it idles whenever the feature or the competition is off.
 		PhantomOlympiadManager.getInstance().start();
-		PhantomEncounterManager.getInstance().start();
 		if (!_populations.isEmpty() || !_craftedFriends.isEmpty())
 		{
 			// Populations are spawned on demand (when a real player approaches), not at boot - the supervisor
@@ -2910,7 +2907,7 @@ public class PhantomManager implements IXmlReader
 		// (FakePlayerRecruitEnchant* in FakePlayers.ini); values are clamped so bad config can't throw.
 		final int enchantMin = Math.max(0, FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_MIN);
 		final int enchantMax = Math.max(enchantMin, FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_MAX);
-		// An encounter actor carries exactly the enchant its tier calls for (FakePlayers.ini PhantomEncounter*Enchant*).
+		// An encounter actor carries exactly the enchant the module asked for.
 		final int enchant = (encounterEnchant != null) ? encounterEnchant : ((Rnd.get(100) < FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_CHANCE) ? Rnd.get(enchantMin, enchantMax + 1) : 0);
 
 		// Weapon (randomly chosen among the strongest role-compatible options) + matching shots (+ arrows for a bow).
@@ -4958,7 +4955,7 @@ public class PhantomManager implements IXmlReader
 			try
 			{
 				// A danger-encounter actor runs its own one-fight script (approach, fight, leave).
-				if (data.encounterTier != 0)
+				if (data.encounterActor)
 				{
 					serviceEncounter(phantom, data, now);
 					continue;
@@ -5508,17 +5505,18 @@ public class PhantomManager implements IXmlReader
 	}
 
 	// ---------------------------------------------------------------------
-	// PvP danger encounters: an actor exists only to fight one player once (see PhantomEncounterManager).
+	// Encounter engine: an actor exists only to fight one player once. Generic: a module (through ModuleEncounters)
+	// decides when to send one, how strong it is, and what a win is worth.
 	// ---------------------------------------------------------------------
 
 	/**
 	 * Spawns one encounter actor: a fully geared recruit-style phantom outside any party, already pointed at {@code victim}.
-	 * @param group the encounter this actor belongs to (shared by all its actors)
+	 * @param group the encounter this actor belongs to (shared by all its actors; carries the style and the listener)
 	 * @param enchant the enchant on its weapon and armor
 	 * @param fixedName the actor's name, or {@code null} for a random one
 	 * @return the actor, or {@code null} if it could not be spawned
 	 */
-	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, PhantomEncounterRules.Tier tier, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName)
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName)
 	{
 		if ((victim == null) || (where == null) || (group == null))
 		{
@@ -5549,11 +5547,11 @@ public class PhantomManager implements IXmlReader
 		data.encounterGroup = group;
 		data.encounterVictimOid = victim.getObjectId();
 		data.encounterPhase = ENC_APPROACH;
-		data.encounterDeadline = now + (FakePlayersConfig.PHANTOM_ENCOUNTER_APPROACH_SECONDS * 1000L);
+		data.encounterDeadline = now + (group.style().approachSeconds * 1000L);
 		data.encounterLastMoveAt = now;
 		data.encounterLastX = victim.getX();
 		data.encounterLastY = victim.getY();
-		data.encounterTier = tier.ordinal() + 1; // last: the pvp tick treats it as an encounter actor from here on
+		data.encounterActor = true; // last: the pvp tick treats it as an encounter actor from here on
 		return actor;
 	}
 
@@ -5563,7 +5561,7 @@ public class PhantomManager implements IXmlReader
 		final java.util.Set<PhantomEncounterRules.EncounterGroup> groups = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
 		for (PhantomData data : _phantoms.values())
 		{
-			if ((data.encounterTier != 0) && (data.encounterGroup != null))
+			if (data.encounterActor && (data.encounterGroup != null))
 			{
 				groups.add(data.encounterGroup);
 			}
@@ -5581,7 +5579,7 @@ public class PhantomManager implements IXmlReader
 		final int oid = victim.getObjectId();
 		for (PhantomData data : _phantoms.values())
 		{
-			if ((data.encounterTier != 0) && (data.encounterVictimOid == oid))
+			if (data.encounterActor && (data.encounterVictimOid == oid))
 			{
 				return true;
 			}
@@ -5595,16 +5593,16 @@ public class PhantomManager implements IXmlReader
 		return (object instanceof Player) ? (Player) object : null;
 	}
 
-	/** One tick of an encounter actor's script: close in, (Wimp: ask), fight once, then leave. */
+	/** One tick of an encounter actor's script: close in, (maybe ask), fight once, then leave. */
 	private void serviceEncounter(Player phantom, PhantomData data, long now)
 	{
 		final PhantomEncounterRules.EncounterGroup group = data.encounterGroup;
-		final PhantomEncounterRules.Tier tier = PhantomEncounterRules.Tier.values()[data.encounterTier - 1];
+		final PhantomEncounterRules.Style style = group.style();
 		if (data.encounterEndAt > 0)
 		{
 			if (now >= data.encounterEndAt)
 			{
-				data.encounterTier = 0;
+				data.encounterActor = false;
 				despawnRecruit(phantom);
 			}
 			return;
@@ -5614,15 +5612,16 @@ public class PhantomManager implements IXmlReader
 		{
 			PhantomEncounterRules.clearHostile(phantom.getObjectId());
 			data.encounterEndAt = now + ENC_CORPSE_MS; // it lost: the body lies there a moment, then goes
-			if (group.memberDied())
+			if (group.memberDied() && (group.listener() != null) && (victim != null))
 			{
-				final int adena = FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_REWARD[tier.ordinal()];
-				if ((adena > 0) && (victim != null) && victim.isOnline() && !victim.isDead())
+				try
 				{
-					victim.addAdena(ItemProcessType.REWARD, adena, phantom, true); // one flat payout when the whole group is down
-					LOGGER.info(getClass().getSimpleName() + ": Encounter adena reward: " + adena + " to " + victim.getName() + ".");
+					group.listener().onGroupDefeated(victim.getObjectId(), phantom.getObjectId()); // the whole group is down
 				}
-				dropEncounterLoot(phantom, tier, group, victim); // the whole group is down: at most one piece drops
+				catch (Exception e)
+				{
+					LOGGER.warning(getClass().getSimpleName() + ": Encounter listener failed: " + e.getMessage());
+				}
 			}
 			return;
 		}
@@ -5644,12 +5643,12 @@ public class PhantomManager implements IXmlReader
 			case ENC_APPROACH:
 			{
 				// Once any actor of the group attacks, they all join in.
-				if (group.isFighting() || PhantomEncounterRules.strikesOnArrival(tier))
+				if (group.isFighting() || (style.approach == PhantomEncounterRules.Approach.STRIKE_ON_ARRIVAL))
 				{
 					startEncounterFight(phantom, data, victim, now);
 					return;
 				}
-				if (tier == PhantomEncounterRules.Tier.WIMP)
+				if (style.approach == PhantomEncounterRules.Approach.ASK_FIRST)
 				{
 					if (distance > ENC_CLOSE_RANGE)
 					{
@@ -5658,14 +5657,14 @@ public class PhantomManager implements IXmlReader
 					}
 					phantom.getAI().setIntention(Intention.IDLE);
 					phantom.setTarget(victim);
-					if (group.claimSpeech(now))
+					if (group.claimSpeech(now) && (style.askLines.length > 0))
 					{
-						sayNearby(phantom, ENC_WIMP_LINES); // one of the group asks, the rest stand by
+						sayNearby(phantom, style.askLines); // one of the group asks, the rest stand by
 					}
 					data.encounterPhase = ENC_WARN;
 					return;
 				}
-				// Normie / Hard: close in quietly, then pick the moment.
+				// WAIT_FOR_MOMENT: close in quietly, then pick the moment.
 				if (distance > ENC_STRIKE_RANGE)
 				{
 					walkToward(phantom, victim);
@@ -5678,7 +5677,7 @@ public class PhantomManager implements IXmlReader
 					data.encounterLastMoveAt = now;
 				}
 				final boolean busy = (victim.getTarget() != null) && victim.getTarget().isMonster() && AttackStanceTaskManager.getInstance().hasAttackStanceTask(victim);
-				if (PhantomEncounterRules.normieStrikeReady(busy, now - data.encounterLastMoveAt, FakePlayersConfig.PHANTOM_ENCOUNTER_STILL_SECONDS * 1000L))
+				if (PhantomEncounterRules.momentReady(busy, now - data.encounterLastMoveAt, style.stillSeconds * 1000L))
 				{
 					startEncounterFight(phantom, data, victim, now);
 				}
@@ -5691,7 +5690,7 @@ public class PhantomManager implements IXmlReader
 			case ENC_WARN:
 			{
 				final boolean hitFirst = hostilePvpAttacker(phantom, data, now) == victim;
-				if (group.isFighting() || PhantomEncounterRules.wimpMayStrike(now, group.warnedAt(), FakePlayersConfig.PHANTOM_ENCOUNTER_WARN_SECONDS * 1000L, hitFirst))
+				if (group.isFighting() || PhantomEncounterRules.mayStrikeAfterWarning(now, group.warnedAt(), style.warnSeconds * 1000L, hitFirst))
 				{
 					startEncounterFight(phantom, data, victim, now);
 				}
@@ -5719,7 +5718,7 @@ public class PhantomManager implements IXmlReader
 	{
 		data.encounterGroup.startFight();
 		data.encounterPhase = ENC_FIGHT;
-		data.encounterDeadline = now + (FakePlayersConfig.PHANTOM_ENCOUNTER_FIGHT_SECONDS * 1000L);
+		data.encounterDeadline = now + (data.encounterGroup.style().fightSeconds * 1000L);
 		PhantomEncounterRules.markHostile(phantom.getObjectId(), victim.getObjectId());
 		LOGGER.info(getClass().getSimpleName() + ": Encounter fight starts: " + phantom.getName() + " (lvl " + phantom.getLevel() + ") vs " + victim.getName() + " (lvl " + victim.getLevel() + ").");
 		beginPvp(phantom, data, victim, now);
@@ -5734,45 +5733,13 @@ public class PhantomManager implements IXmlReader
 		}
 		phantom.setTarget(null);
 		phantom.getAI().setIntention(Intention.IDLE);
-		if (won && data.encounterGroup.claimWinLine())
+		final String[] winLines = data.encounterGroup.style().winLines;
+		if (won && (winLines.length > 0) && data.encounterGroup.claimWinLine())
 		{
-			sayNearby(phantom, ENC_WIN_LINES);
+			sayNearby(phantom, winLines);
 		}
 		LOGGER.info(getClass().getSimpleName() + ": Encounter over: " + phantom.getName() + (won ? " won" : " left") + ".");
 		data.encounterEndAt = now + leaveMs;
-	}
-
-	/**
-	 * When the last actor of a group dies, at most ONE piece of the group's gear drops: a random equipped weapon or
-	 * armor piece of that last actor, with the tier's chance, protected for the victim for a short while. Phantoms
-	 * are never flagged red, so nothing else ever drops from them.
-	 */
-	private void dropEncounterLoot(Player phantom, PhantomEncounterRules.Tier tier, PhantomEncounterRules.EncounterGroup group, Player victim)
-	{
-		if ((Rnd.get(100) >= FakePlayersConfig.PHANTOM_ENCOUNTER_LOOT_PERCENT[tier.ordinal()]) || !group.claimLoot())
-		{
-			return;
-		}
-		final List<Item> pieces = new ArrayList<>();
-		for (Item item : phantom.getInventory().getItems())
-		{
-			if (item.isEquipped() && item.isDropable() && (item.isWeapon() || item.isArmor()) && !item.isShadowItem() && !item.isTimeLimitedItem())
-			{
-				pieces.add(item);
-			}
-		}
-		if (pieces.isEmpty())
-		{
-			return;
-		}
-		final Item pick = pieces.get(Rnd.get(pieces.size()));
-		phantom.getInventory().unEquipItemInSlot(pick.getLocationSlot());
-		final Item dropped = phantom.dropItem(ItemProcessType.DEATH, pick.getObjectId(), (int) pick.getCount(), phantom.getX(), phantom.getY(), phantom.getZ(), victim, false, false);
-		if ((dropped != null) && (victim != null))
-		{
-			dropped.getDropProtection().protect(victim);
-		}
-		LOGGER.info(getClass().getSimpleName() + ": Encounter loot: " + (dropped == null ? "none" : (dropped.getTemplate().getName() + " +" + dropped.getEnchantLevel())) + " from " + phantom.getName() + ".");
 	}
 
 	private static void walkToward(Player phantom, Player victim)
@@ -5857,7 +5824,7 @@ public class PhantomManager implements IXmlReader
 			// and an out-of-mana caster flees sooner. allyAdvantage is nearby allies minus nearby hostiles.
 			final int allyAdvantage = pvpAllyAdvantage(phantom);
 			final boolean casterLowMp = data.mage && (phantom.getCurrentMpPercent() < PVP_CASTER_LOW_MP_PERCENT);
-			final boolean flee = (data.encounterTier == 0) && !cornered && PhantomPvpManager.shouldFlee((int) phantom.getCurrentHpPercent(), FakePlayersConfig.PHANTOM_PVP_FLEE_HP_PERCENT, data.bravery, phantom.getLevel(), target.getLevel(), allyAdvantage, casterLowMp);
+			final boolean flee = !data.encounterActor && !cornered && PhantomPvpManager.shouldFlee((int) phantom.getCurrentHpPercent(), FakePlayersConfig.PHANTOM_PVP_FLEE_HP_PERCENT, data.bravery, phantom.getLevel(), target.getLevel(), allyAdvantage, casterLowMp);
 			data.pvpFleeing = flee;
 		}
 		if (data.pvpFleeing)

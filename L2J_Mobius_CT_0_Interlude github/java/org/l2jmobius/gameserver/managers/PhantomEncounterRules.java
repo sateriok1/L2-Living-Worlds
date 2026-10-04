@@ -23,35 +23,97 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Pure rules for the PvP danger encounters (a phantom, or a group, that comes for the player and fights once).
- * No world access, so every decision here unit tests without a server.
+ * Pure rules for the phantom encounter engine: a phantom, or a group, that is sent for one player and fights them
+ * once. The engine itself is generic. It knows nothing about kinds, odds, rewards or timers: a module decides all of
+ * that and hands the engine a {@link Style} and a {@link Listener} (see {@code ModuleEncounters}). No world access
+ * here, so every decision unit tests without a server.
  */
 public final class PhantomEncounterRules
 {
-	/** Encounter tiers, easiest first. The order is the order of every per-tier config array. */
-	public enum Tier
+	/** How an encounter actor picks its moment to start the fight. */
+	public enum Approach
 	{
-		WIMP, // a few levels under you, undergeared by level: walks up, asks "are you a bot?", then attacks
-		NORMIE, // your level: attacks while you stand still or fight a monster
-		HARD, // a few levels over you, +3-4 gear: waits for its moment like a Normie
-		HORSEMEN, // a group (as many as your party, at least four), well over you, +7-10 gear: attacks on arrival
-		PKER // one lone phantom far over you in level and gear: the extinction event, attacks on arrival
+		/** Attacks the moment it reaches the player. */
+		STRIKE_ON_ARRIVAL,
+		/** Walks up, says an opening line, and attacks after a short warning (or at once if hit first). */
+		ASK_FIRST,
+		/** Closes in quietly and attacks when the player stands still or is busy with a monster. */
+		WAIT_FOR_MOMENT
+	}
+
+	/** Called by the engine when the player wins. Ids, not objects, so this stays free of world types. */
+	public interface Listener
+	{
+		/**
+		 * Every actor of the encounter is dead.
+		 * @param victimObjectId the player the encounter came for
+		 * @param lastActorObjectId the actor that died last
+		 */
+		void onGroupDefeated(int victimObjectId, int lastActorObjectId);
+	}
+
+	/** How one encounter behaves. Immutable. */
+	public static final class Style
+	{
+		public static final String[] NO_LINES = new String[0];
+
+		public final Approach approach;
+		public final int approachSeconds;
+		public final int fightSeconds;
+		public final int warnSeconds;
+		public final int stillSeconds;
+		public final String[] askLines;
+		public final String[] winLines;
+
+		/**
+		 * @param approach how the actors pick their moment
+		 * @param approachSeconds how long they may take to reach the player before giving up (minimum 10)
+		 * @param fightSeconds the longest the fight may last (minimum 30)
+		 * @param warnSeconds ASK_FIRST: how long after the opening line they attack (minimum 1)
+		 * @param stillSeconds WAIT_FOR_MOMENT: how long the player must stand still before they attack (minimum 1)
+		 * @param askLines ASK_FIRST: the opening lines, one is said (may be empty)
+		 * @param winLines said when the actors beat the player (may be empty)
+		 */
+		public Style(Approach approach, int approachSeconds, int fightSeconds, int warnSeconds, int stillSeconds, String[] askLines, String[] winLines)
+		{
+			this.approach = (approach == null) ? Approach.STRIKE_ON_ARRIVAL : approach;
+			this.approachSeconds = Math.max(10, approachSeconds);
+			this.fightSeconds = Math.max(30, fightSeconds);
+			this.warnSeconds = Math.max(1, warnSeconds);
+			this.stillSeconds = Math.max(1, stillSeconds);
+			this.askLines = (askLines == null) ? NO_LINES : askLines.clone();
+			this.winLines = (winLines == null) ? NO_LINES : winLines.clone();
+		}
 	}
 
 	/** The members of one encounter share this, so a group speaks once, warns once, and strikes together. */
 	public static final class EncounterGroup
 	{
 		private final AtomicBoolean _speech = new AtomicBoolean();
-		private final AtomicBoolean _loot = new AtomicBoolean();
 		private final AtomicInteger _dead = new AtomicInteger();
 		private volatile int _size;
 		private final AtomicBoolean _winLine = new AtomicBoolean();
 		private final AtomicLong _warnedAt = new AtomicLong();
 		private volatile boolean _fighting;
+		private final Style _style;
+		private final Listener _listener;
 
-		public EncounterGroup(int size)
+		public EncounterGroup(int size, Style style, Listener listener)
 		{
 			_size = Math.max(1, size);
+			_style = (style == null) ? new Style(Approach.STRIKE_ON_ARRIVAL, 60, 240, 7, 4, null, null) : style;
+			_listener = listener;
+		}
+
+		public Style style()
+		{
+			return _style;
+		}
+
+		/** @return who to tell when the player wins, or {@code null} */
+		public Listener listener()
+		{
+			return _listener;
 		}
 
 		/** The group turned out smaller than planned (some phantoms could not spawn). */
@@ -64,12 +126,6 @@ public final class PhantomEncounterRules
 		public boolean memberDied()
 		{
 			return _dead.incrementAndGet() >= _size;
-		}
-
-		/** @return {@code true} for exactly one caller: the one that gets to drop the group's single piece of loot. */
-		public boolean claimLoot()
-		{
-			return _loot.compareAndSet(false, true);
 		}
 
 		/** @return {@code true} for exactly one caller: the member that gets to speak the opening line. */
@@ -108,7 +164,8 @@ public final class PhantomEncounterRules
 	}
 
 	// Which actors are currently authorised to attack which player (actor objectId -> victim objectId). Read by
-	// Player.isAutoAttackable so an encounter actor's skills and attacks are legal against an unflagged victim.
+	// Player.isAutoAttackable so an encounter actor's skills and attacks are legal against an unflagged victim. Empty
+	// unless a module has sent an encounter, so the stock rule is untouched.
 	private static final Map<Integer, Integer> HOSTILE = new ConcurrentHashMap<>();
 
 	private PhantomEncounterRules()
@@ -132,116 +189,15 @@ public final class PhantomEncounterRules
 		return (victim != null) && (victim == victimObjectId);
 	}
 
-	/**
-	 * Picks a tier by weight.
-	 * @param weights the weights in {@link Tier} order (negative counts as 0)
-	 * @param roll a uniform roll in [0, total)
-	 * @return the tier, or {@code null} when nothing is available
-	 */
-	public static Tier pickTier(int[] weights, int roll)
-	{
-		int total = 0;
-		for (int w : weights)
-		{
-			total += Math.max(0, w);
-		}
-		if ((total <= 0) || (roll < 0))
-		{
-			return null;
-		}
-		int r = roll % total;
-		for (int i = 0; (i < weights.length) && (i < Tier.values().length); i++)
-		{
-			final int w = Math.max(0, weights[i]);
-			if (r < w)
-			{
-				return Tier.values()[i];
-			}
-			r -= w;
-		}
-		return null;
-	}
-
-	/** @return the tier's weight for this player: 0 when the tier is off or the player is below that tier's minimum level. */
-	public static int weightFor(int configuredWeight, int playerLevel, int tierMinPlayerLevel)
-	{
-		return ((configuredWeight <= 0) || (playerLevel < tierMinPlayerLevel)) ? 0 : configuredWeight;
-	}
-
-	/**
-	 * The actor's level: the player's level plus an offset picked from [minOffset, maxOffset], clamped to [1, 80].
-	 * @param roll any number (the caller's random roll)
-	 */
-	public static int levelFor(int playerLevel, int minOffset, int maxOffset, int roll)
-	{
-		final int lo = Math.min(minOffset, maxOffset);
-		final int hi = Math.max(minOffset, maxOffset);
-		return Math.max(1, Math.min(80, playerLevel + lo + (Math.abs(roll) % ((hi - lo) + 1))));
-	}
-
-	/**
-	 * The enchant on the actor's weapon and armor: a value in [min, max] (clamped to 0-30).
-	 * @param roll any number (the caller's random roll)
-	 */
-	public static int enchantIn(int min, int max, int roll)
-	{
-		final int a = Math.max(0, Math.min(30, min));
-		final int b = Math.max(0, Math.min(30, max));
-		final int lo = Math.min(a, b);
-		final int hi = Math.max(a, b);
-		return lo + (Math.abs(roll) % ((hi - lo) + 1));
-	}
-
-	/**
-	 * How many phantoms an encounter sends. Wimp, Normie and Hard match the party (at least one); the Horsemen match
-	 * it too but never fewer than {@code horsemenMin}; the lone PKer is always one. Capped at {@code cap}.
-	 * @param partySize members in the player's party, counting the player (1 when solo)
-	 */
-	public static int groupSize(Tier tier, int partySize, int horsemenMin, int cap)
-	{
-		final int limit = Math.max(1, cap);
-		switch (tier)
-		{
-			case PKER:
-			{
-				return 1;
-			}
-			case HORSEMEN:
-			{
-				return Math.max(1, Math.min(limit, Math.max(partySize, horsemenMin)));
-			}
-			default:
-			{
-				return Math.max(1, Math.min(limit, partySize));
-			}
-		}
-	}
-
-	/** @return {@code true} for the tiers that attack the moment they reach the player, with no waiting for an opening. */
-	public static boolean strikesOnArrival(Tier tier)
-	{
-		return (tier == Tier.HORSEMEN) || (tier == Tier.PKER);
-	}
-
-	/** @return {@code true} once an opportunist (Normie, Hard) should strike: the player is mid-fight with a monster, or has stood still long enough. */
-	public static boolean normieStrikeReady(boolean victimBusyWithMonster, long victimStillMs, long stillNeededMs)
+	/** @return {@code true} once a WAIT_FOR_MOMENT actor should strike: the player is mid-fight with a monster, or has stood still long enough. */
+	public static boolean momentReady(boolean victimBusyWithMonster, long victimStillMs, long stillNeededMs)
 	{
 		return victimBusyWithMonster || (victimStillMs >= stillNeededMs);
 	}
 
-	/** @return {@code true} once the Wimp's warning period has passed (or it was hit first). */
-	public static boolean wimpMayStrike(long now, long warnedAt, long warnMs, boolean hitFirst)
+	/** @return {@code true} once an ASK_FIRST actor's warning period has passed (or it was hit first). */
+	public static boolean mayStrikeAfterWarning(long now, long warnedAt, long warnMs, boolean hitFirst)
 	{
 		return hitFirst || ((warnedAt > 0) && ((now - warnedAt) >= warnMs));
-	}
-
-	/** @return a delay in [minMs, maxMs] for a roll in [0, 1000). A reversed range collapses to minMs. */
-	public static long delayMs(long minMs, long maxMs, int roll)
-	{
-		if (maxMs <= minMs)
-		{
-			return Math.max(0, minMs);
-		}
-		return minMs + (((maxMs - minMs) * Math.max(0, Math.min(999, roll))) / 1000);
 	}
 }

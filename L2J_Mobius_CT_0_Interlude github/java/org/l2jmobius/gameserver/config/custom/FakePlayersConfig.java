@@ -82,28 +82,6 @@ public class FakePlayersConfig
 	public static int FAKE_PLAYER_MAX_PUBLIC_CHATS_PER_MINUTE;
 	public static int FAKE_PLAYER_BOT_CHAT_CHAIN_DEPTH;
 	public static int FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE;
-	// PvP danger encounters (a phantom comes for the player and fights once).
-	public static boolean PHANTOM_ENCOUNTERS_ENABLED;
-	public static int PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL;
-	public static int PHANTOM_ENCOUNTER_GAP_MINUTES; // quiet time after any encounter before the next can start
-	public static int PHANTOM_ENCOUNTER_MAX_ACTIVE;
-	// Per tier, in PhantomEncounterRules.Tier order: Wimp, Normie, Hard, Horsemen, Pker.
-	public static final int[] PHANTOM_ENCOUNTER_MIN_MINUTES = new int[5]; // per-kind wait between encounters (0 = kind off)
-	public static final int[] PHANTOM_ENCOUNTER_MAX_MINUTES = new int[5];
-	public static final int[] PHANTOM_ENCOUNTER_MIN_LEVEL = new int[5]; // player level at which the tier unlocks
-	public static final int[] PHANTOM_ENCOUNTER_LEVEL_MIN = new int[5]; // actor level offset from the player (low end)
-	public static final int[] PHANTOM_ENCOUNTER_LEVEL_MAX = new int[5]; // actor level offset from the player (high end)
-	public static final int[] PHANTOM_ENCOUNTER_ENCHANT_MIN = new int[5];
-	public static final int[] PHANTOM_ENCOUNTER_ENCHANT_MAX = new int[5];
-	public static final int[] PHANTOM_ENCOUNTER_ADENA_REWARD = new int[5]; // flat adena paid to the winner when the whole group is down
-	public static final int[] PHANTOM_ENCOUNTER_LOOT_PERCENT = new int[5]; // chance the wiped group drops one piece
-	public static String PHANTOM_ENCOUNTER_PKER_NAME;
-	public static int PHANTOM_ENCOUNTER_HORSEMEN_MIN_SIZE;
-	public static int PHANTOM_ENCOUNTER_MAX_ACTORS;
-	public static int PHANTOM_ENCOUNTER_APPROACH_SECONDS;
-	public static int PHANTOM_ENCOUNTER_FIGHT_SECONDS;
-	public static int PHANTOM_ENCOUNTER_WARN_SECONDS;
-	public static int PHANTOM_ENCOUNTER_STILL_SECONDS;
 	// WTS/WTB reliability (all switchable; defaults on, set False to get the old behaviour back).
 	public static boolean TRADE_AD_PARSER_V2;
 	public static boolean TRADE_AD_LINKED_ITEMS;
@@ -175,47 +153,6 @@ public class FakePlayersConfig
 		FAKE_PLAYER_MAX_PUBLIC_CHATS_PER_MINUTE = config.getInt("FakePlayerMaxPublicChatsPerMinute", 8);
 		FAKE_PLAYER_BOT_CHAT_CHAIN_DEPTH = Math.max(0, config.getInt("FakePlayerBotChatChainDepth", 2));
 		FAKE_PLAYER_BOT_CHAT_REPLY_CHANCE = Math.min(100, Math.max(0, config.getInt("FakePlayerBotChatReplyChance", 15)));
-		PHANTOM_ENCOUNTERS_ENABLED = config.getBoolean("PhantomEncounters", false);
-		PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL = Math.max(1, config.getInt("PhantomEncounterMinPlayerLevel", 10));
-		PHANTOM_ENCOUNTER_GAP_MINUTES = Math.max(0, config.getInt("PhantomEncounterGapMinutes", 5));
-		PHANTOM_ENCOUNTER_MAX_ACTIVE = Math.max(1, config.getInt("PhantomEncounterMaxActive", 2));
-		final String[] encounterTiers =
-		{
-			"Wimp",
-			"Normie",
-			"Hard",
-			"Horsemen",
-			"Pker"
-		};
-		final int[] minMinutesDefaults = { 30, 30, 120, 270, 420 };
-		final int[] maxMinutesDefaults = { 40, 40, 180, 330, 540 };
-		final int[] unlockDefaults = { 10, 10, 20, 20, 20 };
-		final int[] levelMinDefaults = { -3, 0, 3, 5, 11 };
-		final int[] levelMaxDefaults = { -2, 0, 3, 5, 11 };
-		final int[] enchantMinDefaults = { 0, 0, 3, 5, 16 };
-		final int[] enchantMaxDefaults = { 0, 3, 4, 7, 16 };
-		final int[] lootDefaults = { 0, 0, 0, 0, 0 };
-		final int[] adenaRewardDefaults = { 50000, 100000, 200000, 350000, 1000000 };
-		for (int i = 0; i < encounterTiers.length; i++)
-		{
-			final String name = "PhantomEncounter" + encounterTiers[i];
-			PHANTOM_ENCOUNTER_MIN_MINUTES[i] = Math.max(0, config.getInt(name + "MinMinutes", minMinutesDefaults[i]));
-			PHANTOM_ENCOUNTER_MAX_MINUTES[i] = Math.max(PHANTOM_ENCOUNTER_MIN_MINUTES[i], config.getInt(name + "MaxMinutes", maxMinutesDefaults[i]));
-			PHANTOM_ENCOUNTER_MIN_LEVEL[i] = Math.max(1, config.getInt(name + "MinPlayerLevel", unlockDefaults[i]));
-			PHANTOM_ENCOUNTER_LEVEL_MIN[i] = config.getInt(name + "LevelMin", levelMinDefaults[i]);
-			PHANTOM_ENCOUNTER_LEVEL_MAX[i] = Math.max(PHANTOM_ENCOUNTER_LEVEL_MIN[i], config.getInt(name + "LevelMax", levelMaxDefaults[i]));
-			PHANTOM_ENCOUNTER_ENCHANT_MIN[i] = Math.max(0, config.getInt(name + "EnchantMin", enchantMinDefaults[i]));
-			PHANTOM_ENCOUNTER_LOOT_PERCENT[i] = Math.max(0, Math.min(100, config.getInt(name + "LootPercent", lootDefaults[i])));
-			PHANTOM_ENCOUNTER_ADENA_REWARD[i] = Math.max(0, config.getInt(name + "AdenaReward", adenaRewardDefaults[i]));
-			PHANTOM_ENCOUNTER_ENCHANT_MAX[i] = Math.max(PHANTOM_ENCOUNTER_ENCHANT_MIN[i], config.getInt(name + "EnchantMax", enchantMaxDefaults[i]));
-		}
-		PHANTOM_ENCOUNTER_PKER_NAME = config.getString("PhantomEncounterPkerName", "AssMuncher").trim();
-		PHANTOM_ENCOUNTER_HORSEMEN_MIN_SIZE = Math.max(1, config.getInt("PhantomEncounterHorsemenMinSize", 4));
-		PHANTOM_ENCOUNTER_MAX_ACTORS = Math.max(1, config.getInt("PhantomEncounterMaxActors", 9));
-		PHANTOM_ENCOUNTER_APPROACH_SECONDS = Math.max(10, config.getInt("PhantomEncounterApproachSeconds", 60));
-		PHANTOM_ENCOUNTER_FIGHT_SECONDS = Math.max(30, config.getInt("PhantomEncounterFightSeconds", 240));
-		PHANTOM_ENCOUNTER_WARN_SECONDS = Math.max(1, config.getInt("PhantomEncounterWarnSeconds", 7));
-		PHANTOM_ENCOUNTER_STILL_SECONDS = Math.max(1, config.getInt("PhantomEncounterStillSeconds", 4));
 		TRADE_AD_PARSER_V2 = config.getBoolean("TradeAdParserV2", true);
 		TRADE_AD_LINKED_ITEMS = config.getBoolean("TradeAdLinkedItems", true);
 		TRADE_AD_STATUS_REPLIES = config.getBoolean("TradeAdStatusReplies", true);
