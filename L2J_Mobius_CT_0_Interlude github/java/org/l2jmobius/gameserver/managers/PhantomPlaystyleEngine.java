@@ -21,12 +21,14 @@
 package org.l2jmobius.gameserver.managers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.l2jmobius.commons.util.Rnd;
 import org.l2jmobius.gameserver.config.custom.FakePlayersConfig;
@@ -35,27 +37,29 @@ import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData.Cond;
 import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData.PlayEntry;
 import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData.Playstyle;
 import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData.Use;
+import org.l2jmobius.gameserver.managers.PhantomCombatPolicy.Availability;
+import org.l2jmobius.gameserver.managers.PhantomCombatPolicy.Context;
 import org.l2jmobius.gameserver.model.World;
 import org.l2jmobius.gameserver.model.actor.Creature;
 import org.l2jmobius.gameserver.model.actor.Player;
 import org.l2jmobius.gameserver.model.actor.instance.Monster;
 import org.l2jmobius.gameserver.model.effects.EffectType;
+import org.l2jmobius.gameserver.model.item.enums.ShotType;
 import org.l2jmobius.gameserver.model.skill.AbnormalType;
 import org.l2jmobius.gameserver.model.skill.Skill;
 import org.l2jmobius.gameserver.model.skill.enums.SkillFinishType;
 import org.l2jmobius.gameserver.model.skill.targets.TargetType;
+import org.l2jmobius.gameserver.model.stats.Formulas;
 import org.l2jmobius.gameserver.util.LocationUtil;
 
 /**
- * Picks the next skill a recruited phantom should cast, from its class's ordered playstyle
- * ({@link PhantomPlaystyleData}). Stateless except for the caller-owned {@link PlayState}: the party
- * manager holds one per member and calls {@link #pick} from its combat tick; the returned action is cast
- * with the manager's own {@code setTarget}/{@code doCast} guards.
+ * Class tactics and role-aware damage selection shared across party, field and Olympiad combat.
+ * XML conditions and level windows remain authoritative for listed skills. Caller-owned {@link PlayState}
+ * also holds the shared executor state; the native adapter verifies legality and confirms launches.
  * <p>
- * The engine only decides the TACTICAL layer (which listed skill fits this moment). Mechanics come from
- * the live {@link Skill}: reuse via {@code isSkillDisabled}, MP via {@code getMpConsume}, cast-time
- * preconditions (Frenzy's HP gate, Backstab's behind check) via {@code checkCondition} - so it never
- * attempts a cast the engine core would reject.
+ * Mechanics come from the live {@link Skill}: reuse via {@code isSkillDisabled}, actor-adjusted MP cost,
+ * and cast-time preconditions (Frenzy's HP gate, Backstab's behind check) via {@code checkCondition}.
+ * Conditions can still change before launch, so rejected casts are tracked.
  */
 public class PhantomPlaystyleEngine
 {
@@ -86,14 +90,25 @@ public class PhantomPlaystyleEngine
 		final int focusObjectId;
 		/** The skill id recorded in the once-per-target ledger on a confirmed launch. */
 		final int ledgerSkillId;
+		final int repeatMs;
+		final int priority;
+		final double preference;
 
 		CastAction(Skill skill, Creature target, boolean oncePerTarget, int focusObjectId, int ledgerSkillId)
+		{
+			this(skill, target, oncePerTarget, focusObjectId, ledgerSkillId, 0, 100, 0);
+		}
+
+		CastAction(Skill skill, Creature target, boolean oncePerTarget, int focusObjectId, int ledgerSkillId, int repeatMs, int priority, double preference)
 		{
 			this.skill = skill;
 			this.target = target;
 			this.oncePerTarget = oncePerTarget;
 			this.focusObjectId = focusObjectId;
 			this.ledgerSkillId = ledgerSkillId;
+			this.repeatMs = repeatMs;
+			this.priority = priority;
+			this.preference = preference;
 		}
 	}
 
@@ -107,19 +122,23 @@ public class PhantomPlaystyleEngine
 		Playstyle playstyle; // the resolved lineage playstyle (null when the class has none)
 		boolean lookedUp;
 		long nextCastAt; // pacing gate; PANIC ignores it
+		final PhantomCombatController.State combat = new PhantomCombatController.State();
 		// Once-per-target ledger: skill ids already spent, per target object id. An LRU bounded map (not a single
 		// current-target set) so a boss -> add -> boss switch does NOT reopen OPENER/ONCE_PER_TARGET on the boss.
-		final Map<Integer, Set<Integer>> castLedger = new LinkedHashMap<>(32, 0.75f, true)
+		final Map<Integer, Set<Integer>> castLedger = Collections.synchronizedMap(new LinkedHashMap<>(32, 0.75f, true)
 		{
 			@Override
 			protected boolean removeEldestEntry(Map.Entry<Integer, Set<Integer>> eldest)
 			{
 				return size() > LEDGER_MAX_TARGETS;
 			}
-		};
+		});
 		public List<Integer> parkedIds; // autoSkills parked at recruit time so AutoUse doesn't compete (restored on release)
 		public List<Integer> parkedBuffIds; // playstyle-listed ids pulled out of autoBuffs (PANIC/LIMIT self-buffs AutoUse would burn at full HP)
 		int parkedGeneration = -1; // data generation the current parking reflects; a reload bump re-parks (see syncParkingIfReloaded)
+		boolean controllerOwned;
+		boolean parkedController;
+		boolean parkedFallback;
 
 		int generation = -1; // data generation this resolution came from
 		// Skills the server rejected recently (skill id -> when): not tried again for a short backoff, so a cast the core
@@ -166,9 +185,8 @@ public class PhantomPlaystyleEngine
 	}
 
 	/**
-	 * Walks the member's playstyle in order and returns the first entry whose tactical conditions AND
-	 * mechanical gates pass, or {@code null} when nothing fits this tick (the caller falls back to plain
-	 * auto-attacking). Never called for supports - their supportTick already plays their class.
+	 * Selects eligible class tactics by action priority and ordinary damage preference. With the controller
+	 * disabled, retains the previous first-eligible XML selector. Supports have a dedicated support tick.
 	 * @param npc the phantom
 	 * @param focus the mob the party wants dead (never null)
 	 * @param state the member's playstyle runtime state
@@ -178,6 +196,11 @@ public class PhantomPlaystyleEngine
 	 * @param roleName the member's party role name, used to resolve role-split lineages
 	 */
 	public static CastAction pick(Player npc, Creature focus, PlayState state, boolean healerReady, boolean underAttack, int mpReservePercent, String roleName)
+	{
+		return pick(npc, focus, state, healerReady, underAttack, mpReservePercent, roleName, false);
+	}
+
+	private static CastAction pick(Player npc, Creature focus, PlayState state, boolean healerReady, boolean underAttack, int mpReservePercent, String roleName, boolean probe)
 	{
 		final int classId = npc.getPlayerClass().getId();
 		state.refreshIfReloaded();
@@ -199,11 +222,16 @@ public class PhantomPlaystyleEngine
 
 		// The once-per-target ledger for THIS focus (created on first sight, remembered across target switches so
 		// returning to a boss after tagging an add does not reopen its OPENER / ONCE_PER_TARGET entries).
-		final Set<Integer> spentOnFocus = state.castLedger.computeIfAbsent(focus.getObjectId(), k -> new HashSet<>());
+		final Set<Integer> spentOnFocus = state.castLedger.computeIfAbsent(focus.getObjectId(), k -> ConcurrentHashMap.newKeySet());
 
 		final long now = System.currentTimeMillis();
 		final boolean paced = now < state.nextCastAt;
 		final int mpPercent = npc.getCurrentMpPercent();
+		final boolean modern = FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER;
+		final boolean caster = casterRole(npc, roleName);
+		final boolean pressure = modern && PhantomCombatActions.pressure(npc, underAttack);
+		final Context context = modern ? PhantomCombatActions.context(npc, focus, pressure) : Context.SOLO_PVE;
+		CastAction best = null;
 
 		for (PlayEntry entry : entries)
 		{
@@ -219,12 +247,12 @@ public class PhantomPlaystyleEngine
 				continue;
 			}
 			// Emergencies outrank the human pacing beat; everything else respects it.
-			if (paced && (entry.use != Use.PANIC))
+			if (!probe && (modern ? !state.combat.reactionReady(now) : paced) && (entry.use != Use.PANIC))
 			{
 				continue;
 			}
 			// Below the role's MP reserve only survival spending is allowed.
-			if ((mpPercent < mpReservePercent) && !entry.use.self())
+			if (!modern && (mpPercent < mpReservePercent) && !entry.use.self())
 			{
 				continue;
 			}
@@ -235,12 +263,12 @@ public class PhantomPlaystyleEngine
 			{
 				continue;
 			}
-			if (PhantomSkillFallbackRules.backedOff(rejectedAt(state, entry.skillId), now))
+			if (!modern && PhantomSkillFallbackRules.backedOff(rejectedAt(state, entry.skillId), now))
 			{
 				continue; // the server refused it a moment ago; give it a short rest
 			}
 			final Skill skill = npc.getKnownSkill(entry.skillId);
-			if ((skill == null) || npc.isSkillDisabled(skill) || (npc.getCurrentMp() < skill.getMpConsume()) || !PhantomBuffs.canAffordReagent(npc, skill))
+			if ((skill == null) || npc.isSkillDisabled(skill) || (!modern && (npc.getCurrentMp() < skill.getMpConsume())) || !PhantomBuffs.canAffordReagent(npc, skill))
 			{
 				continue;
 			}
@@ -250,7 +278,24 @@ public class PhantomPlaystyleEngine
 				continue;
 			}
 			final boolean selfCast = entry.use.self() || (entry.use == Use.STANCE) || (skill.getTargetType() == TargetType.SELF);
-			if (!selfCast && !inReach(npc, focus, skill))
+			final double cost = PhantomCombatActions.mpCost(npc, skill);
+			if (modern && !entry.use.self() && (entry.use != Use.STANCE) && !PhantomCombatPolicy.affordable(caster, npc.getCurrentMp(), npc.getMaxMp(), cost, mpReservePercent))
+			{
+				continue;
+			}
+			if (modern && entry.conds.contains(Cond.CHARGES_BELOW))
+			{
+				continue; // a builder is selected only as part of an affordable spender plan below
+			}
+			if (modern && !selfCast && ((entry.use == Use.CONTROL) || (entry.use == Use.DEBUFF)) && PhantomCombatPolicy.suppressSetup(entry.conds.contains(Cond.NOT_SPOILED) || entry.conds.contains(Cond.MOBS_UNSPOILED), context, pressure, PhantomCombatActions.durable(focus)))
+			{
+				continue; // do not spend a setup cast on an ordinary safe farming target
+			}
+			if (modern && !selfCast && (entry.use == Use.ROTATION) && !PhantomCombatPolicy.authoredRotation(roleName, context, skill.getCastRange(), skill.isMagic()))
+			{
+				continue;
+			}
+			if (!modern && !selfCast && !inReach(npc, focus, skill))
 			{
 				continue; // out of range - positioning/auto-attack closes the gap, retry next tick
 			}
@@ -259,20 +304,213 @@ public class PhantomPlaystyleEngine
 				continue;
 			}
 			final Creature target = selfCast ? npc : focus;
+			if (modern && !state.combat.ready(entry.skillId, target.getObjectId(), now))
+			{
+				continue;
+			}
 			// Last word goes to the skill's own cast-time preconditions (behind checks, HP gates, weapon
 			// checks) so the engine never queues a cast the core would reject with a failure message.
-			if (!skill.checkCondition(npc, target, false))
+			if (modern ? (PhantomCombatActions.availability(npc, target, skill, npc.getCharges()) == Availability.UNAVAILABLE) : !skill.checkCondition(npc, target, false))
 			{
 				continue;
 			}
 			final int pace = (entry.paceMs > 0) ? entry.paceMs : DEFAULT_PACE_MS;
+			if (modern)
+			{
+				final int priority = ((entry.use == Use.ROTATION) && !caster) ? 200 : PhantomCombatPolicy.priority(entry.use.name());
+				final double preference = caster ? damagePreference(npc, focus, skill, true) : 0;
+				if (!selfCast && (entry.use == Use.ROTATION) && !caster && obviousWaste(npc, focus, skill))
+				{
+					continue;
+				}
+				if ((priority == 100) && !Double.isFinite(preference))
+				{
+					continue; // a damage cast must improve on the weapon attacks it interrupts
+				}
+				final CastAction candidate = new CastAction(skill, target, oncePerTarget, focus.getObjectId(), entry.skillId, (entry.paceMs > 0) ? entry.paceMs : (caster ? 0 : 1500), priority, preference);
+				if ((best == null) || (candidate.priority > best.priority) || ((priority == 100) && (best.priority == 100) && (candidate.preference > best.preference)))
+				{
+					best = candidate;
+				}
+				continue;
+			}
 			state.nextCastAt = now + pace + Rnd.get(PACE_JITTER_MS);
 			// The once-per-target ledger is written by confirmCast AFTER the cast actually launches - not here. An
 			// opener the core then rejects at doCast (out of range, interrupted, target gone) must stay retryable
 			// instead of being permanently marked spent for the life of this target.
 			return new CastAction(skill, target, oncePerTarget, focus.getObjectId(), entry.skillId);
 		}
+		if (modern && (probe || state.combat.reactionReady(now)) && ((best == null) || (best.priority < 600)))
+		{
+			final CastAction plan = pickChargePlan(npc, focus, state, healerReady, underAttack, mpReservePercent, roleName, best);
+			if ((plan != null) && ((best == null) || (plan.priority > best.priority)))
+			{
+				return plan;
+			}
+		}
+		return best;
+	}
+
+	/** Authored physical tactics keep their order; ordinary caster damage competes with the learned baseline. */
+	public static CastAction choose(Player npc, Creature focus, PlayState state, boolean healerReady, boolean underAttack, int reserve, String role)
+	{
+		return choose(npc, focus, state, healerReady, underAttack, reserve, role, false);
+	}
+
+	private static CastAction choose(Player npc, Creature focus, PlayState state, boolean healerReady, boolean underAttack, int reserve, String role, boolean probe)
+	{
+		final CastAction authored = pick(npc, focus, state, healerReady, underAttack, reserve, role, probe);
+		if ((authored != null) && (!FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER || (authored.priority > 100)))
+		{
+			return authored;
+		}
+		final CastAction baseline = pickFallback(npc, focus, state, reserve, role, underAttack, probe);
+		return ((baseline != null) && ((authored == null) || (baseline.preference > authored.preference))) ? baseline : authored;
+	}
+
+	/** Recovery probes the same selection path, ignoring only the shared reaction beat after a cast. */
+	public static Availability combatAvailability(Player npc, Creature focus, PlayState state, boolean healerReady, boolean underAttack, int reserve, String role)
+	{
+		if ((focus == null) || focus.isAlikeDead())
+		{
+			return Availability.UNAVAILABLE;
+		}
+		if (npc.isCastingNow() || npc.isCastingSimultaneouslyNow())
+		{
+			return Availability.READY_NOW;
+		}
+		if ((state == null) || !state.controllerOwned)
+		{
+			Availability best = Availability.UNAVAILABLE;
+			for (int id : npc.getAutoUseSettings().getAutoSkills())
+			{
+				final Skill nativeSkill = npc.getKnownSkill(id);
+				if ((nativeSkill == null) || !ordinaryAttack(nativeSkill))
+				{
+					continue;
+				}
+				final Availability available = PhantomCombatActions.availability(npc, focus, nativeSkill, npc.getCharges());
+				if (available == Availability.READY_NOW)
+				{
+					return available;
+				}
+				if (available == Availability.APPROACHABLE)
+				{
+					best = available;
+				}
+			}
+			return best;
+		}
+		final CastAction action = choose(npc, focus, state, healerReady, underAttack, reserve, role, true);
+		return (action == null) ? Availability.UNAVAILABLE : PhantomCombatActions.availability(npc, action.target, action.skill, npc.getCharges());
+	}
+
+	private static boolean obviousWaste(Player npc, Creature focus, Skill skill)
+	{
+		final double normal = 76 * npc.getPAtk(focus) / Math.max(1, focus.getPDef(npc));
+		final int reach = (npc.getActiveWeaponItem() == null) ? 40 : npc.getStat().getPhysicalAttackRange();
+		return PhantomCombatPolicy.obviousWaste(focus.getCurrentHp(), normal, LocationUtil.checkIfInRange(reach, npc, focus, false), skill.isOverhit(), false);
+	}
+
+	private static CastAction pickChargePlan(Player npc, Creature focus, PlayState state, boolean healerReady, boolean underAttack, int reserve, String role, CastAction immediate)
+	{
+		final boolean readySpender = (immediate != null) && (immediate.skill.getChargeConsumeCount() > 0);
+		int immediateOrder = Integer.MAX_VALUE;
+		if (readySpender)
+		{
+			for (int index = 0; index < state.playstyle.entries.size(); index++)
+			{
+				if (state.playstyle.entries.get(index).skillId == immediate.skill.getId())
+				{
+					immediateOrder = index;
+					break;
+				}
+			}
+		}
+		for (PlayEntry spender : state.playstyle.entries)
+		{
+			final Skill attack = npc.getKnownSkill(spender.skillId);
+			if ((attack == null) || !spender.appliesAt(npc.getLevel()) || !spender.conds.contains(Cond.CHARGES)
+				|| spender.use.self() || (spender.use == Use.PULL) || obviousWaste(npc, focus, attack))
+			{
+				continue;
+			}
+			if (((spender.use == Use.OPENER) || spender.conds.contains(Cond.ONCE_PER_TARGET))
+				&& state.castLedger.getOrDefault(focus.getObjectId(), Set.of()).contains(spender.skillId))
+			{
+				continue;
+			}
+			final int required = Math.max(spender.chargesAtLeast, attack.getChargeConsumeCount());
+			if ((required <= npc.getCharges()) || !conditionsPass(npc, focus, spender, attack, healerReady, underAttack, required)
+				|| (PhantomCombatActions.availability(npc, focus, attack, required) == Availability.UNAVAILABLE)
+				|| !state.combat.ready(attack.getId(), focus.getObjectId(), System.currentTimeMillis()))
+			{
+				continue;
+			}
+			CastAction best = null;
+			double bestCost = Double.POSITIVE_INFINITY;
+			for (PlayEntry builder : state.playstyle.entries)
+			{
+				final Skill prepare = npc.getKnownSkill(builder.skillId);
+				if ((prepare == null) || !builder.appliesAt(npc.getLevel()) || !builder.conds.contains(Cond.CHARGES_BELOW)
+					|| !conditionsPass(npc, focus, builder, prepare, healerReady, underAttack))
+				{
+					continue;
+				}
+				final Creature target = (prepare.getTargetType() == TargetType.SELF) ? npc : focus;
+				if ((PhantomCombatActions.availability(npc, target, prepare, npc.getCharges()) == Availability.UNAVAILABLE)
+					|| !state.combat.ready(prepare.getId(), target.getObjectId(), System.currentTimeMillis()))
+				{
+					continue;
+				}
+				final PhantomChargePlanner.Plan plan = PhantomChargePlanner.plan(npc.getCharges(), required, PhantomSkillFeasibility.builderCap(prepare, builder.chargesBelow),
+					PhantomCombatActions.mpCost(npc, prepare), prepare.getHpConsume(), PhantomCombatActions.mpCost(npc, attack), attack.getHpConsume(),
+					npc.getCurrentMp(), npc.getMaxMp(), npc.getCurrentHp(), npc.getMaxHp(), reserve);
+				final double shots = npc.isChargedShot(ShotType.SOULSHOTS) ? 2 : 1;
+				final double ordinaryHit = 76 * npc.getPAtk(focus) * shots / Math.max(1, focus.getPDef(npc));
+				final double builderHit = (target == npc) ? 0 : ordinaryHit + 76 * Math.max(0, prepare.getPower(npc, focus, focus instanceof Player, focus instanceof Monster)) * shots / Math.max(1, focus.getPDef(npc));
+				final boolean survivesSetup = (plan != null) && PhantomChargePlanner.survivesSetup(focus.getCurrentHp(), ordinaryHit * plan.casts(), builderHit * plan.casts());
+				if (!PhantomChargePlanner.preferPlan(plan, readySpender, state.playstyle.entries.indexOf(spender), immediateOrder, survivesSetup))
+				{
+					continue;
+				}
+				// Prefer a ready ranged damage builder over a self builder at equal resource cost.
+				final double cost = plan.mpCost() + plan.hpCost() / Math.max(1, npc.getMaxHp())
+					+ ((target == npc) ? 1 : 0) + ((PhantomCombatActions.availability(npc, target, prepare, npc.getCharges()) == Availability.APPROACHABLE) ? 2 : 0);
+				if (cost < bestCost)
+				{
+					bestCost = cost;
+					best = new CastAction(prepare, target, false, focus.getObjectId(), prepare.getId(), builder.paceMs, 201, 0);
+				}
+			}
+			if (best != null)
+			{
+				return best; // authored spender order decides which complete plan is wanted
+			}
+		}
 		return null;
+	}
+
+	private static boolean casterRole(Player npc, String role)
+	{
+		return "NUKER".equals(role) || (!PhantomManager.usesPhysicalAttacks(npc, npc.isMageClass()) && PhantomManager.knowsAttackSpell(npc));
+	}
+
+	private static double damagePreference(Player npc, Creature focus, Skill skill, boolean caster)
+	{
+		final double power = skill.getPower(npc, focus, focus instanceof Player, focus instanceof Monster);
+		if ((power <= 0) || !ordinaryAttack(skill))
+		{
+			return Double.NEGATIVE_INFINITY;
+		}
+		// Deterministic ordinary-hit estimates use the core's base formula. Crits, resists and proc effects are not predicted.
+		final double shots = npc.isChargedShot(ShotType.SOULSHOTS) ? 2 : 1;
+		final double weaponDamage = 76 * npc.getPAtk(focus) * shots / Math.max(1, focus.getPDef(npc));
+		final double magicShots = npc.isChargedShot(ShotType.BLESSED_SPIRITSHOTS) ? 4 : (npc.isChargedShot(ShotType.SPIRITSHOTS) ? 2 : 1);
+		final double estimate = skill.isMagic() ? (91 * Math.sqrt(Math.max(0, npc.getMAtk(focus, skill) * magicShots)) * power / Math.max(1, focus.getMDef(npc, skill))) : (weaponDamage + (76 * power / Math.max(1, focus.getPDef(npc))));
+		final int castMs = Math.max(550, Formulas.calcAtkSpd(npc, skill, skill.getHitTime() + skill.getCoolTime()));
+		final double lost = weaponDamage * castMs / Math.max(1, npc.calculateTimeBetweenAttacks() + npc.calculateReuseTime(npc.getActiveWeaponItem()));
+		return PhantomCombatPolicy.damageScore(estimate, focus.getCurrentHp(), PhantomCombatActions.mpCost(npc, skill), castMs, lost, caster, (npc.getCurrentHpPercent() < 65) && skill.hasEffectType(EffectType.HP_DRAIN));
 	}
 
 	/**
@@ -330,7 +568,7 @@ public class PhantomPlaystyleEngine
 		{
 			return;
 		}
-		state.castLedger.computeIfAbsent(action.focusObjectId, k -> new HashSet<>()).add(action.ledgerSkillId);
+		state.castLedger.computeIfAbsent(action.focusObjectId, k -> ConcurrentHashMap.newKeySet()).add(action.ledgerSkillId);
 	}
 
 	/**
@@ -342,6 +580,7 @@ public class PhantomPlaystyleEngine
 		if (state != null)
 		{
 			state.nextCastAt = 0;
+			state.combat.resetReaction();
 		}
 	}
 
@@ -413,28 +652,37 @@ public class PhantomPlaystyleEngine
 	 * Dancer with only Arrest left) still fights with its real kit instead of only swinging. Listed skills stay under the
 	 * playstyle's control (its level windows and conditions); dances, songs, toggles, passives, heals, buffs, area skills,
 	 * taunts and the manager-owned skills in {@link PhantomSkillFallbackRules#neverCast} are never picked here. It shares
-	 * the playstyle's pacing and MP reserve. Candidates are scored by {@link PhantomSkillFallbackRules#score}.
+	 * the previous global pace and raw-power score only with the controller disabled. The controller uses direct
+	 * damage capabilities, per-skill timing, post-cast MP reserves and interrupted weapon damage.
 	 * @return the cast, or {@code null} to keep auto-attacking
 	 */
 	public static CastAction pickFallback(Player npc, Creature focus, PlayState state, int mpReservePercent)
+	{
+		return pickFallback(npc, focus, state, mpReservePercent, null, false, false);
+	}
+
+	private static CastAction pickFallback(Player npc, Creature focus, PlayState state, int mpReservePercent, String role, boolean underAttack, boolean probe)
 	{
 		if ((state == null) || (focus == null) || !FakePlayersConfig.PHANTOM_SKILL_FALLBACK)
 		{
 			return null;
 		}
-		// Only for a phantom the engine actually drives (a playstyle it can field at this level, so its offensive AutoUse
-		// is parked). A class with no playstyle still casts through AutoUse; a second caster here would double up.
-		if ((state.playstyle == null) || (usableCount(npc, state.playstyle) == 0))
+		// Only select for an actor whose offensive AutoUse is parked. Controller ownership also covers an eligible
+		// learned kit without XML; the previous path requires a usable playstyle.
+		if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER ? !state.controllerOwned : ((state.playstyle == null) || (usableCount(npc, state.playstyle) == 0)))
 		{
 			return null;
 		}
 		final long now = System.currentTimeMillis();
-		if ((now < state.nextCastAt) || (npc.getCurrentMpPercent() < mpReservePercent))
+		final boolean modern = FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER;
+		final boolean caster = casterRole(npc, role);
+		final boolean pressure = modern && PhantomCombatActions.pressure(npc, underAttack);
+		if (!probe && (modern ? !state.combat.reactionReady(now) : ((now < state.nextCastAt) || (npc.getCurrentMpPercent() < mpReservePercent))))
 		{
 			return null;
 		}
 		final Set<Integer> listed = new HashSet<>();
-		for (PlayEntry entry : state.playstyle.entries)
+		for (PlayEntry entry : (state.playstyle == null) ? List.<PlayEntry>of() : state.playstyle.entries)
 		{
 			listed.add(entry.skillId);
 		}
@@ -454,7 +702,11 @@ public class PhantomPlaystyleEngine
 			{
 				continue;
 			}
-			if (PhantomSkillFallbackRules.backedOff(rejectedAt(state, id), now) || npc.isSkillDisabled(skill) || (npc.getCurrentMp() < skill.getMpConsume()) || (npc.getCurrentHp() <= skill.getHpConsume()) || !PhantomBuffs.canAffordReagent(npc, skill))
+			if ((!modern && PhantomSkillFallbackRules.backedOff(rejectedAt(state, id), now)) || npc.isSkillDisabled(skill) || (npc.getCurrentMp() < (modern ? PhantomCombatActions.mpCost(npc, skill) : skill.getMpConsume())) || (npc.getCurrentHp() <= skill.getHpConsume()) || !PhantomBuffs.canAffordReagent(npc, skill))
+			{
+				continue;
+			}
+			if (modern && (!state.combat.ready(id, focus.getObjectId(), now) || !PhantomCombatPolicy.affordable(caster, npc.getCurrentMp(), npc.getMaxMp(), PhantomCombatActions.mpCost(npc, skill), mpReservePercent) || !PhantomCombatPolicy.worthwhile(role, caster, focus instanceof Player, pressure, PhantomCombatActions.durable(focus), PhantomCombatActions.mpCost(npc, skill), npc.getMaxMp(), skill.getCastRange(), skill.isMagic()) || !ordinaryAttack(skill)))
 			{
 				continue;
 			}
@@ -462,11 +714,12 @@ public class PhantomPlaystyleEngine
 			{
 				continue; // a pure debuff already on the target
 			}
-			if (!(area ? areaHits(npc, focus, skill) : inReach(npc, focus, skill)) || !skill.checkCondition(npc, focus, false))
+			if (modern ? (PhantomCombatActions.availability(npc, focus, skill, npc.getCharges()) == Availability.UNAVAILABLE)
+				: (!(area ? areaHits(npc, focus, skill) : inReach(npc, focus, skill)) || !skill.checkCondition(npc, focus, false)))
 			{
 				continue;
 			}
-			final double score = PhantomSkillFallbackRules.score(skill.getPower(), skill.getMpConsume());
+			final double score = modern ? damagePreference(npc, focus, skill, caster) : PhantomSkillFallbackRules.score(skill.getPower(), skill.getMpConsume());
 			if (score > bestScore)
 			{
 				best = skill;
@@ -477,8 +730,11 @@ public class PhantomPlaystyleEngine
 		{
 			return null;
 		}
-		state.nextCastAt = now + DEFAULT_PACE_MS + Rnd.get(PACE_JITTER_MS);
-		return new CastAction(best, focus, false, focus.getObjectId(), best.getId());
+		if (!modern)
+		{
+			state.nextCastAt = now + DEFAULT_PACE_MS + Rnd.get(PACE_JITTER_MS);
+		}
+		return new CastAction(best, focus, false, focus.getObjectId(), best.getId(), caster ? 0 : 1500, 100, bestScore);
 	}
 
 	/**
@@ -504,6 +760,10 @@ public class PhantomPlaystyleEngine
 		{
 			return null;
 		}
+		if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER)
+		{
+			return pickBudgetedPrep(npc, state);
+		}
 		final int level = npc.getLevel();
 		for (PlayEntry entry : state.playstyle.entries)
 		{
@@ -525,6 +785,40 @@ public class PhantomPlaystyleEngine
 				return null;
 			}
 			return new CastAction(skill, npc, false, 0, entry.skillId); // self-cast; not a once-per-target ledger entry
+		}
+		return null;
+	}
+
+	private static CastAction pickBudgetedPrep(Player npc, PlayState state)
+	{
+		for (PlayEntry spender : state.playstyle.entries)
+		{
+			final Skill attack = npc.getKnownSkill(spender.skillId);
+			if ((attack == null) || !spender.appliesAt(npc.getLevel()) || (spender.use != Use.ROTATION) || !spender.conds.contains(Cond.CHARGES) || npc.isSkillDisabled(attack))
+			{
+				continue;
+			}
+			final int needed = Math.max(spender.chargesAtLeast, attack.getChargeConsumeCount());
+			if (!PhantomSkillFeasibility.possible(npc, npc, attack, needed))
+			{
+				continue;
+			}
+			for (PlayEntry builder : state.playstyle.entries)
+			{
+				final Skill skill = npc.getKnownSkill(builder.skillId);
+				if ((skill == null) || !builder.appliesAt(npc.getLevel()) || !builder.conds.contains(Cond.CHARGES_BELOW) || (skill.getTargetType() != TargetType.SELF)
+					|| (PhantomCombatActions.availability(npc, npc, skill, npc.getCharges()) != Availability.READY_NOW))
+				{
+					continue;
+				}
+				if ((PhantomChargePlanner.plan(npc.getCharges(), needed, PhantomSkillFeasibility.builderCap(skill, builder.chargesBelow),
+					PhantomCombatActions.mpCost(npc, skill), skill.getHpConsume(), PhantomCombatActions.mpCost(npc, attack), attack.getHpConsume(),
+					npc.getCurrentMp(), npc.getMaxMp(), npc.getCurrentHp(), npc.getMaxHp(), 10) != null)
+					&& state.combat.ready(skill.getId(), npc.getObjectId(), System.currentTimeMillis()))
+				{
+					return new CastAction(skill, npc, false, 0, skill.getId(), builder.paceMs, 200, 0);
+				}
+			}
 		}
 		return null;
 	}
@@ -589,6 +883,15 @@ public class PhantomPlaystyleEngine
 
 	private static boolean conditionsPass(Player npc, Creature focus, PlayEntry entry, Skill skill, boolean healerReady, boolean underAttack)
 	{
+		return conditionsPass(npc, focus, entry, skill, healerReady, underAttack, npc.getCharges());
+	}
+
+	private static boolean conditionsPass(Player npc, Creature focus, PlayEntry entry, Skill skill, boolean healerReady, boolean underAttack, int charges)
+	{
+		if ((skill.getId() == 286) && !(focus instanceof Monster))
+		{
+			return false; // the general Olympiad area exception must not turn pack hate into a PvP action
+		}
 		for (Cond cond : entry.conds)
 		{
 			switch (cond)
@@ -666,7 +969,7 @@ public class PhantomPlaystyleEngine
 				}
 				case CHARGES:
 				{
-					if (npc.getCharges() < entry.chargesAtLeast)
+					if (charges < entry.chargesAtLeast)
 					{
 						return false;
 					}
@@ -674,7 +977,7 @@ public class PhantomPlaystyleEngine
 				}
 				case CHARGES_BELOW:
 				{
-					if (npc.getCharges() >= entry.chargesBelow)
+					if (charges >= entry.chargesBelow)
 					{
 						return false;
 					}
@@ -876,6 +1179,15 @@ public class PhantomPlaystyleEngine
 	 */
 	private static int countPack(Player npc, Monster focus, Skill skill)
 	{
+		if (skill.getId() == 286)
+		{
+			if (focus.isRaid() || focus.isRaidMinion())
+			{
+				return Integer.MIN_VALUE;
+			}
+			final int pack = countProvokePack(npc, skill);
+			return PhantomCombatPolicy.provokePack(npc.getCurrentHpPercent(), pack) ? pack : Integer.MIN_VALUE;
+		}
 		final int radius = (skill.getAffectRange() > 0) ? skill.getAffectRange() : DEFAULT_AOE_RADIUS;
 		final boolean casterCentered = isCasterCentered(skill);
 		final Creature center = casterCentered ? npc : focus;
@@ -894,6 +1206,10 @@ public class PhantomPlaystyleEngine
 			{
 				return Integer.MIN_VALUE; // never AoE into party-owned sleep
 			}
+			if (!mob.isInCombat() && inArc(npc, mob, arc))
+			{
+				return Integer.MIN_VALUE; // a real blast would pull this neutral, even though it does not inflate the score
+			}
 			// Only mobs actually in the fight (not neutral passers-by) and inside the skill's real hit geometry.
 			if (mob.isInCombat() && inArc(npc, mob, arc))
 			{
@@ -901,6 +1217,40 @@ public class PhantomPlaystyleEngine
 			}
 		}
 		return count;
+	}
+
+	/** Provoke uses native negative effect-point hate; its whole aura must belong to this existing fight. */
+	private static int countProvokePack(Player npc, Skill skill)
+	{
+		int count = 0;
+		int healthyTankHeld = 0;
+		for (Creature nearby : World.getInstance().getVisibleObjectsInRange(npc, Creature.class, skill.getAffectRange()))
+		{
+			if (nearby.isAlikeDead() || (nearby == npc))
+			{
+				continue;
+			}
+			if (nearby instanceof Monster mob)
+			{
+				final boolean ours = (mob.getTarget() == npc) || ((npc.getParty() != null) && npc.getParty().getMembers().contains(mob.getTarget()));
+				if (!mob.isInCombat() || mob.isSleeping() || mob.isRaid() || mob.isRaidMinion() || !ours)
+				{
+					return Integer.MIN_VALUE;
+				}
+				count++;
+				if ((mob.getTarget() instanceof Player victim) && (victim != npc)
+					&& (PhantomManager.roleForClass(victim.getPlayerClass()) == PhantomManager.PartyRole.TANK)
+					&& (victim.getCurrentHpPercent() >= 70) && !victim.isStunned() && !victim.isSleeping() && !victim.isParalyzed() && !victim.isOutOfControl())
+				{
+					healthyTankHeld++;
+				}
+			}
+			else if (nearby.isAttackable() || (nearby.isPlayable() && ((npc.getParty() == null) || !npc.getParty().getMembers().contains(nearby))))
+			{
+				return Integer.MIN_VALUE; // no guards, other players, pets or unrelated fights in the native aura
+			}
+		}
+		return PhantomCombatPolicy.protectedTankPack(count, healthyTankHeld) ? Integer.MIN_VALUE : count;
 	}
 
 	/**
@@ -923,6 +1273,10 @@ public class PhantomPlaystyleEngine
 			{
 				return Integer.MIN_VALUE; // never AoE into party-owned sleep
 			}
+			if (!mob.isInCombat())
+			{
+				return Integer.MIN_VALUE; // Spoil Festival would also pull an untouched neutral
+			}
 			if (!mob.isSpoiled() && mob.isInCombat()) // unspoiled AND in the fight - not a neutral bystander
 			{
 				count++;
@@ -932,7 +1286,7 @@ public class PhantomPlaystyleEngine
 	}
 
 	/** Range gate: melee skills need contact reach, ranged ones their cast range (with slack for drift while both move). */
-	private static boolean inReach(Player npc, Creature focus, Skill skill)
+	public static boolean inReach(Player npc, Creature focus, Skill skill)
 	{
 		final int reach = (skill.getCastRange() > 0) ? (skill.getCastRange() + RANGE_SLACK) : ((skill.getAffectRange() > 0) ? skill.getAffectRange() : MELEE_REACH + RANGE_SLACK);
 		// Collision-aware, so this matches the range the rest of the core actually fights at: CreatureAI.maybeMoveToPawn
@@ -945,8 +1299,8 @@ public class PhantomPlaystyleEngine
 
 	/**
 	 * Parks the skills this player's playstyle owns out of AutoUse at recruit time so the round-robin
-	 * dump can't compete with the engine's decisions. Every OFFENSIVE auto-skill is parked when a
-	 * playstyle exists (unlisted ones only come back through the scored {@link #pickFallback}). Playstyle-LISTED
+	 * dump can't compete with the engine's decisions. Every OFFENSIVE auto-skill is parked when usable
+	 * tactics or a controller baseline exist (unlisted ones return through {@link #pickFallback}). Playstyle-LISTED
 	 * ids are additionally pulled out of the auto-BUFF list - PANIC/LIMIT skills (Ultimate Evasion,
 	 * Frenzy, Battle Roar...) are continuous self-buffs there, and AutoUse would burn them off cooldown at
 	 * full HP on trash (the same bug the tank's Ultimate Defense parking fixed). Unlisted self-buffs keep
@@ -958,30 +1312,45 @@ public class PhantomPlaystyleEngine
 		// generation could not field a playstyle for (usableCount == 0 below), and so the first combat tick after
 		// recruit does not needlessly unpark+repark (syncParkingIfReloaded sees the same generation and no-ops).
 		state.parkedGeneration = PhantomPlaystyleData.getInstance().getGeneration();
+		state.parkedController = FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER;
+		state.parkedFallback = FakePlayersConfig.PHANTOM_SKILL_FALLBACK;
 		final Playstyle playstyle = PhantomPlaystyleData.getInstance().getPlaystyle(npc.getPlayerClass().getId(), roleName);
 		// FAIL-SAFE: only take over when the playstyle can actually field something at this member's level.
 		// A lineage whose entries are all still unlearned (a level 25 member on a 3rd-class rotation) would
 		// otherwise be parked into silence - no AutoUse dump AND no playstyle cast. Legacy behavior is the
 		// floor: this system may only ever improve a phantom, never leave it fighting bare-handed.
-		if (usableCount(npc, playstyle) == 0)
+		if ((usableCount(npc, playstyle) == 0) && !(FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER && hasBaseline(npc)))
 		{
 			return;
 		}
+		state.controllerOwned = FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER;
 		if (!npc.getAutoUseSettings().getAutoSkills().isEmpty())
 		{
 			state.parkedIds = new ArrayList<>(npc.getAutoUseSettings().getAutoSkills());
-			npc.getAutoUseSettings().getAutoSkills().clear();
+			npc.getAutoUseSettings().getAutoSkills().removeAll(state.parkedIds);
 		}
-		for (PlayEntry entry : playstyle.entries)
+		for (PlayEntry entry : (playstyle == null) ? List.<PlayEntry>of() : playstyle.entries)
 		{
-			if (npc.getAutoUseSettings().getAutoBuffs().remove(Integer.valueOf(entry.skillId)))
+			parkBuff(npc, state, entry.skillId);
+		}
+		if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER)
+		{
+			for (int id : PhantomClassRecovery.RECOVERY_SKILLS)
 			{
-				if (state.parkedBuffIds == null)
-				{
-					state.parkedBuffIds = new ArrayList<>();
-				}
-				state.parkedBuffIds.add(entry.skillId);
+				parkBuff(npc, state, id);
 			}
+		}
+	}
+
+	private static void parkBuff(Player npc, PlayState state, int id)
+	{
+		if (npc.getAutoUseSettings().getAutoBuffs().remove(Integer.valueOf(id)))
+		{
+			if (state.parkedBuffIds == null)
+			{
+				state.parkedBuffIds = new ArrayList<>();
+			}
+			state.parkedBuffIds.add(id);
 		}
 	}
 
@@ -992,6 +1361,11 @@ public class PhantomPlaystyleEngine
 	 */
 	public static void unparkAutoSkills(Player npc, PlayState state)
 	{
+		if (state.controllerOwned && npc.isAffectedBySkill(441))
+		{
+			PhantomClassRecovery.cancel(npc);
+		}
+		state.controllerOwned = false;
 		if (state.parkedIds != null)
 		{
 			for (Integer id : state.parkedIds)
@@ -1022,18 +1396,41 @@ public class PhantomPlaystyleEngine
 	 * freshly resolved playstyle, atomically, before the tick's {@link #pick} resolves the new generation:
 	 * <ul>
 	 * <li>ADDED a playstyle - nothing was parked before, so the offensive AutoUse is now parked (no double casting).</li>
-	 * <li>REMOVED a playstyle - the old parking is restored and re-park is a no-op (usableCount 0), so the member
-	 * falls back to its AutoUse instead of being stuck on plain attacks.</li>
+	 * <li>REMOVED a playstyle - the controller keeps ownership only if a learned baseline remains; otherwise
+	 * offensive AutoUse is restored.</li>
 	 * <li>UNCHANGED - the same skills are parked again (idempotent).</li>
 	 * </ul>
 	 */
 	public static void syncParkingIfReloaded(Player npc, PlayState state, String roleName)
 	{
-		if (state.parkedGeneration == PhantomPlaystyleData.getInstance().getGeneration())
+		if ((state.parkedGeneration == PhantomPlaystyleData.getInstance().getGeneration()) && (state.parkedController == FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER) && (state.parkedFallback == FakePlayersConfig.PHANTOM_SKILL_FALLBACK))
 		{
 			return;
 		}
 		unparkAutoSkills(npc, state); // hand back whatever the previous generation parked...
 		parkAutoSkills(npc, state, roleName); // ...then take ownership for the new one (re-stamps parkedGeneration)
+	}
+
+	/** Baseline ownership is safe only when the learned kit contains an eligible ordinary attack. */
+	public static boolean hasBaseline(Player npc)
+	{
+		if (!FakePlayersConfig.PHANTOM_SKILL_FALLBACK)
+		{
+			return false;
+		}
+		for (Skill skill : npc.getAllSkills())
+		{
+			if (ordinaryAttack(skill) && (skill.getTargetType() == TargetType.ONE) && !skill.isDance() && !skill.isChanneling() && !skill.isSuicideAttack())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** Direct damage capabilities only. A debuff's numeric power is not its damage output. */
+	private static boolean ordinaryAttack(Skill skill)
+	{
+		return PhantomManager.isAttackSpell(skill) && skill.hasEffectType(EffectType.MAGICAL_ATTACK, EffectType.PHYSICAL_ATTACK, EffectType.PHYSICAL_ATTACK_HP_LINK, EffectType.DEATH_LINK, EffectType.HP_DRAIN);
 	}
 }

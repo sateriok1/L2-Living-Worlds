@@ -8,11 +8,13 @@ in `dist/game/config/Custom/FakePlayers.ini`; each can be set to `False` for the
 
 Say a trade marker as a whole word anywhere in the line, then the item(s):
 
-- `wts ssd`, `ssd wtb`, `[WTS] Spirit Ore`, `S> bsoe`, `B> sps`, `selling` / `buying`
+- `wts ssd`, `ssd wtb`, `[WTS] Spirit Ore`, `S> bsoe`, `S>bsoe`, `B> sps`, `selling` / `buying`
 - Up to 3 items per ad: `wts ssd, bsoe, spirit ore` (each gets its own bot).
 - Price hint is optional: `wtb ssd 5k`, `wts ssd 300 adena`.
-- Enchant: `wts +5 Sword of Revolution`.
+- Enchant: `wts +5 Sword of Revolution` (the bot buys only a copy at exactly +5) or `wtb +5 Sword of Revolution`
+  (the bot sells a +5 piece, priced by grade and enchant).
 - Linking an item from your inventory in the ad uses that exact item (id, enchant, stack) and skips the name search.
+  Other items named in words in the same ad are still read. (Interlude has no chat item links, so this path is idle here.)
 
 Words that merely contain a marker (e.g. "unselling") are not ads.
 
@@ -20,12 +22,16 @@ Words that merely contain a marker (e.g. "unselling") are not ads.
 
 1. **Parse** the ad (`TradeAdParserV2`), resolve linked items (`TradeAdLinkedItems`), and match names against the shop catalogue.
 2. **Clarify** when several items match equally well (`TradeAdClarify`): the bot asks which one you meant. Answer with the
-   name or its number.
+   name or its number, and add an amount or price if you like (`second one @150k`). Several unclear items are asked
+   about one at a time.
 3. **Reply** after a short delay (`TradeAdReplyMinMs`/`MaxMs`, default 3-7 s, was 5-15 s). If an item is not recognised
    a bot sends a format example (`TradeAdFormatHint`).
 4. **Say why not** instead of staying silent (`TradeAdStatusReplies`): offer cap reached, nobody free, nothing stocked.
+   A player posting more than twice the per-player offer cap in ads per minute (at least 6) is ignored until the minute
+   passes, before any brain call.
 5. **Haggle**: the brain receives the deal context headers, including the limit price (`X-Deal-Limit-Price`) and the
-   enchant (`X-Deal-Enchant`), so counters stay inside the allowed band.
+   enchant (`X-Deal-Enchant`). The limit is kept inside the economy price band, so a price the bot names is one it
+   will accept.
 6. **Hold the offer** for `TradeOfferTimeoutSeconds` (default 180 s, was 420 s).
 7. **Meet and trade**: the bot goes to the meet spot and opens the private store.
 
@@ -36,12 +42,12 @@ Words that merely contain a marker (e.g. "unselling") are not ads.
 - `TradeAdEnchantPricing`: enchanted gear is priced up by grade and enchant level; deal stock and price bands are
   enchant-aware. Off = enchant ignored.
 
-## Meet recall (optional)
+## Meet recall
 
-Off by default (bots walk as before). When `FakePlayerMeetRecall = True` a bot that agreed to meet you "reads a scroll":
+On by default (set `FakePlayerMeetRecall = False` to make bots always walk). A bot that agreed to meet you "reads a scroll":
 it stands still for `FakePlayerMeetRecallCastSeconds` (4) and lands on the meet spot.
 
-- Recalls if farther than `FakePlayerMeetRecallMinDistance` (1500) or if it made no progress for `FakePlayerMeetRecallStuckSeconds` (15). Close bots just walk.
+- Recalls if farther than `FakePlayerMeetRecallMinDistance` (500) or if it made no progress for `FakePlayerMeetRecallStuckSeconds` (10). Close bots just walk.
 - At most one recall per meet.
 - `FakePlayerMeetNearPlayer = True` picks the landmark (gatekeeper, warehouse, shop) nearest YOU instead of the bot, so you and the bot mean the same place. Only has effect with recall on.
 
@@ -60,11 +66,11 @@ it stands still for `FakePlayerMeetRecallCastSeconds` (4) and lands on the meet 
 | `TradeAdMaxItems` | 3 |
 | `TradeAdEnchantPricing` | True |
 | `TradeOfferTimeoutSeconds` | 180 |
-| `FakePlayerMeetRecall` | False |
+| `FakePlayerMeetRecall` | True |
 | `FakePlayerMeetRecallCastSeconds` | 4 |
-| `FakePlayerMeetRecallMinDistance` | 1500 |
-| `FakePlayerMeetRecallStuckSeconds` | 15 |
-| `FakePlayerMeetNearPlayer` | False |
+| `FakePlayerMeetRecallMinDistance` | 500 |
+| `FakePlayerMeetRecallStuckSeconds` | 10 |
+| `FakePlayerMeetNearPlayer` | True |
 
 ## Code map
 

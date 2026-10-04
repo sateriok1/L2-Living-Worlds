@@ -18,6 +18,12 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/TownFakeInviteRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/FakePlayerGrudgeRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomSkillFallbackRules.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCombatController.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCombatPolicy.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomChargePlanner.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyDowntime.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyCommandRules.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCasterPositioning.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/modules/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/java/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/js/**"
@@ -38,6 +44,12 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/TownFakeInviteRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/FakePlayerGrudgeRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomSkillFallbackRules.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCombatController.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCombatPolicy.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomChargePlanner.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyDowntime.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyCommandRules.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCasterPositioning.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/modules/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/java/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/js/**"
@@ -79,6 +91,12 @@ jobs:
             "java/org/l2jmobius/gameserver/managers/TownFakeInviteRules.java" \
             "java/org/l2jmobius/gameserver/managers/FakePlayerGrudgeRules.java" \
             "java/org/l2jmobius/gameserver/managers/PhantomSkillFallbackRules.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomCombatController.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomCombatPolicy.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomChargePlanner.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomPartyDowntime.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomPartyCommandRules.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomCasterPositioning.java" \
             "java/org/l2jmobius/gameserver/modules/Json.java" \
             "java/org/l2jmobius/gameserver/modules/ModuleException.java" \
             "java/org/l2jmobius/gameserver/modules/ModuleManifest.java" \
@@ -99,6 +117,12 @@ jobs:
           java -cp build/test-classes TownFakeInviteRulesTest
           java -cp build/test-classes FakePlayerGrudgeRulesTest
           java -cp build/test-classes PhantomSkillFallbackRulesTest
+          java -cp build/test-classes PhantomCombatControllerTest
+          java -cp build/test-classes PhantomClassPolicyTest
+          java -cp build/test-classes PhantomPartyDowntimeTest
+          java -cp build/test-classes PhantomPartyCommandRulesTest
+          java -cp build/test-classes PhantomCasterPositioningTest
+          java -cp build/test-classes TradeAdParserTest
           java -cp build/test-classes ModuleFrameworkTest
 
       - name: Set up Node

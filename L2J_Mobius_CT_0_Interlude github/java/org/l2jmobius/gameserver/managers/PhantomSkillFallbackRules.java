@@ -30,13 +30,39 @@ package org.l2jmobius.gameserver.managers;
  */
 public final class PhantomSkillFallbackRules
 {
+	public enum Owner
+	{
+		NONE, PLAYSTYLE, AUTO_USE, THREAT, SURVIVAL, SUPPORT, SWEEP, CLASS_RECOVERY
+	}
+
+	/** Applicable routines that own skills excluded from generic fallback. */
+	public static Owner owner(int id, boolean nativeSpoil)
+	{
+		return switch (id)
+		{
+			case 28, 18 -> Owner.THREAT;
+			case 110 -> Owner.SURVIVAL;
+			case 1069, 1201, 1016 -> Owner.SUPPORT;
+			case 254, 302 -> nativeSpoil ? Owner.AUTO_USE : Owner.PLAYSTYLE;
+			case 42 -> nativeSpoil ? Owner.AUTO_USE : Owner.SWEEP;
+			case 441, 417 -> Owner.CLASS_RECOVERY;
+			case 286 -> Owner.PLAYSTYLE;
+			default -> Owner.NONE;
+		};
+	}
+
+	public static int[] reservedSkills()
+	{
+		return NEVER_CAST.clone();
+	}
+
 	/** A skill the server rejected is not tried again for this long (a bad weapon, a lost target, a failed condition). */
 	public static final long REJECT_BACKOFF_MS = 2000;
 
 	/**
 	 * Skills the fallback never casts: the ones the party manager owns (threat, survival, crowd control, rescue) or that
 	 * would hurt the fight if cast on reuse. Aggression, Aura of Hate, Ultimate Defense, Sleep, Dryad Root, Resurrection,
-	 * Provoke, Spoil, Spoil Festival, Sweeper.
+	 * Provoke, Spoil, Spoil Festival, Sweeper, Force Meditation, Pain of Sagittarius.
 	 */
 	private static final int[] NEVER_CAST =
 	{
@@ -49,7 +75,9 @@ public final class PhantomSkillFallbackRules
 		286,
 		254,
 		302,
-		42
+		42,
+		441,
+		417
 	};
 
 	private PhantomSkillFallbackRules()

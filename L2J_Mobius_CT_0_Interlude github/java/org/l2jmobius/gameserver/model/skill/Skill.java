@@ -895,6 +895,12 @@ public class Skill
 		return (_effectPoint < 0) && (_targetType != TargetType.SELF);
 	}
 	
+	/** Read-only native conditions for project-owned planning and strict launch validation. */
+	public List<Condition> getCastConditions()
+	{
+		return (_preCondition == null) ? List.of() : List.copyOf(_preCondition);
+	}
+
 	public boolean checkCondition(Creature creature, WorldObject object, boolean itemOrWeapon)
 	{
 		if (creature.isFakePlayer() || (creature.isGM() && !GeneralConfig.GM_SKILL_RESTRICTION))

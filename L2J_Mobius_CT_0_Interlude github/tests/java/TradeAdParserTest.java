@@ -24,6 +24,7 @@ public class TradeAdParserTest
 		testClarifyPick();
 		testEnchantMultiplier();
 		testCounterLimit();
+		testReviewFixes();
 		System.out.println(checks + " checks, " + failures + " failures");
 		System.exit(failures == 0 ? 0 : 1);
 	}
@@ -157,6 +158,37 @@ public class TradeAdParserTest
 		eq(0, FakePlayerChatParsing.counterLimit(0, true), "no ask, no limit");
 		truth(FakePlayerChatParsing.acceptsCounter(85, 100, true) && !FakePlayerChatParsing.acceptsCounter(84, 100, true), "limit matches acceptsCounter (sell)");
 		truth(FakePlayerChatParsing.acceptsCounter(115, 100, false) && !FakePlayerChatParsing.acceptsCounter(116, 100, false), "limit matches acceptsCounter (buy)");
+	}
+
+	private static void testReviewFixes()
+	{
+		// FPC-194: compact S>/B> forms.
+		final TradeAd compactSell = FakePlayerChatParsing.parseTradeAd("S>SSD 5k");
+		truth((compactSell != null) && compactSell.selling, "S>SSD is a sell ad");
+		eq("SSD 5k", (compactSell == null) ? null : compactSell.phrase, "S>SSD phrase");
+		final TradeAd compactBuy = FakePlayerChatParsing.parseTradeAd("B>bsoe");
+		truth((compactBuy != null) && !compactBuy.selling, "B>bsoe is a buy ad");
+		truth(FakePlayerChatParsing.parseTradeAd("crabs>ssd") == null, "s> inside a word is not a marker");
+		// FPC-189: +N enchant survives the split and is read, then stripped.
+		eq(Arrays.asList("+5 Sword of Revolution"), FakePlayerChatParsing.splitTradeItems("+5 Sword of Revolution", 3), "+5 is not a separator");
+		eq(Arrays.asList("+5 Sword of Revolution", "bsoe"), FakePlayerChatParsing.splitTradeItems("+5 Sword of Revolution + bsoe", 3), "plain + still splits");
+		eq(5, FakePlayerChatParsing.parseEnchant("+5 Sword of Revolution"), "enchant read");
+		eq(12, FakePlayerChatParsing.parseEnchant("Sword of Revolution +12 300k"), "enchant after the name");
+		eq(0, FakePlayerChatParsing.parseEnchant("ssd 5k"), "no enchant");
+		eq(0, FakePlayerChatParsing.parseEnchant("a+5"), "+ inside a word is not an enchant");
+		eq("Sword of Revolution 300k", FakePlayerChatParsing.stripEnchant("+5 Sword of Revolution 300k"), "enchant stripped");
+		eq(0, FakePlayerChatParsing.parseTradeQuantity(FakePlayerChatParsing.stripStatedPrices(FakePlayerChatParsing.stripEnchant("+5 Sword of Revolution")), false), "+5 is not read as an amount (0 = none stated)");
+		// FPC-192: amounts and prices name no item, real words do.
+		truth(!FakePlayerChatParsing.hasItemWord("5k @300"), "amount and price are not an item");
+		truth(FakePlayerChatParsing.hasItemWord("bsoe"), "bsoe is an item word");
+		// FPC-191: the pick words leave the clarify answer, amount and price stay.
+		eq("@150k", FakePlayerChatParsing.stripClarifyPick("second one @150k"), "pick words stripped");
+		eq("5k", FakePlayerChatParsing.stripClarifyPick("the 1st pls 5k"), "pick words stripped, amount kept");
+		// FPC-188: the stated limit is always inside the band.
+		eq(85, FakePlayerChatParsing.executableCounterLimit(100, true, 50, 200), "limit inside the band is unchanged");
+		eq(95, FakePlayerChatParsing.executableCounterLimit(100, true, 95, 200), "seller limit raised to the band floor");
+		eq(105, FakePlayerChatParsing.executableCounterLimit(100, false, 50, 105), "buyer limit lowered to the band ceiling");
+		eq(0, FakePlayerChatParsing.executableCounterLimit(0, true, 1, 10), "no ask, no limit");
 	}
 
 	private static void eq(Object expected, Object actual, String what)

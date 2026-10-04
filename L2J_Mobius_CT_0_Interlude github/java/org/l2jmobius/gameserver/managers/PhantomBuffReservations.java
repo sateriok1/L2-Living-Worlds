@@ -109,6 +109,12 @@ public final class PhantomBuffReservations
 		return (cur != null) && (cur[0] > nowMillis) && (cur[1] != askerId);
 	}
 
+	/** Return a refused cast's claim without disturbing a claim now held by a different caster. */
+	public void release(long key, int casterId)
+	{
+		_reservations.computeIfPresent(key, (k, cur) -> (cur[1] == casterId) ? null : cur);
+	}
+
 	/** @return the number of live entries (test/diagnostic use). */
 	public int size()
 	{

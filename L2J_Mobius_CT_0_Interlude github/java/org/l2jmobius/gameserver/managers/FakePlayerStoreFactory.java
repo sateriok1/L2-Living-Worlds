@@ -455,6 +455,14 @@ public class FakePlayerStoreFactory
 
 	private static List<ItemTemplate> rankItems(String phrase, boolean allowedOnly, int limit)
 	{
+		// FPC-198: exact words first; only when nothing matches is a small typo per word allowed, so a misspelt name
+		// (the brain's "Homunculus Sword" for "Homunkulus's Sword") still resolves, and an exact match always wins.
+		final List<ItemTemplate> exact = rankItems(phrase, allowedOnly, limit, false);
+		return exact.isEmpty() ? rankItems(phrase, allowedOnly, limit, true) : exact;
+	}
+
+	private static List<ItemTemplate> rankItems(String phrase, boolean allowedOnly, int limit, boolean fuzzy)
+	{
 		final List<String> wanted = matchTokens(phrase);
 		final List<ItemTemplate> result = new ArrayList<>();
 		if (wanted.isEmpty())
@@ -492,11 +500,12 @@ public class FakePlayerStoreFactory
 				continue;
 			}
 			final List<String> have = matchTokens(name);
-			if (!have.containsAll(wanted))
+			final int typos = FakePlayerStorePricing.tokenMatchCost(have, wanted, fuzzy);
+			if (typos < 0)
 			{
 				continue; // every meaningful word the player typed must be in the item name
 			}
-			int score = have.size() - wanted.size(); // fewer extra words = closer match
+			int score = (have.size() - wanted.size()) + (typos * 3); // fewer extra words and fewer typos = closer match
 			for (String noise : MATCH_NOISE)
 			{
 				if (have.contains(noise))

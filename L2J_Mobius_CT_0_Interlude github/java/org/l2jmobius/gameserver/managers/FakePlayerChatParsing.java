@@ -582,7 +582,38 @@ public final class FakePlayerChatParsing
 			return false;
 		}
 		final String low = text.toLowerCase(Locale.ROOT);
-		return containsAnyLower(low, "cancel", "forget it", "forget the deal", "nvm", "never mind", "nevermind", "not interested", "no thanks", "no thank", "no deal", "not coming", "won't come", "wont come", "not gonna", "changed my mind", "change my mind", "call it off", "called off", "call off", "drop it", "not anymore", "no longer", "forget about it");
+		return containsAnyLower(low, "cancel", "forget it", "forget the deal", "nvm", "never mind", "nevermind", "not interested", "no thanks", "no thank", "no deal", "not coming", "won't come", "wont come", "not gonna", "changed my mind", "change my mind", "call it off", "called off", "call off", "drop it", "not anymore", "no longer", "forget about it",
+			// FPC-199: running out of money calls the deal off too ("sorry forgot, no money").
+			"no money", "no adena", "not enough money", "not enough adena", "out of adena", "cant afford", "can't afford", "cannot afford", "can not afford", "dont have the money", "don't have the money", "dont have money", "don't have money", "dont have enough", "don't have enough", "dont have adena", "don't have adena", "im broke", "i'm broke", "i am broke");
+	}
+
+	private static final Set<String> _CONFIRM_WORDS = Set.of("y", "yes", "yep", "yeah", "ya", "yup", "sure", "ok", "okay", "k", "kk", "sorry", "sry");
+
+	/**
+	 * {@code true} when a short reply says yes to the bot's "u calling it off?" question (FPC-199). Only consulted
+	 * right after the bot asked it, so a plain "ok" elsewhere still reads as acceptance.
+	 * @param text the player's latest message
+	 * @return {@code true} for a short yes with no new price or acceptance phrase
+	 */
+	public static boolean isCancelConfirm(String text)
+	{
+		if (text == null)
+		{
+			return false;
+		}
+		final String[] tokens = text.toLowerCase(Locale.ROOT).trim().split("[^a-z']+");
+		if ((tokens.length == 0) || (tokens.length > 3) || (parseCounterOffer(text) > 0))
+		{
+			return false;
+		}
+		for (String token : tokens)
+		{
+			if (!token.isEmpty() && !_CONFIRM_WORDS.contains(token))
+			{
+				return false;
+			}
+		}
+		return !tokens[0].isEmpty() || (tokens.length > 1);
 	}
 
 	/** @return the level requested in an LFP shout (1-80), or 0 when none is given (match the recruiter). */
@@ -615,11 +646,14 @@ public final class FakePlayerChatParsing
 	// ---- WTS/WTB reliability (parser v2) ---------------------------------------------------------------------------
 
 	/** A whole-word trade marker anywhere in the line: "wts ssd", "ssd wtb", "[WTS] ssd", "S> ssd". */
-	public static final Pattern TRADE_MARKER = Pattern.compile("(?<![A-Za-z0-9])(wts|wtb|selling|buying|s>|b>)(?![A-Za-z0-9])", Pattern.CASE_INSENSITIVE);
+	// FPC-194: the S>/B> forms carry their own boundary (the '>'), so "S>SSD" reads as well as "S> SSD".
+	public static final Pattern TRADE_MARKER = Pattern.compile("(?<![A-Za-z0-9])((?:wts|wtb|selling|buying)(?![A-Za-z0-9])|[sb]>)", Pattern.CASE_INSENSITIVE);
 	/** An item link as the client sends it: char 8, the markup, char 8. */
 	public static final Pattern ITEM_LINK = Pattern.compile("\\u0008[^\\u0008]*\\u0008?");
 	private static final Pattern LINK_OBJECT_ID = Pattern.compile("ID=(\\d{1,10})");
-	private static final Pattern ITEM_SPLIT = Pattern.compile("\\s*(?:,|;|&|\\+|/|\\band\\b)\\s*", Pattern.CASE_INSENSITIVE);
+	// FPC-189: a '+' right before a digit is an enchant ("+5 Sword"), not an item separator.
+	private static final Pattern ITEM_SPLIT = Pattern.compile("\\s*(?:,|;|&|\\+(?!\\d)|/|\\band\\b)\\s*", Pattern.CASE_INSENSITIVE);
+	private static final Pattern ENCHANT_TOKEN = Pattern.compile("(?<![A-Za-z0-9])\\+(\\d{1,2})(?![0-9])");
 	private static final java.util.Set<String> NON_ITEM_WORDS = java.util.Set.of("adena", "each", "per", "pcs", "pieces", "cheap", "pst", "pm", "and", "the", "for", "ea");
 
 	/** A parsed trade ad: which way the player trades, the text with marker/links removed, and any linked object ids. */
@@ -728,7 +762,8 @@ public final class FakePlayerChatParsing
 		return (max > 0) && (out.size() > max) ? new java.util.ArrayList<>(out.subList(0, max)) : out;
 	}
 
-	private static boolean hasItemWord(String piece)
+	/** @return {@code true} if the piece holds a word that can name an item (not just an amount, a price or filler) */
+	public static boolean hasItemWord(String piece)
 	{
 		for (String word : piece.toLowerCase().split("[^a-z]+"))
 		{
@@ -804,6 +839,55 @@ public final class FakePlayerChatParsing
 			return 0;
 		}
 		return (int) Math.max(1L, Math.round(offeredUnit * (selling ? (1.0 - COUNTER_HAGGLE_TOLERANCE) : (1.0 + COUNTER_HAGGLE_TOLERANCE))));
+	}
+
+	/**
+	 * FPC-189: the enchant a player wrote for an item ("wts +5 Sword of Revolution").
+	 * @return the first {@code +N} in the phrase (1 to 30), or 0 when there is none
+	 */
+	public static int parseEnchant(String phrase)
+	{
+		if (phrase == null)
+		{
+			return 0;
+		}
+		final Matcher m = ENCHANT_TOKEN.matcher(phrase);
+		if (!m.find())
+		{
+			return 0;
+		}
+		final int value = Integer.parseInt(m.group(1));
+		return ((value >= 1) && (value <= 30)) ? value : 0;
+	}
+
+	/** @return the phrase with every {@code +N} enchant token removed, so it is not read as an amount or a price */
+	public static String stripEnchant(String phrase)
+	{
+		return (phrase == null) ? "" : ENCHANT_TOKEN.matcher(phrase).replaceAll(" ").replaceAll("\\s+", " ").trim();
+	}
+
+	private static final Pattern CLARIFY_PICK_WORDS = Pattern.compile("(?i)\\b(?:1|2|3|1st|2nd|3rd|first|second|third|former|latter|one|the|pls|please|that)\\b");
+
+	/** FPC-191: the clarify answer without its pick words ("second one @150k" leaves "@150k"). */
+	public static String stripClarifyPick(String answer)
+	{
+		return (answer == null) ? "" : CLARIFY_PICK_WORDS.matcher(answer).replaceAll(" ").replaceAll("\\s+", " ").trim();
+	}
+
+	/**
+	 * FPC-188: the worst price the bot can actually settle at: the haggle limit ({@link #counterLimit}) kept inside the
+	 * economy band [bandLow, bandHigh], so the number the bot names is always one Java will accept.
+	 */
+	public static int executableCounterLimit(int offeredUnit, boolean selling, int bandLow, int bandHigh)
+	{
+		final int limit = counterLimit(offeredUnit, selling);
+		if (limit <= 0)
+		{
+			return 0;
+		}
+		final int lo = Math.max(1, Math.min(bandLow, bandHigh));
+		final int hi = Math.max(bandLow, bandHigh);
+		return Math.max(lo, Math.min(hi, limit));
 	}
 
 	/** One example ad that always parses, shown when a bot cannot read the player's item. */
