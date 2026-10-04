@@ -57,6 +57,7 @@ import org.l2jmobius.gameserver.model.actor.instance.Warehouse;
 import org.l2jmobius.gameserver.model.spawns.Spawn;
 import org.l2jmobius.gameserver.model.zone.ZoneId;
 import org.l2jmobius.gameserver.network.serverpackets.DeleteObject;
+import org.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
 
 /**
  * Gives fake players a sense of purpose: instead of standing still (or following a single hand-drawn
@@ -199,6 +200,8 @@ public class FakePlayerBehaviorManager implements IXmlReader
 		long waitingSince; // start of the current wait window (reset whenever the player interacts)
 		boolean summonNudged; // already asked "still coming?" for this window
 		Player summonPlayer;
+		long recallAt; // when the "scroll" finishes casting and the bot lands on the meet spot (0 = not recalling)
+		boolean recallDone; // already recalled once on this meet
 
 		// A trade arranged from chat: the store to open when the bot reaches the meet spot.
 		int pendingStoreType; // PrivateStoreType id to activate on arrival, or 0 for a plain meet
@@ -1037,6 +1040,17 @@ public class FakePlayerBehaviorManager implements IXmlReader
 					return; // keep waiting
 				}
 			}
+			else if (state.recallAt > 0)
+			{
+				// Reading the scroll: hold still until the cast is over, then land on the meet spot.
+				if (now >= state.recallAt)
+				{
+					state.recallAt = 0;
+					npc.teleToLocation(state.summonTarget);
+					state.summonLastProgress = now;
+				}
+				return;
+			}
 			else if (npc.isInCombat() || npc.isAttackingNow())
 			{
 				state.summonLastProgress = now; // a fight is not a stall
@@ -1106,6 +1120,11 @@ public class FakePlayerBehaviorManager implements IXmlReader
 			}
 			else
 			{
+				if (shouldRecall(npc, state, now))
+				{
+					startRecall(npc, state, now);
+					return;
+				}
 				if (!npc.isMoving())
 				{
 					// Aim at the real destination (not a wall-clamped point) so the engine pathfinds around
@@ -1329,7 +1348,7 @@ public class FakePlayerBehaviorManager implements IXmlReader
 		{
 			return false;
 		}
-		final Location destination = resolveMeetSpot(bot, spot);
+		final Location destination = resolveMeetSpot(bot, spot, player);
 		if (destination == null)
 		{
 			return false; // no such landmark nearby (different town / unknown spot), or no free spot beside it
@@ -1348,12 +1367,50 @@ public class FakePlayerBehaviorManager implements IXmlReader
 		state.waitingSince = 0;
 		state.summonNudged = false;
 		state.summonPlayer = player;
+		state.recallAt = 0;
+		state.recallDone = false;
 		LOGGER.info("FPC_MEET_START bot=" + bot.getName()
 			+ " player=" + (player == null ? "" : player.getName())
 			+ " spot=" + spot
 			+ " x=" + bot.getX() + " y=" + bot.getY() + " z=" + bot.getZ()
 			+ " targetX=" + destination.getX() + " targetY=" + destination.getY() + " targetZ=" + destination.getZ());
 		return true;
+	}
+
+	/**
+	 * @return {@code true} if this bot should recall to the meet spot now: the feature is on, it has not recalled yet on
+	 *         this meet, and it is either far from the spot or has made no progress for a while
+	 */
+	private static boolean shouldRecall(Npc npc, BotState state, long now)
+	{
+		if (!FakePlayersConfig.FAKE_PLAYER_MEET_RECALL || state.recallDone || (state.summonTarget == null))
+		{
+			return false;
+		}
+		if (npc.calculateDistance2D(state.summonTarget) > FakePlayersConfig.FAKE_PLAYER_MEET_RECALL_MIN_DISTANCE)
+		{
+			return true;
+		}
+		return (now - state.summonLastProgress) > (FakePlayersConfig.FAKE_PLAYER_MEET_RECALL_STUCK_SECONDS * 1000L);
+	}
+
+	/** Starts the "scroll of escape" cast: the bot stops, plays the cast animation and says so. */
+	private static void startRecall(Npc npc, BotState state, long now)
+	{
+		final int castMs = FakePlayersConfig.FAKE_PLAYER_MEET_RECALL_CAST_SECONDS * 1000;
+		state.recallDone = true;
+		state.recallAt = now + castMs;
+		state.summonLastProgress = now; // casting is not a stall
+		npc.stopMove(null);
+		npc.broadcastPacket(new MagicSkillUse(npc, npc, 2013, 1, castMs, 0)); // Scroll of Escape
+		final Player who = state.summonPlayer;
+		if (who != null)
+		{
+			final String line = Rnd.nextBoolean() ? ("reading a scroll, back in " + FakePlayersConfig.FAKE_PLAYER_MEET_RECALL_CAST_SECONDS + " sec") : "using a scroll, hold on";
+			FakePlayerChatManager.getInstance().sendChat(who, npc.getName(), line);
+		}
+		LOGGER.info("FPC_MEET_RECALL bot=" + npc.getName() + " x=" + npc.getX() + " y=" + npc.getY() + " z=" + npc.getZ()
+			+ " targetX=" + state.summonTarget.getX() + " targetY=" + state.summonTarget.getY() + " targetZ=" + state.summonTarget.getZ());
 	}
 
 	/**
@@ -1512,6 +1569,8 @@ public class FakePlayerBehaviorManager implements IXmlReader
 		state.summonPlayer = null;
 		state.summonArrived = false;
 		state.summonNudged = false;
+		state.recallAt = 0;
+		state.recallDone = false;
 		state.pendingStoreType = 0;
 		state.pendingStock = null;
 		state.pendingTitle = null;
@@ -1617,6 +1676,30 @@ public class FakePlayerBehaviorManager implements IXmlReader
 		}
 	}
 
+	/**
+	 * Claim one specific bot as the trade responder (used when a bot already asked the player a clarifying question and
+	 * should be the one to make the offer). Falls back to {@code null} if that bot is no longer free.
+	 */
+	public Npc tryClaimSpecificTradeResponder(Player player, Npc npc)
+	{
+		if ((player == null) || (npc == null) || !npc.isFakePlayer())
+		{
+			return null;
+		}
+		synchronized (_tradeClaimLock)
+		{
+			final long now = System.currentTimeMillis();
+			final BotState state = _bots.get(npc.getObjectId());
+			if (isTradeResponderFree(state, npc.getFakePlayerAppearance(), now))
+			{
+				state.dealClaimExpire = now + TRADE_CLAIM_TTL;
+				state.dealPlayer = player;
+				return npc;
+			}
+		}
+		return null;
+	}
+
 	public Npc tryClaimTradeResponder(Player player)
 	{
 		if (player == null)
@@ -1677,7 +1760,7 @@ public class FakePlayerBehaviorManager implements IXmlReader
 		state.dealClaimExpire = 0; // FPC-066: the durable pending reservation now supersedes any transient claim
 		// Reserve the bot for this offer, but let the reservation lapse if no meet is agreed in time. Cleared
 		// the moment a meet actually starts (requestMeet) so a walking/trading bot never lapses mid-deal.
-		state.pendingDealExpire = (storeType != 0) ? (System.currentTimeMillis() + OFFER_TTL) : 0;
+		state.pendingDealExpire = (storeType != 0) ? (System.currentTimeMillis() + (FakePlayersConfig.TRADE_OFFER_TIMEOUT_SECONDS * 1000L)) : 0;
 		return true;
 	}
 
@@ -1795,22 +1878,42 @@ public class FakePlayerBehaviorManager implements IXmlReader
 	}
 
 	/** Resolves a meet-spot keyword to the nearest matching town NPC's location, searching near the bot. */
-	private Location resolveMeetSpot(Npc bot, String spot)
+	private Location resolveMeetSpot(Npc bot, String spot, Player player)
 	{
 		final String s = spot.toLowerCase();
+		final Class<? extends Npc> type;
+		final boolean excludeTeleporters;
 		if (s.contains("gate") || s.equals("gk") || s.contains("teleport"))
 		{
-			return nearestNpcLocation(bot, Teleporter.class, false);
+			type = Teleporter.class;
+			excludeTeleporters = false;
 		}
-		if (s.contains("ware") || s.equals("wh") || s.contains("freight"))
+		else if (s.contains("ware") || s.equals("wh") || s.contains("freight"))
 		{
-			return nearestNpcLocation(bot, Warehouse.class, false);
+			type = Warehouse.class;
+			excludeTeleporters = false;
 		}
-		if (s.contains("shop") || s.contains("merchant") || s.contains("store") || s.contains("grocer") || s.contains("smith"))
+		else if (s.contains("shop") || s.contains("merchant") || s.contains("store") || s.contains("grocer") || s.contains("smith"))
 		{
-			return nearestNpcLocation(bot, Merchant.class, true); // a plain merchant, not a gatekeeper
+			type = Merchant.class; // a plain merchant, not a gatekeeper
+			excludeTeleporters = true;
 		}
-		return null;
+		else
+		{
+			return null;
+		}
+		// Optionally search around the PLAYER, so "the gatekeeper" is the one beside you, not the bot's nearest. Only with
+		// recall on: a bot cannot be expected to walk to a landmark in another town.
+		// Falls back to the bot's surroundings when no such landmark is within range of the player.
+		if (FakePlayersConfig.FAKE_PLAYER_MEET_RECALL && FakePlayersConfig.FAKE_PLAYER_MEET_NEAR_PLAYER && (player != null))
+		{
+			final Location nearPlayer = nearestNpcLocation(player, bot, type, excludeTeleporters);
+			if (nearPlayer != null)
+			{
+				return nearPlayer;
+			}
+		}
+		return nearestNpcLocation(bot, bot, type, excludeTeleporters);
 	}
 
 	/**
@@ -1818,10 +1921,10 @@ public class FakePlayerBehaviorManager implements IXmlReader
 	 *            for a plain shop
 	 * @return the nearest in-range NPC of the given type, or {@code null}
 	 */
-	private Location nearestNpcLocation(Npc bot, Class<? extends Npc> type, boolean excludeTeleporters)
+	private Location nearestNpcLocation(WorldObject origin, Npc bot, Class<? extends Npc> type, boolean excludeTeleporters)
 	{
 		final List<Npc> found = new ArrayList<>();
-		World.getInstance().forEachVisibleObjectInRange(bot, type, SUMMON_SEARCH_RANGE, n ->
+		World.getInstance().forEachVisibleObjectInRange(origin, type, SUMMON_SEARCH_RANGE, n ->
 		{
 			if (!excludeTeleporters || !(n instanceof Teleporter))
 			{
@@ -1832,14 +1935,14 @@ public class FakePlayerBehaviorManager implements IXmlReader
 		double best = Double.MAX_VALUE;
 		for (Npc n : found)
 		{
-			final double distance = bot.calculateDistance2D(n);
+			final double distance = origin.calculateDistance2D(n);
 			if (distance < best)
 			{
 				best = distance;
 				nearest = n;
 			}
 		}
-		return nearest == null ? null : nearbyMeetLocation(bot, nearest);
+		return nearest == null ? null : nearbyMeetLocation(origin, nearest);
 	}
 
 	/**
@@ -1848,12 +1951,12 @@ public class FakePlayerBehaviorManager implements IXmlReader
 	 * across town with buildings in between. Getting there is left to the movement pathfinding.
 	 * @return a spot beside the landmark, or {@code null} if none of the sampled spots is usable
 	 */
-	private Location nearbyMeetLocation(Npc bot, Npc landmark)
+	private Location nearbyMeetLocation(WorldObject origin, Npc landmark)
 	{
 		// Prefer standing on the side facing the approaching bot, so the spot visually reads as "next to the NPC"
 		// on the bot's way in instead of hidden behind it. The samples still fan out all the way around.
 		final GeoEngine geo = GeoEngine.getInstance();
-		final double baseAngle = Math.atan2(bot.getY() - landmark.getY(), bot.getX() - landmark.getX());
+		final double baseAngle = Math.atan2(origin.getY() - landmark.getY(), origin.getX() - landmark.getX());
 		for (int attempt = 0; attempt < 12; attempt++)
 		{
 			final double angle = baseAngle + ((attempt % 2 == 0 ? 1 : -1) * ((attempt + 1) / 2) * (Math.PI / 6));

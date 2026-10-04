@@ -612,6 +612,203 @@ public final class FakePlayerChatParsing
 		return (text != null) && PARTY_ASK.matcher(text).find();
 	}
 
+	// ---- WTS/WTB reliability (parser v2) ---------------------------------------------------------------------------
+
+	/** A whole-word trade marker anywhere in the line: "wts ssd", "ssd wtb", "[WTS] ssd", "S> ssd". */
+	public static final Pattern TRADE_MARKER = Pattern.compile("(?<![A-Za-z0-9])(wts|wtb|selling|buying|s>|b>)(?![A-Za-z0-9])", Pattern.CASE_INSENSITIVE);
+	/** An item link as the client sends it: char 8, the markup, char 8. */
+	public static final Pattern ITEM_LINK = Pattern.compile("\\u0008[^\\u0008]*\\u0008?");
+	private static final Pattern LINK_OBJECT_ID = Pattern.compile("ID=(\\d{1,10})");
+	private static final Pattern ITEM_SPLIT = Pattern.compile("\\s*(?:,|;|&|\\+|/|\\band\\b)\\s*", Pattern.CASE_INSENSITIVE);
+	private static final java.util.Set<String> NON_ITEM_WORDS = java.util.Set.of("adena", "each", "per", "pcs", "pieces", "cheap", "pst", "pm", "and", "the", "for", "ea");
+
+	/** A parsed trade ad: which way the player trades, the text with marker/links removed, and any linked object ids. */
+	public static final class TradeAd
+	{
+		public final boolean selling;
+		public final String phrase;
+		public final java.util.List<Integer> linkedObjectIds;
+
+		TradeAd(boolean selling, String phrase, java.util.List<Integer> linkedObjectIds)
+		{
+			this.selling = selling;
+			this.phrase = phrase;
+			this.linkedObjectIds = linkedObjectIds;
+		}
+	}
+
+	/** @return the object ids of every item link in the raw chat text, in order (ownership is NOT checked here). */
+	public static java.util.List<Integer> extractLinkedObjectIds(String text)
+	{
+		final java.util.List<Integer> ids = new java.util.ArrayList<>();
+		if (text == null)
+		{
+			return ids;
+		}
+		final Matcher links = ITEM_LINK.matcher(text);
+		while (links.find())
+		{
+			final Matcher id = LINK_OBJECT_ID.matcher(links.group());
+			if (id.find())
+			{
+				try
+				{
+					ids.add(Integer.parseInt(id.group(1)));
+				}
+				catch (NumberFormatException e)
+				{
+					// ignore an absurd id
+				}
+			}
+		}
+		return ids;
+	}
+
+	/** @return the text with item link markup removed (the visible item name inside a link is dropped too). */
+	public static String stripItemLinks(String text)
+	{
+		return (text == null) ? "" : ITEM_LINK.matcher(text).replaceAll(" ").replaceAll("\\s+", " ").trim();
+	}
+
+	/**
+	 * Parse a trade ad. The first whole-word marker decides the direction; the phrase is everything else with links
+	 * removed. Returns {@code null} when the line carries no marker.
+	 */
+	public static TradeAd parseTradeAd(String text)
+	{
+		if ((text == null) || text.isEmpty())
+		{
+			return null;
+		}
+		final java.util.List<Integer> ids = extractLinkedObjectIds(text);
+		final String plain = stripItemLinks(text);
+		final Matcher marker = TRADE_MARKER.matcher(plain);
+		if (!marker.find())
+		{
+			return null;
+		}
+		final String token = marker.group(1).toLowerCase();
+		final boolean selling = token.equals("wts") || token.equals("selling") || token.equals("s>");
+		String phrase = (plain.substring(0, marker.start()) + " " + plain.substring(marker.end())).replaceAll("[\\[\\]():!]+", " ").replaceAll("\\s+", " ").trim();
+		// a later marker ("wts ssd wtb adena") belongs to a second ad; this parse keeps only the first ad's words
+		final Matcher second = TRADE_MARKER.matcher(phrase);
+		if (second.find())
+		{
+			phrase = phrase.substring(0, second.start()).trim();
+		}
+		return new TradeAd(selling, phrase, ids);
+	}
+
+	/**
+	 * Split an ad phrase into up to {@code max} separate item phrases ("ssd 5k, bsoe 2 and spirit ore" -> three). A
+	 * piece with no real item word (a bare "300 adena") is folded back into the previous piece so prices stay attached.
+	 */
+	public static java.util.List<String> splitTradeItems(String phrase, int max)
+	{
+		final java.util.List<String> out = new java.util.ArrayList<>();
+		if ((phrase == null) || phrase.isBlank())
+		{
+			return out;
+		}
+		for (String piece : ITEM_SPLIT.split(phrase.trim()))
+		{
+			if (piece.isBlank())
+			{
+				continue;
+			}
+			if (!out.isEmpty() && !hasItemWord(piece))
+			{
+				out.set(out.size() - 1, out.get(out.size() - 1) + " " + piece.trim());
+			}
+			else
+			{
+				out.add(piece.trim());
+			}
+		}
+		return (max > 0) && (out.size() > max) ? new java.util.ArrayList<>(out.subList(0, max)) : out;
+	}
+
+	private static boolean hasItemWord(String piece)
+	{
+		for (String word : piece.toLowerCase().split("[^a-z]+"))
+		{
+			if ((word.length() >= 2) && !NON_ITEM_WORDS.contains(word) && !word.equals("k") && !word.equals("kk"))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Resolve a reply to "did you mean A or B?". Accepts the option number ("2"), ordinal words ("first", "second"),
+	 * or a word that appears in exactly one option name.
+	 * @return the zero-based option index, or -1 when the reply picks none (or several)
+	 */
+	public static int pickClarifiedOption(String reply, java.util.List<String> optionNames)
+	{
+		if ((reply == null) || (optionNames == null) || optionNames.isEmpty())
+		{
+			return -1;
+		}
+		final String r = reply.toLowerCase().trim();
+		final String[][] ordinals = { { "1", "first", "1st", "former" }, { "2", "second", "2nd", "latter" }, { "3", "third", "3rd" } };
+		for (int i = 0; (i < ordinals.length) && (i < optionNames.size()); i++)
+		{
+			for (String o : ordinals[i])
+			{
+				if (java.util.Arrays.asList(r.split("[^a-z0-9]+")).contains(o))
+				{
+					return i;
+				}
+			}
+		}
+		int found = -1;
+		for (int i = 0; i < optionNames.size(); i++)
+		{
+			for (String w : optionNames.get(i).toLowerCase().split("[^a-z0-9]+"))
+			{
+				if ((w.length() < 3) || NON_ITEM_WORDS.contains(w))
+				{
+					continue;
+				}
+				boolean unique = true;
+				for (int j = 0; j < optionNames.size(); j++)
+				{
+					if ((j != i) && java.util.Arrays.asList(optionNames.get(j).toLowerCase().split("[^a-z0-9]+")).contains(w))
+					{
+						unique = false;
+					}
+				}
+				if (unique && java.util.Arrays.asList(r.split("[^a-z0-9]+")).contains(w))
+				{
+					if ((found >= 0) && (found != i))
+					{
+						return -1;
+					}
+					found = i;
+				}
+			}
+		}
+		return found;
+	}
+
+	/**
+	 * The worst price the bot will still settle at after haggling: the lowest a selling bot accepts, or the highest a
+	 * buying bot pays. Mirrors {@link #acceptsCounter}, so the brain can explain a refusal with the real number.
+	 */
+	public static int counterLimit(int offeredUnit, boolean selling)
+	{
+		if (offeredUnit <= 0)
+		{
+			return 0;
+		}
+		return (int) Math.max(1L, Math.round(offeredUnit * (selling ? (1.0 - COUNTER_HAGGLE_TOLERANCE) : (1.0 + COUNTER_HAGGLE_TOLERANCE))));
+	}
+
+	/** One example ad that always parses, shown when a bot cannot read the player's item. */
+	public static final String FORMAT_HINT = "try 'WTS Soulshot D 5k @300' or 'WTB Blessed Scroll of Escape 2' (item name, optional amount, optional price)";
+
 	/** @return {@code true} if the text opens with a WTS/WTB trade-ad marker. */
 	public static boolean looksLikeTradeAd(String text)
 	{

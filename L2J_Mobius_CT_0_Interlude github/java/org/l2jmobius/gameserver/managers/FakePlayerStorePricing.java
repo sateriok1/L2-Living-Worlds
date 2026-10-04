@@ -64,6 +64,27 @@ public final class FakePlayerStorePricing
 	}
 
 	/**
+	 * Price multiplier for an enchanted item. Safe enchants (+1..+3) add a little; beyond +3 (the risky range) each
+	 * level compounds, because the odds of getting there fall. The effect scales with grade (an enchanted D weapon is
+	 * worth far less than an enchanted S one). +0 and non-positive levels are always 1.0; the result is capped at +16.
+	 * @param gradeLevel the CrystalType level (0 none, 1 D, 2 C, 3 B, 4 A, 5 S)
+	 * @param enchant the enchant level
+	 * @return a multiplier of at least 1.0
+	 */
+	public static double enchantMultiplier(int gradeLevel, int enchant)
+	{
+		if (enchant <= 0)
+		{
+			return 1.0;
+		}
+		final int e = Math.min(enchant, 16);
+		final double base = (e <= 3) ? (0.08 * e) : (0.24 + (0.24 * (Math.pow(1.35, e - 3) - 1.0) / 0.35));
+		final double[] gradeWeight = { 0.4, 0.6, 0.8, 1.0, 1.0, 1.1 };
+		final double weight = gradeWeight[Math.max(0, Math.min(gradeLevel, gradeWeight.length - 1))];
+		return 1.0 + (base * weight);
+	}
+
+	/**
 	 * Clamp a whisper-negotiated unit price into a sane band around the item reference price. The agreed
 	 * price is trust-based on the LLM, so without this a player (or a trade-chat prompt injection) could talk
 	 * a bot into selling a rare item for 1 adena or buying junk for billions. Haggling still works within the

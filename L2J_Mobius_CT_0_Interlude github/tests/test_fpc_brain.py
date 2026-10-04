@@ -247,6 +247,37 @@ class FpcBrainRegressionTests(unittest.TestCase):
         self.assertIn("[[SHOP]]", note)
         self.assertNotIn("[[SHOP:SELL", note)
 
+    def test_deal_note_names_enchant_and_haggle_limit(self):
+        with self.brain.app.test_request_context(headers={
+            "X-Deal-Side": "SELL",
+            "X-Deal-Item": "Artisan's Sword",
+            "X-Deal-Count": "1",
+            "X-Deal-Unit-Price": "400000",
+            "X-Deal-Enchant": "4",
+            "X-Deal-Limit-Price": "340000",
+            "X-Deal-Decision": "REJECT",
+            "X-Deal-Last-Counter": "200000",
+        }):
+            note = self.brain.deal_note_from_headers()
+        self.assertIn("+4 Artisan's Sword", note)
+        self.assertIn("lowest you would actually go is 340k", note)
+        with self.brain.app.test_request_context(headers={
+            "X-Deal-Side": "BUY",
+            "X-Deal-Item": "Soulshot D-grade",
+            "X-Deal-Count": "5000",
+            "X-Deal-Unit-Price": "40",
+            "X-Deal-Limit-Price": "46",
+            "X-Deal-Decision": "REJECT",
+            "X-Deal-Last-Counter": "90",
+        }):
+            note = self.brain.deal_note_from_headers()
+        self.assertIn("highest you would actually go is 46", note)
+        # no decision -> the limit is not volunteered
+        with self.brain.app.test_request_context(headers={
+            "X-Deal-Side": "SELL", "X-Deal-Item": "X", "X-Deal-Unit-Price": "100", "X-Deal-Limit-Price": "85",
+        }):
+            self.assertNotIn("actually go", self.brain.deal_note_from_headers())
+
     def test_deal_note_asks_for_amount_when_needed(self):
         with self.brain.app.test_request_context(headers={
             "X-Deal-Side": "SELL",

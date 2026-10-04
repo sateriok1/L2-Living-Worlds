@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.l2jmobius.commons.util.Rnd;
 import org.l2jmobius.gameserver.config.RatesConfig;
+import org.l2jmobius.gameserver.config.custom.FakePlayersConfig;
 import org.l2jmobius.gameserver.data.xml.ItemData;
 import org.l2jmobius.gameserver.data.xml.RecipeData;
 import org.l2jmobius.gameserver.model.actor.holders.npc.FakePlayerCraftItem;
@@ -436,12 +437,32 @@ public class FakePlayerStoreFactory
 
 	private static ItemTemplate findItemByName(String phrase, boolean allowedOnly)
 	{
+		final List<ItemTemplate> ranked = rankItems(phrase, allowedOnly, 1);
+		return ranked.isEmpty() ? null : ranked.get(0);
+	}
+
+	/**
+	 * Items that match a phrase equally well as the best match, best first (at most {@code limit}). More than one
+	 * entry means the phrase is ambiguous and the bot should ask which one was meant.
+	 * @param phrase the words naming the item
+	 * @param limit the most candidates to return
+	 * @return the tied-best matches, or an empty list when nothing matched
+	 */
+	public static List<ItemTemplate> findCloseMatches(String phrase, int limit)
+	{
+		return rankItems(phrase, true, Math.max(1, limit));
+	}
+
+	private static List<ItemTemplate> rankItems(String phrase, boolean allowedOnly, int limit)
+	{
 		final List<String> wanted = matchTokens(phrase);
+		final List<ItemTemplate> result = new ArrayList<>();
 		if (wanted.isEmpty())
 		{
-			return null;
+			return result;
 		}
-		ItemTemplate best = null;
+		final List<ItemTemplate> items = new ArrayList<>();
+		final List<Integer> scores = new ArrayList<>();
 		int bestScore = Integer.MAX_VALUE;
 		for (ItemTemplate item : ItemData.getInstance().getAllItems())
 		{
@@ -480,16 +501,21 @@ public class FakePlayerStoreFactory
 			{
 				if (have.contains(noise))
 				{
-					score += 5; // a plain item beats a Beast/Compressed/… variant
+					score += 5; // a plain item beats a Beast/Compressed/... variant
 				}
 			}
-			if (score < bestScore)
+			items.add(item);
+			scores.add(score);
+			bestScore = Math.min(bestScore, score);
+		}
+		for (int i = 0; (i < items.size()) && (result.size() < limit); i++)
+		{
+			if (scores.get(i) == bestScore)
 			{
-				bestScore = score;
-				best = item;
+				result.add(items.get(i));
 			}
 		}
-		return best;
+		return result;
 	}
 
 	/** Normalises a name/phrase to lowercase word tokens: strips punctuation, drops filler, folds plurals. */
@@ -517,17 +543,67 @@ public class FakePlayerStoreFactory
 	 */
 	public static List<FakePlayerStoreItem> dealSellStock(int itemId, int unitPrice, int requestedCount)
 	{
+		return dealSellStock(itemId, unitPrice, requestedCount, 0);
+	}
+
+	/**
+	 * Sell stock for an enchanted item: the reference price is lifted by the enchant multiplier (when enabled).
+	 * @param enchant the enchant level of the piece the bot sells (0 for none)
+	 */
+	public static List<FakePlayerStoreItem> dealSellStock(int itemId, int unitPrice, int requestedCount, int enchant)
+	{
 		final List<FakePlayerStoreItem> stock = new ArrayList<>();
 		final ItemTemplate item = ItemData.getInstance().getTemplate(itemId);
 		if ((item != null) && FakePlayerStoreEligibility.isAllowed(itemId))
 		{
 			final int fallbackCount = item.isStackable() ? bulkAmount(item.getReferencePrice()) : 1;
 			final int count = normalizedDealCount(item, requestedCount, fallbackCount);
-			final int price = unitPrice > 0 ? clampDealPrice(unitPrice, effRef(item.getReferencePrice()), true) : FakePlayerStorePricing.naturalizePrice(priced(effRef(item.getReferencePrice()), 1.0, 1.6));
-			stock.add(line(item, 0, count, price));
+			final int ref = enchantedRef(item, enchant);
+			final int price = unitPrice > 0 ? clampDealPrice(unitPrice, ref, true) : FakePlayerStorePricing.naturalizePrice(priced(ref, 1.0, 1.6));
+			stock.add(line(item, usableEnchant(item, enchant), count, price));
 		}
 		return stock;
 	}
+
+	/** Effective reference price including the enchant multiplier (a no-op at +0 or with enchant pricing off). */
+	private static int enchantedRef(ItemTemplate item, int enchant)
+	{
+		final int ref = effRef(item.getReferencePrice());
+		if (!FakePlayersConfig.TRADE_AD_ENCHANT_PRICING || (enchant <= 0) || !item.isEnchantable())
+		{
+			return ref;
+		}
+		return (int) Math.min(Integer.MAX_VALUE, Math.round(ref * FakePlayerStorePricing.enchantMultiplier(item.getCrystalType().getLevel(), enchant)));
+	}
+
+	private static int usableEnchant(ItemTemplate item, int enchant)
+	{
+		return ((enchant > 0) && item.isEnchantable()) ? Math.min(enchant, 16) : 0;
+	}
+
+	/** {@link #dealPriceWithinBand(int, int, boolean)} for an enchanted piece. */
+	public static boolean dealPriceWithinBand(int itemId, int unitPrice, boolean selling, int enchant)
+	{
+		if (unitPrice <= 0)
+		{
+			return false;
+		}
+		final ItemTemplate item = ItemData.getInstance().getTemplate(itemId);
+		return (item == null) || (clampDealPrice(unitPrice, enchantedRef(item, enchant), selling) == unitPrice);
+	}
+
+	/** The lowest and highest unit price a deal for this item may settle at (for the "floor/ask" given to the brain). */
+	public static int[] dealPriceBand(int itemId, boolean selling, int enchant)
+	{
+		final ItemTemplate item = ItemData.getInstance().getTemplate(itemId);
+		if (item == null)
+		{
+			return new int[] { 1, Integer.MAX_VALUE };
+		}
+		final int ref = enchantedRef(item, enchant);
+		return new int[] { clampDealPrice(1, ref, selling), clampDealPrice(Integer.MAX_VALUE, ref, selling) };
+	}
+
 	/**
 	 * Sell stock at an explicit agreed price per unit (from a whisper-negotiated deal).
 	 * @param itemId the item to sell
@@ -558,14 +634,24 @@ public class FakePlayerStoreFactory
 	 */
 	public static List<FakePlayerStoreItem> dealBuyStock(int itemId, int unitPrice, int requestedCount)
 	{
+		return dealBuyStock(itemId, unitPrice, requestedCount, 0);
+	}
+
+	/**
+	 * Buy stock for an enchanted item the player is selling.
+	 * @param enchant the enchant level the bot will look for (0 for none)
+	 */
+	public static List<FakePlayerStoreItem> dealBuyStock(int itemId, int unitPrice, int requestedCount, int enchant)
+	{
 		final List<FakePlayerStoreItem> stock = new ArrayList<>();
 		final ItemTemplate item = ItemData.getInstance().getTemplate(itemId);
 		if ((item != null) && FakePlayerStoreEligibility.isAllowed(itemId))
 		{
 			final int fallbackCount = item.isStackable() ? bulkAmount(item.getReferencePrice()) : Rnd.get(1, 3);
 			final int count = normalizedDealCount(item, requestedCount, fallbackCount);
-			final int price = unitPrice > 0 ? clampDealPrice(unitPrice, effRef(item.getReferencePrice()), false) : FakePlayerStorePricing.naturalizePrice(priced(effRef(item.getReferencePrice()), 0.5, 0.85));
-			stock.add(line(item, 0, count, price));
+			final int ref = enchantedRef(item, enchant);
+			final int price = unitPrice > 0 ? clampDealPrice(unitPrice, ref, false) : FakePlayerStorePricing.naturalizePrice(priced(ref, 0.5, 0.85));
+			stock.add(line(item, usableEnchant(item, enchant), count, price));
 		}
 		return stock;
 	}
