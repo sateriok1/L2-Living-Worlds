@@ -5614,15 +5614,14 @@ public class PhantomManager implements IXmlReader
 		{
 			PhantomEncounterRules.clearHostile(phantom.getObjectId());
 			data.encounterEndAt = now + ENC_CORPSE_MS; // it lost: the body lies there a moment, then goes
-			final int perLevel = FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_PER_LEVEL[tier.ordinal()];
-			if ((perLevel > 0) && (victim != null) && victim.isOnline() && !victim.isDead())
-			{
-				final int reward = (int) Math.min(Integer.MAX_VALUE, (long) perLevel * phantom.getLevel()); // each kill pays its level times the tier rate
-				victim.addAdena(ItemProcessType.REWARD, reward, phantom, true);
-				LOGGER.info(getClass().getSimpleName() + ": Encounter adena reward: " + reward + " to " + victim.getName() + " for " + phantom.getName() + " (level " + phantom.getLevel() + ").");
-			}
 			if (group.memberDied())
 			{
+				final int adena = FakePlayersConfig.PHANTOM_ENCOUNTER_ADENA_REWARD[tier.ordinal()];
+				if ((adena > 0) && (victim != null) && victim.isOnline() && !victim.isDead())
+				{
+					victim.addAdena(ItemProcessType.REWARD, adena, phantom, true); // one flat payout when the whole group is down
+					LOGGER.info(getClass().getSimpleName() + ": Encounter adena reward: " + adena + " to " + victim.getName() + ".");
+				}
 				dropEncounterLoot(phantom, tier, group, victim); // the whole group is down: at most one piece drops
 			}
 			return;
