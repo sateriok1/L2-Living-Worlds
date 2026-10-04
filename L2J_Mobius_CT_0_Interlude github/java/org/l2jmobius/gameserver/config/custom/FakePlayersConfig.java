@@ -195,7 +195,7 @@ public class FakePlayersConfig
 		final int[] enchantMinDefaults = { 0, 0, 3, 5, 16 };
 		final int[] enchantMaxDefaults = { 0, 3, 4, 7, 16 };
 		final int[] lootDefaults = { 0, 0, 0, 0, 0 };
-		final int[] adenaRewardDefaults = { 100000, 250000, 500000, 1500000, 5000000 };
+		final int[] adenaRewardDefaults = { 50000, 100000, 200000, 350000, 1000000 };
 		for (int i = 0; i < encounterTiers.length; i++)
 		{
 			final String name = "PhantomEncounter" + encounterTiers[i];
