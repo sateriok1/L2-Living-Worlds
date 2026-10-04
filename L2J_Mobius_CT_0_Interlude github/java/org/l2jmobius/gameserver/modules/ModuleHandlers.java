@@ -24,10 +24,12 @@ import java.util.Arrays;
 
 import org.l2jmobius.gameserver.handler.AdminCommandHandler;
 import org.l2jmobius.gameserver.handler.BypassHandler;
+import org.l2jmobius.gameserver.handler.CommunityBoardHandler;
 import org.l2jmobius.gameserver.handler.EffectHandler;
 import org.l2jmobius.gameserver.handler.IAdminCommandHandler;
 import org.l2jmobius.gameserver.handler.IBypassHandler;
 import org.l2jmobius.gameserver.handler.IItemHandler;
+import org.l2jmobius.gameserver.handler.IParseBoardHandler;
 import org.l2jmobius.gameserver.handler.ITargetTypeHandler;
 import org.l2jmobius.gameserver.handler.IVoicedCommandHandler;
 import org.l2jmobius.gameserver.handler.ItemHandler;
@@ -111,5 +113,27 @@ public class ModuleHandlers
 	{
 		TargetHandler.getInstance().registerHandler(handler);
 		_handles.record("target handler " + handler.getClass().getSimpleName());
+	}
+
+	/**
+	 * Registers a Community Board handler (a page the board can show). Its command prefixes must not collide with
+	 * a stock board command; the board matches commands by prefix.
+	 * @param handler the handler to register
+	 */
+	public void registerBoard(IParseBoardHandler handler)
+	{
+		CommunityBoardHandler.getInstance().registerHandler(handler);
+		_handles.record("community board " + Arrays.toString(handler.getCommandList()));
+	}
+
+	/**
+	 * Adds a button to the Community Board's navigation column that runs a board command.
+	 * @param label the button text
+	 * @param bypass the board command the button runs; register its handler with {@link #registerBoard}
+	 */
+	public void registerBoardTab(String label, String bypass)
+	{
+		CommunityBoardHandler.getInstance().addNavigationTab(label, bypass);
+		_handles.record("community board tab " + label);
 	}
 }
