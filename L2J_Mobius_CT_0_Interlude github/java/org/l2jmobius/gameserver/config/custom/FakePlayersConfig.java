@@ -130,11 +130,11 @@ public class FakePlayersConfig
 		FAKE_PLAYER_RECRUIT_ENCHANT_MIN = config.getInt("FakePlayerRecruitEnchantMin", 3);
 		FAKE_PLAYER_RECRUIT_ENCHANT_MAX = config.getInt("FakePlayerRecruitEnchantMax", 6);
 		FAKE_PLAYER_AUTO_HUNTING_ZONES = config.getBoolean("PhantomAutoHuntingZones", true);
-		FAKE_PLAYER_MEET_RECALL = config.getBoolean("FakePlayerMeetRecall", false);
+		FAKE_PLAYER_MEET_RECALL = config.getBoolean("FakePlayerMeetRecall", true);
 		FAKE_PLAYER_MEET_RECALL_CAST_SECONDS = Math.max(1, config.getInt("FakePlayerMeetRecallCastSeconds", 4));
 		FAKE_PLAYER_MEET_RECALL_MIN_DISTANCE = Math.max(0, config.getInt("FakePlayerMeetRecallMinDistance", 500));
 		FAKE_PLAYER_MEET_RECALL_STUCK_SECONDS = Math.max(5, config.getInt("FakePlayerMeetRecallStuckSeconds", 10));
-		FAKE_PLAYER_MEET_NEAR_PLAYER = config.getBoolean("FakePlayerMeetNearPlayer", false);
+		FAKE_PLAYER_MEET_NEAR_PLAYER = config.getBoolean("FakePlayerMeetNearPlayer", true);
 		PHANTOM_HUNTER_PLAYSTYLES = config.getBoolean("PhantomHunterPlaystyles", true);
 		PHANTOM_SKILL_FALLBACK = config.getBoolean("PhantomSkillFallback", true);
 		PHANTOM_COMBAT_CONTROLLER = config.getBoolean("PhantomCombatController", true);

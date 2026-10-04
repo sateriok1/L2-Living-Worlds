@@ -42,9 +42,9 @@ Words that merely contain a marker (e.g. "unselling") are not ads.
 - `TradeAdEnchantPricing`: enchanted gear is priced up by grade and enchant level; deal stock and price bands are
   enchant-aware. Off = enchant ignored.
 
-## Meet recall (optional)
+## Meet recall
 
-Off by default (bots walk as before). When `FakePlayerMeetRecall = True` a bot that agreed to meet you "reads a scroll":
+On by default (set `FakePlayerMeetRecall = False` to make bots always walk). A bot that agreed to meet you "reads a scroll":
 it stands still for `FakePlayerMeetRecallCastSeconds` (4) and lands on the meet spot.
 
 - Recalls if farther than `FakePlayerMeetRecallMinDistance` (500) or if it made no progress for `FakePlayerMeetRecallStuckSeconds` (10). Close bots just walk.
@@ -66,11 +66,11 @@ it stands still for `FakePlayerMeetRecallCastSeconds` (4) and lands on the meet 
 | `TradeAdMaxItems` | 3 |
 | `TradeAdEnchantPricing` | True |
 | `TradeOfferTimeoutSeconds` | 180 |
-| `FakePlayerMeetRecall` | False |
+| `FakePlayerMeetRecall` | True |
 | `FakePlayerMeetRecallCastSeconds` | 4 |
 | `FakePlayerMeetRecallMinDistance` | 500 |
 | `FakePlayerMeetRecallStuckSeconds` | 10 |
-| `FakePlayerMeetNearPlayer` | False |
+| `FakePlayerMeetNearPlayer` | True |
 
 ## Code map
 
