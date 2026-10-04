@@ -40,6 +40,11 @@ public class ConditionPlayerCharges extends Condition
 		_charges = charges;
 	}
 	
+	public int getRequiredCharges()
+	{
+		return _charges;
+	}
+
 	@Override
 	public boolean testImpl(Creature effector, Creature effected, Skill skill, ItemTemplate item)
 	{

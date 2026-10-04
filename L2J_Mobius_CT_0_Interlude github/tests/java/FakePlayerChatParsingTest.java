@@ -257,6 +257,14 @@ public class FakePlayerChatParsingTest
 		truth(!FakePlayerChatParsing.isDealCancel("ok deal"), "acceptance -> not cancel");
 		truth(!FakePlayerChatParsing.isDealCancel("no worries, meet me at gk"), "'no worries' -> not cancel");
 		truth(!FakePlayerChatParsing.isDealCancel(null), "null -> not cancel");
+		// FPC-199: no money ends the deal; a short yes confirms the bot's cancel question.
+		truth(FakePlayerChatParsing.isDealCancel("sorry forgot, no money. Sorry"), "'no money' -> cancel");
+		truth(FakePlayerChatParsing.isDealCancel("cant afford it"), "'cant afford' -> cancel");
+		truth(FakePlayerChatParsing.isCancelConfirm("yes"), "'yes' confirms cancel");
+		truth(FakePlayerChatParsing.isCancelConfirm("yeah sorry"), "'yeah sorry' confirms cancel");
+		truth(!FakePlayerChatParsing.isCancelConfirm("yes 12k?"), "a new price is not a cancel confirm");
+		truth(!FakePlayerChatParsing.isCancelConfirm("no im coming to gk now"), "a long reply is not a cancel confirm");
+		truth(!FakePlayerChatParsing.isCancelConfirm(""), "empty is not a cancel confirm");
 	}
 
 	private static void testLfpLevel()

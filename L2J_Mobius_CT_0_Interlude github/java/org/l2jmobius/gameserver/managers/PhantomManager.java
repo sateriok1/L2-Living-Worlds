@@ -431,6 +431,7 @@ public class PhantomManager implements IXmlReader
 	// phantom, and the distance within which it stops moving and picks one up.
 	private static final int LOOT_SCAN_RANGE = 250;
 	private static final int LOOT_PICKUP_RANGE = 40;
+	private static final int FIELD_SWEEP_SKILL_ID = 42;
 
 	// Body slots a phantom is geared in. R_HAND = sword; the rest are LIGHT/HEAVY armor pieces.
 	private static final BodyPart[] GEAR_SLOTS =
@@ -1140,6 +1141,7 @@ public class PhantomManager implements IXmlReader
 		int rearTargetId; // the target a dagger is stepping behind (positionHunterRear); a new target resets rearTries
 		int rearTries; // blocked steps behind rearTargetId so far (gives up at HUNTER_REAR_MAX_TRIES)
 		long rearMoveAt; // when the last step behind was issued
+		volatile boolean classRecovering; // safe class sustain owns the scanner until its cast/effect ends
 		// PvP personality, rolled once at construction (see PhantomPvpManager). 0-100 each.
 		final boolean aggressor; // an aggressor may initiate PvP (react to a flag/PK, gank); a non-aggressor only ever defends
 		final int bravery; // higher = tolerates being more outmatched before it flees (shifts the flee HP threshold)
@@ -3651,7 +3653,7 @@ public class PhantomManager implements IXmlReader
 		{
 			return;
 		}
-		if (PhantomPlaystyleData.getInstance().getPlaystyle(phantom.getPlayerClass().getId(), hunterRole(phantom)) == null)
+		if ((PhantomPlaystyleData.getInstance().getPlaystyle(phantom.getPlayerClass().getId(), hunterRole(phantom)) == null) && !(FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER && PhantomPlaystyleEngine.hasBaseline(phantom)))
 		{
 			return; // no rotation for this class - leave it on native AutoUse (unchanged behavior)
 		}
@@ -3761,6 +3763,15 @@ public class PhantomManager implements IXmlReader
 		final PhantomPartyManager party = PhantomPartyManager.getInstance();
 		final int mpReserve = data.recruited ? party.mpReserveOf(phantom, HUNTER_MP_RESERVE) : HUNTER_MP_RESERVE;
 		final boolean healerReady = data.recruited ? party.healerReadyOf(phantom) : (phantom.getParty() == null);
+		if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER)
+		{
+			PhantomPlaystyleEngine.syncParkingIfReloaded(phantom, play, role);
+			PhantomCombatActions.observe(phantom, play);
+			final PhantomPlaystyleEngine.CastAction action = PhantomPlaystyleEngine.choose(phantom, focus, play, healerReady, underAttack(phantom), mpReserve, role);
+			PhantomCombatActions.execute(phantom, focus, play, action, !data.mage);
+			hunterDbg(phantom, focus, data, "combat " + play.combat.summary() + ((action == null) ? "" : (" skill=" + action.skill.getId() + " " + action.skill.getName())));
+			return;
+		}
 		if (phantom.isCastingNow() || phantom.isCastingSimultaneouslyNow())
 		{
 			hunterDbg(phantom, focus, data, "casting");
@@ -3889,6 +3900,11 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void keepMeleeAttacking(Player phantom, Creature focus)
 	{
+		if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER)
+		{
+			PhantomCombatActions.maintainAttack(phantom, focus);
+			return;
+		}
 		if (phantom.isCastingNow() || phantom.isCastingSimultaneouslyNow())
 		{
 			return; // let a real cast finish; the swing resumes on a later tick
@@ -4776,13 +4792,17 @@ public class PhantomManager implements IXmlReader
 			final Player mage = data.player;
 			try
 			{
-				if (mage.isDead() || mage.isCastingNow() || mage.isMovementDisabled())
+				if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER)
+				{
+					PhantomCombatActions.observe(mage, data.play);
+				}
+				if (mage.isDead() || mage.isCastingNow() || (!FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER && mage.isMovementDisabled()))
 				{
 					continue; // don't interrupt a cast or fight a stun
 				}
 				// Out of MP: a caster must NOT melee. Disengage and rest to regen; if a mob is on it, back away
 				// first and rest once clear. Stop the hunt so AutoPlay doesn't re-target it while it recovers.
-				if (mage.getCurrentMpPercent() < MAGE_CAST_MP_PERCENT)
+				if ((mage.getCurrentMpPercent() < MAGE_CAST_MP_PERCENT) && (!FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER || !(mage.getTarget() instanceof Monster active) || active.isDead() || (PhantomPlaystyleEngine.combatAvailability(mage, active, data.play, true, underAttack(mage), HUNTER_MP_RESERVE, playRole(mage, data)) == PhantomCombatPolicy.Availability.UNAVAILABLE)))
 				{
 					// Stop the hunt so AutoPlay doesn't re-target it while it recovers.
 					if (mage.isAutoPlaying())
@@ -4818,7 +4838,7 @@ public class PhantomManager implements IXmlReader
 				// Once at casting range, drive the nuke through the engine (offensive AutoUse is parked for a mage with
 				// a playstyle, same as a party caster). Out of range, positionMage is walking it in and this is skipped;
 				// tryHunterPlaystyle no-ops for an unparked mage, so a no-playstyle caster keeps its AutoUse nuking.
-				if (mage.calculateDistance2D(focus) <= (MAGE_CAST_RANGE + MAGE_RANGE_TOLERANCE))
+				if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER || (mage.calculateDistance2D(focus) <= (MAGE_CAST_RANGE + MAGE_RANGE_TOLERANCE)))
 				{
 					tryHunterPlaystyle(mage, focus, data);
 				}
@@ -4838,6 +4858,14 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void positionMage(Player mage, Creature target)
 	{
+		if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER)
+		{
+			final PhantomData data = _phantoms.get(mage.getObjectId());
+			final PhantomPlaystyleEngine.PlayState play = (data == null) ? null : playStateFor(mage, data);
+			final int reach = PhantomCombatActions.casterReach(mage, play, (data == null) ? null : playRole(mage, data), MAGE_CAST_RANGE);
+			PhantomCombatActions.approachCaster(mage, target, reach, 0);
+			return;
+		}
 		double dx = mage.getX() - target.getX();
 		double dy = mage.getY() - target.getY();
 		double distance = Math.hypot(dx, dy);
@@ -5816,6 +5844,7 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void drivePvp(Player phantom, PhantomData data, Player target, long now)
 	{
+		PhantomClassRecovery.cancel(phantom); // release meditation before either fighting or fleeing
 		if (now >= data.nextPvpDecisionAt)
 		{
 			data.nextPvpDecisionAt = now + PVP_DECISION_HOLD_MS;
@@ -5848,6 +5877,12 @@ public class PhantomManager implements IXmlReader
 		phantom.setTarget(target);
 		if (data.mage)
 		{
+			if (FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER)
+			{
+				positionMage(phantom, target);
+				tryHunterPlaystyle(phantom, target, data);
+				return;
+			}
 			// Caster: hold at cast range and nuke, never walk in to melee. Out of range, close the gap first.
 			if (phantom.calculateDistance2D(target) > (MAGE_CAST_RANGE + MAGE_RANGE_TOLERANCE))
 			{
@@ -6476,6 +6511,21 @@ public class PhantomManager implements IXmlReader
 				{
 					continue; // Olympiad nobles, buddies and recruited party members are not part of the hunt/deconflict
 				}
+				if ((data.play != null) && PhantomClassRecovery.tick(phantom, data.play,
+					FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER && (data.huntPauseUntil == 0) && (data.pvpTargetOid == 0) && !phantom.isInCombat() && !hasLiveMonsterTarget(phantom) && !isMonsterNear(phantom)))
+				{
+					data.classRecovering = true;
+					AutoPlayTaskManager.getInstance().stopAutoPlay(phantom);
+					continue;
+				}
+				if (data.classRecovering)
+				{
+					data.classRecovering = false;
+					if (data.pvpTargetOid == 0)
+					{
+						enableAutoHunt(phantom, data.mage, data);
+					}
+				}
 
 				// PvP owns this phantom this tick: the pvpCombat tick has it engaged with (or fleeing from) a player.
 				// Leave its target and intention alone so the hunt loop does not yank it back onto a monster.
@@ -6503,6 +6553,10 @@ public class PhantomManager implements IXmlReader
 				// when the hard loot cap is hit.
 				if (data.huntPauseUntil > 0)
 				{
+					if ((now < data.lootCapAt) && sweepFieldCorpses(phantom, data))
+					{
+						continue; // corpse work owns the same bounded post-kill window before pickup or a fresh pull
+					}
 					final boolean enRoute = data.mage && ((data.lastMobX != 0) || (data.lastMobY != 0)) && (Math.hypot(phantom.getX() - data.lastMobX, phantom.getY() - data.lastMobY) > LOOT_WALK_RANGE);
 					final boolean looting = grabLoot(phantom);
 					if ((!enRoute && !looting && (now >= data.huntPauseUntil)) || (now >= data.lootCapAt))
@@ -6725,11 +6779,45 @@ public class PhantomManager implements IXmlReader
 		return best;
 	}
 
+	/** Managed field Sweeper runs before pickup while the existing post-kill deadline still owns the scanner. */
+	private boolean sweepFieldCorpses(Player phantom, PhantomData data)
+	{
+		if (!FakePlayersConfig.PHANTOM_COMBAT_CONTROLLER || (data.play == null) || !data.play.controllerOwned || underAttack(phantom))
+		{
+			return false;
+		}
+		final Skill sweeper = phantom.getKnownSkill(FIELD_SWEEP_SKILL_ID);
+		if (sweeper == null)
+		{
+			return false;
+		}
+		if (phantom.isCastingNow())
+		{
+			return (phantom.getLastSkillCast() != null) && (phantom.getLastSkillCast().getId() == FIELD_SWEEP_SKILL_ID);
+		}
+		Monster closest = null;
+		double distance = Double.MAX_VALUE;
+		for (Monster corpse : World.getInstance().getVisibleObjectsInRange(phantom, Monster.class, 600))
+		{
+			if (corpse.isDead() && corpse.isSweepActive() && (corpse.getSpoilerObjectId() == phantom.getObjectId()) && corpse.checkSpoilOwner(phantom, false)
+				&& (phantom.calculateDistance2D(corpse) < distance))
+			{
+				closest = corpse;
+				distance = phantom.calculateDistance2D(corpse);
+			}
+		}
+		if ((closest == null) || (PhantomCombatActions.availability(phantom, closest, sweeper, phantom.getCharges()) == PhantomCombatPolicy.Availability.UNAVAILABLE))
+		{
+			return false;
+		}
+		final PhantomPlaystyleEngine.CastAction action = new PhantomPlaystyleEngine.CastAction(sweeper, closest, false, 0, FIELD_SWEEP_SKILL_ID, 1000, 200, 0);
+		final PhantomCombatController.Outcome outcome = PhantomCombatActions.execute(phantom, null, data.play, action, false);
+		return (outcome == PhantomCombatController.Outcome.STARTED) || (outcome == PhantomCombatController.Outcome.BUSY) || (outcome == PhantomCombatController.Outcome.APPROACHING);
+	}
+
 	/**
-	 * Starts a post-kill breather: stops the auto-hunt so the phantom does not instantly chain the next pull, and
-	 * opens the loot-collect window (see the breather branch in {@link #assignTargets}, which grabs the drops). A
-	 * fighter stands on the corpse it is already next to; a mage walks in from cast range so it can reach the drop.
-	 * {@code huntPauseUntil} is the minimum pause; {@code lootCapAt} is the hard cap so looting never loops forever.
+	 * Stops the auto-hunt and opens a bounded post-kill window for sweep and pickup before a fresh pull.
+	 * A fighter stays near the corpse; a mage walks in from cast range. lootCapAt bounds every loot action.
 	 */
 	private void beginHuntPause(Player phantom, PhantomData data, long now)
 	{
@@ -7047,6 +7135,10 @@ public class PhantomManager implements IXmlReader
 				}
 
 				// Resting: when safe and low on HP/MP, sit to regen; stand when recovered or threatened.
+				if (data.classRecovering)
+				{
+					continue; // assignTargets owns safe class recovery and cancels it on danger
+				}
 				final boolean danger = phantom.isInCombat() || hasLiveMonsterTarget(phantom) || isMonsterNear(phantom);
 				final boolean active = phantom.isMoving() || phantom.isCastingNow() || phantom.isAttackingNow();
 				// Out of the fight: turn off a stance that drains MP (Vicious Stance); the next fight turns it back on.

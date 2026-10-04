@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.l2jmobius.commons.threads.ThreadPool;
 import org.l2jmobius.commons.util.Rnd;
+import org.l2jmobius.gameserver.model.World;
 import org.l2jmobius.gameserver.model.actor.Player;
 import org.l2jmobius.gameserver.model.actor.enums.creature.Race;
 import org.l2jmobius.gameserver.model.actor.enums.player.PlayerClass;
@@ -404,5 +405,22 @@ public final class PhantomWeaponSets
 				}
 			}
 		}
+		showGear(npc);
+	}
+
+	/**
+	 * Sends the new look to everyone who can see the member. A party member has no client, so the stock
+	 * broadcastCharInfo inside the equip returns early and nearby players kept seeing the old weapon until
+	 * something else (a catch-up teleport, walking out of view and back) resent its CharInfo.
+	 */
+	private static void showGear(Player npc)
+	{
+		World.getInstance().forEachVisibleObject(npc, Player.class, player ->
+		{
+			if (npc.isVisibleFor(player))
+			{
+				npc.sendInfo(player);
+			}
+		});
 	}
 }

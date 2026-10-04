@@ -40,9 +40,10 @@ if (!scriptMatch){ console.log("FAIL  could not find the panel script block"); p
 const stubEl = () => ({ classList:{ add(){}, remove(){}, toggle(){} }, style:{}, innerHTML:"",
   textContent:"", appendChild(){}, querySelector:() => null, querySelectorAll:() => [], dataset:{},
   addEventListener(){}, onclick:null });
+const toastEl = stubEl();
 const sandbox = {
   window:{ addEventListener(){} },                       // no showDirectoryPicker -> FS_OK is false
-  document:{ getElementById:() => stubEl(), querySelectorAll:() => [], createElement:() => stubEl(),
+  document:{ getElementById:(id) => id === "toast" ? toastEl : stubEl(), querySelectorAll:() => [], createElement:() => stubEl(),
     body:stubEl(), documentElement:{ setAttribute(){}, getAttribute:() => "dark" } },
   localStorage:{ getItem:() => null, setItem(){} },
   indexedDB:{ open:() => ({}) },
@@ -53,7 +54,7 @@ const sandbox = {
 const api = {};
 new Function(...Object.keys(sandbox), "__api", scriptMatch[1] +
   "\n;Object.assign(__api,{psParse,psSerialize,psAttrs,psSkillLine,psValidate,psState,psList," +
-  "psClassIds,psChain,psLearnLevels,psEarliest,psWhenText});"
+  "psClassIds,psChain,psLearnLevels,psEarliest,psWhenText,psRoundTripOk,psDirty,psSelfTest,psSave});"
 )(...Object.values(sandbox), api);
 
 /* ------------------------------------------------------------------ *
@@ -115,14 +116,52 @@ const list = load(text);
   if (out === text) pass("round-trip is byte-identical (" + text.split("\n").length + " lines)");
   else {
     const a = text.split(/\r?\n/), b = out.split(/\r?\n/);
+    let differingLine = false;
     for (let i = 0; i < Math.max(a.length, b.length); i++){
-      if (a[i] !== b[i]){ fail("round-trip differs at line " + (i+1) + "\n        file: " + a[i] + "\n        ours: " + b[i]); break; }
+      if (a[i] !== b[i]){ fail("round-trip differs at line " + (i+1) + "\n        file: " + a[i] + "\n        ours: " + b[i]); differingLine = true; break; }
     }
+    if (!differingLine) fail("round-trip differs in line endings despite identical line contents");
   }
 }
 check(list.length === (text.match(/<playstyle /g) || []).length, "every <playstyle> parsed");
 check(list.reduce((n,p) => n + p.entries.length, 0) === (text.match(/<skill /g) || []).length, "every <skill> row parsed");
 check(list.every(p => p.entries.every(e => e.attrs.id && e.attrs.use)), "every row exposes id + use");
+
+{
+  const fixture = wrap('\t<playstyle name="X" classIds="1">\n' +
+    '\t\t<skill id="255" name="Power Smash" use="ROTATION" when="ALWAYS" />\n\t</playstyle>');
+  for (const eol of ["\n", "\r\n"]){
+    const xml = fixture.replace(/\r?\n/g, eol);
+    api.psState.original = xml;
+    api.psState.doc = api.psParse(xml);
+    api.psState.safe = api.psRoundTripOk();
+    check(api.psState.safe && api.psSerialize(api.psState.doc) === xml,
+      "the write guard accepts an exact " + (eol === "\n" ? "LF" : "CRLF") + " round-trip");
+    check(!api.psDirty(), "an unchanged document has no unsaved edits");
+    api.psSelfTest();
+    check(toastEl.textContent.startsWith("Round-trip clean:"), "Self-test confirms an exact round-trip");
+    api.psState.doc.items.find(i => i.t === "ps").entries[0].edited = true;
+    api.psState.doc.items.find(i => i.t === "ps").entries[0].attrs.mpAbove = "42";
+    check(api.psDirty(), "a real edit is still marked dirty");
+  }
+  const mixed = fixture.replace("\n", "\r\n");
+  api.psState.original = mixed;
+  api.psState.doc = api.psParse(mixed);
+  api.psState.safe = api.psRoundTripOk();
+  check(!api.psState.safe, "mixed separators are rejected by the byte-exact write guard");
+  check(!api.psDirty(), "a read-only normalization mismatch is not shown as an unsaved edit");
+  api.psSelfTest();
+  check(toastEl.textContent.includes("differs in line endings"), "Self-test reports a separator-only mismatch");
+  let writes = 0;
+  api.psState.fileHandle = { createWritable(){ writes++; throw new Error("unexpected write"); } };
+  // psSave is async; await its refusal in the final assertions below.
+  const refused = api.psSave().then(() => false, err => /round-trip guard/.test(err.message));
+  api.__writeRefusal = { refused, writes:() => writes };
+  api.psState.fileHandle = null;
+  api.psState.original = text;
+  load(text);
+  api.psState.safe = api.psRoundTripOk();
+}
 
 {
   const fsk = list.find(p => p.attrs.name === "Fortune Seeker");
@@ -242,5 +281,11 @@ fires('\t<playstyle name="X" classIds="1">\n\t\t<skill id="255" name="Wrong Name
 }
 
 /* ------------------------------------------------------------------ */
-console.log("\n" + (failures ? "FAILED: " + failures + " check(s)" : "ALL CHECKS PASSED"));
-process.exit(failures ? 1 : 0);
+api.__writeRefusal.refused.then(refused => {
+  check(refused && api.__writeRefusal.writes() === 0, "saving a read-only mismatch refuses before any file write");
+  console.log("\n" + (failures ? "FAILED: " + failures + " check(s)" : "ALL CHECKS PASSED"));
+  process.exit(failures ? 1 : 0);
+}).catch(err => {
+  console.error(err);
+  process.exit(1);
+});

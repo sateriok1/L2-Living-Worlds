@@ -311,6 +311,46 @@ public final class FakePlayerStorePricing
 		return (value == Math.floor(value)) ? String.valueOf((long) value) : String.format(Locale.US, "%.1f", value);
 	}
 
+	/**
+	 * How well an item name's tokens cover the words the player typed (FPC-198).
+	 * @param have the item name's tokens
+	 * @param wanted the player's tokens
+	 * @param fuzzy {@code false} for exact words only; {@code true} to also accept a small typo per word (one letter
+	 *            for words up to 7 letters, two for longer ones, none for words of 3 letters or less), so the brain's
+	 *            "Homunculus Sword" still finds "Homunkulus's Sword"
+	 * @return -1 when some wanted word has no match, else the total number of typos (0 = every word exact)
+	 */
+	public static int tokenMatchCost(List<String> have, List<String> wanted, boolean fuzzy)
+	{
+		int cost = 0;
+		for (String word : wanted)
+		{
+			if (have.contains(word))
+			{
+				continue;
+			}
+			if (!fuzzy)
+			{
+				return -1;
+			}
+			final int budget = FakePlayerChatParsing.fuzzyBudget(word.length());
+			int best = Integer.MAX_VALUE;
+			for (String candidate : have)
+			{
+				if (FakePlayerChatParsing.fuzzyBudget(candidate.length()) > 0)
+				{
+					best = Math.min(best, FakePlayerChatParsing.editDistance(word, candidate));
+				}
+			}
+			if ((budget == 0) || (best > budget))
+			{
+				return -1;
+			}
+			cost += best;
+		}
+		return cost;
+	}
+
 	/** Normalises a name/phrase to lowercase word tokens: strips punctuation, drops filler, folds plurals. */
 	public static List<String> matchTokens(String text)
 	{

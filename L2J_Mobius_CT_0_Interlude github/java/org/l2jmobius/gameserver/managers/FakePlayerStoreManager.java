@@ -319,7 +319,9 @@ public class FakePlayerStoreManager
 					player.sendPacket(ActionFailed.STATIC_PACKET);
 					return;
 				}
-				final FakePlayerStoreItem demand = findByItemId(look, request.getItemId());
+				// FPC-186: an enchanted demand line (a WTS deal for a +N piece) only takes a copy at exactly that enchant,
+				// so a deal priced for +10 cannot be filled with a +0 copy of the same item.
+				final FakePlayerStoreItem demand = findDemand(look, request.getItemId(), owned.getEnchantLevel());
 				if (demand == null)
 				{
 					player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -402,16 +404,29 @@ public class FakePlayerStoreManager
 		return null;
 	}
 
-	private static FakePlayerStoreItem findByItemId(FakePlayerAppearance look, int itemId)
+	/**
+	 * The buy (demand) line a sold copy may fill: a line at exactly the copy's enchant first, else a plain +0 line
+	 * (which, as before, takes any copy). An enchanted line never takes a copy at a different enchant (FPC-186).
+	 */
+	private static FakePlayerStoreItem findDemand(FakePlayerAppearance look, int itemId, int enchant)
 	{
+		FakePlayerStoreItem plain = null;
 		for (FakePlayerStoreItem entry : look.getStoreItems())
 		{
-			if ((entry.getItemId() == itemId) && (entry.getCount() > 0))
+			if ((entry.getItemId() != itemId) || (entry.getCount() <= 0))
+			{
+				continue;
+			}
+			if (entry.getEnchant() == enchant)
 			{
 				return entry;
 			}
+			if ((entry.getEnchant() <= 0) && (plain == null))
+			{
+				plain = entry;
+			}
 		}
-		return null;
+		return plain;
 	}
 
 	/**

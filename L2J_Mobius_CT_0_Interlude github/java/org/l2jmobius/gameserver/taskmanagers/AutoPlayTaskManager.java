@@ -30,6 +30,7 @@ import org.l2jmobius.gameserver.config.PlayerConfig;
 import org.l2jmobius.gameserver.config.custom.AutoPlayConfig;
 import org.l2jmobius.gameserver.geoengine.GeoEngine;
 import org.l2jmobius.gameserver.managers.PhantomManager;
+import org.l2jmobius.gameserver.managers.PhantomPartyManager;
 import org.l2jmobius.gameserver.model.Location;
 import org.l2jmobius.gameserver.model.World;
 import org.l2jmobius.gameserver.model.WorldObject;
@@ -85,6 +86,11 @@ public class AutoPlayTaskManager
 				}
 				
 				if (player.isSitting() || player.isCastingNow() || (player.getQueuedSkill() != null))
+				{
+					continue PLAY;
+				}
+				// Recruits give their party tick a bounded pickup/recovery window before replacing a dead target.
+				if (PhantomPartyManager.getInstance().deferFreeHuntScan(player))
 				{
 					continue PLAY;
 				}
