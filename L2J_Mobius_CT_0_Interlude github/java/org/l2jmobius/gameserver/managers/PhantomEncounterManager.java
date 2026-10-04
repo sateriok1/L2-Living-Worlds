@@ -149,51 +149,71 @@ public class PhantomEncounterManager
 
 	private boolean trigger(Player player, PhantomManager phantoms)
 	{
-		final int partySize = (player.getParty() == null) ? 1 : player.getParty().getMemberCount();
-		final int[] weights =
-		{
-			PhantomEncounterRules.weightFor(Tier.WIMP, FakePlayersConfig.PHANTOM_ENCOUNTER_WIMP_WEIGHT, player.getLevel(), partySize, FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL, FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_PARTY_FOR_SOLO),
-			PhantomEncounterRules.weightFor(Tier.NORMIE, FakePlayersConfig.PHANTOM_ENCOUNTER_NORMIE_WEIGHT, player.getLevel(), partySize, FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_PLAYER_LEVEL, FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_PARTY_FOR_SOLO),
-			0, // PKER: stage 2
-			0 // HORSEMEN: stage 2
-		};
+		final Tier[] tiers = Tier.values();
+		final int[] weights = new int[tiers.length];
 		int total = 0;
-		for (int w : weights)
+		for (int i = 0; i < tiers.length; i++)
 		{
-			total += w;
+			weights[i] = PhantomEncounterRules.weightFor(FakePlayersConfig.PHANTOM_ENCOUNTER_WEIGHT[i], player.getLevel(), FakePlayersConfig.PHANTOM_ENCOUNTER_MIN_LEVEL[i]);
+			total += weights[i];
 		}
 		final Tier tier = (total <= 0) ? null : PhantomEncounterRules.pickTier(weights, Rnd.get(total));
 		if (tier == null)
 		{
 			return false;
 		}
-		final Location where = pickSpawn(player);
-		if (where == null)
+		final int partySize = (player.getParty() == null) ? 1 : player.getParty().getMemberCount();
+		final int size = PhantomEncounterRules.groupSize(tier, partySize, FakePlayersConfig.PHANTOM_ENCOUNTER_HORSEMEN_MIN_SIZE, FakePlayersConfig.PHANTOM_ENCOUNTER_MAX_ACTORS);
+		final int index = tier.ordinal();
+		final PhantomEncounterRules.EncounterGroup group = new PhantomEncounterRules.EncounterGroup(size);
+		final double baseAngle = Rnd.nextDouble() * Math.PI * 2; // the group arrives from one general direction
+		final String pkerName = FakePlayersConfig.PHANTOM_ENCOUNTER_PKER_NAME;
+		int spawned = 0;
+		Player first = null;
+		for (int i = 0; i < size; i++)
+		{
+			final Location where = pickSpawn(player, baseAngle);
+			if (where == null)
+			{
+				continue;
+			}
+			final int level = PhantomEncounterRules.levelFor(player.getLevel(), FakePlayersConfig.PHANTOM_ENCOUNTER_LEVEL_MIN[index], FakePlayersConfig.PHANTOM_ENCOUNTER_LEVEL_MAX[index], Rnd.get(1000));
+			final int enchant = PhantomEncounterRules.enchantIn(FakePlayersConfig.PHANTOM_ENCOUNTER_ENCHANT_MIN[index], FakePlayersConfig.PHANTOM_ENCOUNTER_ENCHANT_MAX[index], Rnd.get(1000));
+			final PartyRole role = ROLES[Rnd.get(ROLES.length)];
+			final Player actor = phantoms.spawnEncounterActor(player, where, level, role, tier, enchant, group, (tier == Tier.PKER) && !pkerName.isEmpty() ? pkerName : null);
+			if (actor == null)
+			{
+				continue;
+			}
+			if (actor.isInsideZone(ZoneId.PEACE))
+			{
+				phantoms.despawnRecruit(actor); // landed in a safe zone: not part of the encounter
+				continue;
+			}
+			spawned++;
+			if (first == null)
+			{
+				first = actor;
+			}
+		}
+		if (spawned == 0)
 		{
 			return false;
 		}
-		final int level = PhantomEncounterRules.actorLevel(tier, player.getLevel(), Rnd.get(1000));
-		final PartyRole role = ROLES[Rnd.get(ROLES.length)];
-		final Player actor = phantoms.spawnEncounterActor(player, where, level, role, tier, PhantomEncounterRules.gradeShift(tier), PhantomEncounterRules.enchantFor(tier, Rnd.get(1000)));
-		if (actor == null)
+		if (spawned < size)
 		{
-			return false;
+			group.shrinkTo(spawned); // some did not fit: the group is as big as what actually spawned
 		}
-		if (actor.isInsideZone(ZoneId.PEACE))
-		{
-			phantoms.despawnRecruit(actor); // landed in a safe zone: not an encounter
-			return false;
-		}
-		LOGGER.info(getClass().getSimpleName() + ": " + tier + " encounter for " + player.getName() + " (lvl " + player.getLevel() + "): " + actor.getName() + " lvl " + actor.getLevel() + " " + role + ".");
+		LOGGER.info(getClass().getSimpleName() + ": " + tier + " encounter for " + player.getName() + " (lvl " + player.getLevel() + ", party of " + partySize + "): " + spawned + " phantom(s), first " + first.getName() + " lvl " + first.getLevel() + ".");
 		return true;
 	}
 
-	/** A walkable point 650-900 units from the player, reachable on foot, or {@code null} if none was found. */
-	private static Location pickSpawn(Player player)
+	/** A walkable point 650-900 units from the player, near {@code baseAngle}, reachable on foot, or {@code null}. */
+	private static Location pickSpawn(Player player, double baseAngle)
 	{
 		for (int attempt = 0; attempt < 8; attempt++)
 		{
-			final double angle = Rnd.nextDouble() * Math.PI * 2;
+			final double angle = baseAngle + ((Rnd.nextDouble() - 0.5) * 1.0);
 			final int distance = Rnd.get(650, 901);
 			final int x = player.getX() + (int) (Math.cos(angle) * distance);
 			final int y = player.getY() + (int) (Math.sin(angle) * distance);

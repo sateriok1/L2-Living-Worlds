@@ -11,13 +11,12 @@ public class PhantomEncounterRulesTest
 	{
 		testPickTier();
 		testWeightFor();
-		testActorLevel();
-		testGear();
+		testLevelsAndEnchant();
+		testGroupSize();
+		testGroup();
 		testStrikeRules();
 		testDelay();
-		testActorCount();
 		testHostileRegistry();
-		testOver();
 		System.out.println("Ran " + checks + " checks, " + failures + " failure(s).");
 		System.out.println(failures == 0 ? "OK" : "FAILED");
 		System.exit(failures == 0 ? 0 : 1);
@@ -25,78 +24,99 @@ public class PhantomEncounterRulesTest
 
 	private static void testPickTier()
 	{
-		final int[] w = { 55, 45, 0, 0 };
+		final int[] w = { 40, 30, 18, 9, 3 };
 		eq(Tier.WIMP, PhantomEncounterRules.pickTier(w, 0), "roll 0 is wimp");
-		eq(Tier.WIMP, PhantomEncounterRules.pickTier(w, 54), "roll 54 is wimp");
-		eq(Tier.NORMIE, PhantomEncounterRules.pickTier(w, 55), "roll 55 is normie");
-		eq(Tier.NORMIE, PhantomEncounterRules.pickTier(w, 99), "roll 99 is normie");
+		eq(Tier.WIMP, PhantomEncounterRules.pickTier(w, 39), "roll 39 is wimp");
+		eq(Tier.NORMIE, PhantomEncounterRules.pickTier(w, 40), "roll 40 is normie");
+		eq(Tier.HARD, PhantomEncounterRules.pickTier(w, 70), "roll 70 is hard");
+		eq(Tier.HORSEMEN, PhantomEncounterRules.pickTier(w, 88), "roll 88 is horsemen");
+		eq(Tier.PKER, PhantomEncounterRules.pickTier(w, 97), "roll 97 is pker");
 		eq(Tier.WIMP, PhantomEncounterRules.pickTier(w, 100), "roll wraps");
-		eq(null, PhantomEncounterRules.pickTier(new int[] { 0, 0, 0, 0 }, 5), "no weights, no tier");
-		eq(null, PhantomEncounterRules.pickTier(new int[] { -3, 0, 0, 0 }, 5), "negative weight counts as 0");
-		eq(Tier.HORSEMEN, PhantomEncounterRules.pickTier(new int[] { 0, 0, 0, 5 }, 3), "only horsemen");
-		// distribution over a full cycle matches the weights
-		int wimp = 0;
-		int normie = 0;
+		eq(null, PhantomEncounterRules.pickTier(new int[] { 0, 0, 0, 0, 0 }, 5), "no weights, no tier");
+		eq(null, PhantomEncounterRules.pickTier(new int[] { -3, 0, 0, 0, 0 }, 5), "negative weight counts as 0");
+		eq(Tier.PKER, PhantomEncounterRules.pickTier(new int[] { 0, 0, 0, 0, 5 }, 3), "only the pker");
+		final int[] counts = new int[5];
 		for (int r = 0; r < 100; r++)
 		{
-			final Tier t = PhantomEncounterRules.pickTier(w, r);
-			if (t == Tier.WIMP)
-			{
-				wimp++;
-			}
-			else if (t == Tier.NORMIE)
-			{
-				normie++;
-			}
+			counts[PhantomEncounterRules.pickTier(w, r).ordinal()]++;
 		}
-		eq(55, wimp, "wimp share");
-		eq(45, normie, "normie share");
+		for (int i = 0; i < 5; i++)
+		{
+			eq(w[i], counts[i], "share of " + Tier.values()[i]);
+		}
 	}
 
 	private static void testWeightFor()
 	{
-		eq(55, PhantomEncounterRules.weightFor(Tier.WIMP, 55, 40, 1, 20, 4), "eligible");
-		eq(0, PhantomEncounterRules.weightFor(Tier.WIMP, 55, 19, 1, 20, 4), "below min level");
-		eq(0, PhantomEncounterRules.weightFor(Tier.WIMP, 0, 40, 1, 20, 4), "weight 0 is off");
-		eq(0, PhantomEncounterRules.weightFor(Tier.PKER, 10, 40, 5, 20, 4), "big party locks out the lone PKer");
-		eq(10, PhantomEncounterRules.weightFor(Tier.PKER, 10, 40, 4, 20, 4), "party at the limit is fine");
-		eq(45, PhantomEncounterRules.weightFor(Tier.NORMIE, 45, 40, 9, 20, 4), "normie still comes for a big party");
+		eq(40, PhantomEncounterRules.weightFor(40, 40, 20), "eligible");
+		eq(0, PhantomEncounterRules.weightFor(40, 19, 20), "below the tier's level");
+		eq(0, PhantomEncounterRules.weightFor(0, 60, 20), "weight 0 is off");
+		eq(3, PhantomEncounterRules.weightFor(3, 40, 40), "exactly at the unlock level");
+		eq(0, PhantomEncounterRules.weightFor(3, 39, 40), "one below the unlock level");
 	}
 
-	private static void testActorLevel()
+	private static void testLevelsAndEnchant()
 	{
 		for (int roll = 0; roll < 50; roll++)
 		{
-			final int wimp = PhantomEncounterRules.actorLevel(Tier.WIMP, 50, roll);
-			truth((wimp >= 42) && (wimp <= 47), "wimp 3-8 under: " + wimp);
-			final int normie = PhantomEncounterRules.actorLevel(Tier.NORMIE, 50, roll);
-			truth((normie >= 48) && (normie <= 52), "normie within 2: " + normie);
-			final int pker = PhantomEncounterRules.actorLevel(Tier.PKER, 50, roll);
-			truth((pker >= 54) && (pker <= 58), "pker 4-8 over: " + pker);
+			final int wimp = PhantomEncounterRules.levelFor(50, -3, -2, roll);
+			truth((wimp == 47) || (wimp == 48), "wimp 2-3 under: " + wimp);
+			eq(50, PhantomEncounterRules.levelFor(50, 0, 0, roll), "normie same level");
+			eq(53, PhantomEncounterRules.levelFor(50, 3, 3, roll), "hard +3");
+			eq(56, PhantomEncounterRules.levelFor(50, 6, 6, roll), "horsemen +6");
+			eq(61, PhantomEncounterRules.levelFor(50, 11, 11, roll), "pker +11");
+			final int n = PhantomEncounterRules.enchantIn(0, 3, roll);
+			truth((n >= 0) && (n <= 3), "normie 0-3: " + n);
+			final int h = PhantomEncounterRules.enchantIn(3, 4, roll);
+			truth((h == 3) || (h == 4), "hard 3-4: " + h);
+			final int hm = PhantomEncounterRules.enchantIn(7, 10, roll);
+			truth((hm >= 7) && (hm <= 10), "horsemen 7-10: " + hm);
+			eq(16, PhantomEncounterRules.enchantIn(16, 16, roll), "pker is a full +16");
+			eq(0, PhantomEncounterRules.enchantIn(0, 0, roll), "wimp +0");
 		}
-		eq(80, PhantomEncounterRules.actorLevel(Tier.HORSEMEN, 80, 3), "clamped to 80");
-		eq(1, PhantomEncounterRules.actorLevel(Tier.WIMP, 5, 5), "clamped to 1");
-		truth(PhantomEncounterRules.actorLevel(Tier.NORMIE, 50, -7) >= 48, "negative roll is safe");
+		eq(80, PhantomEncounterRules.levelFor(78, 11, 11, 3), "level clamped to 80");
+		eq(1, PhantomEncounterRules.levelFor(3, -3, -3, 5), "level clamped to 1");
+		eq(52, PhantomEncounterRules.levelFor(50, 2, 2, -7), "negative roll is safe");
+		final int reversed = PhantomEncounterRules.levelFor(50, 3, -3, 4);
+		truth((reversed >= 47) && (reversed <= 53), "reversed offsets still land in range: " + reversed);
+		eq(30, PhantomEncounterRules.enchantIn(99, 99, 1), "enchant capped at 30");
+		eq(0, PhantomEncounterRules.enchantIn(-5, -2, 1), "negative enchant floors at 0");
 	}
 
-	private static void testGear()
+	private static void testGroupSize()
 	{
-		eq(-1, PhantomEncounterRules.gradeShift(Tier.WIMP), "wimp is a grade under");
-		eq(0, PhantomEncounterRules.gradeShift(Tier.NORMIE), "normie is even");
-		eq(1, PhantomEncounterRules.gradeShift(Tier.PKER), "pker is a grade over");
-		eq(0, PhantomEncounterRules.shiftedGrade(0, -1, 5), "grade floor");
-		eq(5, PhantomEncounterRules.shiftedGrade(5, 1, 5), "grade cap");
-		eq(3, PhantomEncounterRules.shiftedGrade(2, 1, 5), "plain shift");
-		for (int roll = 0; roll < 60; roll++)
-		{
-			eq(0, PhantomEncounterRules.enchantFor(Tier.WIMP, roll), "wimp is +0");
-			final int n = PhantomEncounterRules.enchantFor(Tier.NORMIE, roll);
-			truth((n >= 0) && (n <= 3), "normie 0-3: " + n);
-			final int p = PhantomEncounterRules.enchantFor(Tier.PKER, roll);
-			truth((p >= 14) && (p <= 20), "pker 14-20: " + p);
-			final int h = PhantomEncounterRules.enchantFor(Tier.HORSEMEN, roll);
-			truth((h >= 16) && (h <= 20), "horsemen 16-20: " + h);
-		}
+		eq(1, PhantomEncounterRules.groupSize(Tier.WIMP, 1, 4, 9), "wimp solo");
+		eq(5, PhantomEncounterRules.groupSize(Tier.NORMIE, 5, 4, 9), "normie matches the party");
+		eq(9, PhantomEncounterRules.groupSize(Tier.HARD, 9, 4, 9), "hard matches a party of 9");
+		eq(9, PhantomEncounterRules.groupSize(Tier.WIMP, 12, 4, 9), "capped");
+		eq(4, PhantomEncounterRules.groupSize(Tier.HORSEMEN, 1, 4, 9), "horsemen solo still four");
+		eq(4, PhantomEncounterRules.groupSize(Tier.HORSEMEN, 3, 4, 9), "horsemen small party still four");
+		eq(7, PhantomEncounterRules.groupSize(Tier.HORSEMEN, 7, 4, 9), "horsemen match a bigger party");
+		eq(9, PhantomEncounterRules.groupSize(Tier.HORSEMEN, 20, 4, 9), "horsemen capped");
+		eq(1, PhantomEncounterRules.groupSize(Tier.PKER, 9, 4, 9), "pker is always one");
+		eq(1, PhantomEncounterRules.groupSize(Tier.WIMP, 0, 4, 0), "never fewer than one");
+		truth(PhantomEncounterRules.strikesOnArrival(Tier.HORSEMEN) && PhantomEncounterRules.strikesOnArrival(Tier.PKER), "horsemen and pker strike on arrival");
+		truth(!PhantomEncounterRules.strikesOnArrival(Tier.WIMP) && !PhantomEncounterRules.strikesOnArrival(Tier.NORMIE) && !PhantomEncounterRules.strikesOnArrival(Tier.HARD), "the others wait");
+	}
+
+	private static void testGroup()
+	{
+		final PhantomEncounterRules.EncounterGroup g = new PhantomEncounterRules.EncounterGroup(3);
+		truth(g.claimSpeech(500), "first member speaks");
+		truth(!g.claimSpeech(900), "only one member speaks");
+		eq(500L, g.warnedAt(), "warning time is the speaker's");
+		truth(!g.isFighting(), "not fighting yet");
+		g.startFight();
+		truth(g.isFighting(), "fighting once one attacks");
+		truth(g.claimWinLine() && !g.claimWinLine(), "the win line is said once");
+		truth(!g.memberDied() && !g.memberDied(), "two of three down is not a wipe");
+		truth(g.memberDied(), "the third death wipes the group");
+		truth(g.claimLoot() && !g.claimLoot(), "one loot drop per group");
+		final PhantomEncounterRules.EncounterGroup small = new PhantomEncounterRules.EncounterGroup(4);
+		small.shrinkTo(2);
+		truth(!small.memberDied() && small.memberDied(), "a shrunken group wipes at its real size");
+		final PhantomEncounterRules.EncounterGroup solo = new PhantomEncounterRules.EncounterGroup(0);
+		truth(solo.memberDied(), "a size-0 group counts as one");
 	}
 
 	private static void testStrikeRules()
@@ -120,15 +140,6 @@ public class PhantomEncounterRulesTest
 		eq(100L, PhantomEncounterRules.delayMs(100, 200, -5), "negative roll clamps");
 	}
 
-	private static void testActorCount()
-	{
-		eq(1, PhantomEncounterRules.actorCount(1, 1, 4), "solo");
-		eq(3, PhantomEncounterRules.actorCount(1, 5, 4), "party of 5");
-		eq(4, PhantomEncounterRules.actorCount(1, 9, 4), "party of 9 capped");
-		eq(4, PhantomEncounterRules.actorCount(4, 2, 6), "base wins for a small party");
-		eq(1, PhantomEncounterRules.actorCount(0, 0, 0), "never fewer than one");
-	}
-
 	private static void testHostileRegistry()
 	{
 		truth(!PhantomEncounterRules.isHostile(10, 20), "nothing marked");
@@ -138,15 +149,6 @@ public class PhantomEncounterRulesTest
 		truth(!PhantomEncounterRules.isHostile(11, 20), "only that actor");
 		PhantomEncounterRules.clearHostile(10);
 		truth(!PhantomEncounterRules.isHostile(10, 20), "cleared");
-	}
-
-	private static void testOver()
-	{
-		truth(PhantomEncounterRules.encounterOver(true, false, false, 0, 100), "actor dead");
-		truth(PhantomEncounterRules.encounterOver(false, true, false, 0, 100), "victim dead");
-		truth(PhantomEncounterRules.encounterOver(false, false, true, 0, 100), "victim gone");
-		truth(PhantomEncounterRules.encounterOver(false, false, false, 100, 100), "clock out");
-		truth(!PhantomEncounterRules.encounterOver(false, false, false, 99, 100), "still on");
 	}
 
 	private static void eq(Object expected, Object actual, String what)

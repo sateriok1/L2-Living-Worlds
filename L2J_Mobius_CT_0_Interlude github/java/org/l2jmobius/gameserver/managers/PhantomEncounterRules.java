@@ -18,6 +18,9 @@ package org.l2jmobius.gameserver.managers;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Pure rules for the PvP danger encounters (a phantom, or a group, that comes for the player and fights once).
@@ -25,13 +28,83 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class PhantomEncounterRules
 {
-	/** Encounter tiers, easiest first. */
+	/** Encounter tiers, easiest first. The order is the order of every per-tier config array. */
 	public enum Tier
 	{
-		WIMP, // an undergeared phantom walks up, asks "are you a bot?", then attacks
-		NORMIE, // an equally geared phantom attacks while the player stands still or fights a mob
-		PKER, // an overgeared red-name roamer hunts the player down (stage 2)
-		HORSEMEN // an overgeared 4-man red-name party (stage 2)
+		WIMP, // a few levels under you, undergeared by level: walks up, asks "are you a bot?", then attacks
+		NORMIE, // your level: attacks while you stand still or fight a monster
+		HARD, // a few levels over you, +3-4 gear: waits for its moment like a Normie
+		HORSEMEN, // a group (as many as your party, at least four), well over you, +7-10 gear: attacks on arrival
+		PKER // one lone phantom far over you in level and gear: the extinction event, attacks on arrival
+	}
+
+	/** The members of one encounter share this, so a group speaks once, warns once, and strikes together. */
+	public static final class EncounterGroup
+	{
+		private final AtomicBoolean _speech = new AtomicBoolean();
+		private final AtomicBoolean _loot = new AtomicBoolean();
+		private final AtomicInteger _dead = new AtomicInteger();
+		private volatile int _size;
+		private final AtomicBoolean _winLine = new AtomicBoolean();
+		private final AtomicLong _warnedAt = new AtomicLong();
+		private volatile boolean _fighting;
+
+		public EncounterGroup(int size)
+		{
+			_size = Math.max(1, size);
+		}
+
+		/** The group turned out smaller than planned (some phantoms could not spawn). */
+		public void shrinkTo(int size)
+		{
+			_size = Math.max(1, size);
+		}
+
+		/** @return {@code true} when this death is the one that wipes the group (every member is now dead). */
+		public boolean memberDied()
+		{
+			return _dead.incrementAndGet() >= _size;
+		}
+
+		/** @return {@code true} for exactly one caller: the one that gets to drop the group's single piece of loot. */
+		public boolean claimLoot()
+		{
+			return _loot.compareAndSet(false, true);
+		}
+
+		/** @return {@code true} for exactly one caller: the member that gets to speak the opening line. */
+		public boolean claimSpeech(long now)
+		{
+			if (_speech.compareAndSet(false, true))
+			{
+				_warnedAt.set(now);
+				return true;
+			}
+			return false;
+		}
+
+		/** @return when the opening line was spoken, or 0 if it has not been. */
+		public long warnedAt()
+		{
+			return _warnedAt.get();
+		}
+
+		/** @return {@code true} for exactly one caller: the member that gets to speak the closing line. */
+		public boolean claimWinLine()
+		{
+			return _winLine.compareAndSet(false, true);
+		}
+
+		/** Called by the first member to attack; every other member then joins in. */
+		public void startFight()
+		{
+			_fighting = true;
+		}
+
+		public boolean isFighting()
+		{
+			return _fighting;
+		}
 	}
 
 	// Which actors are currently authorised to attack which player (actor objectId -> victim objectId). Read by
@@ -60,8 +133,8 @@ public final class PhantomEncounterRules
 	}
 
 	/**
-	 * Picks a tier by weight. Tiers locked by level or party size have weight 0 after {@link #weightFor}.
-	 * @param weights the four weights in {@link Tier} order (negative counts as 0)
+	 * Picks a tier by weight.
+	 * @param weights the weights in {@link Tier} order (negative counts as 0)
 	 * @param roll a uniform roll in [0, total)
 	 * @return the tier, or {@code null} when nothing is available
 	 */
@@ -77,7 +150,7 @@ public final class PhantomEncounterRules
 			return null;
 		}
 		int r = roll % total;
-		for (int i = 0; i < weights.length; i++)
+		for (int i = 0; (i < weights.length) && (i < Tier.values().length); i++)
 		{
 			final int w = Math.max(0, weights[i]);
 			if (r < w)
@@ -89,111 +162,68 @@ public final class PhantomEncounterRules
 		return null;
 	}
 
-	/** @return the effective weight of a tier for this player: 0 when the player's level or party size locks it out. */
-	public static int weightFor(Tier tier, int configuredWeight, int playerLevel, int partySize, int minLevel, int maxPartyForSolo)
+	/** @return the tier's weight for this player: 0 when the tier is off or the player is below that tier's minimum level. */
+	public static int weightFor(int configuredWeight, int playerLevel, int tierMinPlayerLevel)
 	{
-		if ((configuredWeight <= 0) || (playerLevel < minLevel))
-		{
-			return 0;
-		}
-		// A big party is never ambushed by a lone phantom of the harder kind (see the party-size rule).
-		if ((tier == Tier.PKER) && (partySize > maxPartyForSolo))
-		{
-			return 0;
-		}
-		return configuredWeight;
+		return ((configuredWeight <= 0) || (playerLevel < tierMinPlayerLevel)) ? 0 : configuredWeight;
 	}
 
 	/**
-	 * The actor's level. Wimp: 3-8 under the player. Normie: within 2 either way. Both clamp to [1, 80].
-	 * @param roll any non-negative number (the caller's random roll)
+	 * The actor's level: the player's level plus an offset picked from [minOffset, maxOffset], clamped to [1, 80].
+	 * @param roll any number (the caller's random roll)
 	 */
-	public static int actorLevel(Tier tier, int playerLevel, int roll)
+	public static int levelFor(int playerLevel, int minOffset, int maxOffset, int roll)
 	{
-		final int r = Math.abs(roll);
-		final int level;
-		switch (tier)
-		{
-			case WIMP:
-			{
-				level = playerLevel - (3 + (r % 6));
-				break;
-			}
-			case NORMIE:
-			{
-				level = playerLevel + ((r % 5) - 2);
-				break;
-			}
-			case PKER:
-			{
-				level = playerLevel + (4 + (r % 5));
-				break;
-			}
-			default:
-			{
-				level = playerLevel + (5 + (r % 6));
-				break;
-			}
-		}
-		return Math.max(1, Math.min(80, level));
+		final int lo = Math.min(minOffset, maxOffset);
+		final int hi = Math.max(minOffset, maxOffset);
+		return Math.max(1, Math.min(80, playerLevel + lo + (Math.abs(roll) % ((hi - lo) + 1))));
 	}
 
-	/** @return how many armor/weapon grades above (+) or below (-) its level's normal grade the actor is geared. */
-	public static int gradeShift(Tier tier)
+	/**
+	 * The enchant on the actor's weapon and armor: a value in [min, max] (clamped to 0-30).
+	 * @param roll any number (the caller's random roll)
+	 */
+	public static int enchantIn(int min, int max, int roll)
 	{
+		final int a = Math.max(0, Math.min(30, min));
+		final int b = Math.max(0, Math.min(30, max));
+		final int lo = Math.min(a, b);
+		final int hi = Math.max(a, b);
+		return lo + (Math.abs(roll) % ((hi - lo) + 1));
+	}
+
+	/**
+	 * How many phantoms an encounter sends. Wimp, Normie and Hard match the party (at least one); the Horsemen match
+	 * it too but never fewer than {@code horsemenMin}; the lone PKer is always one. Capped at {@code cap}.
+	 * @param partySize members in the player's party, counting the player (1 when solo)
+	 */
+	public static int groupSize(Tier tier, int partySize, int horsemenMin, int cap)
+	{
+		final int limit = Math.max(1, cap);
 		switch (tier)
 		{
-			case WIMP:
-			{
-				return -1;
-			}
-			case NORMIE:
-			{
-				return 0;
-			}
-			default:
+			case PKER:
 			{
 				return 1;
 			}
-		}
-	}
-
-	/**
-	 * The enchant level the actor's weapon and armor carry. Wimp +0, Normie +0..+3 (an ordinary player), PKer +14..+20,
-	 * Horsemen +16..+20 (real over-enchanted gear, not a stat bonus).
-	 * @param roll any non-negative number (the caller's random roll)
-	 */
-	public static int enchantFor(Tier tier, int roll)
-	{
-		final int r = Math.abs(roll);
-		switch (tier)
-		{
-			case WIMP:
+			case HORSEMEN:
 			{
-				return 0;
-			}
-			case NORMIE:
-			{
-				return r % 4;
-			}
-			case PKER:
-			{
-				return 14 + (r % 7);
+				return Math.max(1, Math.min(limit, Math.max(partySize, horsemenMin)));
 			}
 			default:
 			{
-				return 16 + (r % 5);
+				return Math.max(1, Math.min(limit, partySize));
 			}
 		}
 	}
 
-	/** @return {@code base + shift} clamped to the valid grade ordinals [0, maxOrdinal]. */
-	public static int shiftedGrade(int base, int shift, int maxOrdinal)
+	/** @return {@code true} for the tiers that attack the moment they reach the player, with no waiting for an opening. */
+	public static boolean strikesOnArrival(Tier tier)
 	{
-		return Math.max(0, Math.min(maxOrdinal, base + shift));
+		return (tier == Tier.HORSEMEN) || (tier == Tier.PKER);
 	}
 
-	/** @return {@code true} once the Normie should strike: the player is mid-fight with a monster, or has stood still long enough. */
+	/** @return {@code true} once an opportunist (Normie, Hard) should strike: the player is mid-fight with a monster, or has stood still long enough. */
 	public static boolean normieStrikeReady(boolean victimBusyWithMonster, long victimStillMs, long stillNeededMs)
 	{
 		return victimBusyWithMonster || (victimStillMs >= stillNeededMs);
@@ -213,20 +243,5 @@ public final class PhantomEncounterRules
 			return Math.max(0, minMs);
 		}
 		return minMs + (((maxMs - minMs) * Math.max(0, Math.min(999, roll))) / 1000);
-	}
-
-	/**
-	 * Encounter size for a party: how many actors to send for a group tier. One actor per two party members, never fewer
-	 * than {@code base}, capped.
-	 */
-	public static int actorCount(int base, int partySize, int cap)
-	{
-		return Math.max(1, Math.min(cap, Math.max(base, (partySize + 1) / 2)));
-	}
-
-	/** @return {@code true} if this encounter outcome ends it for good (a dead actor, a dead victim, or an expired clock). */
-	public static boolean encounterOver(boolean actorDead, boolean victimDead, boolean victimGone, long now, long deadline)
-	{
-		return actorDead || victimDead || victimGone || (now >= deadline);
 	}
 }
