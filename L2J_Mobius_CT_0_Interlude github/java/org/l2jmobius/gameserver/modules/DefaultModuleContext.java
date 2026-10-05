@@ -35,6 +35,7 @@ class DefaultModuleContext implements ModuleContext
 	private final ModuleEncounters _encounters = new ModuleEncounters();
 	private final ModuleDamage _damage;
 	private final ModuleDuels _duels = new ModuleDuels();
+	private final ModuleTeams _teams = new ModuleTeams();
 	private final Logger _logger;
 
 	DefaultModuleContext(String moduleId, ModuleConfig config, ModuleHandlers handlers, ModuleEvents events, ModuleHandles handles)
@@ -74,6 +75,12 @@ class DefaultModuleContext implements ModuleContext
 	public ModuleEncounters encounters()
 	{
 		return _encounters;
+	}
+
+	@Override
+	public ModuleTeams teams()
+	{
+		return _teams;
 	}
 
 	@Override

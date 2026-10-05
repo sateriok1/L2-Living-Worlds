@@ -11112,6 +11112,11 @@ public class Player extends Playable
 	@Override
 	public void reduceCurrentHp(double value, Creature attacker, boolean awake, boolean isDOT, Skill skill)
 	{
+		if (areEventTeammates(attacker, this))
+		{
+			return; // event teammates cannot hurt each other, however the hit got through
+		}
+		
 		// Living World: preserve native CP, shields, transfer and rejection rules before notifying modules.
 		try (ModuleDamage.Scope ignored = ModuleDamage.captureDamage(attacker, this, skill, isDOT))
 		{

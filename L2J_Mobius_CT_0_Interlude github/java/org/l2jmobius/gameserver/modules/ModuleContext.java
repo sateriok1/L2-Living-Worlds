@@ -69,6 +69,11 @@ public interface ModuleContext
 	ModuleDuels duels();
 
 	/**
+	 * @return the team surface: blue and red teams for events, with phantom fighters that hunt the other side
+	 */
+	ModuleTeams teams();
+
+	/**
 	 * @return a logger scoped to this module, so its output is attributable
 	 */
 	Logger logging();

@@ -65,6 +65,7 @@ ModuleContext
   encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
   damage       combat damage and instant healing notifications (section 3.9)
   duels        duelists that stand at a spot, take duels and challenge players (section 3.8)
+  teams        blue and red event teams with phantom fighters that hunt the other side (section 3.10)
   config       generic typed access to the module's own configuration
   events       register game event listeners
   handlers     register item, bypass, voiced, admin, effect, and target handlers
@@ -292,6 +293,27 @@ Registrations are owned by the module's `ModuleHandles`, with owner-specific fai
 on the native thread after resource changes, outside the status monitor; they must be quick and must not block.
 With no listeners, the platform allocates no capture and changes no combat rules. V1 disable/removal still takes
 effect after restart. The DPS Meter module is a separate consumer and is not included in this platform change.
+
+
+## 3.10 Teams
+
+`context.teams()` runs team events with phantoms. It uses the server's own event flags, so team members cannot hurt each
+other, enemies can, a team circle shows over every head, nobody pays a death penalty and parties cannot cross teams.
+
+- `available()` is true when fake players and phantom PvP are on.
+- `spawn(blue, where, rally, level, role, enchant, name, classId)` makes a geared fighter. It buffs, then hunts the
+  nearest living enemy within sight, and walks to `rally` when none is in sight. It never flees.
+- `join(player, blue)` and `leave(player)` put a real player on or off a team. `teamOf(player)` returns true for blue,
+  false for red, null for none.
+- A new fighter starts **held**: it buffs and drinks but does not move, fight or take damage. `hold(fighter, false)` lets it loose, `hold(fighter, true)` freezes it again. Set a whole event up, then release everyone at once.
+- `revive(fighter, where)` brings a dead fighter back at full strength on the same team. `discard(fighter)` removes it.
+- `spawnSolo(where, rally, level, role, enchant, name, classId)` and `joinSolo(player)` make a free-for-all: on no team,
+  an enemy of every other solo fighter. `leave` takes either kind off.
+- `buffLikeFighter(player)` strips a real player's buffs, then gives the buffs a spawned fighter arrives with. `fullHeal(player)` restores HP, MP and CP. `revive` gives a fighter its buffs back.
+- `formParty(players)` puts the players in one party, the first as leader (nine at most); `disbandParty(member)` ends it.
+  A held fighter is not a target for the other side. A healer-class fighter heals teammates below 90% HP and otherwise stays behind its team; melee fighters close in before using skills, and a fighter's auto skills only run with an enemy in reach. Event teammates cannot damage or debuff each other. `lock(player, true)` holds a real player in place and untouchable until freed. `damage().addHealListener(...)` reports the HP each instant heal skill restored (healer, target, amount, skill).
+- Scoring, respawns, prizes and when the event ends are the module's job. Listen to `OnCreatureDeath` for kills and use
+  `damage()` for per-player damage.
 
 ## 4. Lifecycle and the levels of removal
 
