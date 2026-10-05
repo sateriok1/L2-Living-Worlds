@@ -27,6 +27,7 @@ import org.l2jmobius.gameserver.data.xml.BuyListData;
 import org.l2jmobius.gameserver.model.buylist.BuyListHolder;
 import org.l2jmobius.gameserver.model.buylist.Product;
 import org.l2jmobius.gameserver.model.item.ItemTemplate;
+import org.l2jmobius.gameserver.model.item.enums.BodyPart;
 
 /**
  * Allow-list of item ids that fake players and phantoms may wear, sourced from the <b>GM shop's gear buy-lists</b>
@@ -72,7 +73,32 @@ public class FakePlayerGearFilter
 		26, // Bronze Breastplate (heavy chest)
 		34, // Bronze Gaiters (heavy legs)
 		46, // Bronze Helmet
-		625 // Bone Shield
+		625, // Bone Shield
+		// Real Interlude weapons the GM gear lists leave out (FPC-202). Without them the D, C and B "Double Handed
+		// Blunts" pages hold only staves, so a Destroyer or Titan rolling a hammer found nothing in its grade, and a
+		// B-grade Warcryer had no one-handed magic blunt. Each base weapon is followed by its SA versions.
+		7880, // Steel Sword (D, two-handed)
+		7881, // Titan Sword (D, two-handed)
+		7882, 8102, 8103, 8104, // Pa'agrian Sword (C, two-handed)
+		7883, 8105, 8106, 8107, // Guardian Sword (B, two-handed)
+		7884, 8108, 8109, 8110, // Infernal Master (A, two-handed)
+		7885, // Priest Sword (D, magic)
+		7886, // Sword of Magic Fog (D, magic)
+		7887, 8111, 8112, 8113, // Mysterious Sword (C, magic)
+		7888, 8114, 8115, 8116, // Ecliptic Sword (C, magic)
+		7889, 8117, 8118, 8119, // Wizard's Tear (B, magic)
+		7890, // Priest Mace (D, magic blunt)
+		7891, 8138, 8139, 8140, // Ecliptic Axe (C, magic blunt)
+		7892, 8141, 8142, 8143, // Spell Breaker (B, magic blunt)
+		7893, 8144, 8145, 8146, // Kaim Vanul's Bones (B, magic blunt)
+		7896, // Titan Hammer (D, two-handed blunt)
+		7897, 8120, 8121, 8122, // Dwarven Hammer (C, two-handed blunt)
+		7898, 8123, 8124, 8125, // Karik Horn (C, two-handed blunt)
+		7900, 8129, 8130, 8131, // Ice Storm Hammer (B, two-handed blunt)
+		7901, 8132, 8133, 8134, // Star Buster (B, two-handed blunt)
+		89, 4726, 4727, 4728, // Big Hammer (C)
+		4729, 4730, 4731, // Battle Axe SAs (C)
+		4732, 4733 // Silver Axe SAs (C)
 	};
 
 	private static volatile Set<Integer> _allowed = null;
@@ -130,7 +156,7 @@ public class FakePlayerGearFilter
 					// grades of real armor and shields. Items with an UNMEETABLE equip gate (Clan Oath's academy
 					// pledgeClass, hero/noble/olympiad) are caught per-phantom at equip time in
 					// PhantomManager.equipArmorSet via ItemTemplate.checkCondition instead.
-					if ((item != null) && !item.isForNpc())
+					if ((item != null) && !item.isForNpc() && hasRealName(item) && !isBossJewel(item))
 					{
 						built.add(item.getId());
 					}
@@ -147,6 +173,39 @@ public class FakePlayerGearFilter
 			_allowed = built;
 			return built;
 		}
+	}
+
+	/**
+	 * Unused template slots in the item data carry a placeholder name with no letter in it ("0" for item 749, "_" for
+	 * 163 and 170). They still sit in the GM gear lists, but the client shows them as a nameless item, so a phantom
+	 * must never wear one (FPC-202).
+	 */
+	private static boolean hasRealName(ItemTemplate item)
+	{
+		final String name = item.getName();
+		if (name == null)
+		{
+			return false;
+		}
+		for (int i = 0; i < name.length(); i++)
+		{
+			if (Character.isLetter(name.charAt(i)))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Raid and epic jewelry (Necklace of Frintezza, Earring of Antharas, Ring of Queen Ant...) is the only jewelry that
+	 * carries an item skill. The GM lists sell it, but the best-in-grade jewel pick would hand it to every ordinary
+	 * phantom of the grade (the A-grade necklace was always Frintezza's), so it is not phantom gear.
+	 */
+	private static boolean isBossJewel(ItemTemplate item)
+	{
+		final BodyPart part = item.getBodyPart();
+		return ((part == BodyPart.NECK) || (part == BodyPart.LR_EAR) || (part == BodyPart.LR_FINGER)) && item.hasSkills();
 	}
 
 	/** @return {@code true} if {@code itemId} is player gear the GM shop sells (safe to render on any race/class). */
