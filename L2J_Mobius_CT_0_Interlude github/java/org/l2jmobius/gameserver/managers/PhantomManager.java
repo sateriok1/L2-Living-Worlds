@@ -233,9 +233,9 @@ public class PhantomManager implements IXmlReader
 	private static final int ENC_POTION_COUNT = 300;
 	private static final int ENC_CP_POTION_ID = 5592; // Greater CP Potion (0.5 s reuse)
 	private static final int ENC_MP_POTION_ID = 728; // Mana Potion (0.5 s reuse)
-	private static final int ENC_CP_BELOW_PERCENT = 70;
-	private static final int ENC_HP_BELOW_PERCENT = 60;
-	private static final int ENC_MP_BELOW_PERCENT = 40;
+	private static final int ENC_CP_BELOW_PERCENT = 100;
+	private static final int ENC_HP_BELOW_PERCENT = 100;
+	private static final int ENC_MP_BELOW_PERCENT = 90;
 	// Healing potions a party companion may carry, best first: Greater, normal, Lesser Healing Potion.
 	private static final int[] COMPANION_HP_POTIONS =
 	{
@@ -5695,42 +5695,38 @@ public class PhantomManager implements IXmlReader
 		return true;
 	}
 
-	/** One potion per tick, in order of need: CP, then HP, then (casters) MP. The item's own reuse paces the spam. */
+	/**
+	 * Every tick, each potion that is needed and off its own cooldown is drunk: CP and HP below full, MP below 90%. Each
+	 * kind waits on its item's reuse (CP and mana 0.5 s, healing 10 s), so CP and mana are spammed and healing goes the
+	 * moment it is ready.
+	 */
 	private static void drinkEncounterPotions(Player phantom, PhantomData data)
 	{
 		if (phantom.isDead() || phantom.isAlikeDead())
 		{
 			return;
 		}
-		int id = 0;
-		if (phantom.getCurrentCpPercent() < ENC_CP_BELOW_PERCENT)
+		final int[] ids = { ENC_CP_POTION_ID, HP_POTION_ID, ENC_MP_POTION_ID };
+		final boolean[] needed = { phantom.getCurrentCpPercent() < ENC_CP_BELOW_PERCENT, phantom.getCurrentHpPercent() < ENC_HP_BELOW_PERCENT, phantom.getCurrentMpPercent() < ENC_MP_BELOW_PERCENT };
+		for (int i = 0; i < ids.length; i++)
 		{
-			id = ENC_CP_POTION_ID;
-		}
-		else if (phantom.getCurrentHpPercent() < ENC_HP_BELOW_PERCENT)
-		{
-			id = HP_POTION_ID;
-		}
-		else if (data.mage && (phantom.getCurrentMpPercent() < ENC_MP_BELOW_PERCENT))
-		{
-			id = ENC_MP_POTION_ID;
-		}
-		if (id == 0)
-		{
-			return;
-		}
-		final Item potion = phantom.getInventory().getItemByItemId(id);
-		if ((potion == null) || (potion.getCount() <= 0) || (potion.getEtcItem() == null))
-		{
-			return;
-		}
-		try
-		{
-			ItemHandler.getInstance().getHandler(potion.getEtcItem()).onItemUse(phantom, potion, false);
-		}
-		catch (Exception e)
-		{
-			LOGGER.warning(PhantomManager.class.getSimpleName() + ": Encounter potion failed: " + e.getMessage());
+			if (!needed[i])
+			{
+				continue;
+			}
+			final Item potion = phantom.getInventory().getItemByItemId(ids[i]);
+			if ((potion == null) || (potion.getCount() <= 0) || (potion.getEtcItem() == null) || (phantom.getItemRemainingReuseTime(potion.getObjectId()) > 0))
+			{
+				continue;
+			}
+			try
+			{
+				ItemHandler.getInstance().getHandler(potion.getEtcItem()).onItemUse(phantom, potion, false);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(PhantomManager.class.getSimpleName() + ": Encounter potion failed: " + e.getMessage());
+			}
 		}
 	}
 
