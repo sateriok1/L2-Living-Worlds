@@ -62,6 +62,7 @@ The V1 `ModuleContext` surface:
 ```text
 ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
+  market       the shops open right now and a hook for every shop sale (section 3.11)
   config       generic typed access to the module's own configuration
   events       register game event listeners
   handlers     register item, bypass, voiced, admin, effect, and target handlers
@@ -214,6 +215,17 @@ copy first. Which characters a feature offers and how the player asks for one is
 
 Inside the server a companion is a recruited party member of `PhantomManager` (flag `companion`), so phantom-wide rules
 apply to it: party loot and adena follow `FakePlayerPartyLootShare`, and its kills credit quests to the owner.
+
+## 3.11 Market
+
+`context.market()` is a read-only view of the economy. It changes nothing.
+
+- `openShops()` returns a snapshot of every shop open right now: the bot vendors and any player's private store. A shop has
+  an owner, `bot`, `sells` (false means it buys), its message, a position and its lines (item id, enchant, count, price).
+- `addListener(listener)` is told `onSale(shopName, shopIsBot, customerName, shopSells, itemId, enchant, count, unitPrice)`
+  after every completed sale in a bot vendor or a player store. Listeners run on the thread that made the sale and must
+  be quick.
+- Bots do not trade with each other on this server. They only sell to and buy from players, and hand loot to their owner.
 
 ## 4. Lifecycle and the levels of removal
 

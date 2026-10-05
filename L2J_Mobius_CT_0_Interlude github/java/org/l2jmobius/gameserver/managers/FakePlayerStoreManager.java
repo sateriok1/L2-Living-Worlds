@@ -33,6 +33,7 @@ import org.l2jmobius.commons.util.Rnd;
 import org.l2jmobius.gameserver.data.holders.RecipeHolder;
 import org.l2jmobius.gameserver.data.xml.RecipeData;
 import org.l2jmobius.gameserver.model.actor.Npc;
+import org.l2jmobius.gameserver.modules.ModuleMarket;
 import org.l2jmobius.gameserver.model.actor.Player;
 import org.l2jmobius.gameserver.model.actor.enums.player.PrivateStoreType;
 import org.l2jmobius.gameserver.model.actor.holders.npc.FakePlayerAppearance;
@@ -265,6 +266,7 @@ public class FakePlayerStoreManager
 				final FakePlayerStoreItem entry = bought.getKey();
 				player.addItem(ItemProcessType.BUY, entry.getItemId(), bought.getValue(), entry.getEnchant(), npc, true);
 				entry.decrease(bought.getValue());
+				ModuleMarket.sold(look.getName(), true, player.getName(), true, entry.getItemId(), entry.getEnchant(), bought.getValue(), entry.getPrice());
 			}
 
 			settle(npc, look);
@@ -360,6 +362,7 @@ public class FakePlayerStoreManager
 				if (player.destroyItem(ItemProcessType.SELL, row.objectId(), row.want(), npc, true))
 				{
 					row.demand().decrease(row.want());
+					ModuleMarket.sold(look.getName(), true, player.getName(), false, row.demand().getItemId(), row.demand().getEnchant(), row.want(), row.price());
 					paid += FakePlayerStoreMath.lineTotal(row.want(), row.price());
 				}
 			}
