@@ -141,6 +141,7 @@ import org.l2jmobius.gameserver.model.stats.Stat;
 import org.l2jmobius.gameserver.model.stats.functions.AbstractFunction;
 import org.l2jmobius.gameserver.model.zone.ZoneId;
 import org.l2jmobius.gameserver.model.zone.ZoneRegion;
+import org.l2jmobius.gameserver.modules.ModuleDamage;
 import org.l2jmobius.gameserver.network.Disconnection;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.SystemMessageId;
@@ -6461,17 +6462,20 @@ public abstract class Creature extends WorldObject
 	{
 		if (ChampionMonstersConfig.CHAMPION_ENABLE && isChampion() && (ChampionMonstersConfig.CHAMPION_HP != 0))
 		{
-			_status.reduceHp(amount / ChampionMonstersConfig.CHAMPION_HP, attacker, awake, isDOT, false);
+			amount /= ChampionMonstersConfig.CHAMPION_HP;
 		}
-		else
+		else if (isPlayer() && !isDOT && (skill != null) && (skill.getCastRange() > 0) && (attacker != null) && !GeoEngine.getInstance().canSeeTarget(attacker, this))
 		{
-			if (isPlayer() && !isDOT && (skill != null) && (skill.getCastRange() > 0) && (attacker != null) && !GeoEngine.getInstance().canSeeTarget(attacker, this))
-			{
-				amount = 0;
-			}
-			
-			_status.reduceHp(amount, attacker, awake, isDOT, false);
+			amount = 0;
 		}
+		
+		// Modules (a damage meter) hear every hit that counts: capped at what the target has left, nothing for a dead or invulnerable one.
+		if ((amount > 0) && (attacker != null) && ModuleDamage.active() && !isDead() && (isDOT || !isInvul()))
+		{
+			ModuleDamage.dealt(attacker, this, Math.min(amount, getCurrentHp() + (isPlayer() ? getCurrentCp() : 0)), skill, isDOT);
+		}
+		
+		_status.reduceHp(amount, attacker, awake, isDOT, false);
 	}
 	
 	public void reduceCurrentMp(double amount)
