@@ -578,6 +578,7 @@ public class PhantomPartyManager
 		Player summonFor; // summoner lineage: the party member the leader asked it to Summon Friend (null when none)
 		long summonAskedAt; // ...when it was asked, so an order that cannot be carried out times out
 		boolean summonWaitSaid; // ...already said "wait till you're out of combat" for this order
+		int buffedPetOid; // object id of the servitor that already got the spawn buff kit
 		long lastServitorSkillAt; // summoner lineage: when its servitor last used one of its own skills
 		Skill peelControl; // lazy: the control skill it peels with (Stunning Shot / Sleep / Root ...)
 		boolean peelControlLookedUp;
@@ -3558,7 +3559,7 @@ public class PhantomPartyManager
 	// ===== Summoner lineages: servitor upkeep, servitor combat, Summon Friend =====
 
 	/** Keeps a crystal stock for the summon skills. No actor, so the loot tracker never sees it (as with knight cubics). */
-	private static void stockServitorCrystals(Player npc)
+	static void stockServitorCrystals(Player npc)
 	{
 		for (int itemId : PhantomServitorRules.CRYSTAL_ITEMS)
 		{
@@ -3605,6 +3606,11 @@ public class PhantomPartyManager
 		if (!pet.isServitor() || pet.isDead())
 		{
 			return false;
+		}
+		if (state.buffedPetOid != pet.getObjectId())
+		{
+			state.buffedPetOid = pet.getObjectId();
+			PhantomBuffs.applyFullBuffsToServitor(pet); // same kit a spawned phantom gets, for every new servitor
 		}
 		final Skill heal = npc.getKnownSkill(PhantomServitorRules.SERVITOR_HEAL);
 		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && castable(npc, heal) && readyToCast(npc))
@@ -4827,7 +4833,7 @@ public class PhantomPartyManager
 	}
 
 	/** {@code true} if the member knows the skill and can cast it right now (not on cooldown, enough MP). */
-	private static boolean castable(Player npc, Skill skill)
+	static boolean castable(Player npc, Skill skill)
 	{
 		return (skill != null) && !npc.isSkillDisabled(skill) && (npc.getCurrentMp() >= skill.getMpConsume());
 	}
@@ -8394,7 +8400,7 @@ public class PhantomPartyManager
 	 *         getting up - the caller must return and retry next tick (without consuming any one-shot order) so the
 	 *         action lands once it is on its feet.
 	 */
-	private static boolean readyToCast(Player npc)
+	static boolean readyToCast(Player npc)
 	{
 		if (npc.isSitting())
 		{
