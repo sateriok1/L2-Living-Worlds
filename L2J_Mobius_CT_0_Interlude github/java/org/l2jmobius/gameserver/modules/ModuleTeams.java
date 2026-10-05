@@ -65,6 +65,78 @@ public class ModuleTeams
 		return PhantomManager.getInstance().spawnTeamFighter(blue ? Team.BLUE : Team.RED, where, rally, level, role, enchant, name, classId);
 	}
 
+	/** Puts a free-for-all fighter at a spot: on no team, an enemy of every other solo player. Same arguments as {@link #spawn}. */
+	public Player spawnSolo(Location where, Location rally, int level, PartyRole role, int enchant, String name, int classId)
+	{
+		return PhantomManager.getInstance().spawnTeamFighter(Team.NONE, true, where, rally, level, role, enchant, name, classId);
+	}
+
+	/** Puts a real player into a free-for-all: on no team, an enemy of every other solo player. */
+	public void joinSolo(Player player)
+	{
+		if (player != null)
+		{
+			player.setTeam(Team.NONE);
+			player.setOnSoloEvent(true);
+			player.setOnEvent(true);
+		}
+	}
+
+	/** Gives a real player the buffs a spawned fighter arrives with (full buff set plus the class's own self-buffs). */
+	public void buffLikeFighter(Player player)
+	{
+		PhantomManager.getInstance().buffLikeFighter(player);
+	}
+
+	/**
+	 * Puts these players in one party, the first as leader. Any party they were in is left first. A party holds nine at
+	 * most; extras are ignored.
+	 */
+	public void formParty(java.util.List<Player> members)
+	{
+		if ((members == null) || members.isEmpty())
+		{
+			return;
+		}
+		try
+		{
+			final Player leader = members.get(0);
+			for (Player p : members)
+			{
+				if ((p != null) && p.isInParty())
+				{
+					p.leaveParty();
+				}
+			}
+			if (members.size() < 2)
+			{
+				return;
+			}
+			leader.setParty(new org.l2jmobius.gameserver.model.groups.Party(leader, org.l2jmobius.gameserver.model.groups.PartyDistributionType.FINDERS_KEEPERS));
+			for (int i = 1; (i < members.size()) && (i < 9); i++)
+			{
+				final Player p = members.get(i);
+				if ((p != null) && (p != leader))
+				{
+					p.joinParty(leader.getParty());
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			java.util.logging.Logger.getLogger("ModuleTeams").warning("ModuleTeams.formParty failed: " + e);
+		}
+	}
+
+	/** Breaks up the party this player is in. */
+	public void disbandParty(Player member)
+	{
+		if ((member != null) && member.isInParty())
+		{
+			member.getParty().disbandParty();
+		}
+	}
+
 	/** Puts a real player on a team. They keep their own gear and skills. */
 	public void join(Player player, boolean blue)
 	{
@@ -81,6 +153,7 @@ public class ModuleTeams
 		if (player != null)
 		{
 			player.setOnEvent(false);
+			player.setOnSoloEvent(false);
 			player.setTeam(Team.NONE);
 		}
 	}

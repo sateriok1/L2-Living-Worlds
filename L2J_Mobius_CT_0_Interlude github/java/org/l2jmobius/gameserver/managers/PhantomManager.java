@@ -6140,7 +6140,16 @@ public class PhantomManager implements IXmlReader
 	 */
 	public Player spawnTeamFighter(Team team, Location where, Location rally, int level, PartyRole role, int enchant, String fixedName, int classId)
 	{
-		if ((team == null) || (team == Team.NONE) || (where == null) || (role == null))
+		return spawnTeamFighter(team, false, where, rally, level, role, enchant, fixedName, classId);
+	}
+
+	/**
+	 * Like {@link #spawnTeamFighter(Team, Location, Location, int, PartyRole, int, String, int)}, but with {@code solo}
+	 * the fighter is on no team and fights every other solo event player (a free-for-all).
+	 */
+	public Player spawnTeamFighter(Team team, boolean solo, Location where, Location rally, int level, PartyRole role, int enchant, String fixedName, int classId)
+	{
+		if ((team == null) || (!solo && (team == Team.NONE)) || (where == null) || (role == null))
 		{
 			return null;
 		}
@@ -6170,8 +6179,9 @@ public class PhantomManager implements IXmlReader
 		data.encounterCpPotions = true;
 		data.encounterPrepUntil = System.currentTimeMillis() + ENC_PREP_MS;
 		stockEncounterPotions(fighter, true);
-		fighter.setTeam(team);
+		fighter.setTeam(solo ? Team.NONE : team);
 		fighter.setOnEvent(true);
+		fighter.setOnSoloEvent(solo);
 		fighter.setInvul(true);
 		fighter.setImmobilized(true);
 		data.teamFighter = true; // last: the pvp tick treats it as a team fighter from here on
@@ -6236,6 +6246,8 @@ public class PhantomManager implements IXmlReader
 		}
 		fighter.setRunning();
 		data.pvpTargetOid = 0;
+		PhantomBuffs.applyFullBuffs(fighter, roleForClass(fighter.getPlayerClass()) == PartyRole.TANK); // death wiped the buffs
+		data.encounterPrepDone.clear();
 		data.encounterPrepUntil = System.currentTimeMillis() + ENC_PREP_MS;
 	}
 
@@ -6252,6 +6264,7 @@ public class PhantomManager implements IXmlReader
 			fighter.setInvul(false);
 			fighter.setImmobilized(false);
 			fighter.setOnEvent(false);
+			fighter.setOnSoloEvent(false);
 			fighter.setTeam(Team.NONE);
 			despawnRecruit(fighter);
 		}
@@ -6260,7 +6273,36 @@ public class PhantomManager implements IXmlReader
 	/** @return {@code true} if {@code other} is a living member of a team that is not {@code phantom}'s */
 	private static boolean isTeamEnemy(Player phantom, Player other)
 	{
-		return (other != phantom) && !other.isDead() && other.isOnEvent() && (other.getTeam() != Team.NONE) && (other.getTeam() != phantom.getTeam());
+		if ((other == phantom) || other.isDead() || !other.isOnEvent() || other.isInvul()) // a held fighter waiting its turn is not a target
+		{
+			return false;
+		}
+		if (phantom.isOnSoloEvent())
+		{
+			return other.isOnSoloEvent();
+		}
+		return (other.getTeam() != Team.NONE) && (other.getTeam() != phantom.getTeam());
+	}
+
+	/**
+	 * Gives a player the buffs a spawned phantom arrives with: the full buff set for its archetype plus the class's own
+	 * self-buffs it knows. Used so a real player in an event is as buffed as the bots.
+	 */
+	public void buffLikeFighter(Player player)
+	{
+		if ((player == null) || player.isDead())
+		{
+			return;
+		}
+		PhantomBuffs.applyFullBuffs(player, roleForClass(player.getPlayerClass()) == PartyRole.TANK);
+		for (int id : PhantomEncounterBuffs.forClass(player.getPlayerClass().getId()))
+		{
+			final Skill skill = player.getKnownSkill(id);
+			if (skill != null)
+			{
+				skill.applyEffects(player, player);
+			}
+		}
 	}
 
 	/** @return the nearest living enemy of the other team in sight, or {@code null} */
