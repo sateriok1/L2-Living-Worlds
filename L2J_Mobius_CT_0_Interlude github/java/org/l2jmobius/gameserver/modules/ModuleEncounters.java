@@ -124,11 +124,17 @@ public class ModuleEncounters
 	 */
 	public Player spawn(Player victim, Group group, Location where, int level, PartyRole role, int enchant, String fixedName)
 	{
+		return spawn(victim, group, where, level, role, enchant, fixedName, 0);
+	}
+
+	/** As above, pinned to one class id (for example 113 for a Titan); 0 keeps the role's random class. */
+	public Player spawn(Player victim, Group group, Location where, int level, PartyRole role, int enchant, String fixedName, int classId)
+	{
 		if ((group == null) || !available())
 		{
 			return null;
 		}
-		return PhantomManager.getInstance().spawnEncounterActor(victim, where, level, role, enchant, group._group, fixedName);
+		return PhantomManager.getInstance().spawnEncounterActor(victim, where, level, role, enchant, group._group, fixedName, classId);
 	}
 
 	/** Removes an actor that was just spawned but turned out to be somewhere it must not be (for example a safe zone). */
