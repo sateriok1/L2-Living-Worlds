@@ -89,6 +89,7 @@ import org.l2jmobius.gameserver.model.events.listeners.AbstractEventListener;
 import org.l2jmobius.gameserver.model.events.listeners.ConsumerEventListener;
 import org.l2jmobius.gameserver.model.groups.Party;
 import org.l2jmobius.gameserver.model.item.Armor;
+import org.l2jmobius.gameserver.handler.ItemHandler;
 import org.l2jmobius.gameserver.model.item.EtcItem;
 import org.l2jmobius.gameserver.model.item.ItemTemplate;
 import org.l2jmobius.gameserver.model.item.Weapon;
@@ -109,6 +110,7 @@ import org.l2jmobius.gameserver.network.Disconnection;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.SystemMessageId;
 import org.l2jmobius.gameserver.network.enums.ChatType;
+import org.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
 import org.l2jmobius.gameserver.network.serverpackets.CreatureSay;
 import org.l2jmobius.gameserver.network.serverpackets.ExDuelAskStart;
 import org.l2jmobius.gameserver.network.serverpackets.L2Friend;
@@ -216,6 +218,17 @@ public class PhantomManager implements IXmlReader
 	private static final int HP_POTION_ID = 1539; // Greater Healing Potion
 	private static final int HP_POTION_COUNT = 20000;
 	private static final int HP_POTION_PERCENT = 60;
+	// Encounter actors fight once, so they carry a modest stack of the best potions and drink them from the fight tick.
+	private static final int ENC_ESCAPE_SCROLL_ID = 1538; // Blessed Scroll of Escape
+	private static final int ENC_ESCAPE_SKILL_ID = 2036;
+	private static final int ENC_ESCAPE_BELOW_PERCENT = 10;
+	private static final int ENC_ESCAPE_CHANCE = 50;
+	private static final int ENC_POTION_COUNT = 300;
+	private static final int ENC_CP_POTION_ID = 5592; // Greater CP Potion (0.5 s reuse)
+	private static final int ENC_MP_POTION_ID = 728; // Mana Potion (0.5 s reuse)
+	private static final int ENC_CP_BELOW_PERCENT = 70;
+	private static final int ENC_HP_BELOW_PERCENT = 60;
+	private static final int ENC_MP_BELOW_PERCENT = 40;
 	// Healing potions a party companion may carry, best first: Greater, normal, Lesser Healing Potion.
 	private static final int[] COMPANION_HP_POTIONS =
 	{
@@ -1182,6 +1195,8 @@ public class PhantomManager implements IXmlReader
 		int companionOwnerId; // objectId of the player who summoned this companion
 		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
 		volatile boolean encounterActor;
+		boolean encounterEscapes; // carries a Blessed Scroll of Escape and may use it at low HP
+		boolean encounterEscapeRolled;
 		volatile int encounterVictimOid; // the real player this actor came for
 		volatile int encounterPhase; // ENC_APPROACH / ENC_WARN / ENC_FIGHT
 		volatile long encounterDeadline; // when this phase gives up (approach timeout, then fight cap)
@@ -5546,14 +5561,19 @@ public class PhantomManager implements IXmlReader
 	 */
 	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName)
 	{
-		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0);
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0, false);
+	}
+
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId)
+	{
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, classId, false);
 	}
 
 	/**
 	 * As above, but pinned to one class. {@code classId} is resolved for the actor's level like any named recruit
 	 * (a Titan below the third-class level comes as the Destroyer or earlier); 0 or less keeps the role's random class.
 	 */
-	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId)
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, boolean escapes)
 	{
 		if ((victim == null) || (where == null) || (group == null))
 		{
@@ -5588,8 +5608,112 @@ public class PhantomManager implements IXmlReader
 		data.encounterLastMoveAt = now;
 		data.encounterLastX = victim.getX();
 		data.encounterLastY = victim.getY();
+		stockEncounterPotions(actor);
+		if (escapes)
+		{
+			actor.getInventory().addItem(ItemProcessType.REWARD, ENC_ESCAPE_SCROLL_ID, 1, actor, null);
+			data.encounterEscapes = true;
+		}
 		data.encounterActor = true; // last: the pvp tick treats it as an encounter actor from here on
 		return actor;
+	}
+
+	/** Exactly {@link #ENC_POTION_COUNT} each of the best healing, CP and mana potions (the outfit's larger healing stack is trimmed). */
+	private static void stockEncounterPotions(Player actor)
+	{
+		for (int id : new int[] { HP_POTION_ID, ENC_CP_POTION_ID, ENC_MP_POTION_ID })
+		{
+			final Item have = actor.getInventory().getItemByItemId(id);
+			final int count = (have == null) ? 0 : (int) have.getCount();
+			if (count < ENC_POTION_COUNT)
+			{
+				actor.getInventory().addItem(ItemProcessType.REWARD, id, ENC_POTION_COUNT - count, actor, null);
+			}
+			else if (count > ENC_POTION_COUNT)
+			{
+				actor.getInventory().destroyItemByItemId(ItemProcessType.DESTROY, id, count - ENC_POTION_COUNT, actor, null);
+			}
+		}
+		actor.getAutoUseSettings().setAutoPotionItem(HP_POTION_ID);
+	}
+
+	/**
+	 * Once, when HP first falls under {@link #ENC_ESCAPE_BELOW_PERCENT}: a {@link #ENC_ESCAPE_CHANCE}% chance to read the
+	 * scroll. It then vanishes and counts as defeated, exactly as if it had died (the group's wipe and any reward follow).
+	 */
+	private boolean tryEncounterEscape(Player phantom, PhantomData data, Player victim, PhantomEncounterRules.EncounterGroup group, long now)
+	{
+		if (data.encounterEscapeRolled || (phantom.getCurrentHpPercent() >= ENC_ESCAPE_BELOW_PERCENT))
+		{
+			return false;
+		}
+		data.encounterEscapeRolled = true;
+		final Item scroll = phantom.getInventory().getItemByItemId(ENC_ESCAPE_SCROLL_ID);
+		if ((scroll == null) || (Rnd.get(100) >= ENC_ESCAPE_CHANCE))
+		{
+			return false;
+		}
+		phantom.getInventory().destroyItemByItemId(ItemProcessType.DESTROY, ENC_ESCAPE_SCROLL_ID, 1, phantom, null);
+		phantom.broadcastPacket(new MagicSkillUse(phantom, phantom, ENC_ESCAPE_SKILL_ID, 1, 0, 0));
+		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		if (data.pvpTargetOid != 0)
+		{
+			endPvp(phantom, data, victim);
+		}
+		phantom.setTarget(null);
+		phantom.getAI().setIntention(Intention.IDLE);
+		data.encounterEndAt = now + 1000;
+		if (group.memberDied() && (group.listener() != null) && (victim != null))
+		{
+			try
+			{
+				group.listener().onGroupDefeated(victim.getObjectId(), phantom.getObjectId());
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(getClass().getSimpleName() + ": Encounter listener failed: " + e.getMessage());
+			}
+		}
+		return true;
+	}
+
+	/** One potion per tick, in order of need: CP, then HP, then (casters) MP. The item's own reuse paces the spam. */
+	private static void drinkEncounterPotions(Player phantom, PhantomData data)
+	{
+		if (phantom.isDead() || phantom.isAlikeDead())
+		{
+			return;
+		}
+		int id = 0;
+		if (phantom.getCurrentCpPercent() < ENC_CP_BELOW_PERCENT)
+		{
+			id = ENC_CP_POTION_ID;
+		}
+		else if (phantom.getCurrentHpPercent() < ENC_HP_BELOW_PERCENT)
+		{
+			id = HP_POTION_ID;
+		}
+		else if (data.mage && (phantom.getCurrentMpPercent() < ENC_MP_BELOW_PERCENT))
+		{
+			id = ENC_MP_POTION_ID;
+		}
+		if (id == 0)
+		{
+			return;
+		}
+		final Item potion = phantom.getInventory().getItemByItemId(id);
+		if ((potion == null) || (potion.getCount() <= 0) || (potion.getEtcItem() == null))
+		{
+			return;
+		}
+		try
+		{
+			ItemHandler.getInstance().getHandler(potion.getEtcItem()).onItemUse(phantom, potion, false);
+		}
+		catch (Exception e)
+		{
+			LOGGER.warning(PhantomManager.class.getSimpleName() + ": Encounter potion failed: " + e.getMessage());
+		}
 	}
 
 	/** @return how many encounters are running (a group of actors counts once, until its last actor is gone). */
@@ -5674,6 +5798,10 @@ public class PhantomManager implements IXmlReader
 			endEncounter(phantom, data, victim, now, ENC_LEAVE_MS, true); // it won
 			return;
 		}
+		if (data.encounterEscapes && tryEncounterEscape(phantom, data, victim, group, now))
+		{
+			return; // it read its scroll and is gone: counted as down
+		}
 		final double distance = phantom.calculateDistance2D(victim);
 		switch (data.encounterPhase)
 		{
@@ -5735,6 +5863,7 @@ public class PhantomManager implements IXmlReader
 			}
 			default:
 			{
+				drinkEncounterPotions(phantom, data);
 				if (data.pvpTargetOid != 0)
 				{
 					continuePvp(phantom, data, now);
