@@ -289,6 +289,7 @@ other, enemies can, a team circle shows over every head, nobody pays a death pen
   nearest living enemy within sight, and walks to `rally` when none is in sight. It never flees.
 - `join(player, blue)` and `leave(player)` put a real player on or off a team. `teamOf(player)` returns true for blue,
   false for red, null for none.
+- A new fighter starts **held**: it buffs and drinks but does not move, fight or take damage. `hold(fighter, false)` lets it loose, `hold(fighter, true)` freezes it again. Set a whole event up, then release everyone at once.
 - `revive(fighter, where)` brings a dead fighter back at full strength on the same team. `discard(fighter)` removes it.
 - Scoring, respawns, prizes and when the event ends are the module's job. Listen to `OnCreatureDeath` for kills and use
   `damage()` for per-player damage.

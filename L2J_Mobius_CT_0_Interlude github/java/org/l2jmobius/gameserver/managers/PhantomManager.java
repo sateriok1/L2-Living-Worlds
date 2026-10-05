@@ -1207,7 +1207,8 @@ public class PhantomManager implements IXmlReader
 		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
 		volatile boolean encounterActor;
 		volatile boolean arenaDuelist; // stands where it was put, takes duels from anyone and challenges on a module's say-so (ModuleDuels)
-		volatile boolean teamFighter; // fights the other team of a module's team event until a module says stop (ModuleTeams)
+		volatile boolean teamFighter;
+		volatile boolean teamHold; // buffs but does not fight or move until released // fights the other team of a module's team event until a module says stop (ModuleTeams)
 		volatile Location teamRally; // where it heads when no enemy is in sight
 		long teamRetargetAt; // when it may pick a different enemy
 		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
@@ -6165,11 +6166,14 @@ public class PhantomManager implements IXmlReader
 			return fighter;
 		}
 		data.teamRally = rally;
+		data.teamHold = true; // a module releases it when its event starts
 		data.encounterCpPotions = true;
 		data.encounterPrepUntil = System.currentTimeMillis() + ENC_PREP_MS;
 		stockEncounterPotions(fighter, true);
 		fighter.setTeam(team);
 		fighter.setOnEvent(true);
+		fighter.setInvul(true);
+		fighter.setImmobilized(true);
 		data.teamFighter = true; // last: the pvp tick treats it as a team fighter from here on
 		return fighter;
 	}
@@ -6179,6 +6183,26 @@ public class PhantomManager implements IXmlReader
 	{
 		final PhantomData data = (player == null) ? null : _phantoms.get(player.getObjectId());
 		return (data != null) && data.teamFighter;
+	}
+
+	/**
+	 * Holds or releases a team fighter. A held fighter still buffs and drinks, but does not move, fight or take damage
+	 * (it stands there invulnerable). A fresh fighter starts held.
+	 */
+	public void holdTeamFighter(Player fighter, boolean hold)
+	{
+		final PhantomData data = (fighter == null) ? null : _phantoms.get(fighter.getObjectId());
+		if ((data == null) || !data.teamFighter)
+		{
+			return;
+		}
+		data.teamHold = hold;
+		fighter.setInvul(hold);
+		fighter.setImmobilized(hold);
+		if (hold)
+		{
+			data.pvpTargetOid = 0;
+		}
 	}
 
 	/** Changes where a team fighter heads when no enemy is in sight. */
@@ -6225,6 +6249,8 @@ public class PhantomManager implements IXmlReader
 		}
 		if (fighter != null)
 		{
+			fighter.setInvul(false);
+			fighter.setImmobilized(false);
 			fighter.setOnEvent(false);
 			fighter.setTeam(Team.NONE);
 			despawnRecruit(fighter);
@@ -6270,6 +6296,10 @@ public class PhantomManager implements IXmlReader
 			return; // casting its buffs or summoning
 		}
 		drinkEncounterPotions(phantom, data);
+		if (data.teamHold)
+		{
+			return;
+		}
 		Player target = resolvePvpTarget(data);
 		if ((target == null) || !isTeamEnemy(phantom, target) || (phantom.calculateDistance2D(target) > TEAM_LOSE_RANGE) || (now >= data.teamRetargetAt))
 		{

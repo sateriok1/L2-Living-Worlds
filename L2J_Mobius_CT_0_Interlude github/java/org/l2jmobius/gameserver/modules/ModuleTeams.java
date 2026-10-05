@@ -101,6 +101,15 @@ public class ModuleTeams
 		return PhantomManager.getInstance().isTeamFighter(player);
 	}
 
+	/**
+	 * Holds or releases a fighter. A held fighter buffs but does not move, fight or take damage. A new fighter starts
+	 * held, so a module can set a whole event up and release everyone at once.
+	 */
+	public void hold(Player fighter, boolean hold)
+	{
+		PhantomManager.getInstance().holdTeamFighter(fighter, hold);
+	}
+
 	/** Changes where a fighter heads when no enemy is in sight. */
 	public void setRally(Player fighter, Location rally)
 	{
