@@ -64,6 +64,7 @@ ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
   encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
   duels        duelists that stand at a spot, take duels and challenge players (section 3.8)
+  damage       a hook for every hit that lowers HP, with who did it, to whom and the skill (section 3.9)
   config       generic typed access to the module's own configuration
   events       register game event listeners
   handlers     register item, bypass, voiced, admin, effect, and target handlers
@@ -258,6 +259,22 @@ own duel system (countdown, nobody dies, HP restored at the end); the platform a
   named zones only, for the whole run. Nothing changes anywhere else.
 
 What a duel is worth, where duelists stand, and when they challenge is the module's.
+
+## 3.9 Damage
+
+`context.damage()` is a read-only hook for features that need to see combat, such as a damage meter. The stock
+`OnCreatureDamageDealt` event only fires for auto attacks, so it cannot see skills or damage over time; this hook sits at
+the one place every HP loss goes through (`Creature.reduceCurrentHp`).
+
+- `addListener(listener)` is told about every hit as `onDamage(attacker, target, damage, skill, damageOverTime)`.
+- `damage` is what the hit was worth after the platform's own rules, capped at what the target had left (HP, plus CP for
+  a player), so the last hit on a boss does not count overkill. Nothing is reported for a dead target, an invulnerable one
+  (damage over time still counts), or a hit that was reduced to zero.
+- `skill` is `null` for an auto attack or a reflect. A servitor or pet is reported as itself; ask it for its owner.
+- Listeners run on the thread that dealt the damage. They must be quick and must not block.
+- With no listener registered the core does no extra work.
+
+The first user is the DPS Meter module.
 
 ## 4. Lifecycle and the levels of removal
 
