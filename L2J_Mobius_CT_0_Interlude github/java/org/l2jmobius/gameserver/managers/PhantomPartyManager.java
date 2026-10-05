@@ -579,6 +579,7 @@ public class PhantomPartyManager
 		Player summonFor; // summoner lineage: the party member the leader asked it to Summon Friend (null when none)
 		long summonAskedAt; // ...when it was asked, so an order that cannot be carried out times out
 		boolean summonWaitSaid; // ...already said "wait till you're out of combat" for this order
+		int buffedPetOid; // object id of the servitor that already got the spawn buff kit
 		long lastServitorSkillAt; // summoner lineage: when its servitor last used one of its own skills
 		Skill peelControl; // lazy: the control skill it peels with (Stunning Shot / Sleep / Root ...)
 		boolean peelControlLookedUp;
@@ -3632,6 +3633,11 @@ public class PhantomPartyManager
 		if (!pet.isServitor() || pet.isDead())
 		{
 			return false;
+		}
+		if (state.buffedPetOid != pet.getObjectId())
+		{
+			state.buffedPetOid = pet.getObjectId();
+			PhantomBuffs.applyFullBuffsToServitor(pet); // same kit a spawned phantom gets, for every new servitor
 		}
 		final Skill heal = npc.getKnownSkill(PhantomServitorRules.SERVITOR_HEAL);
 		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && castable(npc, heal) && readyToCast(npc))

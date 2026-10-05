@@ -1210,7 +1210,7 @@ public class PhantomManager implements IXmlReader
 		boolean encounterCpPotions; // carries and drinks CP potions (the strong encounters); the others use only HP and MP potions
 		long encounterPrepUntil; // until then it may cast its self-buffs and summon its servitor before the fight
 		final Set<Integer> encounterPrepDone = new HashSet<>(); // skills already tried in the preparation (a refused cast is not retried)
-		boolean encounterPetBuffed;
+		int encounterPetBuffedOid; // object id of the servitor that already got the spawn kit (a re-summoned one gets it again)
 		long encounterPetSkillAt;
 		boolean encounterEscapeOnRout; // a lost fight (3/4 of the group down, outnumbered) is a reason to read it too
 		boolean encounterEscapeRolled;
@@ -5751,9 +5751,9 @@ public class PhantomManager implements IXmlReader
 			}
 			else if (pet.isServitor() && !pet.isDead())
 			{
-				if (!data.encounterPetBuffed)
+				if (data.encounterPetBuffedOid != pet.getObjectId())
 				{
-					data.encounterPetBuffed = true;
+					data.encounterPetBuffedOid = pet.getObjectId();
 					PhantomBuffs.applyFullBuffsToServitor(pet);
 				}
 				for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
