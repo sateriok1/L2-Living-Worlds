@@ -39,6 +39,7 @@ import org.l2jmobius.gameserver.model.item.ItemTemplate;
 import org.l2jmobius.gameserver.model.item.enums.ItemProcessType;
 import org.l2jmobius.gameserver.model.item.instance.Item;
 import org.l2jmobius.gameserver.model.itemcontainer.PlayerInventory;
+import org.l2jmobius.gameserver.modules.ModuleMarket;
 import org.l2jmobius.gameserver.network.SystemMessageId;
 import org.l2jmobius.gameserver.network.serverpackets.InventoryUpdate;
 import org.l2jmobius.gameserver.network.serverpackets.StatusUpdate;
@@ -802,6 +803,7 @@ public class TradeList
 				break;
 			}
 			
+			ModuleMarket.sold(_owner.getName(), false, player.getName(), true, newItem.getId(), newItem.getEnchantLevel(), item.getCount(), item.getPrice());
 			removeItem(item.getObjectId(), -1, item.getCount());
 			
 			// Add changes to inventory update packets
@@ -969,6 +971,7 @@ public class TradeList
 				continue;
 			}
 			
+			ModuleMarket.sold(_owner.getName(), false, player.getName(), false, newItem.getId(), newItem.getEnchantLevel(), item.getCount(), item.getPrice());
 			removeItem(-1, item.getItemId(), item.getCount());
 			ok = true;
 			

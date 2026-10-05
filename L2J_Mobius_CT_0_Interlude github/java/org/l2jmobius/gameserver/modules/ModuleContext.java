@@ -74,6 +74,11 @@ public interface ModuleContext
 	ModuleTeams teams();
 
 	/**
+	 * @return the market surface: the shops open right now and a hook for every sale made in a shop
+	 */
+	ModuleMarket market();
+
+	/**
 	 * @return a logger scoped to this module, so its output is attributable
 	 */
 	Logger logging();

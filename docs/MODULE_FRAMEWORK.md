@@ -64,6 +64,7 @@ ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
   encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
   duels        duelists that stand at a spot, take duels and challenge players (section 3.8)
+  market       the shops open right now and a hook for every shop sale (section 3.11)
   teams        blue and red event teams with phantom fighters that hunt the other side (section 3.10)
   damage       a hook for every hit that lowers HP, with who did it, to whom and the skill (section 3.9)
   config       generic typed access to the module's own configuration
@@ -291,6 +292,17 @@ other, enemies can, a team circle shows over every head, nobody pays a death pen
 - `revive(fighter, where)` brings a dead fighter back at full strength on the same team. `discard(fighter)` removes it.
 - Scoring, respawns, prizes and when the event ends are the module's job. Listen to `OnCreatureDeath` for kills and use
   `damage()` for per-player damage.
+
+## 3.11 Market
+
+`context.market()` is a read-only view of the economy. It changes nothing.
+
+- `openShops()` returns a snapshot of every shop open right now: the bot vendors and any player's private store. A shop has
+  an owner, `bot`, `sells` (false means it buys), its message, a position and its lines (item id, enchant, count, price).
+- `addListener(listener)` is told `onSale(shopName, shopIsBot, customerName, shopSells, itemId, enchant, count, unitPrice)`
+  after every completed sale in a bot vendor or a player store. Listeners run on the thread that made the sale and must
+  be quick.
+- Bots do not trade with each other on this server. They only sell to and buy from players, and hand loot to their owner.
 
 ## 4. Lifecycle and the levels of removal
 

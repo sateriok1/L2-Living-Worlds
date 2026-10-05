@@ -35,6 +35,7 @@ class DefaultModuleContext implements ModuleContext
 	private final ModuleEncounters _encounters = new ModuleEncounters();
 	private final ModuleDuels _duels = new ModuleDuels();
 	private final ModuleTeams _teams = new ModuleTeams();
+	private final ModuleMarket _market = new ModuleMarket();
 	private final ModuleDamage _damage = new ModuleDamage();
 	private final Logger _logger;
 
@@ -80,6 +81,12 @@ class DefaultModuleContext implements ModuleContext
 	public ModuleDuels duels()
 	{
 		return _duels;
+	}
+
+	@Override
+	public ModuleMarket market()
+	{
+		return _market;
 	}
 
 	@Override
