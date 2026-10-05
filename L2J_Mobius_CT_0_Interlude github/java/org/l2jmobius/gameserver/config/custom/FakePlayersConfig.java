@@ -76,6 +76,8 @@ public class FakePlayersConfig
 	public static int PHANTOM_PVP_MAX_LEVEL_GAP_ABOVE_PLAYER;
 	public static int PHANTOM_PVP_AGGRESSOR_PERCENT;
 	public static int PHANTOM_PVP_REACT_CHANCE_PERCENT;
+	public static int PHANTOM_PVP_RED_REACT_CHANCE_PERCENT;
+	public static boolean PHANTOM_PVP_RED_REACT_ALL;
 	public static int PHANTOM_PVP_ENGAGE_COOLDOWN_SECONDS;
 	public static boolean PHANTOM_PVP_CLAN_DEFENSE;
 	public static int PHANTOM_PVP_DEFEND_RADIUS;
@@ -151,6 +153,8 @@ public class FakePlayersConfig
 		PHANTOM_PVP_MAX_LEVEL_GAP_ABOVE_PLAYER = config.getInt("PhantomPvpMaxLevelGapAbovePlayer", 6);
 		PHANTOM_PVP_AGGRESSOR_PERCENT = config.getInt("PhantomPvpAggressorPercent", 15);
 		PHANTOM_PVP_REACT_CHANCE_PERCENT = config.getInt("PhantomPvpReactChancePercent", 25);
+		PHANTOM_PVP_RED_REACT_CHANCE_PERCENT = config.getInt("PhantomPvpRedReactChancePercent", 65);
+		PHANTOM_PVP_RED_REACT_ALL = config.getBoolean("PhantomPvpRedReactAll", true);
 		PHANTOM_PVP_ENGAGE_COOLDOWN_SECONDS = config.getInt("PhantomPvpEngageCooldownSeconds", 300);
 		PHANTOM_PVP_CLAN_DEFENSE = config.getBoolean("PhantomPvpClanDefense", true);
 		PHANTOM_PVP_DEFEND_RADIUS = config.getInt("PhantomPvpDefendRadius", 1200);
