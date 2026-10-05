@@ -899,9 +899,8 @@ public class PhantomManager implements IXmlReader
 		final Map<Race, Map<PartyRole, List<PlayerClass>>> map = new EnumMap<>(Race.class);
 		for (PlayerClass pc : PlayerClass.values())
 		{
-			// A 2nd class is the shallowest point where every archetype is distinct; summoners are excluded so a
-			// generic "mage" never rolls a (currently unsupported) summoner - they stay requestable by exact name.
-			if ((classDepth(pc) != 2) || pc.isSummoner())
+			// A 2nd class is the shallowest point where every archetype is distinct.
+			if (classDepth(pc) != 2)
 			{
 				continue;
 			}
@@ -1219,8 +1218,8 @@ public class PhantomManager implements IXmlReader
 		long spotAttackAt; // when the hunter follows through (0 = no ultimatum given)
 		long spotCooldownUntil;
 		int spotStealOid; // the mob whose theft was last counted, so one mob is one theft
-		int encounterPetBuffedOid; // object id of the servitor that already got the spawn kit (a re-summoned one gets it again)
-		long encounterPetSkillAt;
+		int petBuffedOid; // object id of the servitor that already got the spawn kit (a re-summoned one gets it again)
+		long petSkillAt;
 		boolean encounterEscapeOnRout; // a lost fight (3/4 of the group down, outnumbered) is a reason to read it too
 		boolean encounterEscapeRolled;
 		volatile int encounterVictimOid; // the real player this actor came for
@@ -2771,14 +2770,14 @@ public class PhantomManager implements IXmlReader
 
 	/**
 	 * A random class transfer from the given class within the wanted archetype: melee fighters, or DD
-	 * mages (mystic but not priest/summoner). Returns {@code null} if there are none.
+	 * mages (mystic, summoners included, but not priests). Returns {@code null} if there are none.
 	 */
 	private static PlayerClass randomChild(PlayerClass parent, boolean mage)
 	{
 		final List<PlayerClass> options = new ArrayList<>();
 		for (PlayerClass child : parent.getNextClasses())
 		{
-			final boolean wanted = mage ? (child.isOfType(ClassType.MYSTIC) && !child.isSummoner()) : !child.isMage();
+			final boolean wanted = mage ? child.isOfType(ClassType.MYSTIC) : !child.isMage();
 			if (wanted)
 			{
 				options.add(child);
@@ -4870,6 +4869,10 @@ public class PhantomManager implements IXmlReader
 					enableAutoHunt(mage, true, data);
 				}
 				final WorldObject target = mage.getTarget();
+				if (tendHunterServitor(mage, data, (target instanceof Monster) ? (Monster) target : null))
+				{
+					continue; // a summoner busy calling, buffing or healing its servitor
+				}
 				if (!(target instanceof Monster) || ((Monster) target).isDead())
 				{
 					continue; // AutoPlay will pick a target; nothing to position around yet
@@ -4889,6 +4892,82 @@ public class PhantomManager implements IXmlReader
 				LOGGER.warning(getClass().getSimpleName() + ": Mage combat error for " + mage.getName() + ": " + e.getMessage());
 			}
 		}
+	}
+
+	/**
+	 * A summoner hunter's pet upkeep: calls the strongest servitor it can, gives each new one the spawn buff kit,
+	 * heals and recharges it, keeps its shields up, and sends it at the owner's target.
+	 * @return {@code true} if the summoner is busy with a cast this tick
+	 */
+	private boolean tendHunterServitor(Player phantom, PhantomData data, Monster focus)
+	{
+		if (!phantom.getPlayerClass().isSummoner() || phantom.isDead() || phantom.isCastingNow())
+		{
+			return false;
+		}
+		final boolean busy = phantom.isAttackingNow() || underAttack(phantom);
+		final Summon pet = phantom.getSummon();
+		if (pet == null)
+		{
+			if (busy)
+			{
+				return false;
+			}
+			final int summonId = PhantomServitorRules.pickSummon(id -> PhantomPartyManager.castable(phantom, phantom.getKnownSkill(id)));
+			if (summonId == 0)
+			{
+				return false; // none learned yet, on reuse, or short of MP: retried next tick
+			}
+			if (!PhantomPartyManager.readyToCast(phantom))
+			{
+				return true;
+			}
+			PhantomPartyManager.stockServitorCrystals(phantom);
+			phantom.setTarget(phantom);
+			phantom.doCast(phantom.getKnownSkill(summonId));
+			return true;
+		}
+		if (!pet.isServitor() || pet.isDead())
+		{
+			return false;
+		}
+		if (data.petBuffedOid != pet.getObjectId())
+		{
+			data.petBuffedOid = pet.getObjectId();
+			PhantomBuffs.applyFullBuffsToServitor(pet); // the same kit a spawned phantom gets
+		}
+		final Skill heal = phantom.getKnownSkill(PhantomServitorRules.SERVITOR_HEAL);
+		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && PhantomPartyManager.castable(phantom, heal) && PhantomPartyManager.readyToCast(phantom))
+		{
+			phantom.setTarget(pet);
+			phantom.doCast(heal);
+			return true;
+		}
+		if (!busy)
+		{
+			final Skill recharge = phantom.getKnownSkill(PhantomServitorRules.SERVITOR_RECHARGE);
+			if (PhantomServitorRules.servitorNeedsRecharge(pet.getCurrentMpPercent()) && PhantomPartyManager.castable(phantom, recharge) && PhantomPartyManager.readyToCast(phantom))
+			{
+				phantom.setTarget(pet);
+				phantom.doCast(recharge);
+				return true;
+			}
+			for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
+			{
+				final Skill buff = phantom.getKnownSkill(buffId);
+				if ((buff != null) && !pet.isAffectedBySkill(buffId) && PhantomPartyManager.castable(phantom, buff) && PhantomPartyManager.readyToCast(phantom))
+				{
+					phantom.setTarget(pet);
+					phantom.doCast(buff);
+					return true;
+				}
+			}
+		}
+		if ((focus != null) && !focus.isDead())
+		{
+			commandEncounterPet(phantom, data, focus);
+		}
+		return false;
 	}
 
 	/**
@@ -5921,9 +6000,9 @@ public class PhantomManager implements IXmlReader
 			}
 			else if (pet.isServitor() && !pet.isDead())
 			{
-				if (data.encounterPetBuffedOid != pet.getObjectId())
+				if (data.petBuffedOid != pet.getObjectId())
 				{
-					data.encounterPetBuffedOid = pet.getObjectId();
+					data.petBuffedOid = pet.getObjectId();
 					PhantomBuffs.applyFullBuffsToServitor(pet);
 				}
 				for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
@@ -5952,7 +6031,7 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/** Sends a summoner's servitor at the fight's target, and now and then has it use one of its damage skills. */
-	private static void commandEncounterPet(Player phantom, PhantomData data, Player target)
+	private static void commandEncounterPet(Player phantom, PhantomData data, Creature target)
 	{
 		final Summon pet = phantom.getSummon();
 		if ((pet == null) || !pet.isServitor() || pet.isDead() || target.isDead() || pet.isCastingNow())
@@ -5964,7 +6043,7 @@ public class PhantomManager implements IXmlReader
 			pet.doSummonAttack(target);
 		}
 		final long now = System.currentTimeMillis();
-		if ((now - data.encounterPetSkillAt) < ENC_PET_SKILL_GAP_MS)
+		if ((now - data.petSkillAt) < ENC_PET_SKILL_GAP_MS)
 		{
 			return;
 		}
@@ -5975,7 +6054,7 @@ public class PhantomManager implements IXmlReader
 				pet.setTarget(target);
 				if (pet.useMagic(skill, false, false))
 				{
-					data.encounterPetSkillAt = now;
+					data.petSkillAt = now;
 					return;
 				}
 			}
