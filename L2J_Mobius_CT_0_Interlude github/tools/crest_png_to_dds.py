@@ -28,8 +28,11 @@ Defaults to ../dist/game/data/crests relative to this script.
 
 The client rejects crests whose dimensions are not powers of two, so each
 image is padded up to the next power of two before encoding (16x12 -> 16x16,
-8x12 -> 8x16, 24x12 -> 32x16). The client displays only the original crest
-region, so the edge-replicated padding is never shown.
+8x12 -> 8x16, 24x12 -> 32x16). The padding is written as fully transparent
+DXT1 blocks (the crest dimensions are multiples of 4, so padding is always whole
+blocks and never touches the crest's own blocks). It used to be edge-replicated,
+which drew as a coloured line under the crest wherever the client showed more
+than the crest region.
 
 Note: the small pledge crest is capped at 256 bytes on the wire
 (RequestSetPledgeCrest, check is `> 256`). A 16x16 DXT1 crest is exactly
@@ -88,6 +91,10 @@ def _encode_dxt1_block(pixels):
     return struct.pack("<HHI", c0, c1, indices)
 
 
+# DXT1 block with both colours 0 (c0 <= c1 selects 3-colour + transparent mode) and every index 3 = transparent.
+_TRANSPARENT_BLOCK = struct.pack("<HHI", 0, 0, 0xFFFFFFFF)
+
+
 def _next_pow2(n):
     p = 1
     while p < n:
@@ -97,19 +104,15 @@ def _next_pow2(n):
 
 def _pad_pow2(img):
     """The client rejects a crest whose dimensions are not powers of two, so pad
-    up to the next power of two (e.g. 16x12 -> 16x16). The client displays only
-    the original crest region (the top-left), so the padding is never shown; we
-    edge-replicate into it so DXT1 block compression has no hard seam to bleed."""
+    up to the next power of two (e.g. 16x12 -> 16x16). The padding pixels are
+    black here but are never encoded: _encode_dxt1 writes transparent blocks for
+    every block that lies wholly outside the crest."""
     w, h = img.size
     nw, nh = _next_pow2(w), _next_pow2(h)
     if (nw, nh) == (w, h):
         return img, w, h
     canvas = Image.new("RGB", (nw, nh))
     canvas.paste(img, (0, 0))
-    if nw > w:  # replicate the right column outward
-        canvas.paste(img.crop((w - 1, 0, w, h)).resize((nw - w, h)), (w, 0))
-    if nh > h:  # replicate the (now full-width) bottom row downward
-        canvas.paste(canvas.crop((0, h - 1, nw, h)).resize((nw, nh - h)), (0, h))
     return canvas, w, h
 
 
@@ -123,6 +126,9 @@ def _encode_dxt1(img):
     out = bytearray()
     for by in range(0, h, 4):
         for bx in range(0, w, 4):
+            if bx >= src_w or by >= src_h:
+                out += _TRANSPARENT_BLOCK  # padding: nothing to draw
+                continue
             block = [px[bx + x, by + y] for y in range(4) for x in range(4)]
             out += _encode_dxt1_block(block)
     return bytes(out), w, h

@@ -3006,9 +3006,10 @@ function bcEncBlock(px){ // px: 16 [r,g,b] in 4x4 row-major order -> 8 bytes
     idx|=bj<<(2*i); }
   return [c0&255,(c0>>8)&255,c1&255,(c1>>8)&255,idx&255,(idx>>8)&255,(idx>>16)&255,(idx>>>24)&255];
 }
-function bcEncodeDxt1(data,w,h){ // data: RGBA Uint8ClampedArray
+function bcEncodeDxt1(data,w,h,sw,sh){ // data: RGBA Uint8ClampedArray; sw x sh is the crest inside the padded w x h
   const out=[]; const at=(x,y)=>{ const o=(y*w+x)*4; return [data[o],data[o+1],data[o+2]]; };
   for (let by=0;by<h;by+=4) for (let bx=0;bx<w;bx+=4){ const blk=[];
+    if (bx>=sw || by>=sh){ out.push(0,0,0,0,255,255,255,255); continue; } // padding: a fully transparent block, drawn as nothing
     for (let y=0;y<4;y++) for (let x=0;x<4;x++) blk.push(at(bx+x,by+y));
     out.push(...bcEncBlock(blk)); }
   return new Uint8Array(out);
@@ -3042,14 +3043,12 @@ async function bcMakeCrest(setDir, spec, bmp){
   sctx.drawImage(bmp, 0, 0, spec.w, spec.h);
   const pngBlob = await new Promise(r => sc.toBlob(r, "image/png"));
   await bcWriteFile(setDir, spec.file + ".png", pngBlob);
-  // 2) pad to power-of-two (client requirement), edge-replicating into the padding, then DXT1-encode.
+  // 2) pad to power-of-two (client requirement); the padding is encoded as transparent blocks, then DXT1-encode.
   const pc = document.createElement("canvas"); pc.width = spec.pw; pc.height = spec.ph;
   const pctx = pc.getContext("2d"); pctx.imageSmoothingEnabled = false;
   pctx.drawImage(sc, 0, 0);
-  if (spec.pw > spec.w) pctx.drawImage(sc, spec.w-1, 0, 1, spec.h, spec.w, 0, spec.pw-spec.w, spec.h);
-  if (spec.ph > spec.h) pctx.drawImage(pc, 0, spec.h-1, spec.pw, 1, 0, spec.h, spec.pw, spec.ph-spec.h);
   const id = pctx.getImageData(0, 0, spec.pw, spec.ph).data;
-  const dds = bcBuildDds(bcEncodeDxt1(id, spec.pw, spec.ph), spec.pw, spec.ph);
+  const dds = bcBuildDds(bcEncodeDxt1(id, spec.pw, spec.ph, spec.w, spec.h), spec.pw, spec.ph);
   if (spec.max && dds.length > spec.max) throw new Error(spec.file + ".dds is " + dds.length + " bytes (max " + spec.max + ")");
   await bcWriteFile(setDir, spec.file + ".dds", new Blob([dds]));
 }
