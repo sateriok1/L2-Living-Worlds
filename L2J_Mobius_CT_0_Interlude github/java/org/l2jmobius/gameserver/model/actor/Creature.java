@@ -6469,13 +6469,21 @@ public abstract class Creature extends WorldObject
 			amount = 0;
 		}
 		
-		// Modules (a damage meter) hear every hit that counts: capped at what the target has left, nothing for a dead or invulnerable one.
+		reportDamageToModules(amount, attacker, skill, isDOT);
+		
+		_status.reduceHp(amount, attacker, awake, isDOT, false);
+	}
+	
+	/**
+	 * Modules (a damage meter, an event score) hear every hit that counts: capped at what the target has left, nothing for
+	 * a dead or invulnerable one. Every override of {@code reduceCurrentHp} must call this before it lowers HP.
+	 */
+	protected void reportDamageToModules(double amount, Creature attacker, Skill skill, boolean isDOT)
+	{
 		if ((amount > 0) && (attacker != null) && ModuleDamage.active() && !isDead() && (isDOT || !isInvul()))
 		{
 			ModuleDamage.dealt(attacker, this, Math.min(amount, getCurrentHp() + (isPlayer() ? getCurrentCp() : 0)), skill, isDOT);
 		}
-		
-		_status.reduceHp(amount, attacker, awake, isDOT, false);
 	}
 	
 	public void reduceCurrentMp(double amount)

@@ -11084,6 +11084,7 @@ public class Player extends Playable
 	@Override
 	public void reduceCurrentHp(double value, Creature attacker, boolean awake, boolean isDOT, Skill skill)
 	{
+		reportDamageToModules(value, attacker, skill, isDOT);
 		if (skill != null)
 		{
 			getStatus().reduceHp(value, attacker, awake, isDOT, skill.isToggle(), skill.getDmgDirectlyToHP());

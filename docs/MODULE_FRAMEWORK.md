@@ -293,9 +293,9 @@ other, enemies can, a team circle shows over every head, nobody pays a death pen
 - `revive(fighter, where)` brings a dead fighter back at full strength on the same team. `discard(fighter)` removes it.
 - `spawnSolo(where, rally, level, role, enchant, name, classId)` and `joinSolo(player)` make a free-for-all: on no team,
   an enemy of every other solo fighter. `leave` takes either kind off.
-- `buffLikeFighter(player)` gives a real player the buffs a spawned fighter arrives with. `revive` gives a fighter its buffs back.
+- `buffLikeFighter(player)` strips a real player's buffs, then gives the buffs a spawned fighter arrives with. `fullHeal(player)` restores HP, MP and CP. `revive` gives a fighter its buffs back.
 - `formParty(players)` puts the players in one party, the first as leader (nine at most); `disbandParty(member)` ends it.
-  A held fighter is not a target for the other side.
+  A held fighter is not a target for the other side. A fighter that knows a heal heals hurt teammates; melee fighters close in before using skills.
 - Scoring, respawns, prizes and when the event ends are the module's job. Listen to `OnCreatureDeath` for kills and use
   `damage()` for per-player damage.
 

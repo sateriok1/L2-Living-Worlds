@@ -6284,9 +6284,27 @@ public class PhantomManager implements IXmlReader
 		return (other.getTeam() != Team.NONE) && (other.getTeam() != phantom.getTeam());
 	}
 
+	/** Brings a creature (a player, with its servitor) to full HP, MP and CP. */
+	public void fullHeal(Player player)
+	{
+		if ((player == null) || player.isDead())
+		{
+			return;
+		}
+		player.setCurrentHp(player.getMaxHp());
+		player.setCurrentMp(player.getMaxMp());
+		player.setCurrentCp(player.getMaxCp());
+		final Summon pet = player.getSummon();
+		if ((pet != null) && !pet.isDead())
+		{
+			pet.setCurrentHp(pet.getMaxHp());
+			pet.setCurrentMp(pet.getMaxMp());
+		}
+	}
+
 	/**
-	 * Gives a player the buffs a spawned phantom arrives with: the full buff set for its archetype plus the class's own
-	 * self-buffs it knows. Used so a real player in an event is as buffed as the bots.
+	 * Gives a player the buffs a spawned phantom arrives with: every buff the player has is removed first, then the full
+	 * buff set for its archetype plus the class's own self-buffs it knows is applied. Used so a real player in an event is as buffed as the bots.
 	 */
 	public void buffLikeFighter(Player player)
 	{
@@ -6294,6 +6312,7 @@ public class PhantomManager implements IXmlReader
 		{
 			return;
 		}
+		player.stopAllEffects(); // nobody comes in pre-buffed: everyone gets the same kit
 		PhantomBuffs.applyFullBuffs(player, roleForClass(player.getPlayerClass()) == PartyRole.TANK);
 		for (int id : PhantomEncounterBuffs.forClass(player.getPlayerClass().getId()))
 		{
@@ -6359,7 +6378,100 @@ public class PhantomManager implements IXmlReader
 			}
 			return;
 		}
+		if (teamHeal(phantom))
+		{
+			return; // a healer looks after its team before it fights
+		}
+		if (isTeamHealer(phantom))
+		{
+			engageTarget(phantom, target); // nothing to heal: it swings its weapon rather than stand there
+			return;
+		}
 		pvpStandCombat(phantom, data, target);
+	}
+
+	private static final int[] TEAM_HEAL_SKILLS =
+	{
+		1218, // Greater Battle Heal
+		1015, // Battle Heal
+		1217, // Greater Heal
+		1011 // Heal
+	};
+	private static final int TEAM_HEAL_RANGE = 800;
+
+	/** @return {@code true} if the phantom knows a single-target heal */
+	private static boolean isTeamHealer(Player phantom)
+	{
+		for (int id : TEAM_HEAL_SKILLS)
+		{
+			if (phantom.getKnownSkill(id) != null)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** A healer on a team heals the most hurt teammate in range (itself too), below 70% HP, or 45% for itself. @return {@code true} if it cast or is casting */
+	private boolean teamHeal(Player healer)
+	{
+		if (healer.isCastingNow())
+		{
+			return true;
+		}
+		if (!isTeamHealer(healer))
+		{
+			return false;
+		}
+		Player worst = null;
+		double worstPercent = 100;
+		for (Player p : World.getInstance().getVisibleObjectsInRange(healer, Player.class, TEAM_HEAL_RANGE))
+		{
+			if (!sameTeam(healer, p) || p.isDead())
+			{
+				continue;
+			}
+			final double percent = (p.getCurrentHp() * 100.0) / p.getMaxHp();
+			if ((percent < worstPercent) && (percent < ((p == healer) ? 45 : 70)))
+			{
+				worst = p;
+				worstPercent = percent;
+			}
+		}
+		if (!sameTeam(healer, healer) || (healer.getCurrentHp() < (healer.getMaxHp() * 0.45)))
+		{
+			worst = healer;
+			worstPercent = (healer.getCurrentHp() * 100.0) / healer.getMaxHp();
+		}
+		if ((worst == null) || (worstPercent >= 70))
+		{
+			return false;
+		}
+		for (int id : TEAM_HEAL_SKILLS)
+		{
+			if ((id == 1217) && (worstPercent > 50))
+			{
+				continue; // the slow heal only when it is bad
+			}
+			final Skill skill = healer.getKnownSkill(id);
+			if ((skill != null) && PhantomPartyManager.castable(healer, skill))
+			{
+				healer.setTarget(worst);
+				healer.doCast(skill);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** @return {@code true} if {@code other} is on the same event team as {@code phantom} (or is itself); a free-for-all has no teammates */
+	private static boolean sameTeam(Player phantom, Player other)
+	{
+		if (other == phantom)
+		{
+			return true;
+		}
+		return !phantom.isOnSoloEvent() && other.isOnEvent() && (phantom.getTeam() != Team.NONE) && (other.getTeam() == phantom.getTeam());
 	}
 
 	// ---------------------------------------------------------------------
@@ -6769,6 +6881,13 @@ public class PhantomManager implements IXmlReader
 		// Dagger: step to the opponent's back while it cannot turn on us (FPC-144); the attack resumes once there.
 		if (positionHunterRear(phantom, data, target))
 		{
+			return;
+		}
+		// A team fighter out of reach only walks in: casting a skill that needs no target in range (a taunt, an area
+		// shout) every tick would interrupt the walk and it would never arrive.
+		if (data.teamFighter && (phantom.calculateDistance2D(target) > (phantom.getPhysicalAttackRange() + 80)))
+		{
+			engageTarget(phantom, target);
 			return;
 		}
 		// Fighter: approach and auto-attack (the base ATTACK intention), then let the engine fire its class skills at

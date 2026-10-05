@@ -82,10 +82,16 @@ public class ModuleTeams
 		}
 	}
 
-	/** Gives a real player the buffs a spawned fighter arrives with (full buff set plus the class's own self-buffs). */
+	/** Strips a real player's buffs and gives the ones a spawned fighter arrives with (full buff set plus the class's own self-buffs). */
 	public void buffLikeFighter(Player player)
 	{
 		PhantomManager.getInstance().buffLikeFighter(player);
+	}
+
+	/** Brings a player or fighter, and its servitor, to full HP, MP and CP. */
+	public void fullHeal(Player player)
+	{
+		PhantomManager.getInstance().fullHeal(player);
 	}
 
 	/**
