@@ -63,6 +63,7 @@ The V1 `ModuleContext` surface:
 ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
   encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
+  duels        duelists that stand at a spot, take duels and challenge players (section 3.8)
   config       generic typed access to the module's own configuration
   events       register game event listeners
   handlers     register item, bypass, voiced, admin, effect, and target handlers
@@ -231,6 +232,26 @@ that one player even if the player is not flagged (one inert rule in `Player.isA
 actor is hunting that exact player). Actors are never flagged red, so no item drops on death.
 
 The first user is the Phantom Encounters module.
+
+## 3.8 Phantom duels
+
+`context.duels()` is a platform service for features built on duels with phantoms: an arena, a training dummy, a
+rival who wants a rematch. The platform owns the mechanics and a module owns the policy. The duel itself is the server's
+own duel system (countdown, nobody dies, HP restored at the end); the platform adds a phantom that can take part.
+
+- `available()` tells whether duelists can run (fake players, phantom PvP and phantom duels are all on).
+- `spawn(where, level, role, enchant, name, classId)` makes a geared phantom that stays where it was put. It does
+  nothing on its own, takes a duel from anyone who asks, and fights it with the same PvP logic as every phantom. A
+  `classId` pins its class (resolved for its level like any named recruit); 0 or less takes any class for the role.
+- `challenge(duelist, target)` sends a duelist to walk up to a player, or another duelist, and ask. It returns `false`
+  when either side is busy or cannot duel right now (out of combat, HP and MP above half, not flagged).
+- `isFree(duelist)`, `isDuelist(player)`, `isPhantom(player)` and `discard(duelist)` complete the set.
+- `addListener(listener)` is told when a one-on-one duel ends, with both players and the `DuelResult`;
+  `ModuleDuels.firstWon(result)` turns that into the winner.
+- `openArena(zone)` opens a PvP zone to duels. The stock rules refuse duels inside any PvP zone; this lifts that for the
+  named zones only, for the whole run. Nothing changes anywhere else.
+
+What a duel is worth, where duelists stand, and when they challenge is the module's.
 
 ## 4. Lifecycle and the levels of removal
 

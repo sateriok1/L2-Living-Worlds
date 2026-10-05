@@ -59,6 +59,11 @@ public interface ModuleContext
 	ModuleEncounters encounters();
 
 	/**
+	 * @return the duel surface: duelists that stand at a spot, take duels and challenge players, and a result hook
+	 */
+	ModuleDuels duels();
+
+	/**
 	 * @return a logger scoped to this module, so its output is attributable
 	 */
 	Logger logging();

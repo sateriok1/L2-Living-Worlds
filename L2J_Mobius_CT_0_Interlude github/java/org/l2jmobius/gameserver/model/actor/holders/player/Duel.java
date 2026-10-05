@@ -35,6 +35,7 @@ import org.l2jmobius.gameserver.model.Location;
 import org.l2jmobius.gameserver.model.actor.Player;
 import org.l2jmobius.gameserver.model.actor.enums.creature.Team;
 import org.l2jmobius.gameserver.model.actor.enums.player.DuelResult;
+import org.l2jmobius.gameserver.modules.ModuleDuels;
 import org.l2jmobius.gameserver.model.actor.instance.Door;
 import org.l2jmobius.gameserver.model.skill.Skill;
 import org.l2jmobius.gameserver.model.skill.enums.SkillFinishType;
@@ -863,6 +864,11 @@ public class Duel
 		final ExDuelEnd duelEnd = _partyDuel ? ExDuelEnd.PARTY_DUEL : ExDuelEnd.PLAYER_DUEL;
 		broadcastToTeam1(duelEnd);
 		broadcastToTeam2(duelEnd);
+		
+		if (!_partyDuel)
+		{
+			ModuleDuels.duelEnded(_playerA, _playerB, result);
+		}
 		
 		// clean up
 		_playerConditions.clear();
