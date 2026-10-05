@@ -378,6 +378,16 @@ public class PhantomPvpManager
 	}
 
 	/**
+	 * As {@link #rollReactEngage()} for a red (PK) target, which phantoms care about far more than a purple one; the share
+	 * is {@link FakePlayersConfig#PHANTOM_PVP_RED_REACT_CHANCE_PERCENT}.
+	 * @return {@code true} to engage this time
+	 */
+	public static boolean rollRedReactEngage()
+	{
+		return Rnd.get(100) < FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT;
+	}
+
+	/**
 	 * Whether a phantom may INITIATE PvP on a target given their levels. It never initiates on a target more than
 	 * {@code maxLevelsAbovePlayer} below itself (no level 70 stomping a level 25), nor on one hopelessly above it
 	 * ({@link #HOPELESS_LEVEL_GAP}, since it would just flee). Self-defense is unaffected; this only gates initiation.
