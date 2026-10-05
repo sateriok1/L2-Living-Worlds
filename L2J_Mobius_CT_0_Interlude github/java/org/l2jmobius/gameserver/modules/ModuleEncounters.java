@@ -130,17 +130,17 @@ public class ModuleEncounters
 	/** As above, pinned to one class id (for example 113 for a Titan); 0 keeps the role's random class. */
 	public Player spawn(Player victim, Group group, Location where, int level, PartyRole role, int enchant, String fixedName, int classId)
 	{
-		return spawn(victim, group, where, level, role, enchant, fixedName, classId, false);
+		return spawn(victim, group, where, level, role, enchant, fixedName, classId, 0, false);
 	}
 
-	/** As above; {@code escapes} gives the actor a Blessed Scroll of Escape it may read at 10% HP (then it vanishes as if defeated). */
-	public Player spawn(Player victim, Group group, Location where, int level, PartyRole role, int enchant, String fixedName, int classId, boolean escapes)
+	/** As above; {@code escapeChance} (percent, 0 = none) gives the actor a Blessed Scroll of Escape; at 10% HP (or, with {@code escapeOnRout}, once three quarters of its group is down and your side outnumbers what is left) it may curse you out, read it and vanish as if defeated. */
+	public Player spawn(Player victim, Group group, Location where, int level, PartyRole role, int enchant, String fixedName, int classId, int escapeChance, boolean escapeOnRout)
 	{
 		if ((group == null) || !available())
 		{
 			return null;
 		}
-		return PhantomManager.getInstance().spawnEncounterActor(victim, where, level, role, enchant, group._group, fixedName, classId, escapes);
+		return PhantomManager.getInstance().spawnEncounterActor(victim, where, level, role, enchant, group._group, fixedName, classId, escapeChance, escapeOnRout);
 	}
 
 	/** Removes an actor that was just spawned but turned out to be somewhere it must not be (for example a safe zone). */

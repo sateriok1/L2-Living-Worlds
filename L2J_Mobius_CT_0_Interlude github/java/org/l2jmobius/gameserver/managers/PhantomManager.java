@@ -222,7 +222,14 @@ public class PhantomManager implements IXmlReader
 	private static final int ENC_ESCAPE_SCROLL_ID = 1538; // Blessed Scroll of Escape
 	private static final int ENC_ESCAPE_SKILL_ID = 2036;
 	private static final int ENC_ESCAPE_BELOW_PERCENT = 10;
-	private static final int ENC_ESCAPE_CHANCE = 50;
+	private static final String[] ENC_ESCAPE_LINES =
+	{
+		"Nope. Not dying for this. Later, clown.",
+		"You got lucky. Don't get comfortable.",
+		"Whatever, I'm out. You're not worth my scroll.",
+		"This isn't over. I'll be back with friends.",
+		"Cheap. Real cheap. I'm leaving."
+	};
 	private static final int ENC_POTION_COUNT = 300;
 	private static final int ENC_CP_POTION_ID = 5592; // Greater CP Potion (0.5 s reuse)
 	private static final int ENC_MP_POTION_ID = 728; // Mana Potion (0.5 s reuse)
@@ -1195,7 +1202,8 @@ public class PhantomManager implements IXmlReader
 		int companionOwnerId; // objectId of the player who summoned this companion
 		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
 		volatile boolean encounterActor;
-		boolean encounterEscapes; // carries a Blessed Scroll of Escape and may use it at low HP
+		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
+		boolean encounterEscapeOnRout; // a lost fight (3/4 of the group down, outnumbered) is a reason to read it too
 		boolean encounterEscapeRolled;
 		volatile int encounterVictimOid; // the real player this actor came for
 		volatile int encounterPhase; // ENC_APPROACH / ENC_WARN / ENC_FIGHT
@@ -5561,19 +5569,19 @@ public class PhantomManager implements IXmlReader
 	 */
 	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName)
 	{
-		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0, false);
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0, 0, false);
 	}
 
 	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId)
 	{
-		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, classId, false);
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, classId, 0, false);
 	}
 
 	/**
 	 * As above, but pinned to one class. {@code classId} is resolved for the actor's level like any named recruit
 	 * (a Titan below the third-class level comes as the Destroyer or earlier); 0 or less keeps the role's random class.
 	 */
-	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, boolean escapes)
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout)
 	{
 		if ((victim == null) || (where == null) || (group == null))
 		{
@@ -5609,10 +5617,11 @@ public class PhantomManager implements IXmlReader
 		data.encounterLastX = victim.getX();
 		data.encounterLastY = victim.getY();
 		stockEncounterPotions(actor);
-		if (escapes)
+		if (escapeChance > 0)
 		{
 			actor.getInventory().addItem(ItemProcessType.REWARD, ENC_ESCAPE_SCROLL_ID, 1, actor, null);
-			data.encounterEscapes = true;
+			data.encounterEscapeChance = Math.min(100, escapeChance);
+			data.encounterEscapeOnRout = escapeOnRout;
 		}
 		data.encounterActor = true; // last: the pvp tick treats it as an encounter actor from here on
 		return actor;
@@ -5638,21 +5647,30 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/**
-	 * Once, when HP first falls under {@link #ENC_ESCAPE_BELOW_PERCENT}: a {@link #ENC_ESCAPE_CHANCE}% chance to read the
-	 * scroll. It then vanishes and counts as defeated, exactly as if it had died (the group's wipe and any reward follow).
+	 * Once, when HP first falls under {@link #ENC_ESCAPE_BELOW_PERCENT}: a its own percent chance to read the
+	 * scroll (also on a rout, if the actor is set to). It then vanishes and counts as defeated, exactly as if it had died (the group's wipe and any reward follow).
 	 */
 	private boolean tryEncounterEscape(Player phantom, PhantomData data, Player victim, PhantomEncounterRules.EncounterGroup group, long now)
 	{
-		if (data.encounterEscapeRolled || (phantom.getCurrentHpPercent() >= ENC_ESCAPE_BELOW_PERCENT))
+		if (data.encounterEscapeRolled)
+		{
+			return false;
+		}
+		final boolean lowHp = phantom.getCurrentHpPercent() < ENC_ESCAPE_BELOW_PERCENT;
+		// A rout: three quarters of the group is down and the player's side now has more people than what is left.
+		final int victimSide = ((victim == null) || (victim.getParty() == null)) ? 1 : victim.getParty().getMemberCount();
+		final boolean rout = data.encounterEscapeOnRout && (group.size() > 1) && ((group.deadCount() * 4) >= (group.size() * 3)) && ((group.size() - group.deadCount()) < victimSide);
+		if (!lowHp && !rout)
 		{
 			return false;
 		}
 		data.encounterEscapeRolled = true;
 		final Item scroll = phantom.getInventory().getItemByItemId(ENC_ESCAPE_SCROLL_ID);
-		if ((scroll == null) || (Rnd.get(100) >= ENC_ESCAPE_CHANCE))
+		if ((scroll == null) || (Rnd.get(100) >= data.encounterEscapeChance))
 		{
 			return false;
 		}
+		sayNearby(phantom, ENC_ESCAPE_LINES); // a parting shot, then the scroll
 		phantom.getInventory().destroyItemByItemId(ItemProcessType.DESTROY, ENC_ESCAPE_SCROLL_ID, 1, phantom, null);
 		phantom.broadcastPacket(new MagicSkillUse(phantom, phantom, ENC_ESCAPE_SKILL_ID, 1, 0, 0));
 		PhantomEncounterRules.clearHostile(phantom.getObjectId());
@@ -5798,7 +5816,7 @@ public class PhantomManager implements IXmlReader
 			endEncounter(phantom, data, victim, now, ENC_LEAVE_MS, true); // it won
 			return;
 		}
-		if (data.encounterEscapes && tryEncounterEscape(phantom, data, victim, group, now))
+		if ((data.encounterEscapeChance > 0) && tryEncounterEscape(phantom, data, victim, group, now))
 		{
 			return; // it read its scroll and is gone: counted as down
 		}
