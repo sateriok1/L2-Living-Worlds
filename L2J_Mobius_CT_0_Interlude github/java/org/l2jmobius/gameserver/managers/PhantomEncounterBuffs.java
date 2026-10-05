@@ -15,8 +15,8 @@ public final class PhantomEncounterBuffs
 
 	static
 	{
-		BY_CLASS.put(88, new int[] { 297, 287, 121 }); // Duelist: Duelist Spirit, Lionheart, Battle Roar
-		BY_CLASS.put(113, new int[] { 94, 139, 176, 420, 287, 121 }); // Titan: Rage, Guts, Frenzy, Zealot, Lionheart, Battle Roar
+		BY_CLASS.put(88, new int[] { 297, 287, 78 }); // Duelist: Duelist Spirit, Lionheart, War Cry
+		BY_CLASS.put(113, new int[] { 94, 287 }); // Titan: Rage, Lionheart
 		BY_CLASS.put(114, new int[] { 425, 420, 443 }); // Grand Khavatari: Hawk Spirit Totem, Zealot, Force Barrier
 		BY_CLASS.put(89, new int[] { 130, 287, 121 }); // Dreadnought: Thrill Fight, Lionheart, Battle Roar
 		BY_CLASS.put(90, new int[] { 72, 82, 438 }); // Phoenix Knight: Iron Will, Majesty, Soul of the Phoenix

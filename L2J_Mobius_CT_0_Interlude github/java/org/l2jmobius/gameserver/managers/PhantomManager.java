@@ -5932,9 +5932,9 @@ public class PhantomManager implements IXmlReader
 		{
 			return; // it read its scroll and is gone: counted as down
 		}
-		if ((data.encounterPhase != ENC_FIGHT) && !group.isFighting() && prepareEncounterActor(phantom, data, now))
+		if ((data.encounterPhase != ENC_FIGHT) && prepareEncounterActor(phantom, data, now))
 		{
-			return; // casting its buffs or summoning: the fight waits
+			return; // casting its buffs or summoning: it joins the fight when it is ready, even if the group has started
 		}
 		final double distance = phantom.calculateDistance2D(victim);
 		switch (data.encounterPhase)
