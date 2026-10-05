@@ -37,6 +37,19 @@ public class PhantomEncounterRulesTest
 		eq("a", copy.askLines[0], "the style keeps its own copy of the lines");
 		final EncounterGroup g = new EncounterGroup(2, null, null);
 		eq(Approach.STRIKE_ON_ARRIVAL, g.style().approach, "a group with no style gets the default");
+		final Style talk = new Style(Approach.STRIKE_ON_ARRIVAL, 60, 240, 7, 4, null, null, new String[] { "x" }, new String[] { "y", "z" });
+		eq(1, talk.strikeLines.length, "strike lines kept");
+		eq(2, talk.defeatLines.length, "defeat lines kept");
+		eq(0, s.strikeLines.length, "a style without strike lines has none");
+		final EncounterGroup tg = new EncounterGroup(3, talk, null);
+		truth(tg.claimStrikeLine(), "first to start talks trash");
+		truth(!tg.claimStrikeLine(), "only one talks trash");
+		truth(tg.claimDefeatLine(), "first to fall whines");
+		truth(!tg.claimDefeatLine(), "only one whines");
+		eq(3, tg.size(), "group size reported");
+		eq(0, tg.deadCount(), "nobody down yet");
+		tg.memberDied();
+		eq(1, tg.deadCount(), "one down");
 	}
 
 	private static void testGroup()

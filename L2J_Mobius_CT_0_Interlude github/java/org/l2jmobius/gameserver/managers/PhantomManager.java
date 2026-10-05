@@ -5792,6 +5792,10 @@ public class PhantomManager implements IXmlReader
 		if (phantom.isDead())
 		{
 			PhantomEncounterRules.clearHostile(phantom.getObjectId());
+			if ((style.defeatLines.length > 0) && group.claimDefeatLine())
+			{
+				sayNearby(phantom, style.defeatLines); // the first to fall whines
+			}
 			data.encounterEndAt = now + ENC_CORPSE_MS; // it lost: the body lies there a moment, then goes
 			if (group.memberDied() && (group.listener() != null) && (victim != null))
 			{
@@ -5902,6 +5906,10 @@ public class PhantomManager implements IXmlReader
 
 	private void startEncounterFight(Player phantom, PhantomData data, Player victim, long now)
 	{
+		if (data.encounterGroup.claimStrikeLine() && (data.encounterGroup.style().strikeLines.length > 0))
+		{
+			sayNearby(phantom, data.encounterGroup.style().strikeLines); // one of them talks trash as it starts
+		}
 		data.encounterGroup.startFight();
 		data.encounterPhase = ENC_FIGHT;
 		data.encounterDeadline = now + (data.encounterGroup.style().fightSeconds * 1000L);
