@@ -63,6 +63,12 @@ public class ModuleEncounters
 		return new Style(approach, approachSeconds, fightSeconds, warnSeconds, stillSeconds, askLines, winLines);
 	}
 
+	/** As above, with trash talk as the fight begins ({@code strikeLines}) and whining from the first to fall ({@code defeatLines}). */
+	public static Style style(Approach approach, int approachSeconds, int fightSeconds, int warnSeconds, int stillSeconds, String[] askLines, String[] winLines, String[] strikeLines, String[] defeatLines)
+	{
+		return new Style(approach, approachSeconds, fightSeconds, warnSeconds, stillSeconds, askLines, winLines, strikeLines, defeatLines);
+	}
+
 	/** One encounter in progress: the actors share it. */
 	public static final class Group
 	{

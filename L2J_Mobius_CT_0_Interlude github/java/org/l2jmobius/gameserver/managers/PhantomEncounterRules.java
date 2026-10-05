@@ -64,6 +64,8 @@ public final class PhantomEncounterRules
 		public final int stillSeconds;
 		public final String[] askLines;
 		public final String[] winLines;
+		public final String[] strikeLines;
+		public final String[] defeatLines;
 
 		/**
 		 * @param approach how the actors pick their moment
@@ -76,6 +78,15 @@ public final class PhantomEncounterRules
 		 */
 		public Style(Approach approach, int approachSeconds, int fightSeconds, int warnSeconds, int stillSeconds, String[] askLines, String[] winLines)
 		{
+			this(approach, approachSeconds, fightSeconds, warnSeconds, stillSeconds, askLines, winLines, null, null);
+		}
+
+		/**
+		 * As above, plus {@code strikeLines} (one is said by one actor when the fight begins: the trash talk) and
+		 * {@code defeatLines} (one is said by the first actor to fall: the whining).
+		 */
+		public Style(Approach approach, int approachSeconds, int fightSeconds, int warnSeconds, int stillSeconds, String[] askLines, String[] winLines, String[] strikeLines, String[] defeatLines)
+		{
 			this.approach = (approach == null) ? Approach.STRIKE_ON_ARRIVAL : approach;
 			this.approachSeconds = Math.max(10, approachSeconds);
 			this.fightSeconds = Math.max(30, fightSeconds);
@@ -83,6 +94,8 @@ public final class PhantomEncounterRules
 			this.stillSeconds = Math.max(1, stillSeconds);
 			this.askLines = (askLines == null) ? NO_LINES : askLines.clone();
 			this.winLines = (winLines == null) ? NO_LINES : winLines.clone();
+			this.strikeLines = (strikeLines == null) ? NO_LINES : strikeLines.clone();
+			this.defeatLines = (defeatLines == null) ? NO_LINES : defeatLines.clone();
 		}
 	}
 
@@ -93,6 +106,8 @@ public final class PhantomEncounterRules
 		private final AtomicInteger _dead = new AtomicInteger();
 		private volatile int _size;
 		private final AtomicBoolean _winLine = new AtomicBoolean();
+		private final AtomicBoolean _strikeLine = new AtomicBoolean();
+		private final AtomicBoolean _defeatLine = new AtomicBoolean();
 		private final AtomicLong _warnedAt = new AtomicLong();
 		private volatile boolean _fighting;
 		private final Style _style;
@@ -138,6 +153,18 @@ public final class PhantomEncounterRules
 		public boolean memberDied()
 		{
 			return _dead.incrementAndGet() >= _size;
+		}
+
+		/** @return {@code true} for exactly one caller: the member that gets to talk trash as the fight begins. */
+		public boolean claimStrikeLine()
+		{
+			return _strikeLine.compareAndSet(false, true);
+		}
+
+		/** @return {@code true} for exactly one caller: the first member to fall, who gets to whine. */
+		public boolean claimDefeatLine()
+		{
+			return _defeatLine.compareAndSet(false, true);
 		}
 
 		/** @return {@code true} for exactly one caller: the member that gets to speak the opening line. */
