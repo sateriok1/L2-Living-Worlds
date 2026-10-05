@@ -339,6 +339,7 @@ import org.l2jmobius.gameserver.taskmanagers.PlayerAutoSaveTaskManager;
 import org.l2jmobius.gameserver.taskmanagers.PvpFlagTaskManager;
 import org.l2jmobius.gameserver.util.Broadcast;
 import org.l2jmobius.gameserver.util.LocationUtil;
+import org.l2jmobius.gameserver.modules.ModuleDuels;
 
 /**
  * This class represents all player characters in the world.<br>
@@ -10022,7 +10023,7 @@ public class Player extends Playable
 			return false;
 		}
 		
-		if (isInsideZone(ZoneId.PVP) || isInsideZone(ZoneId.PEACE) || isInsideZone(ZoneId.SIEGE) || isInsideZone(ZoneId.NO_PVP))
+		if ((isInsideZone(ZoneId.PVP) && !ModuleDuels.isDuelArena(this)) || isInsideZone(ZoneId.PEACE) || isInsideZone(ZoneId.SIEGE) || isInsideZone(ZoneId.NO_PVP))
 		{
 			_noDuelReason = SystemMessageId.S1_CANNOT_MAKE_A_CHALLENGE_TO_A_DUEL_BECAUSE_S1_IS_CURRENTLY_IN_A_DUEL_PROHIBITED_AREA_PEACEFUL_ZONE_SEVEN_SIGNS_ZONE_NEAR_WATER_RESTART_PROHIBITED_AREA;
 			return false;
