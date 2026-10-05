@@ -68,7 +68,8 @@
 	  Elder/Shillien Saint, Overlord/Dominator, Warcryer/Doomcryer): their combat behavior is the party
 	  manager's support tick (heals/buffs/recharge/cleanse/res), which already plays the class.
 	- Summoner lineages (Warlock/Arcana Lord, Elemental Summoner/Elemental Master, Phantom
-	  Summoner/Spectral Master): servitor control is a later phase.
+	  Summoner/Spectral Master): the party manager calls, heals, buffs and commands their servitor and answers
+	  "summon me" (Summon Friend); their own spells come from the learned-skill baseline.
 	- Manager-owned skills - NEVER list these: Ultimate Defense (110), Aggression (28), Aura of Hate (18),
 	  Sleep (1069), Dryad Root (1201), Resurrection (1016), heals, songs and dances. The party manager
 	  casts them with its own threat/survival/CC/support logic.
