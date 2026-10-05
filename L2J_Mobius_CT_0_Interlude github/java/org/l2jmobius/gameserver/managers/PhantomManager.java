@@ -6243,6 +6243,8 @@ public class PhantomManager implements IXmlReader
 		if (where != null)
 		{
 			fighter.teleToLocation(where);
+			fighter.onTeleported(); // a clientless player stays invisible and mid-teleport (and cannot be revived again) until this runs
+			fighter.broadcastUserInfo();
 		}
 		fighter.setRunning();
 		data.pvpTargetOid = 0;

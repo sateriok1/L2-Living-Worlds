@@ -55,8 +55,50 @@ public class ModuleDamage
 		void onDamage(Creature attacker, Creature target, double damage, Skill skill, boolean damageOverTime);
 	}
 
+	private static final List<HealListener> HEAL_LISTENERS = new CopyOnWriteArrayList<>();
+
+	/** Told about every instant heal that restored HP. */
+	public interface HealListener
+	{
+		/**
+		 * @param healer who cast it (may be the target itself)
+		 * @param target who was healed
+		 * @param amount the HP actually restored, never more than the target was missing
+		 * @param skill the skill that did it
+		 */
+		void onHeal(Creature healer, Creature target, double amount, Skill skill);
+	}
+
 	ModuleDamage()
 	{
+	}
+
+	/** @return {@code true} if anything is listening for heals */
+	public static boolean healActive()
+	{
+		return !HEAL_LISTENERS.isEmpty();
+	}
+
+	/** Called by the core when a skill's instant effects restored HP. */
+	public static void healed(Creature healer, Creature target, double amount, Skill skill)
+	{
+		for (HealListener listener : HEAL_LISTENERS)
+		{
+			try
+			{
+				listener.onHeal(healer, target, amount, skill);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning("Heal listener failed: " + e);
+			}
+		}
+	}
+
+	/** Be told about every instant heal (a heal skill, not regeneration or heal-over-time). */
+	public void addHealListener(HealListener listener)
+	{
+		HEAL_LISTENERS.add(listener);
 	}
 
 	/** @return {@code true} if anything is listening, so the core can skip the work when no module is */

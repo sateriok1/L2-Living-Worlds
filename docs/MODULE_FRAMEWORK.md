@@ -295,7 +295,7 @@ other, enemies can, a team circle shows over every head, nobody pays a death pen
   an enemy of every other solo fighter. `leave` takes either kind off.
 - `buffLikeFighter(player)` strips a real player's buffs, then gives the buffs a spawned fighter arrives with. `fullHeal(player)` restores HP, MP and CP. `revive` gives a fighter its buffs back.
 - `formParty(players)` puts the players in one party, the first as leader (nine at most); `disbandParty(member)` ends it.
-  A held fighter is not a target for the other side. A healer-class fighter heals teammates below 90% HP and otherwise stays behind its team; melee fighters close in before using skills, and a fighter's auto skills only run with an enemy in reach. Event teammates cannot damage or debuff each other. `lock(player, true)` holds a real player in place and untouchable until freed.
+  A held fighter is not a target for the other side. A healer-class fighter heals teammates below 90% HP and otherwise stays behind its team; melee fighters close in before using skills, and a fighter's auto skills only run with an enemy in reach. Event teammates cannot damage or debuff each other. `lock(player, true)` holds a real player in place and untouchable until freed. `damage().addHealListener(...)` reports the HP each instant heal skill restored (healer, target, amount, skill).
 - Scoring, respawns, prizes and when the event ends are the module's job. Listen to `OnCreatureDeath` for kills and use
   `damage()` for per-player damage.
 
