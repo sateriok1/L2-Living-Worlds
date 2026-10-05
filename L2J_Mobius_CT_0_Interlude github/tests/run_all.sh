@@ -83,6 +83,7 @@ JAVA_MAIN_CLASSES=(
 	"PhantomPartyCommandRulesTest"
 	"PhantomCasterPositioningTest"
 	"PhantomServitorRulesTest"
+	"PhantomEncounterBuffsTest"
 	"ModuleFrameworkTest"
 )
 

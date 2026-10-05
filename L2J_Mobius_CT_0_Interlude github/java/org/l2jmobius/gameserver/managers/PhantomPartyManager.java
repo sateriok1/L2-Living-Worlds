@@ -3585,7 +3585,7 @@ public class PhantomPartyManager
 	// ===== Summoner lineages: servitor upkeep, servitor combat, Summon Friend =====
 
 	/** Keeps a crystal stock for the summon skills. No actor, so the loot tracker never sees it (as with knight cubics). */
-	private static void stockServitorCrystals(Player npc)
+	static void stockServitorCrystals(Player npc)
 	{
 		for (int itemId : PhantomServitorRules.CRYSTAL_ITEMS)
 		{
@@ -4854,7 +4854,7 @@ public class PhantomPartyManager
 	}
 
 	/** {@code true} if the member knows the skill and can cast it right now (not on cooldown, enough MP). */
-	private static boolean castable(Player npc, Skill skill)
+	static boolean castable(Player npc, Skill skill)
 	{
 		return (skill != null) && !npc.isSkillDisabled(skill) && (npc.getCurrentMp() >= skill.getMpConsume());
 	}
@@ -8464,7 +8464,7 @@ public class PhantomPartyManager
 	 *         getting up - the caller must return and retry next tick (without consuming any one-shot order) so the
 	 *         action lands once it is on its feet.
 	 */
-	private static boolean readyToCast(Player npc)
+	static boolean readyToCast(Player npc)
 	{
 		if (npc.isSitting())
 		{
