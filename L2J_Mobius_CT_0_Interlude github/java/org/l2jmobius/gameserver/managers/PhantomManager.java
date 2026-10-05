@@ -6412,7 +6412,9 @@ public class PhantomManager implements IXmlReader
 		return false;
 	}
 
-	/** A healer on a team heals the most hurt teammate in range (itself too), below 70% HP, or 45% for itself. @return {@code true} if it cast or is casting */
+	private static final int TEAM_HEAL_BELOW_PERCENT = 90;
+
+	/** A healer on a team heals the most hurt teammate in range (itself included) below 90% HP, because PvP is fast. @return {@code true} if it cast or is casting */
 	private boolean teamHeal(Player healer)
 	{
 		if (healer.isCastingNow())
@@ -6432,18 +6434,13 @@ public class PhantomManager implements IXmlReader
 				continue;
 			}
 			final double percent = (p.getCurrentHp() * 100.0) / p.getMaxHp();
-			if ((percent < worstPercent) && (percent < ((p == healer) ? 45 : 70)))
+			if ((percent < worstPercent) && (percent < TEAM_HEAL_BELOW_PERCENT))
 			{
 				worst = p;
 				worstPercent = percent;
 			}
 		}
-		if (!sameTeam(healer, healer) || (healer.getCurrentHp() < (healer.getMaxHp() * 0.45)))
-		{
-			worst = healer;
-			worstPercent = (healer.getCurrentHp() * 100.0) / healer.getMaxHp();
-		}
-		if ((worst == null) || (worstPercent >= 70))
+		if (worst == null)
 		{
 			return false;
 		}
