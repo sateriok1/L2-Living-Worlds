@@ -89,6 +89,25 @@ public class CommunityBoardHandler implements IHandler<IParseBoardHandler, Strin
 	}
 	
 	/**
+	 * Finds a registered command that clashes with the given one. Commands are matched by prefix, so two commands clash
+	 * when either one starts with the other, and the board would then pick between them in no fixed order.
+	 * @param cmd the command to check
+	 * @return the clashing registered command, or {@code null} if there is none
+	 */
+	public String findPrefixClash(String cmd)
+	{
+		final String lower = cmd.toLowerCase();
+		for (String registered : _datatable.keySet())
+		{
+			if (lower.startsWith(registered) || registered.startsWith(lower))
+			{
+				return registered;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Verifies if the string is a registered community board command.
 	 * @param cmd the command to verify
 	 * @return {@code true} if the command has been registered, {@code false} otherwise

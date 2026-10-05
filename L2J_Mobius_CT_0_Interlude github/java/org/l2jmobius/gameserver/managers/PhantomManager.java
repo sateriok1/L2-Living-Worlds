@@ -274,6 +274,8 @@ public class PhantomManager implements IXmlReader
 	// Recruited members should still use strong, role-correct weapons, but choosing the single most expensive
 	// template made every member of a role/grade look identical. Roll among the strongest few compatible items.
 	private static final int PARTY_WEAPON_CANDIDATES = 6;
+	/** A caster weapon counts among the strongest of its grade at this share of the best reference price or more. */
+	private static final double CASTER_TOP_TIER = 0.9;
 	// Safety ceiling on total live phantom Player objects (each is far heavier than an NPC fake player).
 	private static final int MAX_PHANTOMS = 200;
 	// Proximity dormancy: a phantom only runs the (costly) auto-hunt while a real, client-connected player
@@ -468,8 +470,9 @@ public class PhantomManager implements IXmlReader
 		NONE(0),
 		ELDER(30), // Elven Elder - mage buffs, heals, recharge
 		PROPHET(17), // Prophet - fighter buffs (Heal granted)
-		WARCRYER(52), // Warcryer - Orc buffs (Heal granted)
-		BOUNTY_HUNTER(55); // Bounty Hunter - spoils stuff for you and shares loot afterwards
+		WARCRYER(52); // Warcryer - Orc buffs (Heal granted)
+		// No Bounty Hunter here: it is a physical spoiler run by PhantomPartyManager (PartyRole.BOUNTY_HUNTER). As a
+		// buddy it got the caster loadout, and a befriended class 55 came back as a support buddy (FPC-206).
 
 		final int classId;
 
@@ -505,11 +508,6 @@ public class PhantomManager implements IXmlReader
 				case "WARCRYER":
 				{
 					return WARCRYER;
-				}
-				case "BUDDY_BOUNTY_HUNTER":
-				case "BOUNTY_HUNTER":
-				{
-					return BOUNTY_HUNTER;
 				}
 				default:
 				{
@@ -1937,7 +1935,7 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/** @return the {@link BuddyRole} whose support class the given classId is, or {@link BuddyRole#NONE}. */
-	private static BuddyRole buddyRoleForClass(int classId)
+	static BuddyRole buddyRoleForClass(int classId)
 	{
 		for (BuddyRole role : BuddyRole.values())
 		{
@@ -2893,7 +2891,7 @@ public class PhantomManager implements IXmlReader
 			// A party member of a multi-weapon line also carries its spare (PhantomWeaponSets), switched on the
 			// leader's order. Same grade, so the same shots fit; diet mode keeps the extra weight harmless.
 			final WeaponKind spareKind = mage ? null : PhantomWeaponSets.spareKind(phantom.getPlayerClass(), context);
-			final ItemTemplate spare = (spareKind == null) ? null : randomTopEquip(grade, spareKind::matches);
+			final ItemTemplate spare = (spareKind == null) ? null : randomInGrade(grade, spareKind::matches); // none in grade: no spare (FPC-202)
 			if ((spare != null) && (spare.getId() != weapon.getId()))
 			{
 				final Item spareItem = phantom.getInventory().addItem(ItemProcessType.REWARD, spare.getId(), 1, phantom, null);
@@ -2986,12 +2984,38 @@ public class PhantomManager implements IXmlReader
 	 */
 	private static ItemTemplate partyWeapon(PlayerClass playerClass, PartyRole role, boolean mage, CrystalType grade, GearContext context)
 	{
+		final ItemTemplate weapon = partyWeaponInGrade(playerClass, role, mage, grade, context);
+		if (weapon != null)
+		{
+			return weapon;
+		}
+		// Only when the phantom's grade has no weapon at all for its class and role (the gear audit finds no such
+		// case with the shipped data): the same choice one grade lower beats an unarmed party member.
+		LOGGER.warning(PhantomManager.class.getSimpleName() + ": no " + grade + "-grade weapon for " + playerClass + " (" + role + "), using a lower grade.");
+		for (int ordinal = grade.ordinal() - 1; ordinal >= 0; ordinal--)
+		{
+			final ItemTemplate lower = partyWeaponInGrade(playerClass, role, mage, CrystalType.values()[ordinal], context);
+			if (lower != null)
+			{
+				return lower;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * {@link #partyWeapon} without leaving the grade: every pick below is made only among weapons of {@code grade}
+	 * (FPC-202). A role or class weapon the grade lacks falls to the next option in the same grade, and {@code null}
+	 * means the grade has nothing that fits at all.
+	 */
+	private static ItemTemplate partyWeaponInGrade(PlayerClass playerClass, PartyRole role, boolean mage, CrystalType grade, GearContext context)
+	{
 		if (mage && isWarcryerLine(playerClass))
 		{
 			// Orc Shaman, Warcryer and Doomcryer buff first and melee between buffs, so a party one carries a one-handed
 			// magic blunt (the usual party Warcryer weapon: casting stats for the buffs, and a real weapon to hit with)
 			// instead of a staff or a book. Picked from the current class, so it follows the class at every spawn.
-			final ItemTemplate mace = randomTopEquip(grade, item -> (item instanceof Weapon) && item.isMagicWeapon() && (((Weapon) item).getItemType() == WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
+			final ItemTemplate mace = casterWeapon(role, grade, item -> (item instanceof Weapon) && item.isMagicWeapon() && (((Weapon) item).getItemType() == WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
 			if (mace != null)
 			{
 				return mace;
@@ -3001,11 +3025,11 @@ public class PhantomManager implements IXmlReader
 		{
 			// Magic melee weapons are valid caster weapons too. Keep both one-handed (R_HAND) and two-handed
 			// (LR_HAND) templates; gearParty adds a shield only for the former.
-			return randomTopEquip(grade, item -> item.isMagicWeapon() && ((item.getBodyPart() == BodyPart.R_HAND) || (item.getBodyPart() == BodyPart.LR_HAND)));
+			return casterWeapon(role, grade, item -> item.isMagicWeapon() && ((item.getBodyPart() == BodyPart.R_HAND) || (item.getBodyPart() == BodyPart.LR_HAND)));
 		}
 		if (role == PartyRole.ARCHER)
 		{
-			final ItemTemplate bow = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.BOW));
+			final ItemTemplate bow = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.BOW));
 			if (bow != null)
 			{
 				return bow;
@@ -3013,7 +3037,7 @@ public class PhantomManager implements IXmlReader
 		}
 		else if (role == PartyRole.DAGGER)
 		{
-			final ItemTemplate dagger = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DAGGER));
+			final ItemTemplate dagger = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DAGGER));
 			if (dagger != null)
 			{
 				return dagger;
@@ -3022,7 +3046,7 @@ public class PhantomManager implements IXmlReader
 		else if (role == PartyRole.DANCER)
 		{
 			// Dances hard-require equipped dual swords (<using kind="DUAL"/> in the skill data).
-			final ItemTemplate dual = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DUAL));
+			final ItemTemplate dual = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DUAL));
 			if (dual != null)
 			{
 				return dual;
@@ -3031,7 +3055,7 @@ public class PhantomManager implements IXmlReader
 		else if (role == PartyRole.MONK)
 		{
 			// Tyrant / Grand Khavatari force skills require hand-to-hand weapons.
-			final ItemTemplate fist = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DUALFIST) || isPhysicalWeapon(item, WeaponType.FIST));
+			final ItemTemplate fist = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DUALFIST) || isPhysicalWeapon(item, WeaponType.FIST));
 			if (fist != null)
 			{
 				return fist;
@@ -3048,7 +3072,8 @@ public class PhantomManager implements IXmlReader
 		// Default fighter weapon. A TANK or SINGER needs a one-handed sword so its shield remains equipped.
 		else if (role == PartyRole.BOUNTY_HUNTER)
 		{
-			final ItemTemplate blunt = bestEquip(grade, item -> (item instanceof Weapon) && (((Weapon) item).getItemType() == WeaponType.BLUNT));
+			// A physical one-handed blunt: a staff is a blunt too, and so are the two-handed hammers (FPC-202).
+			final ItemTemplate blunt = bestInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
 			if (blunt != null) {
 				return blunt;
 			}
@@ -3056,7 +3081,7 @@ public class PhantomManager implements IXmlReader
 		// Sword fallback (and the default melee weapon). A TANK or SINGER needs a ONE-handed sword so its shield fits
 		// the left hand; a two-handed sword would otherwise be unequipped when the shield goes on.
 		final boolean oneHandOnly = (role == PartyRole.TANK) || (role == PartyRole.SINGER);
-		return randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.SWORD) && (!oneHandOnly || (item.getBodyPart() == BodyPart.R_HAND)));
+		return randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.SWORD) && (!oneHandOnly || (item.getBodyPart() == BodyPart.R_HAND)));
 	}
 
 	/**
@@ -3067,8 +3092,8 @@ public class PhantomManager implements IXmlReader
 	 */
 	private static ItemTemplate warriorWeapon(PlayerClass playerClass, CrystalType grade, GearContext context)
 	{
-		final WeaponKind kind = PhantomWeaponSets.mainKind(playerClass, context);
-		return (kind == null) ? null : randomTopEquip(grade, kind::matches);
+		final WeaponKind kind = PhantomWeaponSets.mainKind(playerClass, context, option -> randomInGrade(grade, option::matches) != null);
+		return (kind == null) ? null : randomInGrade(grade, kind::matches);
 	}
 
 	/** Exact physical weapon family, excluding caster-oriented magic variants of the same item type. */
@@ -3201,33 +3226,136 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/**
+	 * A caster weapon of {@code grade} the way a player of the role would pick it: among the strongest weapons of the
+	 * grade (reference price within {@link #CASTER_TOP_TIER} of the best), the special abilities that suit the role
+	 * win ({@link #casterSaScore}), and the roll is among the best and next-best scores so casters still vary.
+	 * @return {@code null} when the grade has no match
+	 */
+	private static ItemTemplate casterWeapon(PartyRole role, CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
+		long topPrice = 0;
+		for (ItemTemplate item : candidates)
+		{
+			topPrice = Math.max(topPrice, item.getReferencePrice());
+		}
+		int bestScore = Integer.MIN_VALUE;
+		final List<ItemTemplate> topTier = new ArrayList<>();
+		for (ItemTemplate item : candidates)
+		{
+			if (item.getReferencePrice() >= (topPrice * CASTER_TOP_TIER))
+			{
+				topTier.add(item);
+				bestScore = Math.max(bestScore, casterSaScore(role, item));
+			}
+		}
+		final List<ItemTemplate> picks = new ArrayList<>();
+		for (ItemTemplate item : topTier)
+		{
+			if (casterSaScore(role, item) >= (bestScore - 1))
+			{
+				picks.add(item);
+			}
+		}
+		return picks.isEmpty() ? null : picks.get(Rnd.get(picks.size()));
+	}
+
+	/**
+	 * How much a caster of {@code role} wants the weapon's special ability (the part of the name after " - "). Casting
+	 * speed (Acumen) first for everyone; then damage for a nuker and mana for a healer or buffer. A weapon without a
+	 * special ability scores 1, so a defensive or niche one (Magic Hold, Magic Poison, Rsk. Evasion...) ranks below it.
+	 */
+	static int casterSaScore(PartyRole role, ItemTemplate item)
+	{
+		final String name = item.getName();
+		final int dash = name.indexOf(" - ");
+		if (dash < 0)
+		{
+			return 1;
+		}
+		final String sa = name.substring(dash + 3).toLowerCase();
+		if (sa.equals("acumen"))
+		{
+			return 5;
+		}
+		final boolean mana = sa.equals("mana up") || sa.equals("mp regeneration") || sa.equals("magic regeneration");
+		final boolean damage = sa.equals("empower") || sa.equals("m. atk.") || sa.equals("magic damage");
+		if (role == PartyRole.NUKER)
+		{
+			return damage ? 4 : (sa.equals("mana up") ? 3 : (mana ? 2 : 0));
+		}
+		if (mana)
+		{
+			return 4;
+		}
+		if (damage)
+		{
+			return 2;
+		}
+		return ((role == PartyRole.BUFFER) && (sa.equals("mental shield") || sa.equals("blessed body"))) ? 2 : 0;
+	}
+
+	/** {@link #randomTopEquip} limited to {@code grade}: {@code null} when that grade has no match. */
+	private static ItemTemplate randomInGrade(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		return topEquip(grade, filter, false);
+	}
+
+	/** {@link #bestEquip} limited to {@code grade}: {@code null} when that grade has no match. */
+	private static ItemTemplate bestInGrade(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
+		ItemTemplate best = null;
+		for (ItemTemplate item : candidates)
+		{
+			if ((best == null) || (item.getReferencePrice() > best.getReferencePrice()))
+			{
+				best = item;
+			}
+		}
+		return best;
+	}
+
+	/** Player gear of exactly {@code grade} that matches {@code filter}. */
+	private static List<ItemTemplate> gradeCandidates(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = new ArrayList<>();
+		for (ItemTemplate item : ItemData.getInstance().getAllItems())
+		{
+			if ((item == null) || !item.isEquipable() || !item.isTradeable() || (item.getReferencePrice() <= 0) || (item.getCrystalType() != grade) || !FakePlayerGearFilter.isPlayerGear(item))
+			{
+				continue;
+			}
+			if (filter.test(item))
+			{
+				candidates.add(item);
+			}
+		}
+		return candidates;
+	}
+
+	/**
 	 * A random item among the strongest role-compatible weapon templates in the requested grade. This keeps recruited
 	 * members combat-capable without making every archer, caster, tank, or melee member use one deterministic item.
 	 * Falls through to lower grades only when the requested grade has no compatible player gear at all.
 	 */
 	private static ItemTemplate randomTopEquip(CrystalType desired, Predicate<ItemTemplate> filter)
 	{
+		return topEquip(desired, filter, true);
+	}
+
+	private static ItemTemplate topEquip(CrystalType desired, Predicate<ItemTemplate> filter, boolean stepDown)
+	{
 		CrystalType grade = desired;
 		while (grade != null)
 		{
-			final List<ItemTemplate> candidates = new ArrayList<>();
-			for (ItemTemplate item : ItemData.getInstance().getAllItems())
-			{
-				if ((item == null) || !item.isEquipable() || !item.isTradeable() || (item.getReferencePrice() <= 0) || (item.getCrystalType() != grade) || !FakePlayerGearFilter.isPlayerGear(item))
-				{
-					continue;
-				}
-				if (filter.test(item))
-				{
-					candidates.add(item);
-				}
-			}
+			final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
 			if (!candidates.isEmpty())
 			{
 				candidates.sort(Comparator.comparingLong(ItemTemplate::getReferencePrice).reversed().thenComparingInt(ItemTemplate::getId));
 				return candidates.get(Rnd.get(Math.min(PARTY_WEAPON_CANDIDATES, candidates.size())));
 			}
-			grade = (grade.ordinal() > 0) ? CrystalType.values()[grade.ordinal() - 1] : null;
+			grade = (stepDown && (grade.ordinal() > 0)) ? CrystalType.values()[grade.ordinal() - 1] : null;
 		}
 		return null;
 	}
