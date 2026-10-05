@@ -64,6 +64,7 @@ ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
   encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
   duels        duelists that stand at a spot, take duels and challenge players (section 3.8)
+  teams        blue and red event teams with phantom fighters that hunt the other side (section 3.10)
   damage       a hook for every hit that lowers HP, with who did it, to whom and the skill (section 3.9)
   config       generic typed access to the module's own configuration
   events       register game event listeners
@@ -275,6 +276,21 @@ the one place every HP loss goes through (`Creature.reduceCurrentHp`).
 - With no listener registered the core does no extra work.
 
 The first user is the DPS Meter module.
+
+
+## 3.10 Teams
+
+`context.teams()` runs team events with phantoms. It uses the server's own event flags, so team members cannot hurt each
+other, enemies can, a team circle shows over every head, nobody pays a death penalty and parties cannot cross teams.
+
+- `available()` is true when fake players and phantom PvP are on.
+- `spawn(blue, where, rally, level, role, enchant, name, classId)` makes a geared fighter. It buffs, then hunts the
+  nearest living enemy within sight, and walks to `rally` when none is in sight. It never flees.
+- `join(player, blue)` and `leave(player)` put a real player on or off a team. `teamOf(player)` returns true for blue,
+  false for red, null for none.
+- `revive(fighter, where)` brings a dead fighter back at full strength on the same team. `discard(fighter)` removes it.
+- Scoring, respawns, prizes and when the event ends are the module's job. Listen to `OnCreatureDeath` for kills and use
+  `damage()` for per-player damage.
 
 ## 4. Lifecycle and the levels of removal
 

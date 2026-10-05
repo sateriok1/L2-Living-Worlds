@@ -70,6 +70,7 @@ import org.l2jmobius.gameserver.model.actor.Creature;
 import org.l2jmobius.gameserver.model.actor.Player;
 import org.l2jmobius.gameserver.model.actor.appearance.PlayerAppearance;
 import org.l2jmobius.gameserver.model.actor.enums.creature.Race;
+import org.l2jmobius.gameserver.model.actor.enums.creature.Team;
 import org.l2jmobius.gameserver.model.actor.enums.player.PlayerClass;
 import org.l2jmobius.gameserver.model.actor.holders.player.AutoPlaySettingsHolder;
 import org.l2jmobius.gameserver.model.clan.Clan;
@@ -1206,6 +1207,9 @@ public class PhantomManager implements IXmlReader
 		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
 		volatile boolean encounterActor;
 		volatile boolean arenaDuelist; // stands where it was put, takes duels from anyone and challenges on a module's say-so (ModuleDuels)
+		volatile boolean teamFighter; // fights the other team of a module's team event until a module says stop (ModuleTeams)
+		volatile Location teamRally; // where it heads when no enemy is in sight
+		long teamRetargetAt; // when it may pick a different enemy
 		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
 		boolean encounterCpPotions; // carries and drinks CP potions (the strong encounters); the others use only HP and MP potions
 		long encounterPrepUntil; // until then it may cast its self-buffs and summon its servitor before the fight
@@ -5109,6 +5113,12 @@ public class PhantomManager implements IXmlReader
 					serviceEncounter(phantom, data, now);
 					continue;
 				}
+				// A team fighter runs its own loop: buff, then hunt the nearest enemy of the other team (ModuleTeams).
+				if (data.teamFighter)
+				{
+					serviceTeamFighter(phantom, data, now);
+					continue;
+				}
 				// An arena duelist does nothing on its own: it only plays out the duel it was sent to or asked into.
 				if (data.arenaDuelist)
 				{
@@ -6107,6 +6117,180 @@ public class PhantomManager implements IXmlReader
 	}
 
 	// ---------------------------------------------------------------------
+	// Team fighters (ModuleTeams): geared phantoms that fight the other team of a module's event.
+	// ---------------------------------------------------------------------
+
+	private static final int TEAM_SIGHT_RANGE = 2500;
+	private static final int TEAM_LOSE_RANGE = 3000;
+	private static final long TEAM_RETARGET_MS = 2_000L;
+	private static final int TEAM_RALLY_RADIUS = 350;
+
+	/**
+	 * Makes a geared phantom on a team of a module's event. It buffs, then hunts the nearest living enemy of the other
+	 * team using the same class combat as every phantom, and walks to {@code rally} when none is in sight. It never
+	 * flees, and the server's own event rules make it and its enemies strikeable by each other and not by its team.
+	 * @param team the side it fights for
+	 * @param where where it appears
+	 * @param rally where it heads when no enemy is in sight, or {@code null} to stay put
+	 * @param enchant the +level on its weapon and armor
+	 * @param fixedName its name, or {@code null} for a random one
+	 * @param classId a class to pin it to, or 0 or less for any class of the role
+	 * @return the fighter, or {@code null} if it could not be spawned
+	 */
+	public Player spawnTeamFighter(Team team, Location where, Location rally, int level, PartyRole role, int enchant, String fixedName, int classId)
+	{
+		if ((team == null) || (team == Team.NONE) || (where == null) || (role == null))
+		{
+			return null;
+		}
+		final Player fighter;
+		ENCOUNTER_ENCHANT.set(enchant);
+		ENCOUNTER_NAME.set(fixedName);
+		try
+		{
+			fighter = spawnPartyMember(where, level, role, Math.max(0, classId), null);
+		}
+		finally
+		{
+			ENCOUNTER_ENCHANT.remove();
+			ENCOUNTER_NAME.remove();
+		}
+		if (fighter == null)
+		{
+			return null;
+		}
+		final PhantomData data = _phantoms.get(fighter.getObjectId());
+		if (data == null)
+		{
+			return fighter;
+		}
+		data.teamRally = rally;
+		data.encounterCpPotions = true;
+		data.encounterPrepUntil = System.currentTimeMillis() + ENC_PREP_MS;
+		stockEncounterPotions(fighter, true);
+		fighter.setTeam(team);
+		fighter.setOnEvent(true);
+		data.teamFighter = true; // last: the pvp tick treats it as a team fighter from here on
+		return fighter;
+	}
+
+	/** @return {@code true} if this phantom was made by {@link #spawnTeamFighter} */
+	public boolean isTeamFighter(Player player)
+	{
+		final PhantomData data = (player == null) ? null : _phantoms.get(player.getObjectId());
+		return (data != null) && data.teamFighter;
+	}
+
+	/** Changes where a team fighter heads when no enemy is in sight. */
+	public void setTeamRally(Player fighter, Location rally)
+	{
+		final PhantomData data = (fighter == null) ? null : _phantoms.get(fighter.getObjectId());
+		if ((data != null) && data.teamFighter)
+		{
+			data.teamRally = rally;
+		}
+	}
+
+	/** Brings a dead team fighter back at full strength at a spot, keeping its team. */
+	public void reviveTeamFighter(Player fighter, Location where)
+	{
+		final PhantomData data = (fighter == null) ? null : _phantoms.get(fighter.getObjectId());
+		if ((data == null) || !data.teamFighter)
+		{
+			return;
+		}
+		if (fighter.isDead())
+		{
+			fighter.doRevive();
+		}
+		fighter.setCurrentHp(fighter.getMaxHp());
+		fighter.setCurrentMp(fighter.getMaxMp());
+		fighter.setCurrentCp(fighter.getMaxCp());
+		if (where != null)
+		{
+			fighter.teleToLocation(where);
+		}
+		fighter.setRunning();
+		data.pvpTargetOid = 0;
+		data.encounterPrepUntil = System.currentTimeMillis() + ENC_PREP_MS;
+	}
+
+	/** Takes a team fighter off its team and removes it. */
+	public void discardTeamFighter(Player fighter)
+	{
+		final PhantomData data = (fighter == null) ? null : _phantoms.get(fighter.getObjectId());
+		if (data != null)
+		{
+			data.teamFighter = false;
+		}
+		if (fighter != null)
+		{
+			fighter.setOnEvent(false);
+			fighter.setTeam(Team.NONE);
+			despawnRecruit(fighter);
+		}
+	}
+
+	/** @return {@code true} if {@code other} is a living member of a team that is not {@code phantom}'s */
+	private static boolean isTeamEnemy(Player phantom, Player other)
+	{
+		return (other != phantom) && !other.isDead() && other.isOnEvent() && (other.getTeam() != Team.NONE) && (other.getTeam() != phantom.getTeam());
+	}
+
+	/** @return the nearest living enemy of the other team in sight, or {@code null} */
+	private static Player nearestTeamEnemy(Player phantom)
+	{
+		Player best = null;
+		double bestDistance = Double.MAX_VALUE;
+		for (Player p : World.getInstance().getVisibleObjectsInRange(phantom, Player.class, TEAM_SIGHT_RANGE))
+		{
+			if (!isTeamEnemy(phantom, p))
+			{
+				continue;
+			}
+			final double distance = phantom.calculateDistance2D(p);
+			if (distance < bestDistance)
+			{
+				bestDistance = distance;
+				best = p;
+			}
+		}
+		return best;
+	}
+
+	private void serviceTeamFighter(Player phantom, PhantomData data, long now)
+	{
+		if (phantom.isDead())
+		{
+			data.pvpTargetOid = 0; // a module revives it when its event says so
+			return;
+		}
+		if (prepareEncounterActor(phantom, data, now))
+		{
+			return; // casting its buffs or summoning
+		}
+		drinkEncounterPotions(phantom, data);
+		Player target = resolvePvpTarget(data);
+		if ((target == null) || !isTeamEnemy(phantom, target) || (phantom.calculateDistance2D(target) > TEAM_LOSE_RANGE) || (now >= data.teamRetargetAt))
+		{
+			target = nearestTeamEnemy(phantom);
+			data.pvpTargetOid = (target == null) ? 0 : target.getObjectId();
+			data.teamRetargetAt = now + TEAM_RETARGET_MS;
+		}
+		if (target == null)
+		{
+			final Location rally = data.teamRally;
+			if ((rally != null) && !phantom.isMoving() && !phantom.isCastingNow() && (phantom.calculateDistance2D(rally) > TEAM_RALLY_RADIUS))
+			{
+				phantom.setRunning();
+				phantom.getAI().setIntention(Intention.MOVE_TO, rally);
+			}
+			return;
+		}
+		pvpStandCombat(phantom, data, target);
+	}
+
+	// ---------------------------------------------------------------------
 	// Arena duelists (ModuleDuels): geared phantoms that stand where a module puts them.
 	// ---------------------------------------------------------------------
 
@@ -6484,7 +6668,7 @@ public class PhantomManager implements IXmlReader
 	private void pvpStandCombat(Player phantom, PhantomData data, Player target)
 	{
 		phantom.setTarget(target);
-		if (data.encounterActor && phantom.getPlayerClass().isSummoner())
+		if ((data.encounterActor || data.teamFighter) && phantom.getPlayerClass().isSummoner())
 		{
 			commandEncounterPet(phantom, data, target); // a summoner's servitor fights beside it
 		}
