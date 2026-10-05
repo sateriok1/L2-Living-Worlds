@@ -69,7 +69,7 @@
 	  manager's support tick (heals/buffs/recharge/cleanse/res), which already plays the class.
 	- Summoner lineages (Warlock/Arcana Lord, Elemental Summoner/Elemental Master, Phantom
 	  Summoner/Spectral Master): the party manager calls, heals, buffs and commands their servitor and answers
-	  "summon me" (Summon Friend); their own spells come from the learned-skill baseline.
+	  "summon me" (Summon Friend). They have a deliberately simple nuke rotation below; the pet does the damage.
 	- Manager-owned skills - NEVER list these: Ultimate Defense (110), Aggression (28), Aura of Hate (18),
 	  Sleep (1069), Dryad Root (1201), Resurrection (1016), heals, songs and dances. The party manager
 	  casts them with its own threat/survival/CC/support logic.
@@ -462,6 +462,41 @@
 		<skill id="1237" name="Ice Dagger"         use="ROTATION" when="MP_ABOVE" mpAbove="35" maxLevel="69" />
 		<skill id="1175" name="Aqua Swirl"         use="ROTATION" when="MP_ABOVE" mpAbove="35" maxLevel="45" />
 		<skill id="1184" name="Ice Bolt"           use="ROTATION" when="MP_ABOVE" mpAbove="30" maxLevel="45" />
+	</playstyle>
+
+	<!-- Summoner lines. Deliberately simple: the servitor does the heavy lifting (the managers call it, buff it, heal it and
+	     send it in), and the summoner just keeps a solid single-target nuke going from its wizard tree. Pack AoE when
+	     surrounded. Better rotations can come later. Skills the member hasn't learned are skipped. -->
+
+	<!-- Warlock line (human): fire and bolts. -->
+	<playstyle name="Warlock" classIds="14,96">
+		<skill id="1177" name="Wind Strike"  use="PULL"     when="ALWAYS" />
+		<skill id="1181" name="Flame Strike" use="AOE"      when="MOBS_NEAR" mobsAtLeast="3" />
+		<skill id="1220" name="Blaze"        use="ROTATION" when="MP_ABOVE" mpAbove="30" />
+		<skill id="1274" name="Energy Bolt"  use="ROTATION" when="MP_ABOVE" mpAbove="25" />
+		<skill id="1184" name="Ice Bolt"     use="ROTATION" when="MP_ABOVE" mpAbove="20" />
+		<skill id="1177" name="Wind Strike"  use="ROTATION" when="ALWAYS" />
+	</playstyle>
+
+	<!-- Elemental Summoner line (elf): water and light. -->
+	<playstyle name="Elemental Summoner" classIds="28,104">
+		<skill id="1177" name="Wind Strike"  use="PULL"     when="ALWAYS" />
+		<skill id="1181" name="Flame Strike" use="AOE"      when="MOBS_NEAR" mobsAtLeast="3" />
+		<skill id="1264" name="Solar Spark"  use="ROTATION" when="MP_ABOVE" mpAbove="30" />
+		<skill id="1175" name="Aqua Swirl"   use="ROTATION" when="MP_ABOVE" mpAbove="30" />
+		<skill id="1274" name="Energy Bolt"  use="ROTATION" when="MP_ABOVE" mpAbove="25" />
+		<skill id="1184" name="Ice Bolt"     use="ROTATION" when="MP_ABOVE" mpAbove="20" />
+		<skill id="1177" name="Wind Strike"  use="ROTATION" when="ALWAYS" />
+	</playstyle>
+
+	<!-- Phantom Summoner line (dark elf): wind and shadow. -->
+	<playstyle name="Phantom Summoner" classIds="41,111">
+		<skill id="1177" name="Wind Strike"   use="PULL"     when="ALWAYS" />
+		<skill id="1181" name="Flame Strike"  use="AOE"      when="MOBS_NEAR" mobsAtLeast="3" />
+		<skill id="1266" name="Shadow Spark"  use="ROTATION" when="MP_ABOVE" mpAbove="30" />
+		<skill id="1178" name="Twister"       use="ROTATION" when="MP_ABOVE" mpAbove="30" />
+		<skill id="1184" name="Ice Bolt"      use="ROTATION" when="MP_ABOVE" mpAbove="20" />
+		<skill id="1177" name="Wind Strike"   use="ROTATION" when="ALWAYS" />
 	</playstyle>
 
 	<!-- Spellhowler line: wind. Pack AoEs ahead of the single-target rotation. -->
