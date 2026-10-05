@@ -1304,6 +1304,12 @@ public class Skill
 			return;
 		}
 		
+		// Event teammates cannot debuff each other either.
+		if ((effector != effected) && hasNegativeEffect() && Creature.areEventTeammates(effector, effected))
+		{
+			return;
+		}
+		
 		boolean addContinuousEffects = !passive && (_operateType.isToggle() || (_operateType.isContinuous() && Formulas.calcEffectSuccess(effector, effected, this)));
 		if (!self && !passive)
 		{

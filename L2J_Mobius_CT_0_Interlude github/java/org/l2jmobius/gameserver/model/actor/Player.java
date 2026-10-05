@@ -11084,6 +11084,11 @@ public class Player extends Playable
 	@Override
 	public void reduceCurrentHp(double value, Creature attacker, boolean awake, boolean isDOT, Skill skill)
 	{
+		if (areEventTeammates(attacker, this))
+		{
+			return; // event teammates cannot hurt each other, however the hit got through
+		}
+		
 		reportDamageToModules(value, attacker, skill, isDOT);
 		if (skill != null)
 		{

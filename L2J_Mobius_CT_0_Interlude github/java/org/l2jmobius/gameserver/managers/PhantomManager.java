@@ -6359,6 +6359,7 @@ public class PhantomManager implements IXmlReader
 		drinkEncounterPotions(phantom, data);
 		if (data.teamHold)
 		{
+			phantom.setAutoPlaying(false); // held: no auto skills either
 			return;
 		}
 		Player target = resolvePvpTarget(data);
@@ -6368,6 +6369,10 @@ public class PhantomManager implements IXmlReader
 			data.pvpTargetOid = (target == null) ? 0 : target.getObjectId();
 			data.teamRetargetAt = now + TEAM_RETARGET_MS;
 		}
+		// The native auto-skill task fires area skills (a taunt, a shout) whenever the phantom is "auto-playing", target
+		// or not. Only let it run while an enemy is within reach, so nothing is cast into empty air on the way in.
+		final double reach = data.mage ? (MAGE_CAST_RANGE + MAGE_RANGE_TOLERANCE) : (phantom.getPhysicalAttackRange() + 80);
+		phantom.setAutoPlaying((target != null) && !isTeamHealer(phantom) && (phantom.calculateDistance2D(target) <= reach));
 		if (target == null)
 		{
 			final Location rally = data.teamRally;
@@ -6384,7 +6389,7 @@ public class PhantomManager implements IXmlReader
 		}
 		if (isTeamHealer(phantom))
 		{
-			engageTarget(phantom, target); // nothing to heal: it swings its weapon rather than stand there
+			holdBehindTeam(phantom, target); // nothing to heal: it stays back behind its team
 			return;
 		}
 		pvpStandCombat(phantom, data, target);
@@ -6399,9 +6404,13 @@ public class PhantomManager implements IXmlReader
 	};
 	private static final int TEAM_HEAL_RANGE = 800;
 
-	/** @return {@code true} if the phantom knows a single-target heal */
+	/** @return {@code true} if the phantom is a healer class that knows a single-target heal (a summoner that happens to know Heal is not one) */
 	private static boolean isTeamHealer(Player phantom)
 	{
+		if (roleForClass(phantom.getPlayerClass()) != PartyRole.HEALER)
+		{
+			return false;
+		}
 		for (int id : TEAM_HEAL_SKILLS)
 		{
 			if (phantom.getKnownSkill(id) != null)
@@ -6459,6 +6468,47 @@ public class PhantomManager implements IXmlReader
 			}
 		}
 		return false;
+	}
+
+	private static final int HEALER_BACK_DISTANCE = 300;
+	private static final int HEALER_RANGE_TO_TEAM = 1500;
+
+	/**
+	 * A healer with nobody to heal stands behind its team: at the middle of its living teammates, pushed away from the
+	 * nearest enemy. With no teammates (a free-for-all) or an enemy right on top of it, it fights back.
+	 */
+	private void holdBehindTeam(Player healer, Player enemy)
+	{
+		long x = 0;
+		long y = 0;
+		int allies = 0;
+		for (Player p : World.getInstance().getVisibleObjectsInRange(healer, Player.class, HEALER_RANGE_TO_TEAM))
+		{
+			if ((p != healer) && !p.isDead() && sameTeam(healer, p) && !isTeamHealer(p))
+			{
+				x += p.getX();
+				y += p.getY();
+				allies++;
+			}
+		}
+		if ((allies == 0) || (healer.calculateDistance2D(enemy) < 250))
+		{
+			engageTarget(healer, enemy);
+			return;
+		}
+		healer.setTarget(null);
+		// the team's middle, then back away from the enemy
+		final double awayX = ((x / (double) allies) - enemy.getX());
+		final double awayY = ((y / (double) allies) - enemy.getY());
+		final double awayLength = Math.max(1, Math.hypot(awayX, awayY));
+		final int destX = (int) ((x / (double) allies) + ((awayX / awayLength) * HEALER_BACK_DISTANCE));
+		final int destY = (int) ((y / (double) allies) + ((awayY / awayLength) * HEALER_BACK_DISTANCE));
+		final Location destination = GeoEngine.getInstance().getValidLocation(healer, new Location(destX, destY, healer.getZ()));
+		if (!healer.isMoving() && !healer.isCastingNow() && (healer.calculateDistance2D(destination) > 120))
+		{
+			healer.setRunning();
+			healer.getAI().setIntention(Intention.MOVE_TO, destination);
+		}
 	}
 
 	/** @return {@code true} if {@code other} is on the same event team as {@code phantom} (or is itself); a free-for-all has no teammates */

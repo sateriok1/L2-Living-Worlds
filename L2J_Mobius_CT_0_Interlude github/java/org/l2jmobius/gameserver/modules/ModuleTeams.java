@@ -88,6 +88,16 @@ public class ModuleTeams
 		PhantomManager.getInstance().buffLikeFighter(player);
 	}
 
+	/** Locks a real player in place and makes them untouchable (for a countdown), or frees them. */
+	public void lock(Player player, boolean locked)
+	{
+		if (player != null)
+		{
+			player.setImmobilized(locked);
+			player.setInvul(locked);
+		}
+	}
+
 	/** Brings a player or fighter, and its servitor, to full HP, MP and CP. */
 	public void fullHeal(Player player)
 	{
