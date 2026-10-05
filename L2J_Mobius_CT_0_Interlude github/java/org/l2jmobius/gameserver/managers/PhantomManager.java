@@ -232,7 +232,7 @@ public class PhantomManager implements IXmlReader
 		"This isn't over. I'll be back with friends.",
 		"Cheap. Real cheap. I'm leaving."
 	};
-	private static final long ENC_PREP_MS = 25_000L;
+	private static final long ENC_PREP_MS = 10_000L;
 	private static final long ENC_PET_SKILL_GAP_MS = 4_000L;
 	private static final int ENC_POTION_COUNT = 300;
 	private static final int ENC_CP_POTION_ID = 5592; // Greater CP Potion (0.5 s reuse)
