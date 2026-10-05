@@ -5546,6 +5546,15 @@ public class PhantomManager implements IXmlReader
 	 */
 	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName)
 	{
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0);
+	}
+
+	/**
+	 * As above, but pinned to one class. {@code classId} is resolved for the actor's level like any named recruit
+	 * (a Titan below the third-class level comes as the Destroyer or earlier); 0 or less keeps the role's random class.
+	 */
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId)
+	{
 		if ((victim == null) || (where == null) || (group == null))
 		{
 			return null;
@@ -5555,7 +5564,7 @@ public class PhantomManager implements IXmlReader
 		ENCOUNTER_NAME.set(fixedName);
 		try
 		{
-			actor = spawnPartyMember(where, level, role, 0, null);
+			actor = spawnPartyMember(where, level, role, Math.max(0, classId), null);
 		}
 		finally
 		{
