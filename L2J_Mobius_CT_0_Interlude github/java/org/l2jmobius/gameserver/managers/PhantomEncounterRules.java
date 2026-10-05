@@ -122,6 +122,18 @@ public final class PhantomEncounterRules
 			_size = Math.max(1, size);
 		}
 
+		/** @return how many members the group has (after any shrink) */
+		public int size()
+		{
+			return _size;
+		}
+
+		/** @return how many members are down (dead or escaped) */
+		public int deadCount()
+		{
+			return _dead.get();
+		}
+
 		/** @return {@code true} when this death is the one that wipes the group (every member is now dead). */
 		public boolean memberDied()
 		{
