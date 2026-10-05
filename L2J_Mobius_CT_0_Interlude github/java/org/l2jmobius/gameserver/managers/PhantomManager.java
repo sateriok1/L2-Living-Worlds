@@ -1203,6 +1203,7 @@ public class PhantomManager implements IXmlReader
 		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
 		volatile boolean encounterActor;
 		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
+		boolean encounterCpPotions; // carries and drinks CP potions (the strong encounters); the others use only HP and MP potions
 		boolean encounterEscapeOnRout; // a lost fight (3/4 of the group down, outnumbered) is a reason to read it too
 		boolean encounterEscapeRolled;
 		volatile int encounterVictimOid; // the real player this actor came for
@@ -5569,19 +5570,19 @@ public class PhantomManager implements IXmlReader
 	 */
 	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName)
 	{
-		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0, 0, false);
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0, 0, false, false);
 	}
 
 	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId)
 	{
-		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, classId, 0, false);
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, classId, 0, false, false);
 	}
 
 	/**
 	 * As above, but pinned to one class. {@code classId} is resolved for the actor's level like any named recruit
 	 * (a Titan below the third-class level comes as the Destroyer or earlier); 0 or less keeps the role's random class.
 	 */
-	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout)
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout, boolean cpPotions)
 	{
 		if ((victim == null) || (where == null) || (group == null))
 		{
@@ -5616,7 +5617,8 @@ public class PhantomManager implements IXmlReader
 		data.encounterLastMoveAt = now;
 		data.encounterLastX = victim.getX();
 		data.encounterLastY = victim.getY();
-		stockEncounterPotions(actor);
+		data.encounterCpPotions = cpPotions;
+		stockEncounterPotions(actor, cpPotions);
 		if (escapeChance > 0)
 		{
 			actor.getInventory().addItem(ItemProcessType.REWARD, ENC_ESCAPE_SCROLL_ID, 1, actor, null);
@@ -5628,10 +5630,14 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/** Exactly {@link #ENC_POTION_COUNT} each of the best healing, CP and mana potions (the outfit's larger healing stack is trimmed). */
-	private static void stockEncounterPotions(Player actor)
+	private static void stockEncounterPotions(Player actor, boolean cpPotions)
 	{
 		for (int id : new int[] { HP_POTION_ID, ENC_CP_POTION_ID, ENC_MP_POTION_ID })
 		{
+			if (!cpPotions && (id == ENC_CP_POTION_ID))
+			{
+				continue;
+			}
 			final Item have = actor.getInventory().getItemByItemId(id);
 			final int count = (have == null) ? 0 : (int) have.getCount();
 			if (count < ENC_POTION_COUNT)
@@ -5707,7 +5713,7 @@ public class PhantomManager implements IXmlReader
 			return;
 		}
 		final int[] ids = { ENC_CP_POTION_ID, HP_POTION_ID, ENC_MP_POTION_ID };
-		final boolean[] needed = { phantom.getCurrentCpPercent() < ENC_CP_BELOW_PERCENT, phantom.getCurrentHpPercent() < ENC_HP_BELOW_PERCENT, phantom.getCurrentMpPercent() < ENC_MP_BELOW_PERCENT };
+		final boolean[] needed = { data.encounterCpPotions && (phantom.getCurrentCpPercent() < ENC_CP_BELOW_PERCENT), phantom.getCurrentHpPercent() < ENC_HP_BELOW_PERCENT, phantom.getCurrentMpPercent() < ENC_MP_BELOW_PERCENT };
 		for (int i = 0; i < ids.length; i++)
 		{
 			if (!needed[i])
