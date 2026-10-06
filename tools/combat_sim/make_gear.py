@@ -10,6 +10,8 @@ import l2data as L, stats_model as S
 
 line = sys.argv[1]; slug = line.lower().replace(" ", "_")
 types = next(a.split("=")[1].split(",") for a in sys.argv if a.startswith("--types="))
+HANDS = next((a.split("=")[1] for a in sys.argv if a.startswith("--hands=")), None)           # e.g. 1H when the class uses a shield
+ONLY_ARMOR = next((a.split("=")[1].split(",") for a in sys.argv if a.startswith("--armor=")), None)   # e.g. HEAVY overrides the mastery-derived armor types
 ARMOR_MASTERY = {"Light Armor Mastery": "LIGHT", "Heavy Armor Mastery": "HEAVY", "Robe Mastery": "MAGIC", "Robe Armor Mastery": "MAGIC"}
 GR = {"NONE": "NG"}
 OFFENCE = {"pAtk", "pAtkSpd", "critRate", "accCombat"}
@@ -18,6 +20,7 @@ names, parent = L.load_classes(); trees = L.load_trees(); sk = L.load_skills()
 leaf = [k for k, v in names.items() if v == line][0]
 learned = L.learned(leaf, 80, trees, parent)
 atypes = {ARMOR_MASTERY[sk[(s, lv)].name] for s, lv in learned.items() if (s, lv) in sk and sk[(s, lv)].name in ARMOR_MASTERY}
+if ONLY_ARMOR: atypes = set(ONLY_ARMOR)
 items = {}
 for path in glob.glob(os.path.join(L.DATA, "stats/items/*.xml")):
     for it in ET.parse(path).getroot().iter("item"): items[int(it.get("id"))] = it
@@ -33,6 +36,7 @@ for iid, it in sorted(items.items()):
     if nm.startswith(("_", "Monster")) or nm.strip().isdigit() or not (0 < st.get("pAtk", 0) <= 600): continue
     if int(s.get("price", "0") or 0) <= 0: continue
     hands = "2H" if s.get("bodypart") == "lrhand" else "1H"
+    if HANDS and hands != HANDS: continue
     sas = [x for x in it.findall("skills/skill") if x.get("id") != "3599"]      # 3599 = Polearm Multi-attack, the weapon's own ability
     sa = sas[0] if sas else None; eff = []; sid = ""
     if sa is not None:
