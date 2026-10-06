@@ -1241,7 +1241,11 @@ public class Skill
 					{
 						if (applyInstantEffects && effect.calcSuccess(info.getEffector(), info.getEffected(), info.getSkill()))
 						{
-							effect.onStart(info.getEffector(), info.getEffected(), info.getSkill());
+							// Living World: include SELF/PVE/PVP scopes, measure only actual instant healing effects.
+							try (ModuleDamage.Scope ignored = ModuleDamage.captureHeal(info.getEffector(), info.getEffected(), info.getSkill(), effect.getEffectType() == EffectType.HEAL))
+							{
+								effect.onStart(info.getEffector(), info.getEffected(), info.getSkill());
+							}
 						}
 					}
 					else if (addContinuousEffects && effect.canStart(info.getEffector(), info.getEffected(), info.getSkill()))
@@ -1314,23 +1318,11 @@ public class Skill
 				info.setAbnormalTime(abnormalTime);
 			}
 			
-			// Modules (an event score) hear the HP a heal skill restored.
-			final boolean trackHeal = instant && ModuleDamage.healActive() && (effector != null) && !hasNegativeEffect();
-			final double hpBefore = trackHeal ? effected.getCurrentHp() : 0;
-			
 			applyEffectScope(EffectScope.GENERAL, info, instant, addContinuousEffects);
 			
 			final EffectScope pvpOrPveEffectScope = effector.isPlayable() && effected.isAttackable() ? EffectScope.PVE : effector.isPlayable() && effected.isPlayable() ? EffectScope.PVP : null;
 			applyEffectScope(pvpOrPveEffectScope, info, instant, addContinuousEffects);
 			applyEffectScope(EffectScope.CHANNELING, info, instant, addContinuousEffects);
-			if (trackHeal)
-			{
-				final double restored = effected.getCurrentHp() - hpBefore;
-				if (restored > 0)
-				{
-					ModuleDamage.healed(effector, effected, restored, this);
-				}
-			}
 			if (addContinuousEffects)
 			{
 				effected.getEffectList().add(info);
