@@ -179,6 +179,22 @@ public class PhantomPvpManagerTest
 		eqBool(true, allAtFull, "react chance 100 always engages");
 
 		FakePlayersConfig.PHANTOM_PVP_REACT_CHANCE_PERCENT = 0; // restore the unloaded default
+
+		FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT = 0;
+		boolean redAtZero = false;
+		for (int i = 0; i < 500; i++)
+		{
+			redAtZero |= PhantomPvpManager.rollRedReactEngage();
+		}
+		eqBool(false, redAtZero, "red react chance 0 never engages");
+		FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT = 100;
+		boolean redAtFull = true;
+		for (int i = 0; i < 500; i++)
+		{
+			redAtFull &= PhantomPvpManager.rollRedReactEngage();
+		}
+		eqBool(true, redAtFull, "red react chance 100 always engages");
+		FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT = 0;
 	}
 
 	/** Phase 2 sizing: outnumbering the enemy lets a phantom stand longer; being outnumbered or out of mana flees sooner. */

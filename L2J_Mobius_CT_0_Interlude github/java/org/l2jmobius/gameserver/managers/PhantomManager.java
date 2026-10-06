@@ -5371,11 +5371,16 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void reactToFlagged(Player phantom, PhantomData data, long now)
 	{
-		if (!PhantomPvpManager.reactToFlaggedEnabled() || !data.aggressor || (now < data.nextInitiateAt))
+		if (!PhantomPvpManager.reactToFlaggedEnabled() || (now < data.nextInitiateAt))
 		{
 			return;
 		}
-		final Player target = flaggedReactTarget(phantom, now);
+		// An aggressor reacts to a purple or red target; with PhantomPvpRedReactAll every other phantom reacts to a red one too.
+		if (!data.aggressor && !FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL)
+		{
+			return;
+		}
+		final Player target = flaggedReactTarget(phantom, now, !data.aggressor);
 		if (target == null)
 		{
 			data.nextInitiateAt = now + PVP_REACT_SCAN_INTERVAL_MS; // nothing to react to; scan again shortly
@@ -5383,7 +5388,7 @@ public class PhantomManager implements IXmlReader
 		}
 		final long cooldownMs = FakePlayersConfig.PHANTOM_PVP_ENGAGE_COOLDOWN_SECONDS * 1000L;
 		data.nextInitiateAt = now + cooldownMs; // decided (engage or decline); hold off reconsidering until it passes
-		if (PhantomPvpManager.rollReactEngage())
+		if ((target.getKarma() > 0) ? PhantomPvpManager.rollRedReactEngage() : PhantomPvpManager.rollReactEngage())
 		{
 			_pvpVictimCooldownUntil.put(target.getObjectId(), now + cooldownMs); // stop other phantoms dogpiling it
 			beginPvp(phantom, data, target, now);
@@ -5398,7 +5403,7 @@ public class PhantomManager implements IXmlReader
 	 *         zone, not a clan or ally member, not newbie-protected, inside the initiate level band, not on the
 	 *         per-target dogpile cooldown, and legally attackable by the phantom.
 	 */
-	private Player flaggedReactTarget(Player phantom, long now)
+	private Player flaggedReactTarget(Player phantom, long now, boolean redOnly)
 	{
 		Player best = null;
 		double bestDistance = Double.MAX_VALUE;
@@ -5408,9 +5413,9 @@ public class PhantomManager implements IXmlReader
 			{
 				continue; // includes the phantom-versus-phantom gate: skip a phantom target when that is disabled
 			}
-			if ((p.getPvpFlag() == 0) && (p.getKarma() <= 0))
+			if (((p.getPvpFlag() == 0) && (p.getKarma() <= 0)) || (redOnly && (p.getKarma() <= 0)))
 			{
-				continue; // only already-flagged or red targets; a clean white player is Phase 4 (ganking), not this
+				continue; // only already-flagged or red targets (only red ones for a phantom that is not an aggressor); a clean white player is Phase 4 (ganking), not this
 			}
 			if (sameClanOrAlly(phantom, p) || p.isNewbie() || !p.isAutoAttackable(phantom))
 			{
