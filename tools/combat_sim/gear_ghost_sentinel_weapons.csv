@@ -1,0 +1,17 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect
+Ghost Sentinel,NG,273,Composite Bow,,BOW,2H,64.0,21.0,293.0,12.0,SS-NG,,
+Ghost Sentinel,D,280,Light Crossbow,,BOW,2H,191.0,54.0,293.0,12.0,SS-D,,
+Ghost Sentinel,D,279,Reinforced Long Bow,,BOW,2H,179.0,51.0,227.0,12.0,SS-D,,
+Ghost Sentinel,C,286,Eminence Bow,,BOW,2H,323.0,83.0,293.0,12.0,SS-C,,
+Ghost Sentinel,C,4822,Eminence Bow,Guidance,BOW,2H,323.0,83.0,293.0,12.0,SS-C,3008:4,accCombat +4.53
+Ghost Sentinel,C,283,Akat Long Bow,,BOW,2H,316.0,84.0,227.0,12.0,SS-C,,
+Ghost Sentinel,C,4819,Akat Long Bow,Guidance,BOW,2H,316.0,84.0,227.0,12.0,SS-C,3008:3,accCombat +4.82
+Ghost Sentinel,B,287,Bow of Peril,,BOW,2H,400.0,99.0,293.0,12.0,SS-B,,
+Ghost Sentinel,B,4828,Bow of Peril,Guidance,BOW,2H,400.0,99.0,293.0,12.0,SS-B,3008:6,accCombat +3.95
+Ghost Sentinel,B,284,Dark Elven Long Bow,,BOW,2H,397.0,100.0,227.0,12.0,SS-B,,
+Ghost Sentinel,A,8684,Shyeed's Bow,,BOW,2H,570.0,133.0,227.0,12.0,SS-A,,
+Ghost Sentinel,A,8807,Shyeed's Bow,Focus,BOW,2H,570.0,133.0,227.0,12.0,SS-A,3050:2,critRate +61.6
+Ghost Sentinel,A,289,Soul Bow,,BOW,2H,528.0,125.0,227.0,12.0,SS-A,,
+Ghost Sentinel,S,7575,Draconic Bow,,BOW,2H,581.0,132.0,293.0,12.0,SS-S,,
+Ghost Sentinel,S,7577,Draconic Bow,Focus,BOW,2H,581.0,132.0,293.0,12.0,SS-S,3567:1,critRate +88.1
+Ghost Sentinel,S,6368,Shining Bow,,BOW,2H,581.0,132.0,293.0,12.0,SS-S,,
