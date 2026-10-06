@@ -53,6 +53,8 @@ PROD_SOURCES=(
 	"java/org/l2jmobius/gameserver/managers/PhantomPartyDowntime.java"
 	"java/org/l2jmobius/gameserver/managers/PhantomPartyCommandRules.java"
 	"java/org/l2jmobius/gameserver/managers/PhantomCasterPositioning.java"
+	"java/org/l2jmobius/gameserver/managers/PhantomServitorRules.java"
+	"java/org/l2jmobius/gameserver/managers/PhantomEncounterBuffs.java"
 	"java/org/l2jmobius/gameserver/managers/PhantomSpotRules.java"
 	"java/org/l2jmobius/gameserver/modules/Json.java"
 	"java/org/l2jmobius/gameserver/modules/ModuleException.java"
@@ -82,6 +84,8 @@ JAVA_MAIN_CLASSES=(
 	"PhantomPartyDowntimeTest"
 	"PhantomPartyCommandRulesTest"
 	"PhantomCasterPositioningTest"
+	"PhantomServitorRulesTest"
+	"PhantomEncounterBuffsTest"
 	"PhantomSpotRulesTest"
 	"ModuleFrameworkTest"
 )

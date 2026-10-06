@@ -45,6 +45,8 @@ import java.util.stream.Collectors;
 
 import org.l2jmobius.commons.threads.ThreadPool;
 import org.l2jmobius.commons.util.Rnd;
+import org.l2jmobius.gameserver.model.actor.Summon;
+import org.l2jmobius.gameserver.data.xml.PetSkillData;
 import org.l2jmobius.gameserver.ai.Action;
 import org.l2jmobius.gameserver.config.custom.AutoPlayConfig;
 import org.l2jmobius.gameserver.config.custom.FakePlayersConfig;
@@ -220,6 +222,9 @@ public class PhantomPartyManager
 	private static final int CUBIC_CRYSTAL_STOCK = 1000; // top-up when a knight runs short, like the buffers' reagent stock
 	// "drop / no / stop / dismiss the viper cubic": remove a cubic instead of summoning it.
 	private static final Pattern DROP_CUBIC = Pattern.compile("\\b(no|drop|remove|unsummon|dismiss|lose|stop|cancel|without)\\b|don'?t");
+	private static final long SUMMON_ORDER_MS = 60000; // a Summon Friend order that cannot be carried out is dropped after this
+	private static final int SERVITOR_CRYSTAL_STOCK = 300; // top-up per crystal grade for a summoner, like the knights' cubic crystals
+	private static final int SERVITOR_CRYSTAL_LOW = 60;
 	private static final int AGGRESSION_ID = 28; // single-target taunt (knight tree) - "provokes a target to attack"
 	private static final int AURA_OF_HATE_ID = 18; // AoE taunt (knight tree) - "provokes nearby enemies to attack"
 	private static final int THREAT_SCAN_RANGE = 1000; // how far a tank looks for a mob loose on a squishy party member
@@ -571,6 +576,11 @@ public class PhantomPartyManager
 		final PhantomPlaystyleEngine.PlayState play = new PhantomPlaystyleEngine.PlayState(); // per-class combat playstyle runtime (entries resolve lazily)
 		long lastPeelControlAt; // ARCHER/NUKER: when it last stunned/slowed something that was on it
 		long peelMoveAt; // ...and when it last stepped away from it, so kite moves aren't re-issued every tick
+		Player summonFor; // summoner lineage: the party member the leader asked it to Summon Friend (null when none)
+		long summonAskedAt; // ...when it was asked, so an order that cannot be carried out times out
+		boolean summonWaitSaid; // ...already said "wait till you're out of combat" for this order
+		int buffedPetOid; // object id of the servitor that already got the spawn buff kit
+		long lastServitorSkillAt; // summoner lineage: when its servitor last used one of its own skills
 		Skill peelControl; // lazy: the control skill it peels with (Stunning Shot / Sleep / Root ...)
 		boolean peelControlLookedUp;
 		String raidGateReason; // DEBUG: the reason code the raid engage gate (mayAttackRaid) last recorded for this member
@@ -1325,6 +1335,13 @@ public class PhantomPartyManager
 		if (text.contains("cubic") && (coreOrFirstCubic(state.npc) != 0))
 		{
 			handleCubicOrder(state, text, addressed);
+			return true;
+		}
+
+		// Summon Friend ("summon me", "summon <name>"): only a member that knows it (Elemental Summoner / Master) answers.
+		if ((state.npc.getKnownSkill(PhantomServitorRules.SUMMON_FRIEND) != null) && PhantomServitorRules.isSummonRequest(text))
+		{
+			handleSummonRequest(state, owner, text);
 			return true;
 		}
 
@@ -2808,6 +2825,12 @@ public class PhantomPartyManager
 			return;
 		}
 
+		// Summoner lineages: a leader's "summon me" (Summon Friend), then servitor upkeep (call it, heal it, buff it).
+		if (serveSummonFriend(state) || maintainServitor(state))
+		{
+			return;
+		}
+
 		// SWS/BD: keeping the songs/dances running beats swinging - it's the whole point of the class, and the
 		// 2-minute recast loop is legitimate to maintain mid-fight (unlike 20-minute buffs). Runs in both assist
 		// and free-hunt modes.
@@ -3398,6 +3421,7 @@ public class PhantomPartyManager
 			return false;
 		}
 		state.sitOrdered = false; // fighting ends a "sit" order: after the fight the normal rest rules decide
+		commandServitor(state, focus); // a summoner's servitor fights what its master fights
 		// A DPS that ripped raid aggro off the tank holds fire for a beat so the taunt can land (raid-only; no-op on trash).
 		if (isDps(state.role) && easeAggro(state, focus))
 		{
@@ -3530,6 +3554,216 @@ public class PhantomPartyManager
 				npc.getAI().setIntention(Intention.ATTACK, focus); // fresh engage or retarget - onIntentionAttack relaunches on its own
 			}
 		}
+	}
+
+	// ===== Summoner lineages: servitor upkeep, servitor combat, Summon Friend =====
+
+	/** Keeps a crystal stock for the summon skills. No actor, so the loot tracker never sees it (as with knight cubics). */
+	static void stockServitorCrystals(Player npc)
+	{
+		for (int itemId : PhantomServitorRules.CRYSTAL_ITEMS)
+		{
+			if (npc.getInventory().getInventoryItemCount(itemId, -1) < SERVITOR_CRYSTAL_LOW)
+			{
+				npc.getInventory().addItem(ItemProcessType.REWARD, itemId, SERVITOR_CRYSTAL_STOCK, null, null);
+			}
+		}
+	}
+
+	/**
+	 * Summoner upkeep. With no servitor out and nothing hitting the member, calls the strongest servitor it can afford.
+	 * With one out, heals it when hurt, and (out of a fight) recharges it and keeps its shields and haste up.
+	 * @return {@code true} if the member is busy with a cast this tick
+	 */
+	private boolean maintainServitor(Member state)
+	{
+		final Player npc = state.npc;
+		if (!npc.getPlayerClass().isSummoner() || npc.isDead() || npc.isCastingNow())
+		{
+			return false;
+		}
+		final boolean busy = npc.isAttackingNow() || underAttack(npc);
+		final Summon pet = npc.getSummon();
+		if (pet == null)
+		{
+			if (busy)
+			{
+				return false;
+			}
+			final int summonId = PhantomServitorRules.pickSummon(id -> castable(npc, npc.getKnownSkill(id)));
+			if (summonId == 0)
+			{
+				return false; // none learned yet, on reuse, or short of MP: retried on a later tick
+			}
+			if (!readyToCast(npc))
+			{
+				return true;
+			}
+			stockServitorCrystals(npc);
+			npc.setTarget(npc);
+			return castManaged(state, npc.getKnownSkill(summonId));
+		}
+		if (!pet.isServitor() || pet.isDead())
+		{
+			return false;
+		}
+		if (state.buffedPetOid != pet.getObjectId())
+		{
+			state.buffedPetOid = pet.getObjectId();
+			PhantomBuffs.applyFullBuffsToServitor(pet); // same kit a spawned phantom gets, for every new servitor
+		}
+		final Skill heal = npc.getKnownSkill(PhantomServitorRules.SERVITOR_HEAL);
+		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && castable(npc, heal) && readyToCast(npc))
+		{
+			npc.setTarget(pet);
+			return castManaged(state, heal);
+		}
+		if (busy)
+		{
+			return false;
+		}
+		final Skill recharge = npc.getKnownSkill(PhantomServitorRules.SERVITOR_RECHARGE);
+		if (PhantomServitorRules.servitorNeedsRecharge(pet.getCurrentMpPercent()) && castable(npc, recharge) && readyToCast(npc))
+		{
+			npc.setTarget(pet);
+			return castManaged(state, recharge);
+		}
+		for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
+		{
+			final Skill buff = npc.getKnownSkill(buffId);
+			if ((buff != null) && !pet.isAffectedBySkill(buffId) && castable(npc, buff) && readyToCast(npc))
+			{
+				npc.setTarget(pet);
+				return castManaged(state, buff);
+			}
+		}
+		return false;
+	}
+
+	/** Sends a summoner's servitor at the member's focus, and now and then has it use one of its own damage skills. */
+	private void commandServitor(Member state, Monster focus)
+	{
+		final Summon pet = state.npc.getSummon();
+		if ((pet == null) || !pet.isServitor() || pet.isDead() || (focus == null) || focus.isDead() || pet.isCastingNow())
+		{
+			return;
+		}
+		if ((pet.getAI().getIntention() != Intention.ATTACK) || (pet.getAI().getAttackTarget() != focus))
+		{
+			pet.doSummonAttack(focus);
+		}
+		final long now = System.currentTimeMillis();
+		if ((now - state.lastServitorSkillAt) < PhantomServitorRules.SERVITOR_SKILL_GAP_MS)
+		{
+			return;
+		}
+		for (Skill skill : PetSkillData.getInstance().getKnownSkills(pet))
+		{
+			if (!skill.isPassive() && skill.isDamage() && !pet.isSkillDisabled(skill) && (pet.getCurrentMp() >= skill.getMpConsume()))
+			{
+				pet.setTarget(focus);
+				if (pet.useMagic(skill, false, false))
+				{
+					state.lastServitorSkillAt = now;
+					return;
+				}
+			}
+		}
+	}
+
+	/** "summon me": remember who to bring; {@link #serveSummonFriend} carries it out when the cast can land. */
+	private void handleSummonRequest(Member state, Player owner, String text)
+	{
+		final Skill skill = state.npc.getKnownSkill(PhantomServitorRules.SUMMON_FRIEND);
+		final Player named = findPartyMemberByName(state, text);
+		final Player target = ((named != null) && (named != state.npc)) ? named : owner;
+		if ((target == null) || (target == state.npc) || (target.getParty() == null) || (target.getParty() != state.npc.getParty()) || isPhantomMember(target))
+		{
+			deliver(state, "i can only summon a real player in my party");
+			return;
+		}
+		if (state.npc.isSkillDisabled(skill))
+		{
+			deliver(state, "summon is on cooldown, " + PhantomServitorRules.secondsLeft(state.npc.getSkillRemainingReuseTime(skill.getReuseHashCode())) + "s left");
+			return;
+		}
+		state.summonFor = target;
+		state.summonAskedAt = System.currentTimeMillis();
+		state.summonWaitSaid = false;
+		deliver(state, (target == owner) ? "ok, summoning you" : "ok, summoning " + target.getName());
+	}
+
+	private boolean isPhantomMember(Player player)
+	{
+		return _members.containsKey(player.getObjectId()) || PhantomManager.getInstance().isPhantom(player);
+	}
+
+	/**
+	 * Carries out a Summon Friend order. The target (not the caster) must hold a Summoning Crystal and be out of
+	 * combat; either problem is said once. The order is dropped after a minute.
+	 * @return {@code true} while the member is busy with it this tick
+	 */
+	private boolean serveSummonFriend(Member state)
+	{
+		final Player target = state.summonFor;
+		if (target == null)
+		{
+			return false;
+		}
+		final Player npc = state.npc;
+		final Skill skill = npc.getKnownSkill(PhantomServitorRules.SUMMON_FRIEND);
+		if ((skill == null) || !target.isOnline() || target.isDead() || (target.getParty() == null) || (target.getParty() != npc.getParty()))
+		{
+			state.summonFor = null;
+			return false;
+		}
+		if ((System.currentTimeMillis() - state.summonAskedAt) > SUMMON_ORDER_MS)
+		{
+			state.summonFor = null;
+			deliver(state, "couldn't summon you, ask me again");
+			return false;
+		}
+		if (npc.isSkillDisabled(skill))
+		{
+			state.summonFor = null;
+			deliver(state, "summon is on cooldown, " + PhantomServitorRules.secondsLeft(npc.getSkillRemainingReuseTime(skill.getReuseHashCode())) + "s left");
+			return false;
+		}
+		if (target.getInventory().getInventoryItemCount(PhantomServitorRules.SUMMONING_CRYSTAL, 0) < 1)
+		{
+			state.summonFor = null;
+			deliver(state, "you need a summoning crystal for me to summon you");
+			return false;
+		}
+		if (target.isInCombat() || target.isRooted())
+		{
+			if (!state.summonWaitSaid)
+			{
+				state.summonWaitSaid = true;
+				deliver(state, "can't summon you mid-fight, tell me when you're clear");
+			}
+			return false;
+		}
+		if (npc.isCastingNow())
+		{
+			return true;
+		}
+		if (!castable(npc, skill))
+		{
+			return false; // short of MP: it rests as usual and the order waits
+		}
+		if (!readyToCast(npc))
+		{
+			return true;
+		}
+		npc.setTarget(target);
+		if (castManaged(state, skill))
+		{
+			state.summonFor = null;
+			deliver(state, "summoning, hit accept");
+			return true;
+		}
+		return false;
 	}
 
 	// ===== Camp-and-pull (Bucket 3): hold a fixed camp; a named puller drags mobs back to be killed there =====
@@ -4599,7 +4833,7 @@ public class PhantomPartyManager
 	}
 
 	/** {@code true} if the member knows the skill and can cast it right now (not on cooldown, enough MP). */
-	private static boolean castable(Player npc, Skill skill)
+	static boolean castable(Player npc, Skill skill)
 	{
 		return (skill != null) && !npc.isSkillDisabled(skill) && (npc.getCurrentMp() >= skill.getMpConsume());
 	}
@@ -8235,7 +8469,7 @@ public class PhantomPartyManager
 	 *         getting up - the caller must return and retry next tick (without consuming any one-shot order) so the
 	 *         action lands once it is on its feet.
 	 */
-	private static boolean readyToCast(Player npc)
+	static boolean readyToCast(Player npc)
 	{
 		if (npc.isSitting())
 		{

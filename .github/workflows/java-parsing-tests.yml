@@ -25,6 +25,9 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyDowntime.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyCommandRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCasterPositioning.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomEncounterBuffs.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomServitorRules.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomSpotRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/modules/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/java/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/js/**"
@@ -52,6 +55,9 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyDowntime.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomPartyCommandRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomCasterPositioning.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomEncounterBuffs.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomServitorRules.java"
+      - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/PhantomSpotRules.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/modules/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/java/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/js/**"
@@ -100,6 +106,9 @@ jobs:
             "java/org/l2jmobius/gameserver/managers/PhantomPartyDowntime.java" \
             "java/org/l2jmobius/gameserver/managers/PhantomPartyCommandRules.java" \
             "java/org/l2jmobius/gameserver/managers/PhantomCasterPositioning.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomEncounterBuffs.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomServitorRules.java" \
+            "java/org/l2jmobius/gameserver/managers/PhantomSpotRules.java" \
             "java/org/l2jmobius/gameserver/modules/Json.java" \
             "java/org/l2jmobius/gameserver/modules/ModuleException.java" \
             "java/org/l2jmobius/gameserver/modules/ModuleManifest.java" \
@@ -126,6 +135,9 @@ jobs:
           java -cp build/test-classes PhantomPartyDowntimeTest
           java -cp build/test-classes PhantomPartyCommandRulesTest
           java -cp build/test-classes PhantomCasterPositioningTest
+          java -cp build/test-classes PhantomEncounterBuffsTest
+          java -cp build/test-classes PhantomServitorRulesTest
+          java -cp build/test-classes PhantomSpotRulesTest
           java -cp build/test-classes TradeAdParserTest
           java -cp build/test-classes ModuleFrameworkTest
 

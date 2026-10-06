@@ -413,7 +413,15 @@ public final class PhantomBuffs
 		}
 	}
 
-	private static void applyBuffs(Player target, int[] ids)
+	/** Gives a servitor the same pre-buff kit a spawned phantom gets (the common, melee and Berserker buffs). */
+	public static void applyFullBuffsToServitor(org.l2jmobius.gameserver.model.actor.Summon pet)
+	{
+		applyBuffs(pet, PREBUFF_COMMON);
+		applyBuffs(pet, PREBUFF_MELEE);
+		applyBuffs(pet, PREBUFF_BERSERKER);
+	}
+
+	private static void applyBuffs(org.l2jmobius.gameserver.model.actor.Creature target, int[] ids)
 	{
 		for (int id : ids)
 		{
