@@ -170,6 +170,11 @@ if __name__ == "__main__":
     bps = json.load(open(os.path.join(here, "breakpoints.json")))[line]
     # skill breakpoints plus the levels where a new gear grade becomes wearable, plus the cap
     levels = [int(x) for x in args[1:]] or sorted({b["level"] for b in bps} | {S.WEAR_LEVEL[g] for g in S.GRADES if S.WEAR_LEVEL[g] > 1} | {80})
+    if split_name(bname)[0] == "party" and not args[1:]:
+        import party_buffs     # a party stage also needs the levels where the buffers' kits change (e.g. Haste at 44, Greater Might at 58)
+        pb = [tuple(party_buffs.party_buffs(l, "SWORD", "2H", parent, trees)) for l in range(1, 81)]
+        levels = sorted(set(levels) | {l for l in range(2, 81) if pb[l - 1] != pb[l - 2]})
+        print("party breakpoints added; levels:", levels, flush=True)
     result = {}
     for lv in levels:
         result[lv] = solve_level(line, leaf, lv, weapons, armors, names, parent, trees, sk_all, bname)
