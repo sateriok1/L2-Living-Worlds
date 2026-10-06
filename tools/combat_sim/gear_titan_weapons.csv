@@ -1,0 +1,14 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect
+Titan,NG,5284,Zweihander,,SWORD,2H,38,21,325,8,SS-NG,,
+Titan,D,70,Claymore,,SWORD,2H,112,54,325,8,SS-D,,
+Titan,C,6347,Berserker Blade,Focus,SWORD,2H,190,83,325,8,SS-C,3010:4,critRate +73.3
+Titan,C,6349,Berserker Blade,Haste,SWORD,2H,190,83,325,8,SS-C,3037:4,pAtkSpd x1.07
+Titan,B,4725,Great Sword,Focus,SWORD,2H,213,91,325,8,SS-B,3010:5,critRate +68.9
+Titan,B,4723,Great Sword,Health,SWORD,2H,213,91,325,8,SS-B,3013:1,maxHp x1.25
+Titan,B,7883,Guardian Sword,,SWORD,2H,236,99,325,8,SS-B,,
+Titan,B,8106,Guardian Sword,Health,SWORD,2H,236,99,325,8,SS-B,3013:1,maxHp x1.25
+Titan,A,8679,Sword of Ipos,,SWORD,2H,305,121,325,8,SS-A,,
+Titan,A,8791,Sword of Ipos,Focus,SWORD,2H,305,121,325,8,SS-A,3050:2,critRate +61.6
+Titan,A,8792,Sword of Ipos,Haste,SWORD,2H,305,121,325,8,SS-A,3068:3,pAtkSpd x1.06
+Titan,S,6605,Heavens Divider,Haste,SWORD,2H,342,132,325,8,SS-S,3564:1,pAtkSpd x1.07
+Titan,S,6607,Heavens Divider,Focus,SWORD,2H,342,132,325,8,SS-S,3566:1,critRate +84.3
