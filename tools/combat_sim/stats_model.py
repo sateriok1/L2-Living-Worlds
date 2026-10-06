@@ -157,8 +157,16 @@ def compute(class_id, level, weapon, armor, learned_skills):
     m, ad, _ = _apply(entries, "critRate")
     crit = float(weapon["crit"]) * dex_b * 10 * m + ad
     acc_m, acc_a, _ = _apply(entries, "accCombat")
+    tl = t["levels"][min(level, max(t["levels"]))]
+    men_b = bonus("MEN", t["baseMEN"])
+    m, ad, _ = _apply(entries, "maxMp")
+    mp_max = tl["mp"] * men_b * m + ad
+    m, ad, _ = _apply(entries, "regMp")
+    mp_regen = (tl["mpRegen"] * lvl_mod * men_b * 1.1) * m + ad    # per 3 s tick, standing still (x1.1)
+    m, ad, _ = _apply(entries, "maxHp")
     return {"str": strv, "dex": dexv, "p_atk": patk, "p_atk_spd": spd, "crit_pct": crit / 10.0,
-            "acc_bonus": acc_a + float(a.get("accuracy_add", 0) or 0)}
+            "acc_bonus": acc_a + float(a.get("accuracy_add", 0) or 0),
+            "str_bonus": str_b, "mp_max": mp_max, "mp_regen_3s": mp_regen}
 
 
 def class_at(leaf_id, level, parent):

@@ -29,6 +29,7 @@ class Actor:
     spiritshot: int = 0         # 0 none, 1 spirit, 2 blessed
     prox: float = 1.0           # 1.0 front, 1.1 side, 1.2 behind
     mp_reserve: float = 0.0     # MP the policy refuses to spend below
+    str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
 @dataclass
@@ -57,7 +58,9 @@ def skill_dmg(skill, actor, dummy):
         return base * (1 - actor.mcrit) + base * 3 * actor.mcrit
     shot = 2 if actor.soulshot else 1
     base = 76 * (actor.patk * shot + skill.power) * actor.prox / dummy.pdef
-    return base * (1 - actor.crit) + base * 2 * actor.crit
+    # physical skills roll crit from the skill's own baseCritRate and STR (Formulas.calcCrit), not weapon crit or Focus
+    crit = min(1.0, skill.base_crit * 10 * actor.str_bonus / 1000.0)
+    return base * (1 - crit) + base * 2 * crit
 
 
 def auto_dmg(actor, dummy):
@@ -92,8 +95,9 @@ class Policy:
     hold_ms: int = 0            # wait this long for a higher-priority skill instead of filling with a lower one
 
 
-def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None):
-    """Returns (total_damage, mp_used, casts dict). `skills` maps id -> SkillDef."""
+def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=None):
+    """Returns (total_damage, mp_used, casts dict). `skills` maps id -> SkillDef.
+    If `timeline` is a list, (time_ms, cumulative_damage) is appended after every action so one run answers many windows."""
     t = 0.0
     mp = actor.mp_max if start_mp is None else start_mp
     ready_at = {sid: 0.0 for sid in policy.order}
@@ -138,6 +142,7 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None):
             if hold is not None:
                 if a_int <= hold + 1:
                     advance(a_int); total += a_dmg; casts["auto"] += 1
+                    if timeline is not None: timeline.append((t, total, mp_used))
                 else:
                     advance(hold)
                 continue
@@ -148,11 +153,13 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None):
             casts[chosen] += 1
             advance(cms)
             total += dmg
+            if timeline is not None: timeline.append((t, total, mp_used))
             continue
         # nothing castable: auto attack
         advance(a_int)
         total += a_dmg
         casts["auto"] += 1
+        if timeline is not None: timeline.append((t, total, mp_used))
     return total, mp_used, casts
 
 

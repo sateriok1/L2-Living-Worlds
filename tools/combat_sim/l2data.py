@@ -10,7 +10,7 @@ DAMAGE_EFFECTS = {"PhysicalDamage", "MagicalDamage", "HpDrain", "EnergyDamage", 
 class SkillDef:
     """One skill at one level, with every table already resolved to a number."""
     __slots__ = ("id", "level", "name", "magic", "op", "power", "mp", "hit", "cool", "reuse", "range",
-                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level")
+                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost")
 
     def damage_kind(self):
         for e in self.effects:
@@ -63,8 +63,11 @@ def load_skills():
             effects = [e.get("name") for e in sk.findall("effects/effect")]
             op = (sk.findtext("operateType") or "").strip()
             weapons = set()
-            for u in sk.findall("conditions/using"):
-                weapons |= set((u.get("kind") or "").split(","))
+            cond = sk.find("conditions")
+            if cond is not None:
+                for u in cond.iter("using"):
+                    if u.get("kind"):
+                        weapons |= set(u.get("kind").split(","))
             flags = set()
             if sk.find("conditions/rear") is not None or "behind" in ET.tostring(sk, encoding="unicode").lower()[:0]:
                 flags.add("rear")
@@ -83,6 +86,8 @@ def load_skills():
                 d.reuse = val("reuseDelay", lv)
                 d.range = val("castRange", lv)
                 d.magic_level = val("magicLevel", lv)
+                d.base_crit = val("baseCritRate", lv)
+                d.hp_cost = val("hpConsume", lv)
                 d.target = (sk.findtext("targetType") or "").strip()
                 d.effects = effects
                 d.weapons = weapons
