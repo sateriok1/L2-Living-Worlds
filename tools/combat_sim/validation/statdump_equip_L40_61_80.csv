@@ -1,0 +1,1017 @@
+sample,item_id,name,grade,enchant,body_part
+1,855,"Nassen's Earring",C,0,LR_EAR
+1,855,"Nassen's Earring",C,0,LR_EAR
+1,119,"Necklace of Seal",C,0,NECK
+1,886,"Ring of Seal",C,0,LR_FINGER
+1,886,"Ring of Seal",C,0,LR_FINGER
+1,2413,"Chain Hood",C,0,HEAD
+1,2583,"Katana*Spirit Sword",C,0,LR_HAND
+1,2461,"Drake Leather Gloves",C,0,GLOVES
+1,354,"Chain Mail Shirt",C,0,CHEST
+1,381,"Chain Gaiters",C,0,LEGS
+1,603,"Divine Boots",C,0,FEET
+2,862,"Majestic Earring",A,0,LR_EAR
+2,862,"Majestic Earring",A,0,LR_EAR
+2,8191,"Necklace of Frintezza",A,0,NECK
+2,893,"Majestic Ring",A,0,LR_FINGER
+2,893,"Majestic Ring",A,0,LR_FINGER
+2,2419,"Majestic Circlet",A,0,HEAD
+2,5706,"Damascus*Damascus",A,0,LR_HAND
+2,5774,"Majestic Gauntlets - Heavy Armor",A,0,GLOVES
+2,2383,"Majestic Plate Armor",A,0,FULL_ARMOR
+2,5786,"Majestic Boots - Heavy Armor",A,0,FEET
+3,858,"Tateossian Earring",S,0,LR_EAR
+3,858,"Tateossian Earring",S,0,LR_EAR
+3,920,"Tateossian Necklace",S,0,NECK
+3,889,"Tateossian Ring",S,0,LR_FINGER
+3,889,"Tateossian Ring",S,0,LR_FINGER
+3,6378,"Imperial Crusader Helmet",S,0,HEAD
+3,6580,"Tallum Blade*Dark Legion's Edge",S,0,LR_HAND
+3,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+3,6373,"Imperial Crusader Breastplate",S,0,CHEST
+3,6374,"Imperial Crusader Gaiters",S,0,LEGS
+3,6376,"Imperial Crusader Boots",S,0,FEET
+4,855,"Nassen's Earring",C,0,LR_EAR
+4,855,"Nassen's Earring",C,0,LR_EAR
+4,119,"Necklace of Seal",C,0,NECK
+4,886,"Ring of Seal",C,0,LR_FINGER
+4,886,"Ring of Seal",C,0,LR_FINGER
+4,2414,"Full Plate Helmet",C,0,HEAD
+4,299,"Orcish Poleaxe",C,0,LR_HAND
+4,2461,"Drake Leather Gloves",C,0,GLOVES
+4,356,"Full Plate Armor",C,0,FULL_ARMOR
+4,603,"Divine Boots",C,0,FEET
+5,862,"Majestic Earring",A,0,LR_EAR
+5,862,"Majestic Earring",A,0,LR_EAR
+5,8191,"Necklace of Frintezza",A,0,NECK
+5,893,"Majestic Ring",A,0,LR_FINGER
+5,893,"Majestic Ring",A,0,LR_FINGER
+5,2418,"Helm of Nightmare",A,0,HEAD
+5,305,"Tallum Glaive",A,0,LR_HAND
+5,5313,"Sealed Gauntlets of Nightmare",A,0,GLOVES
+5,365,"Dark Crystal Breastplate",A,0,CHEST
+5,388,"Dark Crystal Gaiters",A,0,LEGS
+5,5314,"Sealed Boots of Nightmare",A,0,FEET
+6,858,"Tateossian Earring",S,0,LR_EAR
+6,858,"Tateossian Earring",S,0,LR_EAR
+6,920,"Tateossian Necklace",S,0,NECK
+6,889,"Tateossian Ring",S,0,LR_FINGER
+6,889,"Tateossian Ring",S,0,LR_FINGER
+6,6378,"Imperial Crusader Helmet",S,0,HEAD
+6,6370,"Saint Spear",S,0,LR_HAND
+6,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+6,6373,"Imperial Crusader Breastplate",S,0,CHEST
+6,6374,"Imperial Crusader Gaiters",S,0,LEGS
+6,6376,"Imperial Crusader Boots",S,0,FEET
+7,855,"Nassen's Earring",C,0,LR_EAR
+7,855,"Nassen's Earring",C,0,LR_EAR
+7,119,"Necklace of Seal",C,0,NECK
+7,886,"Ring of Seal",C,0,LR_FINGER
+7,886,"Ring of Seal",C,0,LR_FINGER
+7,2414,"Full Plate Helmet",C,0,HEAD
+7,75,"Caliburs",C,0,R_HAND
+7,2497,"Full Plate Shield",C,0,L_HAND
+7,2461,"Drake Leather Gloves",C,0,GLOVES
+7,356,"Full Plate Armor",C,0,FULL_ARMOR
+7,603,"Divine Boots",C,0,FEET
+8,862,"Majestic Earring",A,0,LR_EAR
+8,862,"Majestic Earring",A,0,LR_EAR
+8,8191,"Necklace of Frintezza",A,0,NECK
+8,893,"Majestic Ring",A,0,LR_FINGER
+8,893,"Majestic Ring",A,0,LR_FINGER
+8,512,"Dark Crystal Helmet",A,0,HEAD
+8,8789,"Sirra's Blade - Health",A,0,R_HAND
+8,641,"Dark Crystal Shield",A,0,L_HAND
+8,5765,"Dark Crystal Gloves - Heavy Armor",A,0,GLOVES
+8,365,"Dark Crystal Breastplate",A,0,CHEST
+8,388,"Dark Crystal Gaiters",A,0,LEGS
+8,5777,"Dark Crystal Boots - Heavy Armor",A,0,FEET
+9,858,"Tateossian Earring",S,0,LR_EAR
+9,858,"Tateossian Earring",S,0,LR_EAR
+9,920,"Tateossian Necklace",S,0,NECK
+9,889,"Tateossian Ring",S,0,LR_FINGER
+9,889,"Tateossian Ring",S,0,LR_FINGER
+9,6378,"Imperial Crusader Helmet",S,0,HEAD
+9,6582,"Forgotten Blade - Health",S,0,R_HAND
+9,6377,"Imperial Crusader Shield",S,0,L_HAND
+9,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+9,6373,"Imperial Crusader Breastplate",S,0,CHEST
+9,6374,"Imperial Crusader Gaiters",S,0,LEGS
+9,6376,"Imperial Crusader Boots",S,0,FEET
+10,855,"Nassen's Earring",C,0,LR_EAR
+10,855,"Nassen's Earring",C,0,LR_EAR
+10,119,"Necklace of Seal",C,0,NECK
+10,886,"Ring of Seal",C,0,LR_FINGER
+10,886,"Ring of Seal",C,0,LR_FINGER
+10,517,"Composite Helmet",C,0,HEAD
+10,4708,"Samurai Longsword - Focus",C,0,R_HAND
+10,107,"Composite Shield",C,0,L_HAND
+10,2461,"Drake Leather Gloves",C,0,GLOVES
+10,60,"Composite Armor",C,0,FULL_ARMOR
+10,603,"Divine Boots",C,0,FEET
+11,862,"Majestic Earring",A,0,LR_EAR
+11,862,"Majestic Earring",A,0,LR_EAR
+11,8191,"Necklace of Frintezza",A,0,NECK
+11,893,"Majestic Ring",A,0,LR_FINGER
+11,893,"Majestic Ring",A,0,LR_FINGER
+11,2418,"Helm of Nightmare",A,0,HEAD
+11,8790,"Sirra's Blade - Critical Poison",A,0,R_HAND
+11,2498,"Shield of Nightmare",A,0,L_HAND
+11,5313,"Sealed Gauntlets of Nightmare",A,0,GLOVES
+11,365,"Dark Crystal Breastplate",A,0,CHEST
+11,388,"Dark Crystal Gaiters",A,0,LEGS
+11,5314,"Sealed Boots of Nightmare",A,0,FEET
+12,858,"Tateossian Earring",S,0,LR_EAR
+12,858,"Tateossian Earring",S,0,LR_EAR
+12,920,"Tateossian Necklace",S,0,NECK
+12,889,"Tateossian Ring",S,0,LR_FINGER
+12,889,"Tateossian Ring",S,0,LR_FINGER
+12,6378,"Imperial Crusader Helmet",S,0,HEAD
+12,6583,"Forgotten Blade - Focus",S,0,R_HAND
+12,6377,"Imperial Crusader Shield",S,0,L_HAND
+12,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+12,6373,"Imperial Crusader Breastplate",S,0,CHEST
+12,6374,"Imperial Crusader Gaiters",S,0,LEGS
+12,6376,"Imperial Crusader Boots",S,0,FEET
+13,855,"Nassen's Earring",C,0,LR_EAR
+13,855,"Nassen's Earring",C,0,LR_EAR
+13,119,"Necklace of Seal",C,0,NECK
+13,886,"Ring of Seal",C,0,LR_FINGER
+13,886,"Ring of Seal",C,0,LR_FINGER
+13,2414,"Full Plate Helmet",C,0,HEAD
+13,4823,"Eminence Bow - Miser",C,0,LR_HAND
+13,2461,"Drake Leather Gloves",C,0,GLOVES
+13,398,"Plated Leather",C,0,CHEST
+13,418,"Plated Leather Gaiters",C,0,LEGS
+13,2431,"Plated Leather Boots",C,0,FEET
+14,862,"Majestic Earring",A,0,LR_EAR
+14,862,"Majestic Earring",A,0,LR_EAR
+14,8191,"Necklace of Frintezza",A,0,NECK
+14,893,"Majestic Ring",A,0,LR_FINGER
+14,893,"Majestic Ring",A,0,LR_FINGER
+14,2418,"Helm of Nightmare",A,0,HEAD
+14,5611,"Soul Bow - Cheap Shot",A,0,LR_HAND
+14,5772,"Gauntlets of Nightmare - Light Armor",A,0,GLOVES
+14,2394,"Leather Armor of Nightmare",A,0,FULL_ARMOR
+14,5784,"Boots of Nightmare - Light Armor",A,0,FEET
+15,858,"Tateossian Earring",S,0,LR_EAR
+15,858,"Tateossian Earring",S,0,LR_EAR
+15,920,"Tateossian Necklace",S,0,NECK
+15,889,"Tateossian Ring",S,0,LR_FINGER
+15,889,"Tateossian Ring",S,0,LR_FINGER
+15,6382,"Draconic Leather Helmet",S,0,HEAD
+15,7576,"Draconic Bow - Cheap Shot",S,0,LR_HAND
+15,6380,"Draconic Leather Gloves",S,0,GLOVES
+15,6379,"Draconic Leather Armor",S,0,FULL_ARMOR
+15,6381,"Draconic Leather Boots",S,0,FEET
+16,855,"Nassen's Earring",C,0,LR_EAR
+16,855,"Nassen's Earring",C,0,LR_EAR
+16,119,"Necklace of Seal",C,0,NECK
+16,886,"Ring of Seal",C,0,LR_FINGER
+16,886,"Ring of Seal",C,0,LR_FINGER
+16,2414,"Full Plate Helmet",C,0,HEAD
+16,4776,"Crystal Dagger - Mortal Strike",C,0,R_HAND
+16,2461,"Drake Leather Gloves",C,0,GLOVES
+16,400,"Theca Leather Armor",C,0,CHEST
+16,420,"Theca Leather Gaiters",C,0,LEGS
+16,2436,"Theca Leather Boots",C,0,FEET
+17,862,"Majestic Earring",A,0,LR_EAR
+17,862,"Majestic Earring",A,0,LR_EAR
+17,8191,"Necklace of Frintezza",A,0,NECK
+17,893,"Majestic Ring",A,0,LR_FINGER
+17,893,"Majestic Ring",A,0,LR_FINGER
+17,547,"Tallum Helm",A,0,HEAD
+17,8682,"Naga Storm",A,0,R_HAND
+17,5769,"Tallum Gloves - Light Armor",A,0,GLOVES
+17,2393,"Tallum Leather Armor",A,0,FULL_ARMOR
+17,5781,"Tallum Boots - Light Armor",A,0,FEET
+18,858,"Tateossian Earring",S,0,LR_EAR
+18,858,"Tateossian Earring",S,0,LR_EAR
+18,920,"Tateossian Necklace",S,0,NECK
+18,889,"Tateossian Ring",S,0,LR_FINGER
+18,889,"Tateossian Ring",S,0,LR_FINGER
+18,6382,"Draconic Leather Helmet",S,0,HEAD
+18,6367,"Angel Slayer",S,0,R_HAND
+18,6380,"Draconic Leather Gloves",S,0,GLOVES
+18,6379,"Draconic Leather Armor",S,0,FULL_ARMOR
+18,6381,"Draconic Leather Boots",S,0,FEET
+19,855,"Nassen's Earring",C,0,LR_EAR
+19,855,"Nassen's Earring",C,0,LR_EAR
+19,119,"Necklace of Seal",C,0,NECK
+19,886,"Ring of Seal",C,0,LR_FINGER
+19,886,"Ring of Seal",C,0,LR_FINGER
+19,2414,"Full Plate Helmet",C,0,HEAD
+19,4890,"Deadman's Staff - Magic Hold",C,0,LR_HAND
+19,2454,"Karmian Gloves",C,0,GLOVES
+19,439,"Karmian Tunic",C,0,CHEST
+19,471,"Karmian Stockings",C,0,LEGS
+19,603,"Divine Boots",C,0,FEET
+20,862,"Majestic Earring",A,0,LR_EAR
+20,862,"Majestic Earring",A,0,LR_EAR
+20,8191,"Necklace of Frintezza",A,0,NECK
+20,893,"Majestic Ring",A,0,LR_FINGER
+20,893,"Majestic Ring",A,0,LR_FINGER
+20,2418,"Helm of Nightmare",A,0,HEAD
+20,8813,"Themis' Tongue - Mental Shield",A,0,R_HAND
+20,2498,"Shield of Nightmare",A,0,L_HAND
+20,5313,"Sealed Gauntlets of Nightmare",A,0,GLOVES
+20,2400,"Tallum Tunic",A,0,CHEST
+20,2405,"Tallum Stockings",A,0,LEGS
+20,5314,"Sealed Boots of Nightmare",A,0,FEET
+21,858,"Tateossian Earring",S,0,LR_EAR
+21,858,"Tateossian Earring",S,0,LR_EAR
+21,920,"Tateossian Necklace",S,0,NECK
+21,889,"Tateossian Ring",S,0,LR_FINGER
+21,889,"Tateossian Ring",S,0,LR_FINGER
+21,6386,"Major Arcana Circlet",S,0,HEAD
+21,6608,"Arcana Mace - Acumen",S,0,R_HAND
+21,6377,"Imperial Crusader Shield",S,0,L_HAND
+21,6384,"Major Arcana Gloves",S,0,GLOVES
+21,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+21,6385,"Major Arcana Boots",S,0,FEET
+22,855,"Nassen's Earring",C,0,LR_EAR
+22,855,"Nassen's Earring",C,0,LR_EAR
+22,119,"Necklace of Seal",C,0,NECK
+22,886,"Ring of Seal",C,0,LR_FINGER
+22,886,"Ring of Seal",C,0,LR_FINGER
+22,2414,"Full Plate Helmet",C,0,HEAD
+22,4890,"Deadman's Staff - Magic Hold",C,0,LR_HAND
+22,2454,"Karmian Gloves",C,0,GLOVES
+22,439,"Karmian Tunic",C,0,CHEST
+22,471,"Karmian Stockings",C,0,LEGS
+22,603,"Divine Boots",C,0,FEET
+23,862,"Majestic Earring",A,0,LR_EAR
+23,862,"Majestic Earring",A,0,LR_EAR
+23,8191,"Necklace of Frintezza",A,0,NECK
+23,893,"Majestic Ring",A,0,LR_FINGER
+23,893,"Majestic Ring",A,0,LR_FINGER
+23,547,"Tallum Helm",A,0,HEAD
+23,8686,"Themis' Tongue",A,0,R_HAND
+23,2498,"Shield of Nightmare",A,0,L_HAND
+23,5770,"Tallum Gloves - Robe",A,0,GLOVES
+23,2400,"Tallum Tunic",A,0,CHEST
+23,2405,"Tallum Stockings",A,0,LEGS
+23,5782,"Tallum Boots - Robe",A,0,FEET
+24,858,"Tateossian Earring",S,0,LR_EAR
+24,858,"Tateossian Earring",S,0,LR_EAR
+24,920,"Tateossian Necklace",S,0,NECK
+24,889,"Tateossian Ring",S,0,LR_FINGER
+24,889,"Tateossian Ring",S,0,LR_FINGER
+24,6386,"Major Arcana Circlet",S,0,HEAD
+24,6608,"Arcana Mace - Acumen",S,0,R_HAND
+24,6377,"Imperial Crusader Shield",S,0,L_HAND
+24,6384,"Major Arcana Gloves",S,0,GLOVES
+24,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+24,6385,"Major Arcana Boots",S,0,FEET
+25,855,"Nassen's Earring",C,0,LR_EAR
+25,855,"Nassen's Earring",C,0,LR_EAR
+25,119,"Necklace of Seal",C,0,NECK
+25,886,"Ring of Seal",C,0,LR_FINGER
+25,886,"Ring of Seal",C,0,LR_FINGER
+25,2414,"Full Plate Helmet",C,0,HEAD
+25,4889,"Deadman's Staff - Mental Shield",C,0,LR_HAND
+25,2459,"Demon's Gloves",C,0,GLOVES
+25,441,"Demon's Tunic",C,0,CHEST
+25,472,"Demon's Stockings",C,0,LEGS
+25,603,"Divine Boots",C,0,FEET
+26,862,"Majestic Earring",A,0,LR_EAR
+26,862,"Majestic Earring",A,0,LR_EAR
+26,8191,"Necklace of Frintezza",A,0,NECK
+26,893,"Majestic Ring",A,0,LR_FINGER
+26,893,"Majestic Ring",A,0,LR_FINGER
+26,512,"Dark Crystal Helmet",A,0,HEAD
+26,8814,"Themis' Tongue - Magic Focus",A,0,R_HAND
+26,2498,"Shield of Nightmare",A,0,L_HAND
+26,5767,"Dark Crystal Gloves - Robe",A,0,GLOVES
+26,2407,"Dark Crystal Robe",A,0,FULL_ARMOR
+26,5779,"Dark Crystal Boots - Robe",A,0,FEET
+27,858,"Tateossian Earring",S,0,LR_EAR
+27,858,"Tateossian Earring",S,0,LR_EAR
+27,920,"Tateossian Necklace",S,0,NECK
+27,889,"Tateossian Ring",S,0,LR_FINGER
+27,889,"Tateossian Ring",S,0,LR_FINGER
+27,6386,"Major Arcana Circlet",S,0,HEAD
+27,6366,"Imperial Staff",S,0,LR_HAND
+27,6384,"Major Arcana Gloves",S,0,GLOVES
+27,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+27,6385,"Major Arcana Boots",S,0,FEET
+28,855,"Nassen's Earring",C,0,LR_EAR
+28,855,"Nassen's Earring",C,0,LR_EAR
+28,119,"Necklace of Seal",C,0,NECK
+28,886,"Ring of Seal",C,0,LR_FINGER
+28,886,"Ring of Seal",C,0,LR_FINGER
+28,2414,"Full Plate Helmet",C,0,HEAD
+28,204,"Deadman's Staff",C,0,LR_HAND
+28,2463,"Divine Gloves",C,0,GLOVES
+28,442,"Divine Tunic",C,0,CHEST
+28,473,"Divine Stockings",C,0,LEGS
+28,603,"Divine Boots",C,0,FEET
+29,862,"Majestic Earring",A,0,LR_EAR
+29,862,"Majestic Earring",A,0,LR_EAR
+29,8191,"Necklace of Frintezza",A,0,NECK
+29,893,"Majestic Ring",A,0,LR_FINGER
+29,893,"Majestic Ring",A,0,LR_FINGER
+29,512,"Dark Crystal Helmet",A,0,HEAD
+29,8686,"Themis' Tongue",A,0,R_HAND
+29,2498,"Shield of Nightmare",A,0,L_HAND
+29,5767,"Dark Crystal Gloves - Robe",A,0,GLOVES
+29,2407,"Dark Crystal Robe",A,0,FULL_ARMOR
+29,5779,"Dark Crystal Boots - Robe",A,0,FEET
+30,858,"Tateossian Earring",S,0,LR_EAR
+30,858,"Tateossian Earring",S,0,LR_EAR
+30,920,"Tateossian Necklace",S,0,NECK
+30,889,"Tateossian Ring",S,0,LR_FINGER
+30,889,"Tateossian Ring",S,0,LR_FINGER
+30,6386,"Major Arcana Circlet",S,0,HEAD
+30,6366,"Imperial Staff",S,0,LR_HAND
+30,6384,"Major Arcana Gloves",S,0,GLOVES
+30,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+30,6385,"Major Arcana Boots",S,0,FEET
+31,855,"Nassen's Earring",C,0,LR_EAR
+31,855,"Nassen's Earring",C,0,LR_EAR
+31,119,"Necklace of Seal",C,0,NECK
+31,886,"Ring of Seal",C,0,LR_FINGER
+31,886,"Ring of Seal",C,0,LR_FINGER
+31,2414,"Full Plate Helmet",C,0,HEAD
+31,206,"Demon's Staff",C,0,LR_HAND
+31,2463,"Divine Gloves",C,0,GLOVES
+31,442,"Divine Tunic",C,0,CHEST
+31,473,"Divine Stockings",C,0,LEGS
+31,603,"Divine Boots",C,0,FEET
+32,862,"Majestic Earring",A,0,LR_EAR
+32,862,"Majestic Earring",A,0,LR_EAR
+32,8191,"Necklace of Frintezza",A,0,NECK
+32,893,"Majestic Ring",A,0,LR_FINGER
+32,893,"Majestic Ring",A,0,LR_FINGER
+32,2419,"Majestic Circlet",A,0,HEAD
+32,8686,"Themis' Tongue",A,0,R_HAND
+32,2498,"Shield of Nightmare",A,0,L_HAND
+32,5776,"Majestic Gauntlets - Robe",A,0,GLOVES
+32,2409,"Majestic Robe",A,0,FULL_ARMOR
+32,5788,"Majestic Boots - Robe",A,0,FEET
+33,858,"Tateossian Earring",S,0,LR_EAR
+33,858,"Tateossian Earring",S,0,LR_EAR
+33,920,"Tateossian Necklace",S,0,NECK
+33,889,"Tateossian Ring",S,0,LR_FINGER
+33,889,"Tateossian Ring",S,0,LR_FINGER
+33,6386,"Major Arcana Circlet",S,0,HEAD
+33,6579,"Arcana Mace",S,0,R_HAND
+33,6377,"Imperial Crusader Shield",S,0,L_HAND
+33,6384,"Major Arcana Gloves",S,0,GLOVES
+33,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+33,6385,"Major Arcana Boots",S,0,FEET
+34,855,"Nassen's Earring",C,0,LR_EAR
+34,855,"Nassen's Earring",C,0,LR_EAR
+34,119,"Necklace of Seal",C,0,NECK
+34,886,"Ring of Seal",C,0,LR_FINGER
+34,886,"Ring of Seal",C,0,LR_FINGER
+34,2414,"Full Plate Helmet",C,0,HEAD
+34,4708,"Samurai Longsword - Focus",C,0,R_HAND
+34,2497,"Full Plate Shield",C,0,L_HAND
+34,2461,"Drake Leather Gloves",C,0,GLOVES
+34,356,"Full Plate Armor",C,0,FULL_ARMOR
+34,603,"Divine Boots",C,0,FEET
+35,862,"Majestic Earring",A,0,LR_EAR
+35,862,"Majestic Earring",A,0,LR_EAR
+35,8191,"Necklace of Frintezza",A,0,NECK
+35,893,"Majestic Ring",A,0,LR_FINGER
+35,893,"Majestic Ring",A,0,LR_FINGER
+35,512,"Dark Crystal Helmet",A,0,HEAD
+35,8678,"Sirra's Blade",A,0,R_HAND
+35,641,"Dark Crystal Shield",A,0,L_HAND
+35,5765,"Dark Crystal Gloves - Heavy Armor",A,0,GLOVES
+35,365,"Dark Crystal Breastplate",A,0,CHEST
+35,388,"Dark Crystal Gaiters",A,0,LEGS
+35,5777,"Dark Crystal Boots - Heavy Armor",A,0,FEET
+36,858,"Tateossian Earring",S,0,LR_EAR
+36,858,"Tateossian Earring",S,0,LR_EAR
+36,920,"Tateossian Necklace",S,0,NECK
+36,889,"Tateossian Ring",S,0,LR_FINGER
+36,889,"Tateossian Ring",S,0,LR_FINGER
+36,6378,"Imperial Crusader Helmet",S,0,HEAD
+36,6364,"Forgotten Blade",S,0,R_HAND
+36,6377,"Imperial Crusader Shield",S,0,L_HAND
+36,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+36,6373,"Imperial Crusader Breastplate",S,0,CHEST
+36,6374,"Imperial Crusader Gaiters",S,0,LEGS
+36,6376,"Imperial Crusader Boots",S,0,FEET
+37,855,"Nassen's Earring",C,0,LR_EAR
+37,855,"Nassen's Earring",C,0,LR_EAR
+37,119,"Necklace of Seal",C,0,NECK
+37,886,"Ring of Seal",C,0,LR_FINGER
+37,886,"Ring of Seal",C,0,LR_FINGER
+37,2414,"Full Plate Helmet",C,0,HEAD
+37,76,"Sword of Delusion",C,0,R_HAND
+37,2497,"Full Plate Shield",C,0,L_HAND
+37,2461,"Drake Leather Gloves",C,0,GLOVES
+37,356,"Full Plate Armor",C,0,FULL_ARMOR
+37,603,"Divine Boots",C,0,FEET
+38,862,"Majestic Earring",A,0,LR_EAR
+38,862,"Majestic Earring",A,0,LR_EAR
+38,8191,"Necklace of Frintezza",A,0,NECK
+38,893,"Majestic Ring",A,0,LR_FINGER
+38,893,"Majestic Ring",A,0,LR_FINGER
+38,2419,"Majestic Circlet",A,0,HEAD
+38,8788,"Sirra's Blade - Haste",A,0,R_HAND
+38,2498,"Shield of Nightmare",A,0,L_HAND
+38,5774,"Majestic Gauntlets - Heavy Armor",A,0,GLOVES
+38,2383,"Majestic Plate Armor",A,0,FULL_ARMOR
+38,5786,"Majestic Boots - Heavy Armor",A,0,FEET
+39,858,"Tateossian Earring",S,0,LR_EAR
+39,858,"Tateossian Earring",S,0,LR_EAR
+39,920,"Tateossian Necklace",S,0,NECK
+39,889,"Tateossian Ring",S,0,LR_FINGER
+39,889,"Tateossian Ring",S,0,LR_FINGER
+39,6378,"Imperial Crusader Helmet",S,0,HEAD
+39,6364,"Forgotten Blade",S,0,R_HAND
+39,6377,"Imperial Crusader Shield",S,0,L_HAND
+39,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+39,6373,"Imperial Crusader Breastplate",S,0,CHEST
+39,6374,"Imperial Crusader Gaiters",S,0,LEGS
+39,6376,"Imperial Crusader Boots",S,0,FEET
+40,855,"Nassen's Earring",C,0,LR_EAR
+40,855,"Nassen's Earring",C,0,LR_EAR
+40,119,"Necklace of Seal",C,0,NECK
+40,886,"Ring of Seal",C,0,LR_FINGER
+40,886,"Ring of Seal",C,0,LR_FINGER
+40,2414,"Full Plate Helmet",C,0,HEAD
+40,228,"Crystal Dagger",C,0,R_HAND
+40,2461,"Drake Leather Gloves",C,0,GLOVES
+40,400,"Theca Leather Armor",C,0,CHEST
+40,420,"Theca Leather Gaiters",C,0,LEGS
+40,2436,"Theca Leather Boots",C,0,FEET
+41,862,"Majestic Earring",A,0,LR_EAR
+41,862,"Majestic Earring",A,0,LR_EAR
+41,8191,"Necklace of Frintezza",A,0,NECK
+41,893,"Majestic Ring",A,0,LR_FINGER
+41,893,"Majestic Ring",A,0,LR_FINGER
+41,512,"Dark Crystal Helmet",A,0,HEAD
+41,8682,"Naga Storm",A,0,R_HAND
+41,5766,"Dark Crystal Gloves - Light Armor",A,0,GLOVES
+41,2385,"Dark Crystal Leather Armor",A,0,CHEST
+41,2389,"Dark Crystal Leggings",A,0,LEGS
+41,5778,"Dark Crystal Boots - Light Armor",A,0,FEET
+42,858,"Tateossian Earring",S,0,LR_EAR
+42,858,"Tateossian Earring",S,0,LR_EAR
+42,920,"Tateossian Necklace",S,0,NECK
+42,889,"Tateossian Ring",S,0,LR_FINGER
+42,889,"Tateossian Ring",S,0,LR_FINGER
+42,6382,"Draconic Leather Helmet",S,0,HEAD
+42,6592,"Angel Slayer - Haste",S,0,R_HAND
+42,6380,"Draconic Leather Gloves",S,0,GLOVES
+42,6379,"Draconic Leather Armor",S,0,FULL_ARMOR
+42,6381,"Draconic Leather Boots",S,0,FEET
+43,855,"Nassen's Earring",C,0,LR_EAR
+43,855,"Nassen's Earring",C,0,LR_EAR
+43,119,"Necklace of Seal",C,0,NECK
+43,886,"Ring of Seal",C,0,LR_FINGER
+43,886,"Ring of Seal",C,0,LR_FINGER
+43,2414,"Full Plate Helmet",C,0,HEAD
+43,4822,"Eminence Bow - Guidance",C,0,LR_HAND
+43,2461,"Drake Leather Gloves",C,0,GLOVES
+43,397,"Mithril Shirt",C,0,CHEST
+43,2387,"Reinforced Mithril Gaiters",C,0,LEGS
+43,62,"Reinforced Mithril Boots",C,0,FEET
+44,862,"Majestic Earring",A,0,LR_EAR
+44,862,"Majestic Earring",A,0,LR_EAR
+44,8191,"Necklace of Frintezza",A,0,NECK
+44,893,"Majestic Ring",A,0,LR_FINGER
+44,893,"Majestic Ring",A,0,LR_FINGER
+44,512,"Dark Crystal Helmet",A,0,HEAD
+44,8808,"Shyeed's Bow - Quick Recovery",A,0,LR_HAND
+44,5766,"Dark Crystal Gloves - Light Armor",A,0,GLOVES
+44,2385,"Dark Crystal Leather Armor",A,0,CHEST
+44,2389,"Dark Crystal Leggings",A,0,LEGS
+44,5778,"Dark Crystal Boots - Light Armor",A,0,FEET
+45,858,"Tateossian Earring",S,0,LR_EAR
+45,858,"Tateossian Earring",S,0,LR_EAR
+45,920,"Tateossian Necklace",S,0,NECK
+45,889,"Tateossian Ring",S,0,LR_FINGER
+45,889,"Tateossian Ring",S,0,LR_FINGER
+45,6382,"Draconic Leather Helmet",S,0,HEAD
+45,7575,"Draconic Bow",S,0,LR_HAND
+45,6380,"Draconic Leather Gloves",S,0,GLOVES
+45,6379,"Draconic Leather Armor",S,0,FULL_ARMOR
+45,6381,"Draconic Leather Boots",S,0,FEET
+46,855,"Nassen's Earring",C,0,LR_EAR
+46,855,"Nassen's Earring",C,0,LR_EAR
+46,119,"Necklace of Seal",C,0,NECK
+46,886,"Ring of Seal",C,0,LR_FINGER
+46,886,"Ring of Seal",C,0,LR_FINGER
+46,2414,"Full Plate Helmet",C,0,HEAD
+46,4889,"Deadman's Staff - Mental Shield",C,0,LR_HAND
+46,2459,"Demon's Gloves",C,0,GLOVES
+46,441,"Demon's Tunic",C,0,CHEST
+46,472,"Demon's Stockings",C,0,LEGS
+46,603,"Divine Boots",C,0,FEET
+47,862,"Majestic Earring",A,0,LR_EAR
+47,862,"Majestic Earring",A,0,LR_EAR
+47,8191,"Necklace of Frintezza",A,0,NECK
+47,893,"Majestic Ring",A,0,LR_FINGER
+47,893,"Majestic Ring",A,0,LR_FINGER
+47,2418,"Helm of Nightmare",A,0,HEAD
+47,8813,"Themis' Tongue - Mental Shield",A,0,R_HAND
+47,2498,"Shield of Nightmare",A,0,L_HAND
+47,5773,"Gauntlets of Nightmare - Robe",A,0,GLOVES
+47,2408,"Robe of Nightmare",A,0,FULL_ARMOR
+47,5785,"Boots of Nightmare - Robe",A,0,FEET
+48,858,"Tateossian Earring",S,0,LR_EAR
+48,858,"Tateossian Earring",S,0,LR_EAR
+48,920,"Tateossian Necklace",S,0,NECK
+48,889,"Tateossian Ring",S,0,LR_FINGER
+48,889,"Tateossian Ring",S,0,LR_FINGER
+48,6386,"Major Arcana Circlet",S,0,HEAD
+48,6587,"Imperial Staff - Empower",S,0,LR_HAND
+48,6384,"Major Arcana Gloves",S,0,GLOVES
+48,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+48,6385,"Major Arcana Boots",S,0,FEET
+49,855,"Nassen's Earring",C,0,LR_EAR
+49,855,"Nassen's Earring",C,0,LR_EAR
+49,119,"Necklace of Seal",C,0,NECK
+49,886,"Ring of Seal",C,0,LR_FINGER
+49,886,"Ring of Seal",C,0,LR_FINGER
+49,2414,"Full Plate Helmet",C,0,HEAD
+49,4889,"Deadman's Staff - Mental Shield",C,0,LR_HAND
+49,2454,"Karmian Gloves",C,0,GLOVES
+49,439,"Karmian Tunic",C,0,CHEST
+49,471,"Karmian Stockings",C,0,LEGS
+49,603,"Divine Boots",C,0,FEET
+50,862,"Majestic Earring",A,0,LR_EAR
+50,862,"Majestic Earring",A,0,LR_EAR
+50,8191,"Necklace of Frintezza",A,0,NECK
+50,893,"Majestic Ring",A,0,LR_FINGER
+50,893,"Majestic Ring",A,0,LR_FINGER
+50,547,"Tallum Helm",A,0,HEAD
+50,8814,"Themis' Tongue - Magic Focus",A,0,R_HAND
+50,2498,"Shield of Nightmare",A,0,L_HAND
+50,5770,"Tallum Gloves - Robe",A,0,GLOVES
+50,2400,"Tallum Tunic",A,0,CHEST
+50,2405,"Tallum Stockings",A,0,LEGS
+50,5782,"Tallum Boots - Robe",A,0,FEET
+51,858,"Tateossian Earring",S,0,LR_EAR
+51,858,"Tateossian Earring",S,0,LR_EAR
+51,920,"Tateossian Necklace",S,0,NECK
+51,889,"Tateossian Ring",S,0,LR_FINGER
+51,889,"Tateossian Ring",S,0,LR_FINGER
+51,6386,"Major Arcana Circlet",S,0,HEAD
+51,6588,"Imperial Staff - MP Regeneration",S,0,LR_HAND
+51,6384,"Major Arcana Gloves",S,0,GLOVES
+51,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+51,6385,"Major Arcana Boots",S,0,FEET
+52,855,"Nassen's Earring",C,0,LR_EAR
+52,855,"Nassen's Earring",C,0,LR_EAR
+52,119,"Necklace of Seal",C,0,NECK
+52,886,"Ring of Seal",C,0,LR_FINGER
+52,886,"Ring of Seal",C,0,LR_FINGER
+52,2414,"Full Plate Helmet",C,0,HEAD
+52,204,"Deadman's Staff",C,0,LR_HAND
+52,2459,"Demon's Gloves",C,0,GLOVES
+52,441,"Demon's Tunic",C,0,CHEST
+52,472,"Demon's Stockings",C,0,LEGS
+52,603,"Divine Boots",C,0,FEET
+53,862,"Majestic Earring",A,0,LR_EAR
+53,862,"Majestic Earring",A,0,LR_EAR
+53,8191,"Necklace of Frintezza",A,0,NECK
+53,893,"Majestic Ring",A,0,LR_FINGER
+53,893,"Majestic Ring",A,0,LR_FINGER
+53,2418,"Helm of Nightmare",A,0,HEAD
+53,8812,"Themis' Tongue - Mana Up",A,0,R_HAND
+53,2498,"Shield of Nightmare",A,0,L_HAND
+53,5773,"Gauntlets of Nightmare - Robe",A,0,GLOVES
+53,2408,"Robe of Nightmare",A,0,FULL_ARMOR
+53,5785,"Boots of Nightmare - Robe",A,0,FEET
+54,858,"Tateossian Earring",S,0,LR_EAR
+54,858,"Tateossian Earring",S,0,LR_EAR
+54,920,"Tateossian Necklace",S,0,NECK
+54,889,"Tateossian Ring",S,0,LR_FINGER
+54,889,"Tateossian Ring",S,0,LR_FINGER
+54,6386,"Major Arcana Circlet",S,0,HEAD
+54,6587,"Imperial Staff - Empower",S,0,LR_HAND
+54,6384,"Major Arcana Gloves",S,0,GLOVES
+54,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+54,6385,"Major Arcana Boots",S,0,FEET
+55,855,"Nassen's Earring",C,0,LR_EAR
+55,855,"Nassen's Earring",C,0,LR_EAR
+55,119,"Necklace of Seal",C,0,NECK
+55,886,"Ring of Seal",C,0,LR_FINGER
+55,886,"Ring of Seal",C,0,LR_FINGER
+55,517,"Composite Helmet",C,0,HEAD
+55,4710,"Samurai Longsword - Haste",C,0,R_HAND
+55,107,"Composite Shield",C,0,L_HAND
+55,2461,"Drake Leather Gloves",C,0,GLOVES
+55,60,"Composite Armor",C,0,FULL_ARMOR
+55,603,"Divine Boots",C,0,FEET
+56,862,"Majestic Earring",A,0,LR_EAR
+56,862,"Majestic Earring",A,0,LR_EAR
+56,8191,"Necklace of Frintezza",A,0,NECK
+56,893,"Majestic Ring",A,0,LR_FINGER
+56,893,"Majestic Ring",A,0,LR_FINGER
+56,2418,"Helm of Nightmare",A,0,HEAD
+56,8678,"Sirra's Blade",A,0,R_HAND
+56,2498,"Shield of Nightmare",A,0,L_HAND
+56,5771,"Gauntlets of Nightmare - Heavy Armor",A,0,GLOVES
+56,374,"Armor of Nightmare",A,0,FULL_ARMOR
+56,5783,"Boots of Nightmare - Heavy Armor",A,0,FEET
+57,858,"Tateossian Earring",S,0,LR_EAR
+57,858,"Tateossian Earring",S,0,LR_EAR
+57,920,"Tateossian Necklace",S,0,NECK
+57,889,"Tateossian Ring",S,0,LR_FINGER
+57,889,"Tateossian Ring",S,0,LR_FINGER
+57,6378,"Imperial Crusader Helmet",S,0,HEAD
+57,6581,"Forgotten Blade - Haste",S,0,R_HAND
+57,6377,"Imperial Crusader Shield",S,0,L_HAND
+57,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+57,6373,"Imperial Crusader Breastplate",S,0,CHEST
+57,6374,"Imperial Crusader Gaiters",S,0,LEGS
+57,6376,"Imperial Crusader Boots",S,0,FEET
+58,855,"Nassen's Earring",C,0,LR_EAR
+58,855,"Nassen's Earring",C,0,LR_EAR
+58,119,"Necklace of Seal",C,0,NECK
+58,886,"Ring of Seal",C,0,LR_FINGER
+58,886,"Ring of Seal",C,0,LR_FINGER
+58,517,"Composite Helmet",C,0,HEAD
+58,2574,"Shamshir*Spirit Sword",C,0,LR_HAND
+58,2461,"Drake Leather Gloves",C,0,GLOVES
+58,60,"Composite Armor",C,0,FULL_ARMOR
+58,603,"Divine Boots",C,0,FEET
+59,862,"Majestic Earring",A,0,LR_EAR
+59,862,"Majestic Earring",A,0,LR_EAR
+59,8191,"Necklace of Frintezza",A,0,NECK
+59,893,"Majestic Ring",A,0,LR_FINGER
+59,893,"Majestic Ring",A,0,LR_FINGER
+59,512,"Dark Crystal Helmet",A,0,HEAD
+59,5704,"Keshanberk*Keshanberk",A,0,LR_HAND
+59,5765,"Dark Crystal Gloves - Heavy Armor",A,0,GLOVES
+59,365,"Dark Crystal Breastplate",A,0,CHEST
+59,388,"Dark Crystal Gaiters",A,0,LEGS
+59,5777,"Dark Crystal Boots - Heavy Armor",A,0,FEET
+60,858,"Tateossian Earring",S,0,LR_EAR
+60,858,"Tateossian Earring",S,0,LR_EAR
+60,920,"Tateossian Necklace",S,0,NECK
+60,889,"Tateossian Ring",S,0,LR_FINGER
+60,889,"Tateossian Ring",S,0,LR_FINGER
+60,6378,"Imperial Crusader Helmet",S,0,HEAD
+60,6580,"Tallum Blade*Dark Legion's Edge",S,0,LR_HAND
+60,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+60,6373,"Imperial Crusader Breastplate",S,0,CHEST
+60,6374,"Imperial Crusader Gaiters",S,0,LEGS
+60,6376,"Imperial Crusader Boots",S,0,FEET
+61,855,"Nassen's Earring",C,0,LR_EAR
+61,855,"Nassen's Earring",C,0,LR_EAR
+61,119,"Necklace of Seal",C,0,NECK
+61,886,"Ring of Seal",C,0,LR_FINGER
+61,886,"Ring of Seal",C,0,LR_FINGER
+61,2414,"Full Plate Helmet",C,0,HEAD
+61,228,"Crystal Dagger",C,0,R_HAND
+61,2461,"Drake Leather Gloves",C,0,GLOVES
+61,398,"Plated Leather",C,0,CHEST
+61,418,"Plated Leather Gaiters",C,0,LEGS
+61,2431,"Plated Leather Boots",C,0,FEET
+62,862,"Majestic Earring",A,0,LR_EAR
+62,862,"Majestic Earring",A,0,LR_EAR
+62,8191,"Necklace of Frintezza",A,0,NECK
+62,893,"Majestic Ring",A,0,LR_FINGER
+62,893,"Majestic Ring",A,0,LR_FINGER
+62,512,"Dark Crystal Helmet",A,0,HEAD
+62,8800,"Naga Storm - Focus",A,0,R_HAND
+62,5766,"Dark Crystal Gloves - Light Armor",A,0,GLOVES
+62,2385,"Dark Crystal Leather Armor",A,0,CHEST
+62,2389,"Dark Crystal Leggings",A,0,LEGS
+62,5778,"Dark Crystal Boots - Light Armor",A,0,FEET
+63,858,"Tateossian Earring",S,0,LR_EAR
+63,858,"Tateossian Earring",S,0,LR_EAR
+63,920,"Tateossian Necklace",S,0,NECK
+63,889,"Tateossian Ring",S,0,LR_FINGER
+63,889,"Tateossian Ring",S,0,LR_FINGER
+63,6382,"Draconic Leather Helmet",S,0,HEAD
+63,6590,"Angel Slayer - Critical Damage",S,0,R_HAND
+63,6380,"Draconic Leather Gloves",S,0,GLOVES
+63,6379,"Draconic Leather Armor",S,0,FULL_ARMOR
+63,6381,"Draconic Leather Boots",S,0,FEET
+64,855,"Nassen's Earring",C,0,LR_EAR
+64,855,"Nassen's Earring",C,0,LR_EAR
+64,119,"Necklace of Seal",C,0,NECK
+64,886,"Ring of Seal",C,0,LR_FINGER
+64,886,"Ring of Seal",C,0,LR_FINGER
+64,2414,"Full Plate Helmet",C,0,HEAD
+64,283,"Akat Long Bow",C,0,LR_HAND
+64,2461,"Drake Leather Gloves",C,0,GLOVES
+64,397,"Mithril Shirt",C,0,CHEST
+64,2387,"Reinforced Mithril Gaiters",C,0,LEGS
+64,62,"Reinforced Mithril Boots",C,0,FEET
+65,862,"Majestic Earring",A,0,LR_EAR
+65,862,"Majestic Earring",A,0,LR_EAR
+65,8191,"Necklace of Frintezza",A,0,NECK
+65,893,"Majestic Ring",A,0,LR_FINGER
+65,893,"Majestic Ring",A,0,LR_FINGER
+65,512,"Dark Crystal Helmet",A,0,HEAD
+65,5611,"Soul Bow - Cheap Shot",A,0,LR_HAND
+65,5766,"Dark Crystal Gloves - Light Armor",A,0,GLOVES
+65,2385,"Dark Crystal Leather Armor",A,0,CHEST
+65,2389,"Dark Crystal Leggings",A,0,LEGS
+65,5778,"Dark Crystal Boots - Light Armor",A,0,FEET
+66,858,"Tateossian Earring",S,0,LR_EAR
+66,858,"Tateossian Earring",S,0,LR_EAR
+66,920,"Tateossian Necklace",S,0,NECK
+66,889,"Tateossian Ring",S,0,LR_FINGER
+66,889,"Tateossian Ring",S,0,LR_FINGER
+66,6382,"Draconic Leather Helmet",S,0,HEAD
+66,7575,"Draconic Bow",S,0,LR_HAND
+66,6380,"Draconic Leather Gloves",S,0,GLOVES
+66,6379,"Draconic Leather Armor",S,0,FULL_ARMOR
+66,6381,"Draconic Leather Boots",S,0,FEET
+67,855,"Nassen's Earring",C,0,LR_EAR
+67,855,"Nassen's Earring",C,0,LR_EAR
+67,119,"Necklace of Seal",C,0,NECK
+67,886,"Ring of Seal",C,0,LR_FINGER
+67,886,"Ring of Seal",C,0,LR_FINGER
+67,2414,"Full Plate Helmet",C,0,HEAD
+67,204,"Deadman's Staff",C,0,LR_HAND
+67,2463,"Divine Gloves",C,0,GLOVES
+67,442,"Divine Tunic",C,0,CHEST
+67,473,"Divine Stockings",C,0,LEGS
+67,603,"Divine Boots",C,0,FEET
+68,862,"Majestic Earring",A,0,LR_EAR
+68,862,"Majestic Earring",A,0,LR_EAR
+68,8191,"Necklace of Frintezza",A,0,NECK
+68,893,"Majestic Ring",A,0,LR_FINGER
+68,893,"Majestic Ring",A,0,LR_FINGER
+68,512,"Dark Crystal Helmet",A,0,HEAD
+68,8687,"Cabrio's Hand",A,0,R_HAND
+68,2498,"Shield of Nightmare",A,0,L_HAND
+68,5767,"Dark Crystal Gloves - Robe",A,0,GLOVES
+68,2407,"Dark Crystal Robe",A,0,FULL_ARMOR
+68,5779,"Dark Crystal Boots - Robe",A,0,FEET
+69,858,"Tateossian Earring",S,0,LR_EAR
+69,858,"Tateossian Earring",S,0,LR_EAR
+69,920,"Tateossian Necklace",S,0,NECK
+69,889,"Tateossian Ring",S,0,LR_FINGER
+69,889,"Tateossian Ring",S,0,LR_FINGER
+69,6386,"Major Arcana Circlet",S,0,HEAD
+69,6366,"Imperial Staff",S,0,LR_HAND
+69,6384,"Major Arcana Gloves",S,0,GLOVES
+69,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+69,6385,"Major Arcana Boots",S,0,FEET
+70,855,"Nassen's Earring",C,0,LR_EAR
+70,855,"Nassen's Earring",C,0,LR_EAR
+70,119,"Necklace of Seal",C,0,NECK
+70,886,"Ring of Seal",C,0,LR_FINGER
+70,886,"Ring of Seal",C,0,LR_FINGER
+70,2414,"Full Plate Helmet",C,0,HEAD
+70,206,"Demon's Staff",C,0,LR_HAND
+70,2459,"Demon's Gloves",C,0,GLOVES
+70,441,"Demon's Tunic",C,0,CHEST
+70,472,"Demon's Stockings",C,0,LEGS
+70,603,"Divine Boots",C,0,FEET
+71,862,"Majestic Earring",A,0,LR_EAR
+71,862,"Majestic Earring",A,0,LR_EAR
+71,8191,"Necklace of Frintezza",A,0,NECK
+71,893,"Majestic Ring",A,0,LR_FINGER
+71,893,"Majestic Ring",A,0,LR_FINGER
+71,2418,"Helm of Nightmare",A,0,HEAD
+71,8688,"Daimon Crystal",A,0,LR_HAND
+71,5313,"Sealed Gauntlets of Nightmare",A,0,GLOVES
+71,2400,"Tallum Tunic",A,0,CHEST
+71,2405,"Tallum Stockings",A,0,LEGS
+71,5314,"Sealed Boots of Nightmare",A,0,FEET
+72,858,"Tateossian Earring",S,0,LR_EAR
+72,858,"Tateossian Earring",S,0,LR_EAR
+72,920,"Tateossian Necklace",S,0,NECK
+72,889,"Tateossian Ring",S,0,LR_FINGER
+72,889,"Tateossian Ring",S,0,LR_FINGER
+72,6386,"Major Arcana Circlet",S,0,HEAD
+72,6587,"Imperial Staff - Empower",S,0,LR_HAND
+72,6384,"Major Arcana Gloves",S,0,GLOVES
+72,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+72,6385,"Major Arcana Boots",S,0,FEET
+73,855,"Nassen's Earring",C,0,LR_EAR
+73,855,"Nassen's Earring",C,0,LR_EAR
+73,119,"Necklace of Seal",C,0,NECK
+73,886,"Ring of Seal",C,0,LR_FINGER
+73,886,"Ring of Seal",C,0,LR_FINGER
+73,2414,"Full Plate Helmet",C,0,HEAD
+73,204,"Deadman's Staff",C,0,LR_HAND
+73,2463,"Divine Gloves",C,0,GLOVES
+73,442,"Divine Tunic",C,0,CHEST
+73,473,"Divine Stockings",C,0,LEGS
+73,603,"Divine Boots",C,0,FEET
+74,862,"Majestic Earring",A,0,LR_EAR
+74,862,"Majestic Earring",A,0,LR_EAR
+74,8191,"Necklace of Frintezza",A,0,NECK
+74,893,"Majestic Ring",A,0,LR_FINGER
+74,893,"Majestic Ring",A,0,LR_FINGER
+74,547,"Tallum Helm",A,0,HEAD
+74,8812,"Themis' Tongue - Mana Up",A,0,R_HAND
+74,2498,"Shield of Nightmare",A,0,L_HAND
+74,5770,"Tallum Gloves - Robe",A,0,GLOVES
+74,2400,"Tallum Tunic",A,0,CHEST
+74,2405,"Tallum Stockings",A,0,LEGS
+74,5782,"Tallum Boots - Robe",A,0,FEET
+75,858,"Tateossian Earring",S,0,LR_EAR
+75,858,"Tateossian Earring",S,0,LR_EAR
+75,920,"Tateossian Necklace",S,0,NECK
+75,889,"Tateossian Ring",S,0,LR_FINGER
+75,889,"Tateossian Ring",S,0,LR_FINGER
+75,6386,"Major Arcana Circlet",S,0,HEAD
+75,6608,"Arcana Mace - Acumen",S,0,R_HAND
+75,6377,"Imperial Crusader Shield",S,0,L_HAND
+75,6384,"Major Arcana Gloves",S,0,GLOVES
+75,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+75,6385,"Major Arcana Boots",S,0,FEET
+76,855,"Nassen's Earring",C,0,LR_EAR
+76,855,"Nassen's Earring",C,0,LR_EAR
+76,119,"Necklace of Seal",C,0,NECK
+76,886,"Ring of Seal",C,0,LR_FINGER
+76,886,"Ring of Seal",C,0,LR_FINGER
+76,2413,"Chain Hood",C,0,HEAD
+76,749,"0",D,0,LR_HAND
+76,2461,"Drake Leather Gloves",C,0,GLOVES
+76,354,"Chain Mail Shirt",C,0,CHEST
+76,381,"Chain Gaiters",C,0,LEGS
+76,603,"Divine Boots",C,0,FEET
+77,862,"Majestic Earring",A,0,LR_EAR
+77,862,"Majestic Earring",A,0,LR_EAR
+77,8191,"Necklace of Frintezza",A,0,NECK
+77,893,"Majestic Ring",A,0,LR_FINGER
+77,893,"Majestic Ring",A,0,LR_FINGER
+77,2418,"Helm of Nightmare",A,0,HEAD
+77,8799,"Behemoth's Tuning Fork - Anger",A,0,LR_HAND
+77,5313,"Sealed Gauntlets of Nightmare",A,0,GLOVES
+77,365,"Dark Crystal Breastplate",A,0,CHEST
+77,388,"Dark Crystal Gaiters",A,0,LEGS
+77,5314,"Sealed Boots of Nightmare",A,0,FEET
+78,858,"Tateossian Earring",S,0,LR_EAR
+78,858,"Tateossian Earring",S,0,LR_EAR
+78,920,"Tateossian Necklace",S,0,NECK
+78,889,"Tateossian Ring",S,0,LR_FINGER
+78,889,"Tateossian Ring",S,0,LR_FINGER
+78,6378,"Imperial Crusader Helmet",S,0,HEAD
+78,6596,"Dragon Hunter Axe - HP Regeneration",S,0,LR_HAND
+78,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+78,6373,"Imperial Crusader Breastplate",S,0,CHEST
+78,6374,"Imperial Crusader Gaiters",S,0,LEGS
+78,6376,"Imperial Crusader Boots",S,0,FEET
+79,855,"Nassen's Earring",C,0,LR_EAR
+79,855,"Nassen's Earring",C,0,LR_EAR
+79,119,"Necklace of Seal",C,0,NECK
+79,886,"Ring of Seal",C,0,LR_FINGER
+79,886,"Ring of Seal",C,0,LR_FINGER
+79,2414,"Full Plate Helmet",C,0,HEAD
+79,4792,"Fisted Blade - Rsk. Evasion",C,0,LR_HAND
+79,2461,"Drake Leather Gloves",C,0,GLOVES
+79,400,"Theca Leather Armor",C,0,CHEST
+79,420,"Theca Leather Gaiters",C,0,LEGS
+79,2436,"Theca Leather Boots",C,0,FEET
+80,862,"Majestic Earring",A,0,LR_EAR
+80,862,"Majestic Earring",A,0,LR_EAR
+80,8191,"Necklace of Frintezza",A,0,NECK
+80,893,"Majestic Ring",A,0,LR_FINGER
+80,893,"Majestic Ring",A,0,LR_FINGER
+80,2419,"Majestic Circlet",A,0,HEAD
+80,270,"Dragon Grinder",A,0,LR_HAND
+80,5775,"Majestic Gauntlets - Light Armor",A,0,GLOVES
+80,2395,"Majestic Leather Armor",A,0,FULL_ARMOR
+80,5787,"Majestic Boots - Light Armor",A,0,FEET
+81,858,"Tateossian Earring",S,0,LR_EAR
+81,858,"Tateossian Earring",S,0,LR_EAR
+81,920,"Tateossian Necklace",S,0,NECK
+81,889,"Tateossian Ring",S,0,LR_FINGER
+81,889,"Tateossian Ring",S,0,LR_FINGER
+81,6382,"Draconic Leather Helmet",S,0,HEAD
+81,6371,"Demon Splinter",S,0,LR_HAND
+81,6380,"Draconic Leather Gloves",S,0,GLOVES
+81,6379,"Draconic Leather Armor",S,0,FULL_ARMOR
+81,6381,"Draconic Leather Boots",S,0,FEET
+82,855,"Nassen's Earring",C,0,LR_EAR
+82,855,"Nassen's Earring",C,0,LR_EAR
+82,119,"Necklace of Seal",C,0,NECK
+82,886,"Ring of Seal",C,0,LR_FINGER
+82,886,"Ring of Seal",C,0,LR_FINGER
+82,2414,"Full Plate Helmet",C,0,HEAD
+82,204,"Deadman's Staff",C,0,LR_HAND
+82,2454,"Karmian Gloves",C,0,GLOVES
+82,439,"Karmian Tunic",C,0,CHEST
+82,471,"Karmian Stockings",C,0,LEGS
+82,603,"Divine Boots",C,0,FEET
+83,862,"Majestic Earring",A,0,LR_EAR
+83,862,"Majestic Earring",A,0,LR_EAR
+83,8191,"Necklace of Frintezza",A,0,NECK
+83,893,"Majestic Ring",A,0,LR_FINGER
+83,893,"Majestic Ring",A,0,LR_FINGER
+83,2418,"Helm of Nightmare",A,0,HEAD
+83,8814,"Themis' Tongue - Magic Focus",A,0,R_HAND
+83,2498,"Shield of Nightmare",A,0,L_HAND
+83,5313,"Sealed Gauntlets of Nightmare",A,0,GLOVES
+83,2400,"Tallum Tunic",A,0,CHEST
+83,2405,"Tallum Stockings",A,0,LEGS
+83,5314,"Sealed Boots of Nightmare",A,0,FEET
+84,858,"Tateossian Earring",S,0,LR_EAR
+84,858,"Tateossian Earring",S,0,LR_EAR
+84,920,"Tateossian Necklace",S,0,NECK
+84,889,"Tateossian Ring",S,0,LR_FINGER
+84,889,"Tateossian Ring",S,0,LR_FINGER
+84,6386,"Major Arcana Circlet",S,0,HEAD
+84,6587,"Imperial Staff - Empower",S,0,LR_HAND
+84,6384,"Major Arcana Gloves",S,0,GLOVES
+84,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+84,6385,"Major Arcana Boots",S,0,FEET
+85,855,"Nassen's Earring",C,0,LR_EAR
+85,855,"Nassen's Earring",C,0,LR_EAR
+85,119,"Necklace of Seal",C,0,NECK
+85,886,"Ring of Seal",C,0,LR_FINGER
+85,886,"Ring of Seal",C,0,LR_FINGER
+85,2414,"Full Plate Helmet",C,0,HEAD
+85,7704,"Stick of Eternity - Empower",C,0,R_HAND
+85,2497,"Full Plate Shield",C,0,L_HAND
+85,2454,"Karmian Gloves",C,0,GLOVES
+85,439,"Karmian Tunic",C,0,CHEST
+85,471,"Karmian Stockings",C,0,LEGS
+85,603,"Divine Boots",C,0,FEET
+86,862,"Majestic Earring",A,0,LR_EAR
+86,862,"Majestic Earring",A,0,LR_EAR
+86,8191,"Necklace of Frintezza",A,0,NECK
+86,893,"Majestic Ring",A,0,LR_FINGER
+86,893,"Majestic Ring",A,0,LR_FINGER
+86,2419,"Majestic Circlet",A,0,HEAD
+86,8687,"Cabrio's Hand",A,0,R_HAND
+86,2498,"Shield of Nightmare",A,0,L_HAND
+86,5776,"Majestic Gauntlets - Robe",A,0,GLOVES
+86,2409,"Majestic Robe",A,0,FULL_ARMOR
+86,5788,"Majestic Boots - Robe",A,0,FEET
+87,858,"Tateossian Earring",S,0,LR_EAR
+87,858,"Tateossian Earring",S,0,LR_EAR
+87,920,"Tateossian Necklace",S,0,NECK
+87,889,"Tateossian Ring",S,0,LR_FINGER
+87,889,"Tateossian Ring",S,0,LR_FINGER
+87,6386,"Major Arcana Circlet",S,0,HEAD
+87,6610,"Arcana Mace - Mana Up",S,0,R_HAND
+87,6377,"Imperial Crusader Shield",S,0,L_HAND
+87,6384,"Major Arcana Gloves",S,0,GLOVES
+87,6383,"Major Arcana Robe",S,0,FULL_ARMOR
+87,6385,"Major Arcana Boots",S,0,FEET
+88,855,"Nassen's Earring",C,0,LR_EAR
+88,855,"Nassen's Earring",C,0,LR_EAR
+88,119,"Necklace of Seal",C,0,NECK
+88,886,"Ring of Seal",C,0,LR_FINGER
+88,886,"Ring of Seal",C,0,LR_FINGER
+88,517,"Composite Helmet",C,0,HEAD
+88,204,"Deadman's Staff",C,0,LR_HAND
+88,2461,"Drake Leather Gloves",C,0,GLOVES
+88,60,"Composite Armor",C,0,FULL_ARMOR
+88,603,"Divine Boots",C,0,FEET
+89,862,"Majestic Earring",A,0,LR_EAR
+89,862,"Majestic Earring",A,0,LR_EAR
+89,8191,"Necklace of Frintezza",A,0,NECK
+89,893,"Majestic Ring",A,0,LR_FINGER
+89,893,"Majestic Ring",A,0,LR_FINGER
+89,512,"Dark Crystal Helmet",A,0,HEAD
+89,8680,"Barakiel's Axe",A,0,R_HAND
+89,5765,"Dark Crystal Gloves - Heavy Armor",A,0,GLOVES
+89,365,"Dark Crystal Breastplate",A,0,CHEST
+89,388,"Dark Crystal Gaiters",A,0,LEGS
+89,5777,"Dark Crystal Boots - Heavy Armor",A,0,FEET
+90,858,"Tateossian Earring",S,0,LR_EAR
+90,858,"Tateossian Earring",S,0,LR_EAR
+90,920,"Tateossian Necklace",S,0,NECK
+90,889,"Tateossian Ring",S,0,LR_FINGER
+90,889,"Tateossian Ring",S,0,LR_FINGER
+90,6378,"Imperial Crusader Helmet",S,0,HEAD
+90,6365,"Basalt Battlehammer",S,0,R_HAND
+90,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+90,6373,"Imperial Crusader Breastplate",S,0,CHEST
+90,6374,"Imperial Crusader Gaiters",S,0,LEGS
+90,6376,"Imperial Crusader Boots",S,0,FEET
+91,855,"Nassen's Earring",C,0,LR_EAR
+91,855,"Nassen's Earring",C,0,LR_EAR
+91,119,"Necklace of Seal",C,0,NECK
+91,886,"Ring of Seal",C,0,LR_FINGER
+91,886,"Ring of Seal",C,0,LR_FINGER
+91,2414,"Full Plate Helmet",C,0,HEAD
+91,162,"War Axe",C,0,R_HAND
+91,2497,"Full Plate Shield",C,0,L_HAND
+91,2461,"Drake Leather Gloves",C,0,GLOVES
+91,356,"Full Plate Armor",C,0,FULL_ARMOR
+91,603,"Divine Boots",C,0,FEET
+92,862,"Majestic Earring",A,0,LR_EAR
+92,862,"Majestic Earring",A,0,LR_EAR
+92,8191,"Necklace of Frintezza",A,0,NECK
+92,893,"Majestic Ring",A,0,LR_FINGER
+92,893,"Majestic Ring",A,0,LR_FINGER
+92,547,"Tallum Helm",A,0,HEAD
+92,164,"Elysian",A,0,R_HAND
+92,2498,"Shield of Nightmare",A,0,L_HAND
+92,5768,"Tallum Gloves - Heavy Armor",A,0,GLOVES
+92,2382,"Tallum Plate Armor",A,0,FULL_ARMOR
+92,5780,"Tallum Boots - Heavy Armor",A,0,FEET
+93,858,"Tateossian Earring",S,0,LR_EAR
+93,858,"Tateossian Earring",S,0,LR_EAR
+93,920,"Tateossian Necklace",S,0,NECK
+93,889,"Tateossian Ring",S,0,LR_FINGER
+93,889,"Tateossian Ring",S,0,LR_FINGER
+93,6378,"Imperial Crusader Helmet",S,0,HEAD
+93,6585,"Basalt Battlehammer - Health",S,0,R_HAND
+93,6377,"Imperial Crusader Shield",S,0,L_HAND
+93,6375,"Imperial Crusader Gauntlets",S,0,GLOVES
+93,6373,"Imperial Crusader Breastplate",S,0,CHEST
+93,6374,"Imperial Crusader Gaiters",S,0,LEGS
+93,6376,"Imperial Crusader Boots",S,0,FEET
