@@ -327,7 +327,7 @@ public class ModuleManager
 		final GameModule instance = (GameModule) entryClass.getDeclaredConstructor().newInstance();
 
 		final ModuleHandles handles = new ModuleHandles(manifest.getId());
-		final ModuleContext context = new DefaultModuleContext(manifest.getId(), module.config, new ModuleHandlers(handles), new ModuleEvents(handles));
+		final ModuleContext context = new DefaultModuleContext(manifest.getId(), module.config, new ModuleHandlers(handles), new ModuleEvents(handles), handles);
 		instance.onEnable(context);
 
 		_handlesByModule.put(manifest.getId(), handles);

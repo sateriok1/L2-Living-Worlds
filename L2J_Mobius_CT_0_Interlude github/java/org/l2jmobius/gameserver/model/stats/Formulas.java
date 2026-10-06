@@ -79,6 +79,7 @@ import org.l2jmobius.gameserver.model.zone.ZoneId;
 import org.l2jmobius.gameserver.model.zone.type.CastleZone;
 import org.l2jmobius.gameserver.model.zone.type.ClanHallZone;
 import org.l2jmobius.gameserver.model.zone.type.MotherTreeZone;
+import org.l2jmobius.gameserver.modules.ModuleDamage;
 import org.l2jmobius.gameserver.network.SystemMessageId;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
 import org.l2jmobius.gameserver.util.LocationUtil;
@@ -1685,10 +1686,14 @@ public class Formulas
 			counterdmg *= calcWeaponTraitBonus(attacker, target);
 			counterdmg *= calcGeneralTraitBonus(attacker, target, skill.getTraitType(), false);
 			counterdmg *= calcAttributeBonus(attacker, target, skill);
-			attacker.reduceCurrentHp(counterdmg, target, skill);
-			if (crit) // TODO: It counters multiple times depending on how much effects skill has not on critical, but gotta be verified first!
+			// Preserve native skill flags; reflected damage has no cast skill for module attribution.
+			try (ModuleDamage.Scope ignored = ModuleDamage.captureReflection(target, attacker))
 			{
 				attacker.reduceCurrentHp(counterdmg, target, skill);
+				if (crit) // TODO: It counters multiple times depending on how much effects skill has not on critical, but gotta be verified first!
+				{
+					attacker.reduceCurrentHp(counterdmg, target, skill);
+				}
 			}
 		}
 	}

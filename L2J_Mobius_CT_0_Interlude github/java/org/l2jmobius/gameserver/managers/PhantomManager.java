@@ -61,6 +61,7 @@ import org.l2jmobius.gameserver.data.xml.SkillData;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.GearContext;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.WeaponKind;
 import org.l2jmobius.gameserver.geoengine.GeoEngine;
+import org.l2jmobius.gameserver.handler.ItemHandler;
 import org.l2jmobius.gameserver.model.Location;
 import org.l2jmobius.gameserver.model.StatSet;
 import org.l2jmobius.gameserver.model.World;
@@ -111,7 +112,9 @@ import org.l2jmobius.gameserver.network.enums.ChatType;
 import org.l2jmobius.gameserver.network.serverpackets.CreatureSay;
 import org.l2jmobius.gameserver.network.serverpackets.ExDuelAskStart;
 import org.l2jmobius.gameserver.network.serverpackets.L2Friend;
+import org.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
+import org.l2jmobius.gameserver.taskmanagers.AttackStanceTaskManager;
 import org.l2jmobius.gameserver.taskmanagers.AutoPlayTaskManager;
 import org.l2jmobius.gameserver.taskmanagers.AutoUseTaskManager;
 
@@ -215,6 +218,24 @@ public class PhantomManager implements IXmlReader
 	private static final int HP_POTION_ID = 1539; // Greater Healing Potion
 	private static final int HP_POTION_COUNT = 20000;
 	private static final int HP_POTION_PERCENT = 60;
+	// Encounter actors fight once, so they carry a modest stack of the best potions and drink them from the fight tick.
+	private static final int ENC_ESCAPE_SCROLL_ID = 1538; // Blessed Scroll of Escape
+	private static final int ENC_ESCAPE_SKILL_ID = 2036;
+	private static final int ENC_ESCAPE_BELOW_PERCENT = 10;
+	private static final String[] ENC_ESCAPE_LINES =
+	{
+		"Nope. Not dying for this. Later, clown.",
+		"You got lucky. Don't get comfortable.",
+		"Whatever, I'm out. You're not worth my scroll.",
+		"This isn't over. I'll be back with friends.",
+		"Cheap. Real cheap. I'm leaving."
+	};
+	private static final int ENC_POTION_COUNT = 300;
+	private static final int ENC_CP_POTION_ID = 5592; // Greater CP Potion (0.5 s reuse)
+	private static final int ENC_MP_POTION_ID = 728; // Mana Potion (0.5 s reuse)
+	private static final int ENC_CP_BELOW_PERCENT = 100;
+	private static final int ENC_HP_BELOW_PERCENT = 100;
+	private static final int ENC_MP_BELOW_PERCENT = 90;
 	// Healing potions a party companion may carry, best first: Greater, normal, Lesser Healing Potion.
 	private static final int[] COMPANION_HP_POTIONS =
 	{
@@ -274,6 +295,8 @@ public class PhantomManager implements IXmlReader
 	// Recruited members should still use strong, role-correct weapons, but choosing the single most expensive
 	// template made every member of a role/grade look identical. Roll among the strongest few compatible items.
 	private static final int PARTY_WEAPON_CANDIDATES = 6;
+	/** A caster weapon counts among the strongest of its grade at this share of the best reference price or more. */
+	private static final double CASTER_TOP_TIER = 0.9;
 	// Safety ceiling on total live phantom Player objects (each is far heavier than an NPC fake player).
 	private static final int MAX_PHANTOMS = 200;
 	// Proximity dormancy: a phantom only runs the (costly) auto-hunt while a real, client-connected player
@@ -468,8 +491,9 @@ public class PhantomManager implements IXmlReader
 		NONE(0),
 		ELDER(30), // Elven Elder - mage buffs, heals, recharge
 		PROPHET(17), // Prophet - fighter buffs (Heal granted)
-		WARCRYER(52), // Warcryer - Orc buffs (Heal granted)
-		BOUNTY_HUNTER(55); // Bounty Hunter - spoils stuff for you and shares loot afterwards
+		WARCRYER(52); // Warcryer - Orc buffs (Heal granted)
+		// No Bounty Hunter here: it is a physical spoiler run by PhantomPartyManager (PartyRole.BOUNTY_HUNTER). As a
+		// buddy it got the caster loadout, and a befriended class 55 came back as a support buddy (FPC-206).
 
 		final int classId;
 
@@ -505,11 +529,6 @@ public class PhantomManager implements IXmlReader
 				case "WARCRYER":
 				{
 					return WARCRYER;
-				}
-				case "BUDDY_BOUNTY_HUNTER":
-				case "BOUNTY_HUNTER":
-				{
-					return BOUNTY_HUNTER;
 				}
 				default:
 				{
@@ -1098,6 +1117,20 @@ public class PhantomManager implements IXmlReader
 		long emptySince; // when the last observer left this area (0 while a player is near)
 	}
 
+	// Phantom encounters (engine only; a module decides when and what, see ModuleEncounters).
+	private static final int ENC_APPROACH = 1;
+	private static final int ENC_WARN = 2;
+	private static final int ENC_FIGHT = 3;
+	private static final int ENC_CLOSE_RANGE = 180; // a Wimp stops and speaks this close
+	private static final int ENC_STRIKE_RANGE = 350; // a Normie waits this close for its moment
+	private static final int ENC_LEASH = 2500; // victim farther than this (recall, escape): the encounter is over
+	private static final long ENC_CORPSE_MS = 15000;
+	private static final long ENC_LEAVE_MS = 6000;
+	// Enchant for the actor being built right now. Set only around spawnEncounterActor.
+	private static final ThreadLocal<Integer> ENCOUNTER_ENCHANT = new ThreadLocal<>();
+	// Fixed name for the actor being built right now (the lone PKer); null = a normal random name.
+	private static final ThreadLocal<String> ENCOUNTER_NAME = new ThreadLocal<>();
+
 	private static class PhantomData
 	{
 		final Player player;
@@ -1174,6 +1207,20 @@ public class PhantomManager implements IXmlReader
 		long spotAttackAt; // when the hunter follows through (0 = no ultimatum given)
 		long spotCooldownUntil;
 		int spotStealOid; // the mob whose theft was last counted, so one mob is one theft
+		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
+		volatile boolean encounterActor;
+		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
+		boolean encounterCpPotions; // carries and drinks CP potions (the strong encounters); the others use only HP and MP potions
+		boolean encounterEscapeOnRout; // a lost fight (3/4 of the group down, outnumbered) is a reason to read it too
+		boolean encounterEscapeRolled;
+		volatile int encounterVictimOid; // the real player this actor came for
+		volatile int encounterPhase; // ENC_APPROACH / ENC_WARN / ENC_FIGHT
+		volatile long encounterDeadline; // when this phase gives up (approach timeout, then fight cap)
+		PhantomEncounterRules.EncounterGroup encounterGroup; // shared by every actor of one encounter
+		volatile long encounterEndAt; // > 0 once over: when to despawn
+		long encounterLastMoveAt; // last time the victim was seen moving (Normie waits for them to stand still)
+		int encounterLastX; // victim position at that sample
+		int encounterLastY;
 
 		PhantomData(Player player, Location home, Population population, boolean mage, BuddyRole role)
 		{
@@ -1946,7 +1993,7 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/** @return the {@link BuddyRole} whose support class the given classId is, or {@link BuddyRole#NONE}. */
-	private static BuddyRole buddyRoleForClass(int classId)
+	static BuddyRole buddyRoleForClass(int classId)
 	{
 		for (BuddyRole role : BuddyRole.values())
 		{
@@ -2886,13 +2933,15 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void gearParty(Player phantom, int level, boolean mage, PartyRole role, GearContext context)
 	{
+		final Integer encounterEnchant = ENCOUNTER_ENCHANT.get();
 		final CrystalType grade = gradeForLevel(level);
 		// A chance this member is an enchanted player; if so, a modest uniform enchant on weapon + armor (jewelry is
 		// not enchantable in Interlude, so it stays +0). Chance and +min..+max range are configurable
 		// (FakePlayerRecruitEnchant* in FakePlayers.ini); values are clamped so bad config can't throw.
 		final int enchantMin = Math.max(0, FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_MIN);
 		final int enchantMax = Math.max(enchantMin, FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_MAX);
-		final int enchant = (Rnd.get(100) < FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_CHANCE) ? Rnd.get(enchantMin, enchantMax + 1) : 0;
+		// An encounter actor carries exactly the enchant the module asked for.
+		final int enchant = (encounterEnchant != null) ? encounterEnchant : ((Rnd.get(100) < FakePlayersConfig.FAKE_PLAYER_RECRUIT_ENCHANT_CHANCE) ? Rnd.get(enchantMin, enchantMax + 1) : 0);
 
 		// Weapon (randomly chosen among the strongest role-compatible options) + matching shots (+ arrows for a bow).
 		final ItemTemplate weapon = partyWeapon(phantom.getPlayerClass(), role, mage, grade, context);
@@ -2902,7 +2951,7 @@ public class PhantomManager implements IXmlReader
 			// A party member of a multi-weapon line also carries its spare (PhantomWeaponSets), switched on the
 			// leader's order. Same grade, so the same shots fit; diet mode keeps the extra weight harmless.
 			final WeaponKind spareKind = mage ? null : PhantomWeaponSets.spareKind(phantom.getPlayerClass(), context);
-			final ItemTemplate spare = (spareKind == null) ? null : randomTopEquip(grade, spareKind::matches);
+			final ItemTemplate spare = (spareKind == null) ? null : randomInGrade(grade, spareKind::matches); // none in grade: no spare (FPC-202)
 			if ((spare != null) && (spare.getId() != weapon.getId()))
 			{
 				final Item spareItem = phantom.getInventory().addItem(ItemProcessType.REWARD, spare.getId(), 1, phantom, null);
@@ -2995,12 +3044,38 @@ public class PhantomManager implements IXmlReader
 	 */
 	private static ItemTemplate partyWeapon(PlayerClass playerClass, PartyRole role, boolean mage, CrystalType grade, GearContext context)
 	{
+		final ItemTemplate weapon = partyWeaponInGrade(playerClass, role, mage, grade, context);
+		if (weapon != null)
+		{
+			return weapon;
+		}
+		// Only when the phantom's grade has no weapon at all for its class and role (the gear audit finds no such
+		// case with the shipped data): the same choice one grade lower beats an unarmed party member.
+		LOGGER.warning(PhantomManager.class.getSimpleName() + ": no " + grade + "-grade weapon for " + playerClass + " (" + role + "), using a lower grade.");
+		for (int ordinal = grade.ordinal() - 1; ordinal >= 0; ordinal--)
+		{
+			final ItemTemplate lower = partyWeaponInGrade(playerClass, role, mage, CrystalType.values()[ordinal], context);
+			if (lower != null)
+			{
+				return lower;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * {@link #partyWeapon} without leaving the grade: every pick below is made only among weapons of {@code grade}
+	 * (FPC-202). A role or class weapon the grade lacks falls to the next option in the same grade, and {@code null}
+	 * means the grade has nothing that fits at all.
+	 */
+	private static ItemTemplate partyWeaponInGrade(PlayerClass playerClass, PartyRole role, boolean mage, CrystalType grade, GearContext context)
+	{
 		if (mage && isWarcryerLine(playerClass))
 		{
 			// Orc Shaman, Warcryer and Doomcryer buff first and melee between buffs, so a party one carries a one-handed
 			// magic blunt (the usual party Warcryer weapon: casting stats for the buffs, and a real weapon to hit with)
 			// instead of a staff or a book. Picked from the current class, so it follows the class at every spawn.
-			final ItemTemplate mace = randomTopEquip(grade, item -> (item instanceof Weapon) && item.isMagicWeapon() && (((Weapon) item).getItemType() == WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
+			final ItemTemplate mace = casterWeapon(role, grade, item -> (item instanceof Weapon) && item.isMagicWeapon() && (((Weapon) item).getItemType() == WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
 			if (mace != null)
 			{
 				return mace;
@@ -3010,11 +3085,11 @@ public class PhantomManager implements IXmlReader
 		{
 			// Magic melee weapons are valid caster weapons too. Keep both one-handed (R_HAND) and two-handed
 			// (LR_HAND) templates; gearParty adds a shield only for the former.
-			return randomTopEquip(grade, item -> item.isMagicWeapon() && ((item.getBodyPart() == BodyPart.R_HAND) || (item.getBodyPart() == BodyPart.LR_HAND)));
+			return casterWeapon(role, grade, item -> item.isMagicWeapon() && ((item.getBodyPart() == BodyPart.R_HAND) || (item.getBodyPart() == BodyPart.LR_HAND)));
 		}
 		if (role == PartyRole.ARCHER)
 		{
-			final ItemTemplate bow = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.BOW));
+			final ItemTemplate bow = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.BOW));
 			if (bow != null)
 			{
 				return bow;
@@ -3022,7 +3097,7 @@ public class PhantomManager implements IXmlReader
 		}
 		else if (role == PartyRole.DAGGER)
 		{
-			final ItemTemplate dagger = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DAGGER));
+			final ItemTemplate dagger = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DAGGER));
 			if (dagger != null)
 			{
 				return dagger;
@@ -3031,7 +3106,7 @@ public class PhantomManager implements IXmlReader
 		else if (role == PartyRole.DANCER)
 		{
 			// Dances hard-require equipped dual swords (<using kind="DUAL"/> in the skill data).
-			final ItemTemplate dual = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DUAL));
+			final ItemTemplate dual = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DUAL));
 			if (dual != null)
 			{
 				return dual;
@@ -3040,7 +3115,7 @@ public class PhantomManager implements IXmlReader
 		else if (role == PartyRole.MONK)
 		{
 			// Tyrant / Grand Khavatari force skills require hand-to-hand weapons.
-			final ItemTemplate fist = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DUALFIST) || isPhysicalWeapon(item, WeaponType.FIST));
+			final ItemTemplate fist = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DUALFIST) || isPhysicalWeapon(item, WeaponType.FIST));
 			if (fist != null)
 			{
 				return fist;
@@ -3057,7 +3132,8 @@ public class PhantomManager implements IXmlReader
 		// Default fighter weapon. A TANK or SINGER needs a one-handed sword so its shield remains equipped.
 		else if (role == PartyRole.BOUNTY_HUNTER)
 		{
-			final ItemTemplate blunt = bestEquip(grade, item -> (item instanceof Weapon) && (((Weapon) item).getItemType() == WeaponType.BLUNT));
+			// A physical one-handed blunt: a staff is a blunt too, and so are the two-handed hammers (FPC-202).
+			final ItemTemplate blunt = bestInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
 			if (blunt != null) {
 				return blunt;
 			}
@@ -3065,7 +3141,7 @@ public class PhantomManager implements IXmlReader
 		// Sword fallback (and the default melee weapon). A TANK or SINGER needs a ONE-handed sword so its shield fits
 		// the left hand; a two-handed sword would otherwise be unequipped when the shield goes on.
 		final boolean oneHandOnly = (role == PartyRole.TANK) || (role == PartyRole.SINGER);
-		return randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.SWORD) && (!oneHandOnly || (item.getBodyPart() == BodyPart.R_HAND)));
+		return randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.SWORD) && (!oneHandOnly || (item.getBodyPart() == BodyPart.R_HAND)));
 	}
 
 	/**
@@ -3076,8 +3152,8 @@ public class PhantomManager implements IXmlReader
 	 */
 	private static ItemTemplate warriorWeapon(PlayerClass playerClass, CrystalType grade, GearContext context)
 	{
-		final WeaponKind kind = PhantomWeaponSets.mainKind(playerClass, context);
-		return (kind == null) ? null : randomTopEquip(grade, kind::matches);
+		final WeaponKind kind = PhantomWeaponSets.mainKind(playerClass, context, option -> randomInGrade(grade, option::matches) != null);
+		return (kind == null) ? null : randomInGrade(grade, kind::matches);
 	}
 
 	/** Exact physical weapon family, excluding caster-oriented magic variants of the same item type. */
@@ -3210,33 +3286,136 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/**
+	 * A caster weapon of {@code grade} the way a player of the role would pick it: among the strongest weapons of the
+	 * grade (reference price within {@link #CASTER_TOP_TIER} of the best), the special abilities that suit the role
+	 * win ({@link #casterSaScore}), and the roll is among the best and next-best scores so casters still vary.
+	 * @return {@code null} when the grade has no match
+	 */
+	private static ItemTemplate casterWeapon(PartyRole role, CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
+		long topPrice = 0;
+		for (ItemTemplate item : candidates)
+		{
+			topPrice = Math.max(topPrice, item.getReferencePrice());
+		}
+		int bestScore = Integer.MIN_VALUE;
+		final List<ItemTemplate> topTier = new ArrayList<>();
+		for (ItemTemplate item : candidates)
+		{
+			if (item.getReferencePrice() >= (topPrice * CASTER_TOP_TIER))
+			{
+				topTier.add(item);
+				bestScore = Math.max(bestScore, casterSaScore(role, item));
+			}
+		}
+		final List<ItemTemplate> picks = new ArrayList<>();
+		for (ItemTemplate item : topTier)
+		{
+			if (casterSaScore(role, item) >= (bestScore - 1))
+			{
+				picks.add(item);
+			}
+		}
+		return picks.isEmpty() ? null : picks.get(Rnd.get(picks.size()));
+	}
+
+	/**
+	 * How much a caster of {@code role} wants the weapon's special ability (the part of the name after " - "). Casting
+	 * speed (Acumen) first for everyone; then damage for a nuker and mana for a healer or buffer. A weapon without a
+	 * special ability scores 1, so a defensive or niche one (Magic Hold, Magic Poison, Rsk. Evasion...) ranks below it.
+	 */
+	static int casterSaScore(PartyRole role, ItemTemplate item)
+	{
+		final String name = item.getName();
+		final int dash = name.indexOf(" - ");
+		if (dash < 0)
+		{
+			return 1;
+		}
+		final String sa = name.substring(dash + 3).toLowerCase();
+		if (sa.equals("acumen"))
+		{
+			return 5;
+		}
+		final boolean mana = sa.equals("mana up") || sa.equals("mp regeneration") || sa.equals("magic regeneration");
+		final boolean damage = sa.equals("empower") || sa.equals("m. atk.") || sa.equals("magic damage");
+		if (role == PartyRole.NUKER)
+		{
+			return damage ? 4 : (sa.equals("mana up") ? 3 : (mana ? 2 : 0));
+		}
+		if (mana)
+		{
+			return 4;
+		}
+		if (damage)
+		{
+			return 2;
+		}
+		return ((role == PartyRole.BUFFER) && (sa.equals("mental shield") || sa.equals("blessed body"))) ? 2 : 0;
+	}
+
+	/** {@link #randomTopEquip} limited to {@code grade}: {@code null} when that grade has no match. */
+	private static ItemTemplate randomInGrade(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		return topEquip(grade, filter, false);
+	}
+
+	/** {@link #bestEquip} limited to {@code grade}: {@code null} when that grade has no match. */
+	private static ItemTemplate bestInGrade(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
+		ItemTemplate best = null;
+		for (ItemTemplate item : candidates)
+		{
+			if ((best == null) || (item.getReferencePrice() > best.getReferencePrice()))
+			{
+				best = item;
+			}
+		}
+		return best;
+	}
+
+	/** Player gear of exactly {@code grade} that matches {@code filter}. */
+	private static List<ItemTemplate> gradeCandidates(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = new ArrayList<>();
+		for (ItemTemplate item : ItemData.getInstance().getAllItems())
+		{
+			if ((item == null) || !item.isEquipable() || !item.isTradeable() || (item.getReferencePrice() <= 0) || (item.getCrystalType() != grade) || !FakePlayerGearFilter.isPlayerGear(item))
+			{
+				continue;
+			}
+			if (filter.test(item))
+			{
+				candidates.add(item);
+			}
+		}
+		return candidates;
+	}
+
+	/**
 	 * A random item among the strongest role-compatible weapon templates in the requested grade. This keeps recruited
 	 * members combat-capable without making every archer, caster, tank, or melee member use one deterministic item.
 	 * Falls through to lower grades only when the requested grade has no compatible player gear at all.
 	 */
 	private static ItemTemplate randomTopEquip(CrystalType desired, Predicate<ItemTemplate> filter)
 	{
+		return topEquip(desired, filter, true);
+	}
+
+	private static ItemTemplate topEquip(CrystalType desired, Predicate<ItemTemplate> filter, boolean stepDown)
+	{
 		CrystalType grade = desired;
 		while (grade != null)
 		{
-			final List<ItemTemplate> candidates = new ArrayList<>();
-			for (ItemTemplate item : ItemData.getInstance().getAllItems())
-			{
-				if ((item == null) || !item.isEquipable() || !item.isTradeable() || (item.getReferencePrice() <= 0) || (item.getCrystalType() != grade) || !FakePlayerGearFilter.isPlayerGear(item))
-				{
-					continue;
-				}
-				if (filter.test(item))
-				{
-					candidates.add(item);
-				}
-			}
+			final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
 			if (!candidates.isEmpty())
 			{
 				candidates.sort(Comparator.comparingLong(ItemTemplate::getReferencePrice).reversed().thenComparingInt(ItemTemplate::getId));
 				return candidates.get(Rnd.get(Math.min(PARTY_WEAPON_CANDIDATES, candidates.size())));
 			}
-			grade = (grade.ordinal() > 0) ? CrystalType.values()[grade.ordinal() - 1] : null;
+			grade = (stepDown && (grade.ordinal() > 0)) ? CrystalType.values()[grade.ordinal() - 1] : null;
 		}
 		return null;
 	}
@@ -3984,6 +4163,7 @@ public class PhantomManager implements IXmlReader
 	private void despawn(PhantomData data)
 	{
 		final int objectId = data.player.getObjectId();
+		PhantomEncounterRules.clearHostile(objectId);
 		// FPC-113: a phantom leaving the world must not leave its duel challenge open for the player to accept late.
 		// (A duel already running cancels itself on the stock side once this phantom is offline.)
 		if (data.duelPhase == DUEL_ASKED)
@@ -4017,8 +4197,13 @@ public class PhantomManager implements IXmlReader
 		catch (Exception e)
 		{
 			LOGGER.warning(getClass().getSimpleName() + ": Failed to despawn phantom " + objectId + ": " + e.getMessage());
+			if (PhantomEncounterRules.isEncounterActor(objectId))
+			{
+				return; // Keep protection and tracking so an encounter tick can retry world removal.
+			}
 		}
 		_phantoms.remove(objectId);
+		PhantomEncounterRules.unregisterActor(objectId);
 		_promoted.remove(objectId); // the DB row now carries the regular account; the live-instance bridge is done
 		if (persistent)
 		{
@@ -4212,7 +4397,8 @@ public class PhantomManager implements IXmlReader
 
 			final boolean female = Rnd.nextBoolean();
 			final PlayerAppearance appearance = new PlayerAppearance((byte) Rnd.get(0, 2), (byte) Rnd.get(0, 3), (byte) Rnd.get(0, 2), female);
-			return createPartyMember(template, nextName(), appearance, spawnLocation, level, role, null);
+			final String fixedName = ENCOUNTER_NAME.get();
+			return createPartyMember(template, ((fixedName == null) || fixedName.isEmpty()) ? nextName() : fixedName, appearance, spawnLocation, level, role, null);
 		}
 		catch (Exception e)
 		{
@@ -4276,6 +4462,12 @@ public class PhantomManager implements IXmlReader
 			{
 				BotClanManager.getInstance().attach(phantom, BotClanManager.getInstance().getRandomClan());
 			}
+		}
+		if (ENCOUNTER_ENCHANT.get() != null)
+		{
+			// Protect encounter gear before publishing the actor to the world. AutoUse targets characters.
+			PhantomEncounterRules.registerActor(phantom.getObjectId());
+			phantom.getAutoPlaySettings().setNextTargetMode(2);
 		}
 		enterWorld(phantom, spawnLocation);
 
@@ -4933,6 +5125,7 @@ public class PhantomManager implements IXmlReader
 		// and party/clan-defense engagements armed by startPvpDefense. Each behavior is gated individually below.
 		if (!PhantomPvpManager.pvpEnabled())
 		{
+			removeDisabledEncounters();
 			// FPC-115: switched off (a config reload). Release every open engagement once, or the hunt and party ticks
 			// would keep deferring to phantoms nothing drives any more. Idle after that, as before.
 			if (_pvpWasEnabled)
@@ -4962,6 +5155,12 @@ public class PhantomManager implements IXmlReader
 			}
 			try
 			{
+				// A danger-encounter actor runs its own one-fight script (approach, fight, leave).
+				if (data.encounterActor)
+				{
+					serviceEncounter(phantom, data, now);
+					continue;
+				}
 				// Peace zone, dead, dormant, or mid-disperse: drop any engagement and skip (applies to every role).
 				if (phantom.isDead() || data.dormant || data.dispersing || phantom.isInsideZone(ZoneId.PEACE))
 				{
@@ -5178,10 +5377,9 @@ public class PhantomManager implements IXmlReader
 
 	/**
 	 * Phase 2 react-to-flagged: an idle aggressor phantom occasionally engages a nearby flagged (purple) or red (PK)
-	 * target. It considers at most once per {@link #PVP_REACT_SCAN_INTERVAL_MS}, and only while react-to-flagged is
-	 * enabled and this phantom is an aggressor. On a consideration it picks the nearest eligible target and rolls
-	 * {@link PhantomPvpManager#rollReactEngage()}; whether it engages or declines, it then waits out the engage
-	 * cooldown before reconsidering, so PK-reaction is occasional rather than an every-tick dogpile.
+	 * target. When configured, any phantom may consider red targets. Red targets are selected ahead of purple targets,
+	 * then the nearest target within that reputation class is considered. Whether it engages or declines, it waits out
+	 * the engage cooldown before reconsidering, so reactions are occasional rather than an every-tick dogpile.
 	 */
 	private void reactToFlagged(Player phantom, PhantomData data, long now)
 	{
@@ -5189,12 +5387,11 @@ public class PhantomManager implements IXmlReader
 		{
 			return;
 		}
-		// An aggressor reacts to a purple or red target; with PhantomPvpRedReactAll every other phantom reacts to a red one too.
-		if (!data.aggressor && !FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL)
+		if (!PhantomPvpManager.mayReactToTarget(data.aggressor, FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL, true))
 		{
 			return;
 		}
-		final Player target = flaggedReactTarget(phantom, now, !data.aggressor);
+		final Player target = flaggedReactTarget(phantom, data.aggressor, now);
 		if (target == null)
 		{
 			data.nextInitiateAt = now + PVP_REACT_SCAN_INTERVAL_MS; // nothing to react to; scan again shortly
@@ -5374,7 +5571,7 @@ public class PhantomManager implements IXmlReader
 	 *         zone, not a clan or ally member, not newbie-protected, inside the initiate level band, not on the
 	 *         per-target dogpile cooldown, and legally attackable by the phantom.
 	 */
-	private Player flaggedReactTarget(Player phantom, long now, boolean redOnly)
+	private Player flaggedReactTarget(Player phantom, boolean aggressor, long now)
 	{
 		Player best = null;
 		double bestDistance = Double.MAX_VALUE;
@@ -5384,9 +5581,10 @@ public class PhantomManager implements IXmlReader
 			{
 				continue; // includes the phantom-versus-phantom gate: skip a phantom target when that is disabled
 			}
-			if (((p.getPvpFlag() == 0) && (p.getKarma() <= 0)) || (redOnly && (p.getKarma() <= 0)))
+			final boolean red = p.getKarma() > 0;
+			if (((p.getPvpFlag() == 0) && !red) || !PhantomPvpManager.mayReactToTarget(aggressor, FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL, red))
 			{
-				continue; // only already-flagged or red targets (only red ones for a phantom that is not an aggressor); a clean white player is Phase 4 (ganking), not this
+				continue; // only flagged or red targets, and only red for non-aggressors
 			}
 			if (sameClanOrAlly(phantom, p) || p.isNewbie() || !p.isAutoAttackable(phantom))
 			{
@@ -5406,7 +5604,7 @@ public class PhantomManager implements IXmlReader
 				_pvpVictimCooldownUntil.remove(p.getObjectId(), until); // stale entry; prune it
 			}
 			final double distance = phantom.calculateDistance2D(p);
-			if (distance < bestDistance)
+			if ((best == null) || PhantomPvpManager.preferReactTarget(red, distance, best.getKarma() > 0, bestDistance))
 			{
 				bestDistance = distance;
 				best = p;
@@ -5672,6 +5870,417 @@ public class PhantomManager implements IXmlReader
 		return best;
 	}
 
+	// ---------------------------------------------------------------------
+	// Encounter engine: an actor exists only to fight one player once. Generic: a module (through ModuleEncounters)
+	// decides when to send one, how strong it is, and what a win is worth.
+	// ---------------------------------------------------------------------
+
+	/**
+	 * Spawns one encounter actor: a fully geared recruit-style phantom outside any party, already pointed at {@code victim}.
+	 * @param group the encounter this actor belongs to (shared by all its actors; carries the style and the listener)
+	 * @param enchant the enchant on its weapon and armor
+	 * @param fixedName the actor's name, or {@code null} for a random one
+	 * @return the actor, or {@code null} if it could not be spawned
+	 */
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName)
+	{
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, 0, 0, false, false);
+	}
+
+	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId)
+	{
+		return spawnEncounterActor(victim, where, level, role, enchant, group, fixedName, classId, 0, false, false);
+	}
+
+	/**
+	 * As above, but pinned to one class. {@code classId} is resolved for the actor's level like any named recruit
+	 * (a Titan below the third-class level comes as the Destroyer or earlier); 0 or less keeps the role's random class.
+	 */
+	public synchronized Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout, boolean cpPotions)
+	{
+		if (!PhantomPvpManager.pvpEnabled() || (victim == null) || (where == null) || (group == null))
+		{
+			return null;
+		}
+		final Player actor;
+		ENCOUNTER_ENCHANT.set(enchant);
+		ENCOUNTER_NAME.set(fixedName);
+		try
+		{
+			actor = spawnPartyMember(where, level, role, Math.max(0, classId), null);
+		}
+		finally
+		{
+			ENCOUNTER_ENCHANT.remove();
+			ENCOUNTER_NAME.remove();
+		}
+		if (actor == null)
+		{
+			return null;
+		}
+		final PhantomData data = _phantoms.get(actor.getObjectId());
+		if (data == null)
+		{
+			return actor;
+		}
+		final long now = System.currentTimeMillis();
+		data.encounterGroup = group;
+		data.encounterVictimOid = victim.getObjectId();
+		data.encounterPhase = ENC_APPROACH;
+		data.encounterDeadline = now + (group.style().approachSeconds * 1000L);
+		data.encounterLastMoveAt = now;
+		data.encounterLastX = victim.getX();
+		data.encounterLastY = victim.getY();
+		data.encounterCpPotions = cpPotions;
+		stockEncounterPotions(actor, cpPotions);
+		if (escapeChance > 0)
+		{
+			actor.getInventory().addItem(ItemProcessType.REWARD, ENC_ESCAPE_SCROLL_ID, 1, actor, null);
+			data.encounterEscapeChance = Math.min(100, escapeChance);
+			data.encounterEscapeOnRout = escapeOnRout;
+		}
+		data.encounterActor = true; // last: the pvp tick treats it as an encounter actor from here on
+		return actor;
+	}
+
+	// Runs on every disabled tick, including actors finishing a spawn during the config reload.
+	// Share the spawn lock so cleanup never tears down a partially configured actor.
+	private synchronized void removeDisabledEncounters()
+	{
+		for (PhantomData data : _phantoms.values())
+		{
+			if (!data.encounterActor && !PhantomEncounterRules.isEncounterActor(data.player.getObjectId()))
+			{
+				continue;
+			}
+			PhantomEncounterRules.clearHostile(data.player.getObjectId());
+			try
+			{
+				despawnRecruit(data.player);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(getClass().getSimpleName() + ": Failed to remove disabled encounter actor " + data.player.getObjectId() + ": " + e.getMessage());
+			}
+		}
+	}
+
+	/** Exactly {@link #ENC_POTION_COUNT} each of the best healing, CP and mana potions (the outfit's larger healing stack is trimmed). */
+	private static void stockEncounterPotions(Player actor, boolean cpPotions)
+	{
+		for (int id : new int[] { HP_POTION_ID, ENC_CP_POTION_ID, ENC_MP_POTION_ID })
+		{
+			if (!cpPotions && (id == ENC_CP_POTION_ID))
+			{
+				continue;
+			}
+			final Item have = actor.getInventory().getItemByItemId(id);
+			final int count = (have == null) ? 0 : (int) have.getCount();
+			if (count < ENC_POTION_COUNT)
+			{
+				actor.getInventory().addItem(ItemProcessType.REWARD, id, ENC_POTION_COUNT - count, actor, null);
+			}
+			else if (count > ENC_POTION_COUNT)
+			{
+				actor.getInventory().destroyItemByItemId(ItemProcessType.DESTROY, id, count - ENC_POTION_COUNT, actor, null);
+			}
+		}
+		actor.getAutoUseSettings().setAutoPotionItem(HP_POTION_ID);
+	}
+
+	/**
+	 * Once, when HP first falls under {@link #ENC_ESCAPE_BELOW_PERCENT}: a its own percent chance to read the
+	 * scroll (also on a rout, if the actor is set to). It then vanishes and counts as defeated, exactly as if it had died (the group's wipe and any reward follow).
+	 */
+	private boolean tryEncounterEscape(Player phantom, PhantomData data, Player victim, PhantomEncounterRules.EncounterGroup group, long now)
+	{
+		if (data.encounterEscapeRolled)
+		{
+			return false;
+		}
+		final boolean lowHp = phantom.getCurrentHpPercent() < ENC_ESCAPE_BELOW_PERCENT;
+		// A rout: three quarters of the group is down and the player's side now has more people than what is left.
+		final int victimSide = ((victim == null) || (victim.getParty() == null)) ? 1 : victim.getParty().getMemberCount();
+		final boolean rout = data.encounterEscapeOnRout && (group.size() > 1) && ((group.deadCount() * 4) >= (group.size() * 3)) && ((group.size() - group.deadCount()) < victimSide);
+		if (!lowHp && !rout)
+		{
+			return false;
+		}
+		data.encounterEscapeRolled = true;
+		final Item scroll = phantom.getInventory().getItemByItemId(ENC_ESCAPE_SCROLL_ID);
+		if ((scroll == null) || (Rnd.get(100) >= data.encounterEscapeChance))
+		{
+			return false;
+		}
+		sayNearby(phantom, ENC_ESCAPE_LINES); // a parting shot, then the scroll
+		phantom.getInventory().destroyItemByItemId(ItemProcessType.DESTROY, ENC_ESCAPE_SCROLL_ID, 1, phantom, null);
+		phantom.broadcastPacket(new MagicSkillUse(phantom, phantom, ENC_ESCAPE_SKILL_ID, 1, 0, 0));
+		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		if (data.pvpTargetOid != 0)
+		{
+			endPvp(phantom, data, victim);
+		}
+		phantom.setTarget(null);
+		phantom.getAI().setIntention(Intention.IDLE);
+		data.encounterEndAt = now + 1000;
+		if (group.memberDied() && (group.listener() != null) && (victim != null))
+		{
+			try
+			{
+				group.listener().onGroupDefeated(victim.getObjectId(), phantom.getObjectId());
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(getClass().getSimpleName() + ": Encounter listener failed: " + e.getMessage());
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Every tick, each potion that is needed and off its own cooldown is drunk: CP and HP below full, MP below 90%. Each
+	 * kind waits on its item's reuse (CP and mana 0.5 s, healing 10 s), so CP and mana are spammed and healing goes the
+	 * moment it is ready.
+	 */
+	private static void drinkEncounterPotions(Player phantom, PhantomData data)
+	{
+		if (phantom.isDead() || phantom.isAlikeDead())
+		{
+			return;
+		}
+		final int[] ids = { ENC_CP_POTION_ID, HP_POTION_ID, ENC_MP_POTION_ID };
+		final boolean[] needed = { data.encounterCpPotions && (phantom.getCurrentCpPercent() < ENC_CP_BELOW_PERCENT), phantom.getCurrentHpPercent() < ENC_HP_BELOW_PERCENT, phantom.getCurrentMpPercent() < ENC_MP_BELOW_PERCENT };
+		for (int i = 0; i < ids.length; i++)
+		{
+			if (!needed[i])
+			{
+				continue;
+			}
+			final Item potion = phantom.getInventory().getItemByItemId(ids[i]);
+			if ((potion == null) || (potion.getCount() <= 0) || (potion.getEtcItem() == null) || (phantom.getItemRemainingReuseTime(potion.getObjectId()) > 0))
+			{
+				continue;
+			}
+			try
+			{
+				ItemHandler.getInstance().getHandler(potion.getEtcItem()).onItemUse(phantom, potion, false);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(PhantomManager.class.getSimpleName() + ": Encounter potion failed: " + e.getMessage());
+			}
+		}
+	}
+
+	/** @return how many encounters are running (a group of actors counts once, until its last actor is gone). */
+	public int activeEncounterCount()
+	{
+		final java.util.Set<PhantomEncounterRules.EncounterGroup> groups = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+		for (PhantomData data : _phantoms.values())
+		{
+			if (data.encounterActor && (data.encounterGroup != null))
+			{
+				groups.add(data.encounterGroup);
+			}
+		}
+		return groups.size();
+	}
+
+	/** @return {@code true} if an encounter actor is currently out for this player. */
+	public boolean hasEncounterFor(Player victim)
+	{
+		if (victim == null)
+		{
+			return false;
+		}
+		final int oid = victim.getObjectId();
+		for (PhantomData data : _phantoms.values())
+		{
+			if (data.encounterActor && (data.encounterVictimOid == oid))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private Player encounterVictim(PhantomData data)
+	{
+		final WorldObject object = World.getInstance().findObject(data.encounterVictimOid);
+		return (object instanceof Player) ? (Player) object : null;
+	}
+
+	/** One tick of an encounter actor's script: close in, (maybe ask), fight once, then leave. */
+	private void serviceEncounter(Player phantom, PhantomData data, long now)
+	{
+		final PhantomEncounterRules.EncounterGroup group = data.encounterGroup;
+		final PhantomEncounterRules.Style style = group.style();
+		if (data.encounterEndAt > 0)
+		{
+			if (now >= data.encounterEndAt)
+			{
+				despawnRecruit(phantom);
+			}
+			return;
+		}
+		final Player victim = encounterVictim(data);
+		if (phantom.isDead())
+		{
+			PhantomEncounterRules.clearHostile(phantom.getObjectId());
+			if ((style.defeatLines.length > 0) && group.claimDefeatLine())
+			{
+				sayNearby(phantom, style.defeatLines); // the first to fall whines
+			}
+			data.encounterEndAt = now + ENC_CORPSE_MS; // it lost: the body lies there a moment, then goes
+			if (group.memberDied() && (group.listener() != null) && (victim != null))
+			{
+				try
+				{
+					group.listener().onGroupDefeated(victim.getObjectId(), phantom.getObjectId()); // the whole group is down
+				}
+				catch (Exception e)
+				{
+					LOGGER.warning(getClass().getSimpleName() + ": Encounter listener failed: " + e.getMessage());
+				}
+			}
+			return;
+		}
+		final boolean gone = (victim == null) || !victim.isOnline() || victim.isInsideZone(ZoneId.PEACE) || (victim.getInstanceId() != 0) //
+			|| phantom.isInsideZone(ZoneId.PEACE) || (phantom.calculateDistance2D(victim) > ENC_LEASH);
+		if (gone || (now >= data.encounterDeadline))
+		{
+			endEncounter(phantom, data, victim, now, 1500, false); // victim escaped or the clock ran out: it simply leaves
+			return;
+		}
+		if (victim.isDead())
+		{
+			endEncounter(phantom, data, victim, now, ENC_LEAVE_MS, true); // it won
+			return;
+		}
+		if ((data.encounterEscapeChance > 0) && tryEncounterEscape(phantom, data, victim, group, now))
+		{
+			return; // it read its scroll and is gone: counted as down
+		}
+		final double distance = phantom.calculateDistance2D(victim);
+		switch (data.encounterPhase)
+		{
+			case ENC_APPROACH:
+			{
+				// Once any actor of the group attacks, they all join in.
+				if (group.isFighting() || (style.approach == PhantomEncounterRules.Approach.STRIKE_ON_ARRIVAL))
+				{
+					startEncounterFight(phantom, data, victim, now);
+					return;
+				}
+				if (style.approach == PhantomEncounterRules.Approach.ASK_FIRST)
+				{
+					if (distance > ENC_CLOSE_RANGE)
+					{
+						walkToward(phantom, victim);
+						return;
+					}
+					phantom.getAI().setIntention(Intention.IDLE);
+					phantom.setTarget(victim);
+					if (group.claimSpeech(now) && (style.askLines.length > 0))
+					{
+						sayNearby(phantom, style.askLines); // one of the group asks, the rest stand by
+					}
+					data.encounterPhase = ENC_WARN;
+					return;
+				}
+				// WAIT_FOR_MOMENT: close in quietly, then pick the moment.
+				if (distance > ENC_STRIKE_RANGE)
+				{
+					walkToward(phantom, victim);
+					return;
+				}
+				if ((Math.abs(victim.getX() - data.encounterLastX) + Math.abs(victim.getY() - data.encounterLastY)) > 40)
+				{
+					data.encounterLastX = victim.getX();
+					data.encounterLastY = victim.getY();
+					data.encounterLastMoveAt = now;
+				}
+				final boolean busy = (victim.getTarget() != null) && victim.getTarget().isMonster() && AttackStanceTaskManager.getInstance().hasAttackStanceTask(victim);
+				if (PhantomEncounterRules.momentReady(busy, now - data.encounterLastMoveAt, style.stillSeconds * 1000L))
+				{
+					startEncounterFight(phantom, data, victim, now);
+				}
+				else if (distance > (ENC_CLOSE_RANGE * 2))
+				{
+					walkToward(phantom, victim); // keep on its tail while it moves
+				}
+				return;
+			}
+			case ENC_WARN:
+			{
+				final boolean hitFirst = hostilePvpAttacker(phantom, data, now) == victim;
+				if (group.isFighting() || PhantomEncounterRules.mayStrikeAfterWarning(now, group.warnedAt(), style.warnSeconds * 1000L, hitFirst))
+				{
+					startEncounterFight(phantom, data, victim, now);
+				}
+				return;
+			}
+			default:
+			{
+				drinkEncounterPotions(phantom, data);
+				if (data.pvpTargetOid != 0)
+				{
+					continuePvp(phantom, data, now);
+				}
+				else if (distance <= PVP_LEASH_RANGE)
+				{
+					beginPvp(phantom, data, victim, now); // the 60 s engagement cap lapsed mid-fight: it is still one fight
+				}
+				else
+				{
+					endEncounter(phantom, data, victim, now, 1500, false);
+				}
+			}
+		}
+	}
+
+	private void startEncounterFight(Player phantom, PhantomData data, Player victim, long now)
+	{
+		if (data.encounterGroup.claimStrikeLine() && (data.encounterGroup.style().strikeLines.length > 0))
+		{
+			sayNearby(phantom, data.encounterGroup.style().strikeLines); // one of them talks trash as it starts
+		}
+		data.encounterGroup.startFight();
+		data.encounterPhase = ENC_FIGHT;
+		data.encounterDeadline = now + (data.encounterGroup.style().fightSeconds * 1000L);
+		PhantomEncounterRules.markHostile(phantom.getObjectId(), victim.getObjectId());
+		LOGGER.info(getClass().getSimpleName() + ": Encounter fight starts: " + phantom.getName() + " (lvl " + phantom.getLevel() + ") vs " + victim.getName() + " (lvl " + victim.getLevel() + ").");
+		beginPvp(phantom, data, victim, now);
+	}
+
+	private void endEncounter(Player phantom, PhantomData data, Player victim, long now, long leaveMs, boolean won)
+	{
+		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		if (data.pvpTargetOid != 0)
+		{
+			endPvp(phantom, data, victim);
+		}
+		phantom.setTarget(null);
+		phantom.getAI().setIntention(Intention.IDLE);
+		final String[] winLines = data.encounterGroup.style().winLines;
+		if (won && (winLines.length > 0) && data.encounterGroup.claimWinLine())
+		{
+			sayNearby(phantom, winLines);
+		}
+		LOGGER.info(getClass().getSimpleName() + ": Encounter over: " + phantom.getName() + (won ? " won" : " left") + ".");
+		data.encounterEndAt = now + leaveMs;
+	}
+
+	private static void walkToward(Player phantom, Player victim)
+	{
+		if (phantom.isCastingNow())
+		{
+			return;
+		}
+		phantom.setRunning();
+		phantom.getAI().setIntention(Intention.MOVE_TO, new Location(victim.getX(), victim.getY(), victim.getZ()));
+	}
+
 	/** Begins a PvP engagement: records the opponent, detaches the phantom from the hunt, and drives the first decision. */
 	private void beginPvp(Player phantom, PhantomData data, Player attacker, long now)
 	{
@@ -5745,7 +6354,7 @@ public class PhantomManager implements IXmlReader
 			// and an out-of-mana caster flees sooner. allyAdvantage is nearby allies minus nearby hostiles.
 			final int allyAdvantage = pvpAllyAdvantage(phantom);
 			final boolean casterLowMp = data.mage && (phantom.getCurrentMpPercent() < PVP_CASTER_LOW_MP_PERCENT);
-			final boolean flee = !cornered && PhantomPvpManager.shouldFlee((int) phantom.getCurrentHpPercent(), FakePlayersConfig.PHANTOM_PVP_FLEE_HP_PERCENT, data.bravery, phantom.getLevel(), target.getLevel(), allyAdvantage, casterLowMp);
+			final boolean flee = !data.encounterActor && !cornered && PhantomPvpManager.shouldFlee((int) phantom.getCurrentHpPercent(), FakePlayersConfig.PHANTOM_PVP_FLEE_HP_PERCENT, data.bravery, phantom.getLevel(), target.getLevel(), allyAdvantage, casterLowMp);
 			data.pvpFleeing = flee;
 		}
 		if (data.pvpFleeing)

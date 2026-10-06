@@ -17,8 +17,10 @@
 package org.l2jmobius.gameserver.handler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import org.l2jmobius.gameserver.config.GeneralConfig;
@@ -37,6 +39,8 @@ public class CommunityBoardHandler implements IHandler<IParseBoardHandler, Strin
 	private final Map<String, IParseBoardHandler> _datatable = new HashMap<>();
 	/** The bypasses used by the players. */
 	private final Map<Integer, String> _bypasses = new ConcurrentHashMap<>();
+	/** Extra navigation buttons contributed by modules, as {label, bypass} pairs. Empty unless a module adds one. */
+	private final List<String[]> _extraTabs = new CopyOnWriteArrayList<>();
 	
 	protected CommunityBoardHandler()
 	{
@@ -82,6 +86,25 @@ public class CommunityBoardHandler implements IHandler<IParseBoardHandler, Strin
 	public int size()
 	{
 		return _datatable.size();
+	}
+	
+	/**
+	 * Finds a registered command that clashes with the given one. Commands are matched by prefix, so two commands clash
+	 * when either one starts with the other, and the board would then pick between them in no fixed order.
+	 * @param cmd the command to check
+	 * @return the clashing registered command, or {@code null} if there is none
+	 */
+	public String findPrefixClash(String cmd)
+	{
+		final String lower = cmd.toLowerCase();
+		for (String registered : _datatable.keySet())
+		{
+			if (lower.startsWith(registered) || registered.startsWith(lower))
+			{
+				return registered;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -228,6 +251,46 @@ public class CommunityBoardHandler implements IHandler<IParseBoardHandler, Strin
 	}
 	
 	/**
+	 * Adds a button to the board's navigation column (the {@code %moduleTabs%} marker in {@code navigation.html}).
+	 * Generic and inert: with nothing registered the marker simply renders as nothing.
+	 * @param label the button text
+	 * @param bypass the bypass the button runs, which must belong to a registered board handler
+	 */
+	public void addNavigationTab(String label, String bypass)
+	{
+		if ((label == null) || (bypass == null))
+		{
+			return;
+		}
+		for (String[] tab : _extraTabs)
+		{
+			if (tab[1].equals(bypass))
+			{
+				return; // already there (a handler registered twice)
+			}
+		}
+		_extraTabs.add(new String[]
+		{
+			label.replaceAll("[\"<>]", ""),
+			bypass.replace("\"", "")
+		});
+	}
+	
+	private String buildExtraTabs()
+	{
+		if (_extraTabs.isEmpty())
+		{
+			return "";
+		}
+		final StringBuilder sb = new StringBuilder();
+		for (String[] tab : _extraTabs)
+		{
+			sb.append("<button value=\"").append(tab[0]).append("\" action=\"bypass ").append(tab[1]).append("\" width=114 height=30 back=\"L2UI_CH3.Button.bigbutton2_down\" fore=\"L2UI_CH3.Button.bigbutton2\"><br>\n");
+		}
+		return sb.toString();
+	}
+	
+	/**
 	 * Separates and send an HTML into multiple packets, to display into the community board.<br>
 	 * The limit is 16383 characters.
 	 * @param html the HTML to send
@@ -235,7 +298,7 @@ public class CommunityBoardHandler implements IHandler<IParseBoardHandler, Strin
 	 */
 	public static void separateAndSend(String html, Player player)
 	{
-		HtmlUtil.sendCBHtml(player, html);
+		HtmlUtil.sendCBHtml(player, (html == null) ? null : html.replace("%moduleTabs%", getInstance().buildExtraTabs()));
 	}
 	
 	public static CommunityBoardHandler getInstance()

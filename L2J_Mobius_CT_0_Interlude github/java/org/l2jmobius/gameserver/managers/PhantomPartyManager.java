@@ -153,6 +153,7 @@ public class PhantomPartyManager
 	private static final int REBUFF_MAX_REFUSALS = 3; // a forced rebuff skips a buff the server refused this many times in a row
 	private static final int ASSIST_MAX_RANGE = 2200; // don't assist a mob the leader targeted across the map
 	private static final int DANGER_RANGE = 700;
+	private static final int PARTY_DEFENSE_RANGE = 900; // how far around the leader a mob on the party is noticed and answered
 	// FakePlayerPartyPickup: after a fight a member collects ground drops this close to it...
 	private static final int PARTY_LOOT_SCAN_RANGE = SUPPORT_RANGE;
 	private static final int PARTY_LOOT_PICKUP_RANGE = 40; // ...picking each one up once this close...
@@ -2995,6 +2996,17 @@ public class PhantomPartyManager
 			{
 				focus = attackerOnMe(state, null, false);
 			}
+			// Defend the party: a mob that has latched onto the leader or another member is everybody's problem, the
+			// way a human party reacts when something aggros mid-hunt. Covers "nothing targeted" and also a leader
+			// target nobody is fighting yet (still walking in) while another mob is already chewing on a partymate.
+			if ((focus == null) || (!focus.isRaid() && !isHatingParty(state, focus)))
+			{
+				final Monster defend = partyAttacker(state, focus);
+				if (defend != null)
+				{
+					focus = defend;
+				}
+			}
 
 			// Engage the chosen focus - the shared fight logic (raid aggro-easing, nuker CC, caster range-hold, tank
 			// threat, dagger rear, archer positioning, auto-attack upkeep), reused by camp mode. Returns false only
@@ -3061,18 +3073,15 @@ public class PhantomPartyManager
 		// (respectful-hunt edge cases), and a member standing there being hit without answering reads as broken.
 		if ((npc.getTarget() == null) && !npc.isAttackingNow() && !npc.isCastingNow())
 		{
-			for (Monster mob : World.getInstance().getVisibleObjectsInRange(npc, Monster.class, DANGER_RANGE))
+			final Monster defend = freeHuntDefenseTarget(state);
+			if (defend != null)
 			{
-				if (!mob.isDead() && (mob.getTarget() == npc))
+				standIfSitting(npc);
+				npc.setTarget(defend);
+				if (!castsSpells(state))
 				{
-					standIfSitting(npc);
-					npc.setTarget(mob);
-					if (!castsSpells(state))
-					{
-						npc.setRunning();
-						npc.getAI().setIntention(Intention.ATTACK, mob); // a caster just holds the target - AutoUse nukes it
-					}
-					break;
+					npc.setRunning();
+					npc.getAI().setIntention(Intention.ATTACK, defend); // a caster holds the target for AutoUse
 				}
 			}
 		}
@@ -3274,16 +3283,7 @@ public class PhantomPartyManager
 	{
 		for (Monster mob : World.getInstance().getVisibleObjectsInRange(state.npc, Monster.class, SUPPORT_RANGE))
 		{
-			if (mob.isDead())
-			{
-				continue;
-			}
-			WorldObject target = mob.getTarget();
-			if ((target != null) && target.isSummon())
-			{
-				target = target.asSummon().getOwner();
-			}
-			if ((target instanceof Creature) && ((target == state.npc) || isPartyCreature(state.owner, (Creature) target)))
+			if (isHatingParty(state, mob))
 			{
 				return true;
 			}
@@ -5555,6 +5555,75 @@ public class PhantomPartyManager
 		return null;
 	}
 
+	/** Self-defense is local to the recruit, including the outer free-hunt leash; party defense stays near the leader. */
+	private Monster freeHuntDefenseTarget(Member state)
+	{
+		final Monster onMe = attackerOnMe(state, null, false);
+		return (onMe != null) ? onMe : partyAttacker(state, null);
+	}
+
+	/** @return {@code true} if this mob's current victim is the member itself or anyone in its party (or a party summon). */
+	private boolean isHatingParty(Member state, Monster mob)
+	{
+		if (mob.isAlikeDead() || !mob.isSpawned() || (mob.getInstanceId() != state.npc.getInstanceId()))
+		{
+			return false;
+		}
+		// Physical attacks use native hate/AI targets; the selected target may be null or a self-buff.
+		Creature target = mob.getMostHated();
+		if ((target == null) && mob.hasAI() && (mob.getAI().getIntention() == Intention.ATTACK))
+		{
+			target = mob.getAI().getAttackTarget();
+		}
+		if ((target == null) || target.isAlikeDead() || !target.isSpawned() || (target.getInstanceId() != mob.getInstanceId()) || !mob.isInSurroundingRegion(target))
+		{
+			return false;
+		}
+		if (target.isSummon())
+		{
+			target = target.asSummon().getOwner();
+		}
+		return (target != null) && ((target == state.npc) || isPartyCreature(state.owner, target));
+	}
+
+	/**
+	 * The nearest live mob that has latched onto the leader or any party member (summons count as their owner), or
+	 * {@code null}. Raids are left to the raid logic, forbidden/peace-zone targets are never picked, and
+	 * {@code exclude} (the mob already being fought) is skipped. Scanned around the leader, so a mob beating on the
+	 * human is found even when this member is a screen away.
+	 */
+	private Monster partyAttacker(Member state, Monster exclude)
+	{
+		final Player npc = state.npc;
+		final Player owner = state.owner;
+		if ((owner == null) || (npc.getInstanceId() != owner.getInstanceId()) || npc.isInsideZone(ZoneId.PEACE))
+		{
+			return null;
+		}
+		final GeoEngine geo = GeoEngine.getInstance();
+		Monster best = null;
+		double bestDistance = Double.MAX_VALUE;
+		for (Monster mob : World.getInstance().getVisibleObjectsInRange(owner, Monster.class, PARTY_DEFENSE_RANGE))
+		{
+			if (mob.isDead() || (mob == exclude) || mob.isRaid() || PhantomManager.isPhantomForbiddenTarget(mob) || mob.isInsideZone(ZoneId.PEACE) || !isHatingParty(state, mob))
+			{
+				continue;
+			}
+			final double distance = npc.calculateDistance2D(mob);
+			if ((distance <= ASSIST_MAX_RANGE) && (distance < bestDistance))
+			{
+				// Apply the normal free-hunt reachability rules before ranking a defense target.
+				if ((Math.abs(npc.getZ() - mob.getZ()) >= 800) || !geo.canSeeTarget(npc, mob) || !geo.canMoveToTarget(npc.getX(), npc.getY(), npc.getZ(), mob.getX(), mob.getY(), mob.getZ(), npc.getInstanceId()))
+				{
+					continue;
+				}
+				best = mob;
+				bestDistance = distance;
+			}
+		}
+		return best;
+	}
+
 	/** The best control skill this member can peel with, resolved once (archers stun/slow, casters sleep/root). */
 	private Skill peelControl(Member state)
 	{
@@ -7468,10 +7537,10 @@ public class PhantomPartyManager
 		return false;
 	}
 
-	/** Classes that live on MP rest for it (daggers too: their blows cost MP); everyone else rests only for HP. */
+	/** MP-dependent roles rest for MP or HP; everyone else rests only for HP. */
 	private static boolean usesMp(Member state)
 	{
-		return state.isSupport() || (state.role == PartyRole.NUKER) || (state.role == PartyRole.SINGER) || (state.role == PartyRole.DANCER) || (state.role == PartyRole.ARCHER) || (state.role == PartyRole.DAGGER);
+		return state.isSupport() || (state.role == PartyRole.NUKER) || (state.role == PartyRole.SINGER) || (state.role == PartyRole.DANCER) || (state.role == PartyRole.ARCHER);
 	}
 
 	private static int restNeed(Member state)

@@ -30,6 +30,7 @@ import org.l2jmobius.commons.util.Rnd;
 import org.l2jmobius.gameserver.model.actor.Creature;
 import org.l2jmobius.gameserver.model.actor.Player;
 import org.l2jmobius.gameserver.model.stats.Formulas;
+import org.l2jmobius.gameserver.modules.ModuleDamage;
 
 public class CreatureStatus
 {
@@ -278,6 +279,7 @@ public class CreatureStatus
 				return false;
 			}
 			
+			final double hpBefore = _currentHp;
 			if (newHp >= maxHp)
 			{
 				// Set the RegenActive flag to false
@@ -299,6 +301,8 @@ public class CreatureStatus
 				// Start the HP/MP/CP Regeneration task with Medium priority
 				startHpMpRegeneration();
 			}
+			// Living World: only collect here; listeners run after native handling and outside this monitor.
+			ModuleDamage.hpChanged(_creature, hpBefore, _currentHp);
 		}
 		
 		final boolean hpWasChanged = currentHp != _currentHp;

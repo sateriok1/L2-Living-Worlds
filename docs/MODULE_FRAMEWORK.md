@@ -62,6 +62,8 @@ The V1 `ModuleContext` surface:
 ```text
 ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
+  encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
+  damage       combat damage and instant healing notifications (section 3.9)
   config       generic typed access to the module's own configuration
   events       register game event listeners
   handlers     register item, bypass, voiced, admin, effect, and target handlers
@@ -133,6 +135,14 @@ it must be created.
 - Handler registration (available). `ItemHandler`, `SkillHandler`, `BypassHandler`, `VoicedCommandHandler`,
   `AdminCommandHandler`, `EffectHandler`, and `TargetHandler` each expose `registerHandler(...)`. A module
   registers through `context.handlers()`, never by editing `MasterHandler`.
+- Community Board pages and tabs (available). `context.handlers().registerBoard(handler)` registers an
+  `IParseBoardHandler` (commands are matched by prefix, so a command that starts with, or is the start of, one
+  already registered is refused, and the module with it), and
+  `registerBoardTab(label, bypass)` adds a button for it to the board's navigation column. The column is
+  `navigation.html`; its `%moduleTabs%` marker is filled in when a board page is sent and renders as nothing
+  when no module adds a tab, so a server without such modules is unchanged. The column only shows with
+  `CustomCommunityBoard = True` (`config/Custom/CommunityBoard.ini`), which this pack ships on. A page built by a module should
+  load `navigation.html` and replace its own `%navigation%` marker the way the stock board pages do.
 - Event listeners (available). The event system (`@RegisterEvent`, `ListenerRegisterType`, the `On*` holders)
   lets a module react to game moments without touching the class that fires them. This is the first tool to
   reach for. If an event exists, no platform change is needed. A module registers through `context.events()`,
@@ -206,6 +216,61 @@ copy first. Which characters a feature offers and how the player asks for one is
 
 Inside the server a companion is a recruited party member of `PhantomManager` (flag `companion`), so phantom-wide rules
 apply to it: party loot and adena follow `FakePlayerPartyLootShare`, and its kills credit quests to the owner.
+
+## 3.7 Phantom encounters
+
+`context.encounters()` is a platform service for features that send a phantom, or a group of phantoms, after one player
+to fight them once: a roaming ambusher, a rival, a bounty hunter. The platform owns the mechanics and a module owns the
+policy. The platform has no timers, kinds, odds, difficulty or rewards of its own, and the service does nothing until a
+module calls it.
+
+- `available()` tells whether encounters can run (fake players and phantom PvP are both on).
+- `begin(size, style, listener)` starts an encounter and returns a `Group`. The `Style` says how the actors pick their
+  moment (`STRIKE_ON_ARRIVAL`, `ASK_FIRST` with opening lines, or `WAIT_FOR_MOMENT`: until the player stands still or
+  fights a monster), how long they may approach and fight, and what they say if they win. The `Listener` is told when
+  every actor is dead, so the module can pay a reward.
+- `spawn(victim, group, where, level, role, enchant, fixedName)` places one fully geared actor, already pointed at the
+  player. Where, how strong and how many is the module's choice. `group.shrinkTo(n)` corrects the size when some did not fit.
+- `discard(actor)` removes an actor that landed somewhere it must not be. `isTargeted(player)`, `activeCount()` and
+  `isPhantom(player)` let a module keep its own limits.
+
+Inside the server an actor is a recruited-style phantom outside any party. The platform walks it to the player, starts
+the fight, ends it after one fight, and clears everything up. For the duration of the fight the actor is allowed to attack
+that one player even if the player is not flagged. The exact actor/victim pair is honored by native auto-attack and
+PvP skill validation; party, clan, alliance, safe-zone, instance, duel and Olympiad restrictions still apply. AutoUse
+uses the Characters target mode so offensive area skills can include the victim while their native filtering and
+line-of-sight checks remain active. Actor lifetime protection starts before world entry and lasts through departure
+and corpse retention: actors gain no PvP/PK kill counters or karma, and their inventory never enters the native death
+drop lottery, regardless of configured rates or PK thresholds. Disabling Phantom PvP rejects new spawns and removes
+existing actors on the next PvP tick, clearing hostility and encounter reservations. Failed removals are retried;
+protection remains until world removal succeeds.
+
+The first user is the Phantom Encounters module.
+
+## 3.9 Damage
+
+`context.damage()` lets a module register `addListener(listener)` for
+`onDamage(attacker, target, damage, skill, damageOverTime)` and `addHealListener(listener)` for
+`onHeal(healer, target, amount, skill)`. It is inert until a module registers a listener. The stock
+`OnCreatureDamageDealt` event covers auto attacks; this surface also covers skills, damage over time and reflects.
+
+Damage is the HP and CP actually lost during native `reduceCurrentHp` handling. Native rejection, invulnerability,
+MP shields, CP bypass, champion scaling, duel survival and overkill rules stay authoritative. A transfer is credited
+to each actual recipient, retaining the original skill and DOT metadata. CP alone counts; MP absorption does not.
+A pet or servitor is reported as itself. For reflection, `attacker` is the reflector and `skill` is null, including
+transferred portions. Auto attacks also report a null skill. Reflection retains the original skill's native damage
+flags without attributing that cast to the reflector. Lethal damage is published before the synchronous native
+death event, so a death recap includes the finishing hit.
+
+Healing is the actual HP gained by one successful instant `HEAL` effect of a non-static skill, including GENERAL,
+SELF, PVE, PVP and CHANNELING scopes. Static/item skills and recovery herbs are excluded, as are periodic healing,
+regeneration, HP redistribution and other non-HEAL effects. Each effect has its own attribution, so a multi-effect
+skill may produce more than one heal callback. HP changes on another thread are not credited to the skill.
+
+Registrations are owned by the module's `ModuleHandles`, with owner-specific failure diagnostics. Listeners run
+on the native thread after resource changes, outside the status monitor; they must be quick and must not block.
+With no listeners, the platform allocates no capture and changes no combat rules. V1 disable/removal still takes
+effect after restart. The DPS Meter module is a separate consumer and is not included in this platform change.
 
 ## 4. Lifecycle and the levels of removal
 

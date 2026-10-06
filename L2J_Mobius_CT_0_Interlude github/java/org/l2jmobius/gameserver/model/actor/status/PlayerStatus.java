@@ -37,6 +37,7 @@ import org.l2jmobius.gameserver.model.script.QuestState;
 import org.l2jmobius.gameserver.model.skill.enums.SkillFinishType;
 import org.l2jmobius.gameserver.model.stats.Formulas;
 import org.l2jmobius.gameserver.model.stats.Stat;
+import org.l2jmobius.gameserver.modules.ModuleDamage;
 import org.l2jmobius.gameserver.network.SystemMessageId;
 import org.l2jmobius.gameserver.network.serverpackets.ActionFailed;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
@@ -363,6 +364,7 @@ public class PlayerStatus extends PlayableStatus
 			}
 			
 			final double newCp = Math.max(0, value);
+			final double cpBefore = _currentCp;
 			if (newCp >= maxCp)
 			{
 				// Set the RegenActive flag to false
@@ -384,6 +386,8 @@ public class PlayerStatus extends PlayableStatus
 				// Start the HP/MP/CP Regeneration task with Medium priority
 				startHpMpRegeneration();
 			}
+			// Living World: capture the actual CP delta, including damage transferred directly to this player.
+			ModuleDamage.cpChanged(player, cpBefore, _currentCp);
 		}
 		
 		// Send the Server->Client packet StatusUpdate with current HP and MP to all other Player to inform
