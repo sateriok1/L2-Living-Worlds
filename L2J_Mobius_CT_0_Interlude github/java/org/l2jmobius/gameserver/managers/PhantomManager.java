@@ -1198,6 +1198,15 @@ public class PhantomManager implements IXmlReader
 		boolean companion;
 		Runnable onCompanionLeave; // run once after the companion is saved and removed from the world (may be null)
 		int companionOwnerId; // objectId of the player who summoned this companion
+		// Spot defense (see PhantomSpotRules): how annoyed this hunter is at each real player, and where it stands in the warning ladder.
+		PhantomSpotRules.Temper spotTemper; // rolled on first use
+		final Map<Integer, Double> spotScores = new HashMap<>();
+		long spotScoreAt; // when the scores were last brought up to date
+		long spotNextAt; // earliest next spot check
+		long spotWarnNextAt; // earliest next complaint
+		long spotAttackAt; // when the hunter follows through (0 = no ultimatum given)
+		long spotCooldownUntil;
+		int spotStealOid; // the mob whose theft was last counted, so one mob is one theft
 		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
 		volatile boolean encounterActor;
 		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
@@ -5199,6 +5208,10 @@ public class PhantomManager implements IXmlReader
 				// a per-consideration roll, cooldowns, level band, newbie protection, peace zones, and clan/ally
 				// membership all gate it, so reacting is occasional and never touches a friendly target.
 				reactToFlagged(phantom, data, now);
+				if (data.pvpTargetOid == 0)
+				{
+					spotDefense(phantom, data, now);
+				}
 				// Phase 3: an idle, honorable phantom occasionally challenges a nearby player (or phantom) to a duel.
 				if (data.pvpTargetOid == 0)
 				{
@@ -5391,6 +5404,163 @@ public class PhantomManager implements IXmlReader
 			_pvpVictimCooldownUntil.put(target.getObjectId(), now + cooldownMs); // stop other phantoms dogpiling it
 			beginPvp(phantom, data, target, now);
 		}
+	}
+
+	private static final String[] SPOT_WARN_LINES =
+	{
+		"hey, this is my spot",
+		"you could hunt somewhere else, you know",
+		"mind giving me some room?",
+		"that was my mob",
+		"seriously, find your own mobs",
+		"you're crowding me"
+	};
+	private static final String[] SPOT_ULTIMATUM_LINES =
+	{
+		"that's it, get out of my spot or fight me",
+		"last warning. leave, or we settle it",
+		"i'm done asking. move it",
+		"you want this spot? come and take it"
+	};
+
+	/** @return a real player (not a phantom, not offline) fighting this monster, or {@code null}. */
+	private static Player realPlayerOn(Monster monster)
+	{
+		final WorldObject target = monster.getTarget();
+		if ((target instanceof Player) && !((Player) target).isInOfflineMode())
+		{
+			return (Player) target;
+		}
+		for (Creature attacker : monster.getAggroList().keySet())
+		{
+			if (attacker.isPlayer() && !attacker.asPlayer().isInOfflineMode())
+			{
+				return attacker.asPlayer();
+			}
+		}
+		return null;
+	}
+
+	/** A player took a mob this hunter had claimed: that adds to the hunter's annoyance with them. */
+	private void noteKillSteal(PhantomData data, Monster monster, long now)
+	{
+		if (!FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (data.claimedOid != monster.getObjectId()) || (data.spotStealOid == monster.getObjectId()))
+		{
+			return;
+		}
+		final Player thief = realPlayerOn(monster);
+		if ((thief == null) || _phantoms.containsKey(thief.getObjectId()))
+		{
+			return;
+		}
+		data.spotStealOid = monster.getObjectId();
+		data.spotScores.merge(thief.getObjectId(), FakePlayersConfig.PHANTOM_PVP_SPOT_STEAL_POINTS, Double::sum);
+	}
+
+	/** @return whether this real player is out hunting where the hunter could be annoyed by it. */
+	private boolean spotOffender(Player phantom, Player p, long now)
+	{
+		if (_phantoms.containsKey(p.getObjectId()) || p.isInOfflineMode() || p.isDead() || p.isInsideZone(ZoneId.PEACE) || p.isInsideZone(ZoneId.NO_PVP))
+		{
+			return false;
+		}
+		if (!validPvpOpponent(phantom, p) || sameClanOrAlly(phantom, p) || p.isNewbie() || !p.isAutoAttackable(phantom))
+		{
+			return false;
+		}
+		if (!PhantomPvpManager.mayInitiateByLevel(phantom.getLevel(), p.getLevel(), FakePlayersConfig.PHANTOM_PVP_MAX_LEVEL_GAP_ABOVE_PLAYER))
+		{
+			return false;
+		}
+		final Long until = _pvpVictimCooldownUntil.get(p.getObjectId());
+		return (until == null) || (now >= until);
+	}
+
+	/**
+	 * Spot defense: a hunter that a player keeps annoying (stolen kills, hunting right on top of it) complains, warns,
+	 * then attacks. How much it takes depends on the hunter's temper.
+	 */
+	private void spotDefense(Player phantom, PhantomData data, long now)
+	{
+		if (!FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (now < data.spotNextAt) || data.resting || (now < data.spotCooldownUntil))
+		{
+			return;
+		}
+		data.spotNextAt = now + 2000;
+		if (data.spotTemper == null)
+		{
+			data.spotTemper = PhantomSpotRules.rollTemper(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_HOT_PERCENT, FakePlayersConfig.PHANTOM_PVP_SPOT_NORMAL_PERCENT);
+		}
+		final long elapsed = (data.spotScoreAt == 0) ? 0 : (now - data.spotScoreAt);
+		data.spotScoreAt = now;
+		final Set<Integer> crowding = new HashSet<>();
+		Player worst = null;
+		for (Player p : World.getInstance().getVisibleObjectsInRange(phantom, Player.class, FakePlayersConfig.PHANTOM_PVP_SPOT_RADIUS))
+		{
+			if (spotOffender(phantom, p, now) && (p.isAttackingNow() || ((p.getTarget() instanceof Monster) && p.isInCombat())))
+			{
+				crowding.add(p.getObjectId());
+				data.spotScores.merge(p.getObjectId(), PhantomSpotRules.crowd(0, elapsed), Double::sum);
+			}
+		}
+		final double limit = PhantomSpotRules.thresholdFor(data.spotTemper, FakePlayersConfig.PHANTOM_PVP_SPOT_HOT_LIMIT, FakePlayersConfig.PHANTOM_PVP_SPOT_NORMAL_LIMIT, FakePlayersConfig.PHANTOM_PVP_SPOT_PATIENT_LIMIT);
+		double worstScore = 0;
+		final Iterator<Map.Entry<Integer, Double>> it = data.spotScores.entrySet().iterator();
+		while (it.hasNext())
+		{
+			final Map.Entry<Integer, Double> e = it.next();
+			if (!crowding.contains(e.getKey()))
+			{
+				e.setValue(PhantomSpotRules.fade(e.getValue(), elapsed)); // not offending right now: cools down
+			}
+			if (e.getValue() <= 0)
+			{
+				it.remove();
+				continue;
+			}
+			final Player p = World.getInstance().getPlayer(e.getKey());
+			if ((p != null) && (e.getValue() > worstScore) && spotOffender(phantom, p, now) && (phantom.calculateDistance2D(p) <= (FakePlayersConfig.PHANTOM_PVP_SPOT_RADIUS * 1.5)))
+			{
+				worstScore = e.getValue();
+				worst = p;
+			}
+		}
+		if ((worst == null) || (worstScore < PhantomSpotRules.warnAt(limit)))
+		{
+			data.spotAttackAt = 0; // calmed down, or the player is gone
+			return;
+		}
+		if (worstScore < limit)
+		{
+			if (now >= data.spotWarnNextAt)
+			{
+				data.spotWarnNextAt = now + 120_000L;
+				sayNearby(phantom, SPOT_WARN_LINES);
+			}
+			return;
+		}
+		if (data.spotAttackAt == 0)
+		{
+			data.spotAttackAt = now + ((data.spotTemper == PhantomSpotRules.Temper.HOT) ? 3000 : 6000);
+			sayNearby(phantom, SPOT_ULTIMATUM_LINES);
+			return;
+		}
+		if (now < data.spotAttackAt)
+		{
+			return;
+		}
+		data.spotAttackAt = 0;
+		data.spotScores.clear();
+		final long cooldownMs = FakePlayersConfig.PHANTOM_PVP_SPOT_COOLDOWN_SECONDS * 1000L;
+		data.spotCooldownUntil = now + cooldownMs;
+		final boolean duel = !PhantomSpotRules.realFight(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_FIGHT_PERCENT) && PhantomPvpManager.duelsEnabled() && phantom.canDuel() && worst.canDuel() && !worst.isProcessingRequest();
+		if (duel && armDuel(data, worst, DUEL_APPROACH))
+		{
+			_duelTargetCooldownUntil.put(worst.getObjectId(), now + DUEL_TARGET_COOLDOWN_MS);
+			return;
+		}
+		_pvpVictimCooldownUntil.put(worst.getObjectId(), now + cooldownMs);
+		beginPvp(phantom, data, worst, now);
 	}
 
 	/**
@@ -6924,6 +7094,7 @@ public class PhantomManager implements IXmlReader
 				// Always defer to a real player fighting this monster.
 				if (isContestedByPlayer(monster))
 				{
+					noteKillSteal(data, monster, System.currentTimeMillis());
 					yieldTarget(phantom);
 					data.claimedOid = 0;
 					needsTarget.add(data);
