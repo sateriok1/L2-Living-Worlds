@@ -59,6 +59,11 @@ public interface ModuleContext
 	ModuleEncounters encounters();
 
 	/**
+	 * @return the damage surface: a hook for every hit that lowers HP, with who did it, to whom, and the skill
+	 */
+	ModuleDamage damage();
+
+	/**
 	 * @return a logger scoped to this module, so its output is attributable
 	 */
 	Logger logging();

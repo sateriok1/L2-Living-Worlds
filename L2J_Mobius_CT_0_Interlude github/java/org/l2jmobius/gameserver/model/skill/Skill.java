@@ -59,6 +59,7 @@ import org.l2jmobius.gameserver.model.stats.TraitType;
 import org.l2jmobius.gameserver.model.stats.functions.AbstractFunction;
 import org.l2jmobius.gameserver.model.stats.functions.FuncTemplate;
 import org.l2jmobius.gameserver.model.zone.ZoneId;
+import org.l2jmobius.gameserver.modules.ModuleDamage;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
 import org.l2jmobius.gameserver.util.LocationUtil;
 
@@ -1313,11 +1314,23 @@ public class Skill
 				info.setAbnormalTime(abnormalTime);
 			}
 			
+			// Modules (an event score) hear the HP a heal skill restored.
+			final boolean trackHeal = instant && ModuleDamage.healActive() && (effector != null) && !hasNegativeEffect();
+			final double hpBefore = trackHeal ? effected.getCurrentHp() : 0;
+			
 			applyEffectScope(EffectScope.GENERAL, info, instant, addContinuousEffects);
 			
 			final EffectScope pvpOrPveEffectScope = effector.isPlayable() && effected.isAttackable() ? EffectScope.PVE : effector.isPlayable() && effected.isPlayable() ? EffectScope.PVP : null;
 			applyEffectScope(pvpOrPveEffectScope, info, instant, addContinuousEffects);
 			applyEffectScope(EffectScope.CHANNELING, info, instant, addContinuousEffects);
+			if (trackHeal)
+			{
+				final double restored = effected.getCurrentHp() - hpBefore;
+				if (restored > 0)
+				{
+					ModuleDamage.healed(effector, effected, restored, this);
+				}
+			}
 			if (addContinuousEffects)
 			{
 				effected.getEffectList().add(info);
