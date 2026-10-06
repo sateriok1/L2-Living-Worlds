@@ -54,6 +54,10 @@ public interface ModuleContext
 	ModuleCompanions companions();
 
 	/**
+	 * @return the encounter surface: sends a phantom, or a group, after a player to fight them once
+	 */
+	ModuleEncounters encounters();
+
 	/**
 	 * @return the damage surface: a hook for every hit that lowers HP, with who did it, to whom, and the skill
 	 */

@@ -32,6 +32,7 @@ class DefaultModuleContext implements ModuleContext
 	private final ModuleHandlers _handlers;
 	private final ModuleEvents _events;
 	private final ModuleCompanions _companions = new ModuleCompanions();
+	private final ModuleEncounters _encounters = new ModuleEncounters();
 	private final ModuleDamage _damage = new ModuleDamage();
 	private final Logger _logger;
 
@@ -65,6 +66,12 @@ class DefaultModuleContext implements ModuleContext
 	public ModuleCompanions companions()
 	{
 		return _companions;
+	}
+
+	@Override
+	public ModuleEncounters encounters()
+	{
+		return _encounters;
 	}
 
 	@Override

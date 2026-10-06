@@ -62,6 +62,7 @@ The V1 `ModuleContext` surface:
 ```text
 ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
+  encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
   damage       a hook for every hit that lowers HP, with who did it, to whom and the skill (section 3.9)
   config       generic typed access to the module's own configuration
   events       register game event listeners
@@ -215,6 +216,36 @@ copy first. Which characters a feature offers and how the player asks for one is
 
 Inside the server a companion is a recruited party member of `PhantomManager` (flag `companion`), so phantom-wide rules
 apply to it: party loot and adena follow `FakePlayerPartyLootShare`, and its kills credit quests to the owner.
+
+## 3.7 Phantom encounters
+
+`context.encounters()` is a platform service for features that send a phantom, or a group of phantoms, after one player
+to fight them once: a roaming ambusher, a rival, a bounty hunter. The platform owns the mechanics and a module owns the
+policy. The platform has no timers, kinds, odds, difficulty or rewards of its own, and the service does nothing until a
+module calls it.
+
+- `available()` tells whether encounters can run (fake players and phantom PvP are both on).
+- `begin(size, style, listener)` starts an encounter and returns a `Group`. The `Style` says how the actors pick their
+  moment (`STRIKE_ON_ARRIVAL`, `ASK_FIRST` with opening lines, or `WAIT_FOR_MOMENT`: until the player stands still or
+  fights a monster), how long they may approach and fight, and what they say if they win. The `Listener` is told when
+  every actor is dead, so the module can pay a reward.
+- `spawn(victim, group, where, level, role, enchant, fixedName)` places one fully geared actor, already pointed at the
+  player. Where, how strong and how many is the module's choice. `group.shrinkTo(n)` corrects the size when some did not fit.
+- `discard(actor)` removes an actor that landed somewhere it must not be. `isTargeted(player)`, `activeCount()` and
+  `isPhantom(player)` let a module keep its own limits.
+
+Inside the server an actor is a recruited-style phantom outside any party. The platform walks it to the player, starts
+the fight, ends it after one fight, and clears everything up. For the duration of the fight the actor is allowed to attack
+that one player even if the player is not flagged. The exact actor/victim pair is honored by native auto-attack and
+PvP skill validation; party, clan, alliance, safe-zone, instance, duel and Olympiad restrictions still apply. AutoUse
+uses the Characters target mode so offensive area skills can include the victim while their native filtering and
+line-of-sight checks remain active. Actor lifetime protection starts before world entry and lasts through departure
+and corpse retention: actors gain no PvP/PK kill counters or karma, and their inventory never enters the native death
+drop lottery, regardless of configured rates or PK thresholds. Disabling Phantom PvP rejects new spawns and removes
+existing actors on the next PvP tick, clearing hostility and encounter reservations. Failed removals are retried;
+protection remains until world removal succeeds.
+
+The first user is the Phantom Encounters module.
 
 ## 3.9 Damage
 
