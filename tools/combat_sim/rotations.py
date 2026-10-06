@@ -99,7 +99,7 @@ def build_actor(st, w):
     return C.Actor(patk=st["p_atk"], patk_spd=st["p_atk_spd"], matk=1, matk_spd=333, mp_max=st["mp_max"] if MODEL_MP else 1e12,
                    mp_regen_3s=st["mp_regen_3s"] if MODEL_MP else 0.0, weapon=w["weapon_type"], crit=min(1.0, st["crit_pct"] / 100.0),
                    str_bonus=st["str_bonus"], crit_mul=st["crit_mul"], crit_add=st["crit_add"], reuse_mul=st["reuse_mul"],
-                   mp_mul=st["mp_mul"], hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
+                   mp_mul=st["mp_mul"], weapon_reuse=float(w.get("reuse_delay") or 0), hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
 
 
 def pareto(rows):

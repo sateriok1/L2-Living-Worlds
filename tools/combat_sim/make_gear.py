@@ -49,7 +49,7 @@ for iid, it in sorted(items.items()):
     by[(GR.get(s.get("crystal_type", "NONE"), s.get("crystal_type")), hands)][base].append(
         dict(line=line, grade=GR.get(s.get("crystal_type", "NONE"), s.get("crystal_type")), item_id=iid, weapon_name=base, variant=variant, weapon_type=s["weapon_type"], hands=hands,
              p_atk=st["pAtk"], m_atk=st.get("mAtk", 0), p_atk_spd=st.get("pAtkSpd", 0), crit=st.get("critRate", 0),
-             shot="SS-" + GR.get(s.get("crystal_type", "NONE"), s.get("crystal_type")), special_skill=sid, special_effect=text))
+             reuse_delay=int(s.get("reuse_delay", 0) or 0), shot="SS-" + GR.get(s.get("crystal_type", "NONE"), s.get("crystal_type")), special_skill=sid, special_effect=text))
 wrows = []
 for (grade, hands), bases in by.items():
     best = max(r[0]["p_atk"] for r in bases.values())
@@ -61,7 +61,7 @@ for (grade, hands), bases in by.items():
             seen.add(r["variant"]); wrows.append(r)
 order = ["NG", "D", "C", "B", "A", "S"]
 wrows.sort(key=lambda r: (order.index(r["grade"]), r["hands"], -r["p_atk"], r["weapon_name"], r["variant"]))
-cols = ["line", "grade", "item_id", "weapon_name", "variant", "weapon_type", "hands", "p_atk", "m_atk", "p_atk_spd", "crit", "shot", "special_skill", "special_effect"]
+cols = ["line", "grade", "item_id", "weapon_name", "variant", "weapon_type", "hands", "p_atk", "m_atk", "p_atk_spd", "crit", "shot", "special_skill", "special_effect", "reuse_delay"]
 with open(os.path.join(here, f"gear_{slug}_weapons.csv"), "w", newline="") as f:
     w = csv.DictWriter(f, cols); w.writeheader(); w.writerows(wrows)
 

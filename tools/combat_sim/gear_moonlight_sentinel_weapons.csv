@@ -1,17 +1,17 @@
-line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect
-Moonlight Sentinel,NG,273,Composite Bow,,BOW,2H,64.0,21.0,293.0,12.0,SS-NG,,
-Moonlight Sentinel,D,280,Light Crossbow,,BOW,2H,191.0,54.0,293.0,12.0,SS-D,,
-Moonlight Sentinel,D,279,Reinforced Long Bow,,BOW,2H,179.0,51.0,227.0,12.0,SS-D,,
-Moonlight Sentinel,C,286,Eminence Bow,,BOW,2H,323.0,83.0,293.0,12.0,SS-C,,
-Moonlight Sentinel,C,4822,Eminence Bow,Guidance,BOW,2H,323.0,83.0,293.0,12.0,SS-C,3008:4,accCombat +4.53
-Moonlight Sentinel,C,283,Akat Long Bow,,BOW,2H,316.0,84.0,227.0,12.0,SS-C,,
-Moonlight Sentinel,C,4819,Akat Long Bow,Guidance,BOW,2H,316.0,84.0,227.0,12.0,SS-C,3008:3,accCombat +4.82
-Moonlight Sentinel,B,287,Bow of Peril,,BOW,2H,400.0,99.0,293.0,12.0,SS-B,,
-Moonlight Sentinel,B,4828,Bow of Peril,Guidance,BOW,2H,400.0,99.0,293.0,12.0,SS-B,3008:6,accCombat +3.95
-Moonlight Sentinel,B,284,Dark Elven Long Bow,,BOW,2H,397.0,100.0,227.0,12.0,SS-B,,
-Moonlight Sentinel,A,8684,Shyeed's Bow,,BOW,2H,570.0,133.0,227.0,12.0,SS-A,,
-Moonlight Sentinel,A,8807,Shyeed's Bow,Focus,BOW,2H,570.0,133.0,227.0,12.0,SS-A,3050:2,critRate +61.6
-Moonlight Sentinel,A,289,Soul Bow,,BOW,2H,528.0,125.0,227.0,12.0,SS-A,,
-Moonlight Sentinel,S,7575,Draconic Bow,,BOW,2H,581.0,132.0,293.0,12.0,SS-S,,
-Moonlight Sentinel,S,7577,Draconic Bow,Focus,BOW,2H,581.0,132.0,293.0,12.0,SS-S,3567:1,critRate +88.1
-Moonlight Sentinel,S,6368,Shining Bow,,BOW,2H,581.0,132.0,293.0,12.0,SS-S,,
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect,reuse_delay
+Moonlight Sentinel,NG,273,Composite Bow,,BOW,2H,64.0,21.0,293.0,12.0,SS-NG,,,1500
+Moonlight Sentinel,D,280,Light Crossbow,,BOW,2H,191.0,54.0,293.0,12.0,SS-D,,,1500
+Moonlight Sentinel,D,279,Reinforced Long Bow,,BOW,2H,179.0,51.0,227.0,12.0,SS-D,,,820
+Moonlight Sentinel,C,286,Eminence Bow,,BOW,2H,323.0,83.0,293.0,12.0,SS-C,,,1500
+Moonlight Sentinel,C,4822,Eminence Bow,Guidance,BOW,2H,323.0,83.0,293.0,12.0,SS-C,3008:4,accCombat +4.53,1500
+Moonlight Sentinel,C,283,Akat Long Bow,,BOW,2H,316.0,84.0,227.0,12.0,SS-C,,,820
+Moonlight Sentinel,C,4819,Akat Long Bow,Guidance,BOW,2H,316.0,84.0,227.0,12.0,SS-C,3008:3,accCombat +4.82,820
+Moonlight Sentinel,B,287,Bow of Peril,,BOW,2H,400.0,99.0,293.0,12.0,SS-B,,,1500
+Moonlight Sentinel,B,4828,Bow of Peril,Guidance,BOW,2H,400.0,99.0,293.0,12.0,SS-B,3008:6,accCombat +3.95,1500
+Moonlight Sentinel,B,284,Dark Elven Long Bow,,BOW,2H,397.0,100.0,227.0,12.0,SS-B,,,820
+Moonlight Sentinel,A,8684,Shyeed's Bow,,BOW,2H,570.0,133.0,227.0,12.0,SS-A,,,820
+Moonlight Sentinel,A,8807,Shyeed's Bow,Focus,BOW,2H,570.0,133.0,227.0,12.0,SS-A,3050:2,critRate +61.6,820
+Moonlight Sentinel,A,289,Soul Bow,,BOW,2H,528.0,125.0,227.0,12.0,SS-A,,,820
+Moonlight Sentinel,S,7575,Draconic Bow,,BOW,2H,581.0,132.0,293.0,12.0,SS-S,,,1500
+Moonlight Sentinel,S,7577,Draconic Bow,Focus,BOW,2H,581.0,132.0,293.0,12.0,SS-S,3567:1,critRate +88.1,1500
+Moonlight Sentinel,S,6368,Shining Bow,,BOW,2H,581.0,132.0,293.0,12.0,SS-S,,,820

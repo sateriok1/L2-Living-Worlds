@@ -8,7 +8,7 @@ Mechanics mirrored from the server source (Formulas.calcPhysDam / calcMagicDam /
   skill time      (hitTime + coolTime) / PAtkSpd * 300  (physical)  or  / MAtkSpd * 333  (magic), floor 500/550 ms,
                   x0.7 for magic with spirit shots
   skill reuse     reuseDelay * 333 / PAtkSpd (or MAtkSpd), unless static reuse
-  auto interval   500000 / PAtkSpd ms
+  auto interval   (500000 + weapon reuse_delay*333) / PAtkSpd ms   (reuse_delay is 0 except bows)
 """
 import itertools, math
 from dataclasses import dataclass, field
@@ -37,6 +37,7 @@ class Actor:
     reuse_mul: float = 1.0      # pReuse multiplier (Song of Champion): scales physical skill reuse
     mp_mul: float = 1.0         # physicalMpConsumeRate multiplier
     mp_drain_per_s: float = 0.0 # toggle upkeep (e.g. Vicious Stance)
+    weapon_reuse: float = 0.0   # weapon reuse_delay (bows: 1500): auto cycle = (500000 + reuse_delay*333) / PAtkSpd  (Creature.calculateReuseTime, doAttackHitByBow)
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -120,7 +121,7 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
     hp_per_ms = actor.hp_regen_3s / 3000.0
 
     def derive():
-        return (auto_dmg(actor, dummy), 500000.0 / actor.patk_spd, (actor.mp_regen_3s / 3000.0) - actor.mp_drain_per_s / 1000.0,
+        return (auto_dmg(actor, dummy), (500000.0 + actor.weapon_reuse * 333.0) / actor.patk_spd, (actor.mp_regen_3s / 3000.0) - actor.mp_drain_per_s / 1000.0,
                 {sid: (skill_dmg(skills[sid], actor, dummy), cast_ms(skills[sid], actor), reuse_ms(skills[sid], actor)) for sid in policy.order})
 
     a_dmg, a_int, mp_per_ms, sd = derive()
