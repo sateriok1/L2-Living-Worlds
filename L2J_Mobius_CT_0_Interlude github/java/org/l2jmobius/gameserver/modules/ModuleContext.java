@@ -54,6 +54,11 @@ public interface ModuleContext
 	ModuleCompanions companions();
 
 	/**
+	 * @return the encounter surface: sends a phantom, or a group, after a player to fight them once
+	 */
+	ModuleEncounters encounters();
+
+	/**
 	 * @return a logger scoped to this module, so its output is attributable
 	 */
 	Logger logging();

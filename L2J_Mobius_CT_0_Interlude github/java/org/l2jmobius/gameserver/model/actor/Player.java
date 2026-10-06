@@ -113,6 +113,7 @@ import org.l2jmobius.gameserver.managers.IdManager;
 import org.l2jmobius.gameserver.managers.InstanceManager;
 import org.l2jmobius.gameserver.managers.ItemManager;
 import org.l2jmobius.gameserver.managers.ItemsOnGroundManager;
+import org.l2jmobius.gameserver.managers.PhantomEncounterRules;
 import org.l2jmobius.gameserver.managers.PunishmentManager;
 import org.l2jmobius.gameserver.managers.RecipeManager;
 import org.l2jmobius.gameserver.managers.ScriptManager;
@@ -5220,6 +5221,11 @@ public class Player extends Playable
 	
 	private void onDieDropItem(Creature killer)
 	{
+		// Living World: encounter gear stays protected through departure and corpse retention.
+		if (PhantomEncounterRules.isEncounterActor(getObjectId()))
+		{
+			return;
+		}
 		if (isOnEvent() || (killer == null))
 		{
 			return;
@@ -5323,6 +5329,11 @@ public class Player extends Playable
 	
 	public void onKillUpdatePvPKarma(Creature target)
 	{
+		// Living World: temporary encounter actors never accumulate kill counters or PK karma.
+		if (PhantomEncounterRules.isEncounterActor(getObjectId()))
+		{
+			return;
+		}
 		if ((target == null) || !target.isPlayable())
 		{
 			return;
@@ -8486,6 +8497,12 @@ public class Player extends Playable
 				return false;
 			}
 			
+			// Living World: the encounter exception follows the native party/clan/ally checks.
+			if (attacker.isPlayer() && attackerPlayer.isEncounterAttackAllowed(this))
+			{
+				return true;
+			}
+
 			// Now check again if the Player is in pvp zone, but this time at siege PvP zone, applying clan/ally checks
 			if (isInsideZone(ZoneId.PVP) && attackerPlayer.isInsideZone(ZoneId.PVP) && isInsideZone(ZoneId.SIEGE) && attackerPlayer.isInsideZone(ZoneId.SIEGE))
 			{
@@ -9025,6 +9042,17 @@ public class Player extends Playable
 		return isInParty() && (looter != null) && _party.getMembers().contains(looter);
 	}
 	
+	// Living World: only the exact encounter victim in the same ordinary world gets an exception.
+	private boolean isEncounterAttackAllowed(Player target)
+	{
+		return PhantomEncounterRules.isHostile(getObjectId(), target.getObjectId())
+			&& (getInstanceId() == 0) && (target.getInstanceId() == 0)
+			&& !isInDuel() && !target.isInDuel() && !isInOlympiadMode() && !target.isInOlympiadMode()
+			&& !isOnEvent() && !target.isOnEvent() && !target.inObserverMode()
+			&& !isInsideZone(ZoneId.PEACE) && !isInsideZone(ZoneId.NO_PVP)
+			&& !target.isInsideZone(ZoneId.PEACE) && !target.isInsideZone(ZoneId.NO_PVP);
+	}
+
 	/**
 	 * Check if the requested casting is a Pc->Pc skill cast and if it's a valid pvp condition
 	 * @param target WorldObject instance containing the target
@@ -9072,7 +9100,8 @@ public class Player extends Playable
 			}
 			
 			// PvP Skills
-			if (skill.isPvPOnly() && ((targetPlayer.getPvpFlag() == 0) && (targetPlayer.getKarma() == 0)) && !isInsideZone(ZoneId.PVP) && !isInsideZone(ZoneId.SIEGE))
+			final boolean encounterTarget = target.isPlayer() && isEncounterAttackAllowed(targetPlayer) && targetPlayer.isAutoAttackable(this);
+			if (skill.isPvPOnly() && !encounterTarget && ((targetPlayer.getPvpFlag() == 0) && (targetPlayer.getKarma() == 0)) && !isInsideZone(ZoneId.PVP) && !isInsideZone(ZoneId.SIEGE))
 			{
 				return false;
 			}
@@ -9112,6 +9141,11 @@ public class Player extends Playable
 				}
 			}
 			
+			if (encounterTarget)
+			{
+				return true;
+			}
+
 			// On retail, it is impossible to debuff a "peaceful" player.
 			if ((targetPlayer.getPvpFlag() == 0) && (targetPlayer.getKarma() == 0))
 			{
