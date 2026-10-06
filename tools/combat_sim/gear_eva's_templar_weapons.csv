@@ -1,0 +1,26 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect,reuse_delay
+Eva's Templar,NG,3908,Fang of Coyote,,SWORD,1H,58.0,42.0,277.0,8.0,SS-NG,,,0
+Eva's Templar,D,159,Bonebreaker,,BLUNT,1H,92.0,54.0,379.0,4.0,SS-D,,,0
+Eva's Templar,D,2499,Elven Long Sword,,SWORD,1H,92.0,54.0,379.0,8.0,SS-D,,,0
+Eva's Templar,C,135,Samurai Longsword,,SWORD,1H,156.0,83.0,379.0,8.0,SS-C,,,0
+Eva's Templar,C,4708,Samurai Longsword,Focus,SWORD,1H,156.0,83.0,379.0,8.0,SS-C,3010:4,critRate +73.3,0
+Eva's Templar,C,4710,Samurai Longsword,Haste,SWORD,1H,156.0,83.0,379.0,8.0,SS-C,3036:4,pAtkSpd x1.07,0
+Eva's Templar,C,2503,Yaksa Mace,,BLUNT,1H,156.0,83.0,379.0,4.0,SS-C,,,0
+Eva's Templar,C,4744,Yaksa Mace,Anger,BLUNT,1H,156.0,83.0,379.0,4.0,SS-C,3012:4,"pAtk +26.78, maxHp x0.85",0
+Eva's Templar,B,175,Art of Battle Axe,,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,,,0
+Eva's Templar,B,4755,Art of Battle Axe,Haste,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,3036:6,pAtkSpd x1.06,0
+Eva's Templar,B,171,Deadman's Glory,,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,,,0
+Eva's Templar,B,4750,Deadman's Glory,Anger,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,3012:6,"pAtk +30.12, maxHp x0.85",0
+Eva's Templar,B,4752,Deadman's Glory,Haste,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,3036:6,pAtkSpd x1.06,0
+Eva's Templar,B,79,Sword of Damascus,,SWORD,1H,194.0,99.0,379.0,8.0,SS-B,,,0
+Eva's Templar,B,4717,Sword of Damascus,Focus,SWORD,1H,194.0,99.0,379.0,8.0,SS-B,3010:6,critRate +64.5,0
+Eva's Templar,B,4719,Sword of Damascus,Haste,SWORD,1H,194.0,99.0,379.0,8.0,SS-B,3036:6,pAtkSpd x1.06,0
+Eva's Templar,A,8680,Barakiel's Axe,,BLUNT,1H,251.0,121.0,379.0,4.0,SS-A,,,0
+Eva's Templar,A,8796,Barakiel's Axe,Focus,BLUNT,1H,251.0,121.0,379.0,4.0,SS-A,3050:2,critRate +61.6,0
+Eva's Templar,A,8795,Barakiel's Axe,Haste,BLUNT,1H,251.0,121.0,379.0,4.0,SS-A,3068:3,pAtkSpd x1.06,0
+Eva's Templar,A,8678,Sirra's Blade,,SWORD,1H,251.0,121.0,379.0,8.0,SS-A,,,0
+Eva's Templar,A,8788,Sirra's Blade,Haste,SWORD,1H,251.0,121.0,379.0,8.0,SS-A,3068:3,pAtkSpd x1.06,0
+Eva's Templar,S,6365,Basalt Battlehammer,,BLUNT,1H,281.0,132.0,379.0,4.0,SS-S,,,0
+Eva's Templar,S,6364,Forgotten Blade,,SWORD,1H,281.0,132.0,379.0,8.0,SS-S,,,0
+Eva's Templar,S,6583,Forgotten Blade,Focus,SWORD,1H,281.0,132.0,379.0,8.0,SS-S,3566:1,critRate +84.3,0
+Eva's Templar,S,6581,Forgotten Blade,Haste,SWORD,1H,281.0,132.0,379.0,8.0,SS-S,3564:1,pAtkSpd x1.07,0

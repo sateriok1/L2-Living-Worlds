@@ -10,6 +10,7 @@ import l2data as L, stats_model as S
 
 line = sys.argv[1]; slug = line.lower().replace(" ", "_")
 types = next(a.split("=")[1].split(",") for a in sys.argv if a.startswith("--types="))
+WITHIN = float(next((a.split("=")[1] for a in sys.argv if a.startswith("--within=")), "0.9"))   # a second base weapon must reach this fraction of the best pAtk
 HANDS = next((a.split("=")[1] for a in sys.argv if a.startswith("--hands=")), None)           # e.g. 1H when the class uses a shield
 ONLY_ARMOR = next((a.split("=")[1].split(",") for a in sys.argv if a.startswith("--armor=")), None)   # e.g. HEAVY overrides the mastery-derived armor types
 ARMOR_MASTERY = {"Light Armor Mastery": "LIGHT", "Heavy Armor Mastery": "HEAVY", "Robe Mastery": "MAGIC", "Robe Armor Mastery": "MAGIC"}
@@ -35,6 +36,9 @@ for iid, it in sorted(items.items()):
     nm = it.get("name"); st = {x.get("type"): float(x.text) for x in it.findall("stats/stat")}
     if nm.startswith(("_", "Monster")) or nm.strip().isdigit() or not (0 < st.get("pAtk", 0) <= 600): continue
     if int(s.get("price", "0") or 0) <= 0: continue
+    if s.get("is_tradable") == "false": continue
+    if s.get("crystal_type", "NONE") == "NONE" and st.get("pAtk", 0) > 60: continue      # a no-grade weapon this strong is an NPC item
+    if s.get("crystal_type", "NONE") != "NONE" and int(s.get("crystal_count", "0") or 0) <= 0: continue      # NPC / test / event items have no crystal count
     hands = "2H" if s.get("bodypart") == "lrhand" else "1H"
     if HANDS and hands != HANDS: continue
     sas = [x for x in it.findall("skills/skill") if x.get("id") != "3599"]      # 3599 = Polearm Multi-attack, the weapon's own ability
@@ -54,7 +58,7 @@ wrows = []
 for (grade, hands), bases in by.items():
     best = max(r[0]["p_atk"] for r in bases.values())
     for base, rows in bases.items():
-        if rows[0]["p_atk"] < 0.9 * best: continue
+        if rows[0]["p_atk"] < WITHIN * best: continue
         seen = set()
         for r in rows:
             if r["variant"] in seen: continue       # duplicate item ids for the same weapon/variant: keep the first

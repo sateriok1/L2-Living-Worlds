@@ -1,0 +1,7 @@
+line,grade,set_name,set_skill,str,dex,con,p_atk_mul,p_atk_spd_mul,accuracy_add,notes
+Phoenix Knight,NG,none,,0,0,0,1,1,0,
+Phoenix Knight,B,Blue Wolf Breastplate (Heavy),3524:1,3,-2,-1,1.0,1.0,0.0,HEAVY
+Phoenix Knight,A,Armor of Nightmare (Heavy),3536:1,0,-2,2,1.04,1.0,0.0,HEAVY
+Phoenix Knight,A,Majestic Plate Armor (Heavy),3537:1,2,0,-2,1.04,1.0,3.1,HEAVY
+Phoenix Knight,A,Tallum Plate Armor (Heavy),3531:1,2,0,-2,1.0,1.08,0.0,HEAVY
+Phoenix Knight,S,Imperial Crusader Breastplate (Heavy),3553:1,2,-2,0,1.0,1.0,0.0,HEAVY
