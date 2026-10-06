@@ -113,6 +113,7 @@ import org.l2jmobius.gameserver.managers.IdManager;
 import org.l2jmobius.gameserver.managers.InstanceManager;
 import org.l2jmobius.gameserver.managers.ItemManager;
 import org.l2jmobius.gameserver.managers.ItemsOnGroundManager;
+import org.l2jmobius.gameserver.managers.PhantomEncounterRules;
 import org.l2jmobius.gameserver.managers.PunishmentManager;
 import org.l2jmobius.gameserver.managers.RecipeManager;
 import org.l2jmobius.gameserver.managers.ScriptManager;
@@ -8432,6 +8433,12 @@ public class Player extends Playable
 			if (isInsideZone(ZoneId.PEACE) || isInsideZone(ZoneId.NO_PVP))
 			{
 				return false;
+			}
+			
+			// A phantom sent on a PvP danger encounter may attack the player it came for, even while unflagged.
+			if (PhantomEncounterRules.isHostile(attacker.getObjectId(), getObjectId()))
+			{
+				return true;
 			}
 			
 			// Get Player
