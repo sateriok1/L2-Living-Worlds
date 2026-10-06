@@ -3073,33 +3073,15 @@ public class PhantomPartyManager
 		// (respectful-hunt edge cases), and a member standing there being hit without answering reads as broken.
 		if ((npc.getTarget() == null) && !npc.isAttackingNow() && !npc.isCastingNow())
 		{
-			for (Monster mob : World.getInstance().getVisibleObjectsInRange(npc, Monster.class, DANGER_RANGE))
+			final Monster defend = freeHuntDefenseTarget(state);
+			if (defend != null)
 			{
-				if (!mob.isDead() && (mob.getTarget() == npc))
+				standIfSitting(npc);
+				npc.setTarget(defend);
+				if (!castsSpells(state))
 				{
-					standIfSitting(npc);
-					npc.setTarget(mob);
-					if (!castsSpells(state))
-					{
-						npc.setRunning();
-						npc.getAI().setIntention(Intention.ATTACK, mob); // a caster just holds the target - AutoUse nukes it
-					}
-					break;
-				}
-			}
-			// Nothing on this member, but a mob may be on the leader or another member: help them.
-			if (npc.getTarget() == null)
-			{
-				final Monster defend = partyAttacker(state, null);
-				if (defend != null)
-				{
-					standIfSitting(npc);
-					npc.setTarget(defend);
-					if (!castsSpells(state))
-					{
-						npc.setRunning();
-						npc.getAI().setIntention(Intention.ATTACK, defend);
-					}
+					npc.setRunning();
+					npc.getAI().setIntention(Intention.ATTACK, defend); // a caster holds the target for AutoUse
 				}
 			}
 		}
@@ -3301,16 +3283,7 @@ public class PhantomPartyManager
 	{
 		for (Monster mob : World.getInstance().getVisibleObjectsInRange(state.npc, Monster.class, SUPPORT_RANGE))
 		{
-			if (mob.isDead())
-			{
-				continue;
-			}
-			WorldObject target = mob.getTarget();
-			if ((target != null) && target.isSummon())
-			{
-				target = target.asSummon().getOwner();
-			}
-			if ((target instanceof Creature) && ((target == state.npc) || isPartyCreature(state.owner, (Creature) target)))
+			if (isHatingParty(state, mob))
 			{
 				return true;
 			}
@@ -5582,15 +5555,35 @@ public class PhantomPartyManager
 		return null;
 	}
 
+	/** Self-defense is local to the recruit, including the outer free-hunt leash; party defense stays near the leader. */
+	private Monster freeHuntDefenseTarget(Member state)
+	{
+		final Monster onMe = attackerOnMe(state, null, false);
+		return (onMe != null) ? onMe : partyAttacker(state, null);
+	}
+
 	/** @return {@code true} if this mob's current victim is the member itself or anyone in its party (or a party summon). */
 	private boolean isHatingParty(Member state, Monster mob)
 	{
-		WorldObject target = mob.getTarget();
-		if ((target != null) && target.isSummon())
+		if (mob.isAlikeDead() || !mob.isSpawned() || (mob.getInstanceId() != state.npc.getInstanceId()))
+		{
+			return false;
+		}
+		// Physical attacks use native hate/AI targets; the selected target may be null or a self-buff.
+		Creature target = mob.getMostHated();
+		if ((target == null) && mob.hasAI() && (mob.getAI().getIntention() == Intention.ATTACK))
+		{
+			target = mob.getAI().getAttackTarget();
+		}
+		if ((target == null) || target.isAlikeDead() || !target.isSpawned() || (target.getInstanceId() != mob.getInstanceId()) || !mob.isInSurroundingRegion(target))
+		{
+			return false;
+		}
+		if (target.isSummon())
 		{
 			target = target.asSummon().getOwner();
 		}
-		return (target instanceof Creature) && ((target == state.npc) || isPartyCreature(state.owner, (Creature) target));
+		return (target != null) && ((target == state.npc) || isPartyCreature(state.owner, target));
 	}
 
 	/**
@@ -5603,10 +5596,11 @@ public class PhantomPartyManager
 	{
 		final Player npc = state.npc;
 		final Player owner = state.owner;
-		if ((owner == null) || npc.isInsideZone(ZoneId.PEACE))
+		if ((owner == null) || (npc.getInstanceId() != owner.getInstanceId()) || npc.isInsideZone(ZoneId.PEACE))
 		{
 			return null;
 		}
+		final GeoEngine geo = GeoEngine.getInstance();
 		Monster best = null;
 		double bestDistance = Double.MAX_VALUE;
 		for (Monster mob : World.getInstance().getVisibleObjectsInRange(owner, Monster.class, PARTY_DEFENSE_RANGE))
@@ -5618,6 +5612,11 @@ public class PhantomPartyManager
 			final double distance = npc.calculateDistance2D(mob);
 			if ((distance <= ASSIST_MAX_RANGE) && (distance < bestDistance))
 			{
+				// Apply the normal free-hunt reachability rules before ranking a defense target.
+				if ((Math.abs(npc.getZ() - mob.getZ()) >= 800) || !geo.canSeeTarget(npc, mob) || !geo.canMoveToTarget(npc.getX(), npc.getY(), npc.getZ(), mob.getX(), mob.getY(), mob.getZ(), npc.getInstanceId()))
+				{
+					continue;
+				}
 				best = mob;
 				bestDistance = distance;
 			}
