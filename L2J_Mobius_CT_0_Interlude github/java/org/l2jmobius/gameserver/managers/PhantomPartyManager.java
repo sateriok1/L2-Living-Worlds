@@ -7468,10 +7468,10 @@ public class PhantomPartyManager
 		return false;
 	}
 
-	/** Classes that live on MP rest for it (daggers too: their blows cost MP); everyone else rests only for HP. */
+	/** MP-dependent roles rest for MP or HP; everyone else rests only for HP. */
 	private static boolean usesMp(Member state)
 	{
-		return state.isSupport() || (state.role == PartyRole.NUKER) || (state.role == PartyRole.SINGER) || (state.role == PartyRole.DANCER) || (state.role == PartyRole.ARCHER) || (state.role == PartyRole.DAGGER);
+		return state.isSupport() || (state.role == PartyRole.NUKER) || (state.role == PartyRole.SINGER) || (state.role == PartyRole.DANCER) || (state.role == PartyRole.ARCHER);
 	}
 
 	private static int restNeed(Member state)

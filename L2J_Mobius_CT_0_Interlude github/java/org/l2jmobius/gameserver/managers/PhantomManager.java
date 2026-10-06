@@ -59,9 +59,9 @@ import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData;
 import org.l2jmobius.gameserver.data.xml.PlayerTemplateData;
 import org.l2jmobius.gameserver.data.xml.SkillData;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.GearContext;
-import org.l2jmobius.gameserver.taskmanagers.AttackStanceTaskManager;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.WeaponKind;
 import org.l2jmobius.gameserver.geoengine.GeoEngine;
+import org.l2jmobius.gameserver.handler.ItemHandler;
 import org.l2jmobius.gameserver.model.Location;
 import org.l2jmobius.gameserver.model.StatSet;
 import org.l2jmobius.gameserver.model.World;
@@ -89,7 +89,6 @@ import org.l2jmobius.gameserver.model.events.listeners.AbstractEventListener;
 import org.l2jmobius.gameserver.model.events.listeners.ConsumerEventListener;
 import org.l2jmobius.gameserver.model.groups.Party;
 import org.l2jmobius.gameserver.model.item.Armor;
-import org.l2jmobius.gameserver.handler.ItemHandler;
 import org.l2jmobius.gameserver.model.item.EtcItem;
 import org.l2jmobius.gameserver.model.item.ItemTemplate;
 import org.l2jmobius.gameserver.model.item.Weapon;
@@ -110,11 +109,12 @@ import org.l2jmobius.gameserver.network.Disconnection;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.SystemMessageId;
 import org.l2jmobius.gameserver.network.enums.ChatType;
-import org.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
 import org.l2jmobius.gameserver.network.serverpackets.CreatureSay;
 import org.l2jmobius.gameserver.network.serverpackets.ExDuelAskStart;
 import org.l2jmobius.gameserver.network.serverpackets.L2Friend;
+import org.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
+import org.l2jmobius.gameserver.taskmanagers.AttackStanceTaskManager;
 import org.l2jmobius.gameserver.taskmanagers.AutoPlayTaskManager;
 import org.l2jmobius.gameserver.taskmanagers.AutoUseTaskManager;
 
@@ -4188,8 +4188,13 @@ public class PhantomManager implements IXmlReader
 		catch (Exception e)
 		{
 			LOGGER.warning(getClass().getSimpleName() + ": Failed to despawn phantom " + objectId + ": " + e.getMessage());
+			if (PhantomEncounterRules.isEncounterActor(objectId))
+			{
+				return; // Keep protection and tracking so an encounter tick can retry world removal.
+			}
 		}
 		_phantoms.remove(objectId);
+		PhantomEncounterRules.unregisterActor(objectId);
 		_promoted.remove(objectId); // the DB row now carries the regular account; the live-instance bridge is done
 		if (persistent)
 		{
@@ -4448,6 +4453,12 @@ public class PhantomManager implements IXmlReader
 			{
 				BotClanManager.getInstance().attach(phantom, BotClanManager.getInstance().getRandomClan());
 			}
+		}
+		if (ENCOUNTER_ENCHANT.get() != null)
+		{
+			// Protect encounter gear before publishing the actor to the world. AutoUse targets characters.
+			PhantomEncounterRules.registerActor(phantom.getObjectId());
+			phantom.getAutoPlaySettings().setNextTargetMode(2);
 		}
 		enterWorld(phantom, spawnLocation);
 
@@ -5105,6 +5116,7 @@ public class PhantomManager implements IXmlReader
 		// and party/clan-defense engagements armed by startPvpDefense. Each behavior is gated individually below.
 		if (!PhantomPvpManager.pvpEnabled())
 		{
+			removeDisabledEncounters();
 			// FPC-115: switched off (a config reload). Release every open engagement once, or the hunt and party ticks
 			// would keep deferring to phantoms nothing drives any more. Idle after that, as before.
 			if (_pvpWasEnabled)
@@ -5710,9 +5722,9 @@ public class PhantomManager implements IXmlReader
 	 * As above, but pinned to one class. {@code classId} is resolved for the actor's level like any named recruit
 	 * (a Titan below the third-class level comes as the Destroyer or earlier); 0 or less keeps the role's random class.
 	 */
-	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout, boolean cpPotions)
+	public synchronized Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout, boolean cpPotions)
 	{
-		if ((victim == null) || (where == null) || (group == null))
+		if (!PhantomPvpManager.pvpEnabled() || (victim == null) || (where == null) || (group == null))
 		{
 			return null;
 		}
@@ -5755,6 +5767,28 @@ public class PhantomManager implements IXmlReader
 		}
 		data.encounterActor = true; // last: the pvp tick treats it as an encounter actor from here on
 		return actor;
+	}
+
+	// Runs on every disabled tick, including actors finishing a spawn during the config reload.
+	// Share the spawn lock so cleanup never tears down a partially configured actor.
+	private synchronized void removeDisabledEncounters()
+	{
+		for (PhantomData data : _phantoms.values())
+		{
+			if (!data.encounterActor && !PhantomEncounterRules.isEncounterActor(data.player.getObjectId()))
+			{
+				continue;
+			}
+			PhantomEncounterRules.clearHostile(data.player.getObjectId());
+			try
+			{
+				despawnRecruit(data.player);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(getClass().getSimpleName() + ": Failed to remove disabled encounter actor " + data.player.getObjectId() + ": " + e.getMessage());
+			}
+		}
 	}
 
 	/** Exactly {@link #ENC_POTION_COUNT} each of the best healing, CP and mana potions (the outfit's larger healing stack is trimmed). */
@@ -5911,7 +5945,6 @@ public class PhantomManager implements IXmlReader
 		{
 			if (now >= data.encounterEndAt)
 			{
-				data.encounterActor = false;
 				despawnRecruit(phantom);
 			}
 			return;

@@ -17,6 +17,7 @@
 package org.l2jmobius.gameserver.managers;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -203,12 +204,30 @@ public final class PhantomEncounterRules
 	}
 
 	// Which actors are currently authorised to attack which player (actor objectId -> victim objectId). Read by
-	// Player.isAutoAttackable so an encounter actor's skills and attacks are legal against an unflagged victim. Empty
+	// Player.isAutoAttackable and checkPvpSkill so attacks and skills are legal against an unflagged victim. Empty
 	// unless a module has sent an encounter, so the stock rule is untouched.
 	private static final Map<Integer, Integer> HOSTILE = new ConcurrentHashMap<>();
+	// Actor protection lasts through departure and corpse retention, after hostility has ended.
+	private static final Set<Integer> ACTORS = ConcurrentHashMap.newKeySet();
 
 	private PhantomEncounterRules()
 	{
+	}
+
+	public static void registerActor(int actorObjectId)
+	{
+		ACTORS.add(actorObjectId);
+	}
+
+	public static boolean isEncounterActor(int actorObjectId)
+	{
+		return ACTORS.contains(actorObjectId);
+	}
+
+	public static void unregisterActor(int actorObjectId)
+	{
+		clearHostile(actorObjectId);
+		ACTORS.remove(actorObjectId);
 	}
 
 	public static void markHostile(int actorObjectId, int victimObjectId)

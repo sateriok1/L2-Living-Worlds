@@ -41,6 +41,10 @@ import org.l2jmobius.gameserver.model.actor.Player;
  * policy: when to send one, how many, how strong, what they say, and what a win is worth. The platform has no timers,
  * kinds or rewards of its own.
  * <p>
+ * Only the active actor/victim pair receives native attack and offensive-skill permission, subject to safety checks.
+ * Actors gain no kill counters or karma and never drop inventory on death, including during departure and corpse
+ * retention. Turning phantom PvP off removes existing actors on the next PvP tick and rejects new spawns.
+ * <p>
  * It is inert until a module calls it, and the actors it makes come from the fake player system, so it needs fake
  * players and phantom PvP to be on ({@link #available()}).
  */
