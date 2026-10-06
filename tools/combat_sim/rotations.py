@@ -10,14 +10,31 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import l2data as L, stats_model as S, combat_sim as C
 
 WINDOWS = list(range(5, 125, 5))
+MODEL_MP = os.environ.get("L2_MP", "infinite") == "finite"   # first tests assume infinite mana (user decision); L2_MP=finite charges MP and regen
+TIMED_BUFFS = os.environ.get("L2_BUFF_TIME", "infinite") == "finite"   # first tests assume buffs never expire; finite = Rage ends at 90 s
+MP_SUFFIX = ("" if not MODEL_MP else "_finitemp") + ("_timed" if TIMED_BUFFS else "")
 MODEL_HP = False        # HP costs ignored: phantom health is assumed maintained (user decision); set True to charge them
 DUMMY = C.Dummy()          # defence scales every hit equally, so it cannot change which rotation is best
 HOLDS = (0, 400, 1000)
+MAX_POLICIES = 20000      # cap on priority orders tried per gear combo; longer orders are dropped when a class has many usable skills
+
+
+def max_len_for(n_skills):
+    """Longest priority list whose full permutation count (x hold options) stays under MAX_POLICIES."""
+    import math
+    total, k = 1, 0
+    while k < min(6, n_skills):
+        nxt = total + math.perm(n_skills, k + 1) * len(HOLDS)
+        if nxt > MAX_POLICIES:
+            break
+        total, k = nxt, k + 1
+    return k
 
 
 SPAWN_BUFFS = [1204, 1068, 1086, 1077, 1242, 1240, 1268, 1087, 1040, 1243, 1044, 1259, 1035, 1036, 1045, 1048, 1062]   # PhantomBuffs.applyFullBuffs for a damage dealer, max level
 
 
+_PARENT = _TREES = None
 RAGE_ID, RAGE_MS = 94, 90000      # Rage: abnormalTime 90 s, so it only covers the first 90 s of a long fight
 VICIOUS_ID = 312                  # Vicious Stance toggle: +critDmgAdd, upkeep 0.8 * (level-1)/7.5 MP per second
 
@@ -36,8 +53,8 @@ def buff_set(name):
     base, rage, vicious = split_name(name)
     if (base, rage, vicious) != (name, False, False):
         return buff_set(base) + (((VICIOUS_ID, None),) if vicious else ())
-    if name == "none":
-        return ()
+    if name in ("none", "party"):
+        return ()                      # 'party' is level- and weapon-dependent: setup() asks party_buffs for it
     els = S._skill_elements()
     if name == "spawn":
         return tuple((i, int(els[i].get("levels"))) for i in SPAWN_BUFFS if i in els)
@@ -60,12 +77,18 @@ def temp_set(name):
 def setup(level, cid, w, a, learned, bname):
     """(stats with every buff, the actor, the actor that continues after Rage expires or None)."""
     perm, temp = buff_set(bname), temp_set(bname)
+    if split_name(bname)[0] == "party":
+        import party_buffs
+        global _PARENT, _TREES
+        if _PARENT is None:
+            _PARENT, _TREES = L.load_classes()[1], L.load_trees()
+        perm = tuple(party_buffs.party_buffs(level, w["weapon_type"], w["hands"], _PARENT, _TREES)) + perm
     st = S.compute(cid, level, w, a, learned, perm + temp)
     drain = 0.8 * (level - 1) / 7.5 if (split_name(bname)[2] and VICIOUS_ID in learned) else 0.0
     actor = build_actor(st, w)
     actor.mp_drain_per_s = drain
     later = None
-    if temp and RAGE_ID in learned:
+    if temp and RAGE_ID in learned and TIMED_BUFFS:
         after = build_actor(S.compute(cid, level, w, a, learned, perm), w)
         after.mp_drain_per_s = drain
         later = (RAGE_MS, after)
@@ -73,15 +96,15 @@ def setup(level, cid, w, a, learned, bname):
 
 
 def build_actor(st, w):
-    return C.Actor(patk=st["p_atk"], patk_spd=st["p_atk_spd"], matk=1, matk_spd=333, mp_max=st["mp_max"],
-                   mp_regen_3s=st["mp_regen_3s"], weapon=w["weapon_type"], crit=min(1.0, st["crit_pct"] / 100.0),
+    return C.Actor(patk=st["p_atk"], patk_spd=st["p_atk_spd"], matk=1, matk_spd=333, mp_max=st["mp_max"] if MODEL_MP else 1e12,
+                   mp_regen_3s=st["mp_regen_3s"] if MODEL_MP else 0.0, weapon=w["weapon_type"], crit=min(1.0, st["crit_pct"] / 100.0),
                    str_bonus=st["str_bonus"], crit_mul=st["crit_mul"], crit_add=st["crit_add"], reuse_mul=st["reuse_mul"],
                    mp_mul=st["mp_mul"], hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
 
 
 def pareto(rows):
     """Drop combos that are no better on P.Atk, attack speed, auto crit, STR bonus and MP than another combo."""
-    keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "mp_max", "mp_regen_3s", "crit_mul") + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
+    keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "crit_mul") + (("mp_max", "mp_regen_3s") if MODEL_MP else ()) + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
     keep = []
     for i, a in enumerate(rows):
         dom = False
@@ -92,6 +115,10 @@ def pareto(rows):
         if not dom:
             keep.append(a)
     return keep
+
+
+def rot_file(slug, bname):
+    return f"rotations_{slug}{'' if bname == 'none' else '_' + bname}{MP_SUFFIX}.json"
 
 
 def at(tl, ms):
@@ -112,7 +139,7 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
         skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
         ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
         best = {ms: None for ms in WINDOWS}
-        for k in range(0, min(6, len(ids)) + 1):
+        for k in range(0, max_len_for(len(ids)) + 1):
             for perm in itertools.permutations(ids, k):
                 for h in (HOLDS if k > 1 else (0,)):
                     tl, pol = [], C.Policy(perm, h)
@@ -149,4 +176,4 @@ if __name__ == "__main__":
         best = max(result[lv], key=lambda r: r["windows"][60]["dps"])
         print(f"L{lv}: {len(result[lv])} combos; best@60s {best['weapon']} + {best['armor']}: "
               f"{best['windows'][60]['dps']:.0f} dps, order {best['windows'][60]['order']}, mp used {best['windows'][60]['mp_used']:.0f}/{best['stats']['mp_max']:.0f}", flush=True)
-    json.dump(result, open(os.path.join(here, f"rotations_{slug}.json" if bname == "none" else f"rotations_{slug}_{bname}.json"), "w"), indent=1)
+    json.dump(result, open(os.path.join(here, rot_file(slug, bname)), "w"), indent=1)

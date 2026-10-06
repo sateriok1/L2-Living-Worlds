@@ -10,8 +10,8 @@ line, bname = sys.argv[1], sys.argv[2]
 ref = sys.argv[3] if len(sys.argv) > 3 else "none"      # the buff set to compare against (default: no buffs)
 here = os.path.dirname(os.path.abspath(__file__))
 slug = line.lower().replace(" ", "_")
-base = json.load(open(os.path.join(here, f"rotations_{slug}.json" if ref == "none" else f"rotations_{slug}_{ref}.json")))
-buffd = json.load(open(os.path.join(here, f"rotations_{slug}_{bname}.json")))
+base = json.load(open(os.path.join(here, R.rot_file(slug, ref))))
+buffd = json.load(open(os.path.join(here, R.rot_file(slug, bname))))
 names, parent = L.load_classes(); trees = L.load_trees(); sk_all = L.load_skills()
 leaf = [k for k, v in names.items() if v == line][0]
 W = S.read_csv(os.path.join(here, f"gear_{slug}_weapons.csv")); A = S.read_csv(os.path.join(here, f"gear_{slug}_armor.csv"))

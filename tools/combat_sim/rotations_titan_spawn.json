@@ -4113,20 +4113,18 @@
      "mp_used": 387.0
     },
     "75": {
-     "dps": 255.3343380056109,
+     "dps": 252.63188323493281,
      "order": [
-      "Fatal Strike",
-      "Power Smash"
+      "Fatal Strike"
      ],
      "order_ids": [
-      190,
-      255
+      190
      ],
      "hold": 0,
-     "mp_used": 683.0
+     "mp_used": 387.0
     },
     "80": {
-     "dps": 254.18790152092978,
+     "dps": 255.69528935780755,
      "order": [
       "Fatal Strike",
       "Power Smash"
@@ -4136,32 +4134,10 @@
       255
      ],
      "hold": 0,
-     "mp_used": 720.0
+     "mp_used": 800.0
     },
     "85": {
-     "dps": 254.04486497891372,
-     "order": [
-      "Fatal Strike"
-     ],
-     "order_ids": [
-      190
-     ],
-     "hold": 0,
-     "mp_used": 430.0
-    },
-    "90": {
-     "dps": 253.87433660512477,
-     "order": [
-      "Fatal Strike"
-     ],
-     "order_ids": [
-      190
-     ],
-     "hold": 0,
-     "mp_used": 473.0
-    },
-    "95": {
-     "dps": 253.11389627963615,
+     "dps": 254.29699301650655,
      "order": [
       "Fatal Strike",
       "Power Smash"
@@ -4171,62 +4147,98 @@
       255
      ],
      "hold": 0,
-     "mp_used": 720.0
+     "mp_used": 800.0
+    },
+    "90": {
+     "dps": 254.393963234797,
+     "order": [
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "order_ids": [
+      190,
+      255
+     ],
+     "hold": 0,
+     "mp_used": 880.0
+    },
+    "95": {
+     "dps": 253.21134683063352,
+     "order": [
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "order_ids": [
+      190,
+      255
+     ],
+     "hold": 0,
+     "mp_used": 880.0
     },
     "100": {
-     "dps": 252.63188323493247,
+     "dps": 253.35290233638858,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 516.0
+     "mp_used": 960.0
     },
     "105": {
-     "dps": 254.76180329811905,
+     "dps": 255.4484881566487,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 559.0
+     "mp_used": 1003.0
     },
     "110": {
-     "dps": 253.7237327643723,
+     "dps": 254.6095275245607,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 559.0
+     "mp_used": 1040.0
     },
     "115": {
-     "dps": 253.6042380463871,
+     "dps": 254.67182880374216,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 602.0
+     "mp_used": 1120.0
     },
     "120": {
-     "dps": 252.7009052759414,
+     "dps": 253.72401308507335,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 602.0
+     "mp_used": 1120.0
     }
    }
   }
@@ -4758,29 +4770,7 @@
      "mp_used": 450.0
     },
     "90": {
-     "dps": 267.23182809459644,
-     "order": [
-      "Fatal Strike"
-     ],
-     "order_ids": [
-      190
-     ],
-     "hold": 0,
-     "mp_used": 495.0
-    },
-    "95": {
-     "dps": 265.9007434030503,
-     "order": [
-      "Fatal Strike"
-     ],
-     "order_ids": [
-      190
-     ],
-     "hold": 0,
-     "mp_used": 495.0
-    },
-    "100": {
-     "dps": 266.12632124177674,
+     "dps": 267.4469250697937,
      "order": [
       "Fatal Strike",
       "Power Smash"
@@ -4790,51 +4780,85 @@
       255
      ],
      "hold": 0,
-     "mp_used": 857.0
+     "mp_used": 902.0
+    },
+    "95": {
+     "dps": 266.10451948481614,
+     "order": [
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "order_ids": [
+      190,
+      255
+     ],
+     "hold": 0,
+     "mp_used": 902.0
+    },
+    "100": {
+     "dps": 266.32334527055997,
+     "order": [
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "order_ids": [
+      190,
+      255
+     ],
+     "hold": 0,
+     "mp_used": 984.0
     },
     "105": {
-     "dps": 268.18869631447205,
+     "dps": 268.5992988704619,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 585.0
+     "mp_used": 1029.0
     },
     "110": {
-     "dps": 266.99562916177877,
+     "dps": 267.60351833441615,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 585.0
+     "mp_used": 1066.0
     },
     "115": {
-     "dps": 266.94060733202565,
+     "dps": 267.7286277633412,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 630.0
+     "mp_used": 1148.0
     },
     "120": {
-     "dps": 265.89896614965875,
+     "dps": 266.6541523963362,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 630.0
+     "mp_used": 1148.0
     }
    }
   }
@@ -5388,7 +5412,7 @@
      "mp_used": 539.0
     },
     "100": {
-     "dps": 281.13473357925324,
+     "dps": 280.28531203897074,
      "order": [
       "Fatal Strike",
       "Power Smash"
@@ -5398,51 +5422,59 @@
       255
      ],
      "hold": 0,
-     "mp_used": 946.0
+     "mp_used": 1032.0
     },
     "105": {
-     "dps": 282.64140840160513,
+     "dps": 282.758518048122,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 637.0
+     "mp_used": 1081.0
     },
     "110": {
-     "dps": 281.275430174748,
+     "dps": 281.58788817088913,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 637.0
+     "mp_used": 1118.0
     },
     "115": {
-     "dps": 281.2940923736284,
+     "dps": 281.784911906383,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 686.0
+     "mp_used": 1204.0
     },
     "120": {
-     "dps": 280.09808383350827,
+     "dps": 280.5684525523981,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 686.0
+     "mp_used": 1204.0
     }
    }
   }
@@ -6029,26 +6061,30 @@
      "mp_used": 702.0
     },
     "115": {
-     "dps": 296.71095404076226,
+     "dps": 296.88694210243403,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 756.0
+     "mp_used": 1274.0
     },
     "120": {
-     "dps": 295.3425916608252,
+     "dps": 295.511246886594,
      "order": [
-      "Fatal Strike"
+      "Fatal Strike",
+      "Power Smash"
      ],
      "order_ids": [
-      190
+      190,
+      255
      ],
      "hold": 0,
-     "mp_used": 756.0
+     "mp_used": 1274.0
     }
    }
   }
