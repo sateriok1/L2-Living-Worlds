@@ -10,18 +10,19 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import l2data as L, stats_model as S, combat_sim as C
 
 WINDOWS = list(range(5, 125, 5))
+MODEL_HP = False        # HP costs ignored: phantom health is assumed maintained (user decision); set True to charge them
 DUMMY = C.Dummy()          # defence scales every hit equally, so it cannot change which rotation is best
 HOLDS = (0, 400, 1000)
 
 
 def pareto(rows):
     """Drop combos that are no better on P.Atk, attack speed, auto crit, STR bonus and MP than another combo."""
+    keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "mp_max", "mp_regen_3s") + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
     keep = []
     for i, a in enumerate(rows):
         dom = False
         for j, b in enumerate(rows):
-            if i != j and all(b[1][k] >= a[1][k] for k in ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "mp_max", "mp_regen_3s", "hp_max", "hp_regen_3s")) \
-                    and any(b[1][k] > a[1][k] for k in ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "mp_max", "mp_regen_3s", "hp_max", "hp_regen_3s")):
+            if i != j and all(b[1][k] >= a[1][k] for k in keys) and any(b[1][k] > a[1][k] for k in keys):
                 dom = True
                 break
         if not dom:
@@ -45,7 +46,8 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
     for (w, a), st in rows:
         actor = C.Actor(patk=st["p_atk"], patk_spd=st["p_atk_spd"], matk=1, matk_spd=333, mp_max=st["mp_max"],
                         mp_regen_3s=st["mp_regen_3s"], weapon=w["weapon_type"], crit=st["crit_pct"] / 100.0,
-                        str_bonus=st["str_bonus"], hp_max=st["hp_max"], hp_regen_3s=st["hp_regen_3s"])
+                        str_bonus=st["str_bonus"],
+                        hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
         skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
         ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
         best = {ms: None for ms in WINDOWS}
