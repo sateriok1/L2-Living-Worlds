@@ -59,6 +59,7 @@ import org.l2jmobius.gameserver.model.stats.TraitType;
 import org.l2jmobius.gameserver.model.stats.functions.AbstractFunction;
 import org.l2jmobius.gameserver.model.stats.functions.FuncTemplate;
 import org.l2jmobius.gameserver.model.zone.ZoneId;
+import org.l2jmobius.gameserver.modules.ModuleDamage;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
 import org.l2jmobius.gameserver.util.LocationUtil;
 
@@ -1240,7 +1241,11 @@ public class Skill
 					{
 						if (applyInstantEffects && effect.calcSuccess(info.getEffector(), info.getEffected(), info.getSkill()))
 						{
-							effect.onStart(info.getEffector(), info.getEffected(), info.getSkill());
+							// Living World: include SELF/PVE/PVP scopes, measure only actual instant healing effects.
+							try (ModuleDamage.Scope ignored = ModuleDamage.captureHeal(info.getEffector(), info.getEffected(), info.getSkill(), effect.getEffectType() == EffectType.HEAL))
+							{
+								effect.onStart(info.getEffector(), info.getEffected(), info.getSkill());
+							}
 						}
 					}
 					else if (addContinuousEffects && effect.canStart(info.getEffector(), info.getEffected(), info.getSkill()))

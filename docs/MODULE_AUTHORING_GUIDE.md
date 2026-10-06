@@ -216,6 +216,20 @@ report what you contributed. Reach for an event before asking for a new platform
 fires an event, you need no core change. For a moment tied to one specific npc, such as talking to a single quest
 giver, use a normal script or quest in your `scripts/` directory rather than a global listener.
 
+## Measuring damage and healing
+
+Register through `context.damage().addListener((attacker, target, damage, skill, dot) -> ...)` or
+`context.damage().addHealListener((healer, target, amount, skill) -> ...)`. Damage measures actual native HP/CP loss,
+including CP-only hits. Rejected damage, MP absorption and overkill contribute nothing. A transfer is credited to
+its actual recipients. Reflected damage names the reflector as `attacker` and reports `skill = null`, including
+transferred damage; the original caster's skill is never credited to the reflector. Auto attacks also have a null
+skill. The finishing hit reaches listeners before the native death event, so a death recap can use it.
+
+Healing covers successful instant `HEAL` effects of non-static skills, including SELF effects. Static/item heals,
+recovery herbs, periodic healing, regeneration and HP redistribution are excluded. A skill with multiple heal effects
+may emit multiple callbacks. Keep callbacks quick and non-blocking; treat creatures as read-only observations.
+Registrations are tracked against your module and apply the same restart-based disable/removal rules as events.
+
 ## Reading your config
 
 Read every tunable through `context.config()`: ids, chances, costs, and toggles. Never hardcode them. This lets

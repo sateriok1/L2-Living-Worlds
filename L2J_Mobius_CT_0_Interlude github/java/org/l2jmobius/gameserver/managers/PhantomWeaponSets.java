@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import org.l2jmobius.commons.threads.ThreadPool;
 import org.l2jmobius.commons.util.Rnd;
@@ -82,6 +83,11 @@ public final class PhantomWeaponSets
 		public String label()
 		{
 			return _label;
+		}
+
+		public WeaponType type()
+		{
+			return _type;
 		}
 
 		public boolean matches(ItemTemplate item)
@@ -152,21 +158,55 @@ public final class PhantomWeaponSets
 	}
 
 	/**
+	 * @param available whether a weapon of a kind exists in the phantom's own grade; a kind with none there is never
+	 *            picked, so the phantom is not handed a weapon from a lower grade (FPC-202)
 	 * @return the main weapon this class carries in {@code context}, rolled among its main weapons outside the
-	 *         Olympiad, or {@code null} when the class has no weapon set (its role weapon applies)
+	 *         Olympiad, or {@code null} when the class has no weapon set or none of its weapons exists in the grade
+	 *         (its role weapon applies)
 	 */
-	public static WeaponKind mainKind(PlayerClass playerClass, GearContext context)
+	public static WeaponKind mainKind(PlayerClass playerClass, GearContext context, Predicate<WeaponKind> available)
 	{
 		final WeaponSet set = find(playerClass);
 		if (set == null)
 		{
 			return null;
 		}
-		if (context == GearContext.OLYMPIAD)
+		// The Olympiad weapon is fixed, unless the grade has none of it; then the field roll applies.
+		if ((context == GearContext.OLYMPIAD) && available.test(set.olympiad))
 		{
 			return set.olympiad;
 		}
-		return set.main.get(Rnd.get(set.main.size()));
+		final List<WeaponKind> options = new ArrayList<>();
+		for (WeaponKind kind : set.main)
+		{
+			if (available.test(kind))
+			{
+				options.add(kind);
+			}
+		}
+		return options.isEmpty() ? null : options.get(Rnd.get(options.size()));
+	}
+
+	/** @return {@code true} if this class's weapon set includes a weapon of {@code type} (main, Olympiad or spare) */
+	private static boolean setUses(PlayerClass playerClass, WeaponType type)
+	{
+		final WeaponSet set = find(playerClass);
+		if ((set == null) || (type == null))
+		{
+			return false;
+		}
+		if ((set.olympiad.type() == type) || ((set.spare != null) && (set.spare.type() == type)))
+		{
+			return true;
+		}
+		for (WeaponKind kind : set.main)
+		{
+			if (kind.type() == type)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** @return the spare weapon a party member of this class carries, or {@code null} (no set, or not a party context) */
@@ -177,8 +217,9 @@ public final class PhantomWeaponSets
 	}
 
 	/**
-	 * Party chat weapon orders for one member. The member answers only when it carries more than one weapon, or when
-	 * it was addressed by name.
+	 * Party chat weapon orders for one member. The member answers when it carries more than one weapon, when it was
+	 * addressed by name, or when it is asked for a weapon its class set uses but it has none on it (no weapon of that
+	 * kind exists in its grade, so it carries no spare rather than a lower-grade one).
 	 * @param npc the party member
 	 * @param text the leader's line, lower case
 	 * @param addressed whether the member was named (a refusal is said only then, so a party-wide order stays quiet)
@@ -209,18 +250,18 @@ public final class PhantomWeaponSets
 		{
 			return null;
 		}
-		if (carried.size() < 2)
+		if (back && (carried.size() < 2))
 		{
-			return (addressed && (wanted != null)) ? "i only have my " + (carried.isEmpty() ? "hands" : familyLabel(carried.get(0))) : null;
+			return null; // nothing to switch back from
 		}
 		final Item target = back ? mainWeapon(npc, carried) : findCarried(carried, wanted);
 		if (target == null)
 		{
-			return addressed ? "i don't carry a " + typeLabel(wanted) : null;
+			return (addressed || setUses(npc.getPlayerClass(), wanted)) ? "i don't have a " + typeLabel(wanted) + " on me" : null;
 		}
 		if (target.isEquipped())
 		{
-			return "already using my " + familyLabel(target);
+			return ((carried.size() > 1) || addressed) ? "already using my " + familyLabel(target) : null;
 		}
 		equip(npc, target, 0);
 		return "switching to my " + familyLabel(target);

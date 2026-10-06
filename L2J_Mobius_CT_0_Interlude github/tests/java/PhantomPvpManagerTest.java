@@ -62,6 +62,7 @@ public class PhantomPvpManagerTest
 		testPersonalityRollsInRange();
 		testInitiateLevelBand();
 		testReactRollBoundaries();
+		testReactTargetPreference();
 		testSizingEnrichment();
 		testOpponentKind();
 		testDriverGateComposition();
@@ -179,6 +180,38 @@ public class PhantomPvpManagerTest
 		eqBool(true, allAtFull, "react chance 100 always engages");
 
 		FakePlayersConfig.PHANTOM_PVP_REACT_CHANCE_PERCENT = 0; // restore the unloaded default
+
+		FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT = 0;
+		boolean anyRedAtZero = false;
+		for (int i = 0; i < 500; i++)
+		{
+			anyRedAtZero |= PhantomPvpManager.rollRedReactEngage();
+		}
+		eqBool(false, anyRedAtZero, "red react chance 0 never engages");
+
+		FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT = 100;
+		boolean allRedAtFull = true;
+		for (int i = 0; i < 500; i++)
+		{
+			allRedAtFull &= PhantomPvpManager.rollRedReactEngage();
+		}
+		eqBool(true, allRedAtFull, "red react chance 100 always engages");
+		FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT = 0;
+	}
+
+	/** Red players take priority over purple players; distance chooses within each reputation class. */
+	private static void testReactTargetPreference()
+	{
+		eqBool(true, PhantomPvpManager.preferReactTarget(true, 800, false, 200), "farther red target outranks nearer purple target");
+		eqBool(false, PhantomPvpManager.preferReactTarget(false, 100, true, 800), "purple target cannot replace selected red target");
+		eqBool(true, PhantomPvpManager.preferReactTarget(true, 100, true, 200), "nearer red target replaces farther red target");
+		eqBool(true, PhantomPvpManager.preferReactTarget(false, 100, false, 200), "nearer purple target replaces farther purple target");
+		eqBool(false, PhantomPvpManager.preferReactTarget(false, 100, false, 100), "equal-distance candidate preserves first target");
+		eqBool(true, PhantomPvpManager.mayReactToTarget(true, false, false), "aggressor may react to purple regardless of red setting");
+		eqBool(true, PhantomPvpManager.mayReactToTarget(true, false, true), "aggressor may react to red regardless of red setting");
+		eqBool(true, PhantomPvpManager.mayReactToTarget(false, true, true), "red-react-all lets non-aggressor react to red");
+		eqBool(false, PhantomPvpManager.mayReactToTarget(false, true, false), "red-react-all does not let non-aggressor react to purple");
+		eqBool(false, PhantomPvpManager.mayReactToTarget(false, false, true), "red-react-all off keeps reactions aggressor-only");
 	}
 
 	/** Phase 2 sizing: outnumbering the enemy lets a phantom stand longer; being outnumbered or out of mana flees sooner. */

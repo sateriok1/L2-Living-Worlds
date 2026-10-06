@@ -378,6 +378,47 @@ public class PhantomPvpManager
 	}
 
 	/**
+	 * Whether a red (PK) target takes precedence over a purple target when selecting a reaction target. Within the
+	 * same reputation class, the nearer candidate wins.
+	 * @param candidateRed whether the candidate has karma
+	 * @param candidateDistance the candidate's distance
+	 * @param bestRed whether the currently selected target has karma
+	 * @param bestDistance the selected target's distance
+	 * @return {@code true} if the candidate should replace the current selection
+	 */
+	public static boolean preferReactTarget(boolean candidateRed, double candidateDistance, boolean bestRed, double bestDistance)
+	{
+		if (candidateRed != bestRed)
+		{
+			return candidateRed;
+		}
+		return candidateDistance < bestDistance;
+	}
+
+	/**
+	 * Whether this phantom may react to the candidate's reputation. Aggressors may react to purple or red targets;
+	 * non-aggressors may react only to red targets when the all-phantoms setting is enabled.
+	 * @param aggressor whether this phantom rolled the aggressor trait
+	 * @param redReactAll whether non-aggressors may react to red targets
+	 * @param targetRed whether the candidate has karma
+	 * @return {@code true} if this phantom may consider the candidate
+	 */
+	public static boolean mayReactToTarget(boolean aggressor, boolean redReactAll, boolean targetRed)
+	{
+		return aggressor || (redReactAll && targetRed);
+	}
+
+	/**
+	 * Rolls whether an eligible phantom engages a red (PK) target it noticed this consideration. Red targets use a
+	 * higher configurable chance than merely flagged targets.
+	 * @return {@code true} to engage this time
+	 */
+	public static boolean rollRedReactEngage()
+	{
+		return Rnd.get(100) < FakePlayersConfig.PHANTOM_PVP_RED_REACT_CHANCE_PERCENT;
+	}
+
+	/**
 	 * Whether a phantom may INITIATE PvP on a target given their levels. It never initiates on a target more than
 	 * {@code maxLevelsAbovePlayer} below itself (no level 70 stomping a level 25), nor on one hopelessly above it
 	 * ({@link #HOPELESS_LEVEL_GAP}, since it would just flee). Self-defense is unaffected; this only gates initiation.
