@@ -59,7 +59,7 @@ public interface ModuleContext
 	ModuleEncounters encounters();
 
 	/**
-	 * @return the damage surface: a hook for every hit that lowers HP, with who did it, to whom, and the skill
+	 * @return combat damage and instant healing notifications for this module
 	 */
 	ModuleDamage damage();
 

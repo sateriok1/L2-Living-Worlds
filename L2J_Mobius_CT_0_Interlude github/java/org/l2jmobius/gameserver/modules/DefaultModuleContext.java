@@ -33,14 +33,15 @@ class DefaultModuleContext implements ModuleContext
 	private final ModuleEvents _events;
 	private final ModuleCompanions _companions = new ModuleCompanions();
 	private final ModuleEncounters _encounters = new ModuleEncounters();
-	private final ModuleDamage _damage = new ModuleDamage();
+	private final ModuleDamage _damage;
 	private final Logger _logger;
 
-	DefaultModuleContext(String moduleId, ModuleConfig config, ModuleHandlers handlers, ModuleEvents events)
+	DefaultModuleContext(String moduleId, ModuleConfig config, ModuleHandlers handlers, ModuleEvents events, ModuleHandles handles)
 	{
 		_config = config;
 		_handlers = handlers;
 		_events = events;
+		_damage = new ModuleDamage(handles);
 		_logger = Logger.getLogger("module." + moduleId);
 	}
 

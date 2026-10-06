@@ -263,6 +263,7 @@ import org.l2jmobius.gameserver.model.zone.ZoneRegion;
 import org.l2jmobius.gameserver.model.zone.ZoneType;
 import org.l2jmobius.gameserver.model.zone.type.BossZone;
 import org.l2jmobius.gameserver.model.zone.type.WaterZone;
+import org.l2jmobius.gameserver.modules.ModuleDamage;
 import org.l2jmobius.gameserver.network.Disconnection;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.SystemMessageId;
@@ -11110,14 +11111,17 @@ public class Player extends Playable
 	@Override
 	public void reduceCurrentHp(double value, Creature attacker, boolean awake, boolean isDOT, Skill skill)
 	{
-		reportDamageToModules(value, attacker, skill, isDOT);
-		if (skill != null)
+		// Living World: preserve native CP, shields, transfer and rejection rules before notifying modules.
+		try (ModuleDamage.Scope ignored = ModuleDamage.captureDamage(attacker, this, skill, isDOT))
 		{
-			getStatus().reduceHp(value, attacker, awake, isDOT, skill.isToggle(), skill.getDmgDirectlyToHP());
-		}
-		else
-		{
-			getStatus().reduceHp(value, attacker, awake, isDOT, false, false);
+			if (skill != null)
+			{
+				getStatus().reduceHp(value, attacker, awake, isDOT, skill.isToggle(), skill.getDmgDirectlyToHP());
+			}
+			else
+			{
+				getStatus().reduceHp(value, attacker, awake, isDOT, false, false);
+			}
 		}
 		
 		// notify the tamed beast of attacks

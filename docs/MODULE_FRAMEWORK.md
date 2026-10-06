@@ -63,7 +63,7 @@ The V1 `ModuleContext` surface:
 ModuleContext
   companions   bring a saved character into a player's party, run by the party AI (section 3.6)
   encounters   send a phantom, or a group, after a player to fight them once (section 3.7)
-  damage       a hook for every hit that lowers HP, with who did it, to whom and the skill (section 3.9)
+  damage       combat damage and instant healing notifications (section 3.9)
   config       generic typed access to the module's own configuration
   events       register game event listeners
   handlers     register item, bypass, voiced, admin, effect, and target handlers
@@ -249,21 +249,28 @@ The first user is the Phantom Encounters module.
 
 ## 3.9 Damage
 
-`context.damage()` is a read-only hook for features that need to see combat, such as a damage meter. The stock
-`OnCreatureDamageDealt` event only fires for auto attacks, so it cannot see skills or damage over time; this hook sits at
-the places every HP loss goes through (`Creature.reduceCurrentHp` and the `Player` override, which both call `reportDamageToModules`).
+`context.damage()` lets a module register `addListener(listener)` for
+`onDamage(attacker, target, damage, skill, damageOverTime)` and `addHealListener(listener)` for
+`onHeal(healer, target, amount, skill)`. It is inert until a module registers a listener. The stock
+`OnCreatureDamageDealt` event covers auto attacks; this surface also covers skills, damage over time and reflects.
 
-- `addListener(listener)` is told about every hit as `onDamage(attacker, target, damage, skill, damageOverTime)`.
-- `damage` is what the hit was worth after the platform's own rules, capped at what the target had left (HP, plus CP for
-  a player), so the last hit on a boss does not count overkill. Nothing is reported for a dead target, an invulnerable one
-  (damage over time still counts), or a hit that was reduced to zero.
-- `skill` is `null` for an auto attack or a reflect. A servitor or pet is reported as itself; ask it for its owner.
-- `addHealListener(listener)` is told about every instant heal skill as `onHeal(healer, target, amount, skill)`, `amount` being the HP
-  actually restored. Heal over time, regeneration and potions are not reported.
-- Listeners run on the thread that dealt the damage. They must be quick and must not block.
-- With no listener registered the core does no extra work.
+Damage is the HP and CP actually lost during native `reduceCurrentHp` handling. Native rejection, invulnerability,
+MP shields, CP bypass, champion scaling, duel survival and overkill rules stay authoritative. A transfer is credited
+to each actual recipient, retaining the original skill and DOT metadata. CP alone counts; MP absorption does not.
+A pet or servitor is reported as itself. For reflection, `attacker` is the reflector and `skill` is null, including
+transferred portions. Auto attacks also report a null skill. Reflection retains the original skill's native damage
+flags without attributing that cast to the reflector. Lethal damage is published before the synchronous native
+death event, so a death recap includes the finishing hit.
 
-The first user is the DPS Meter module.
+Healing is the actual HP gained by one successful instant `HEAL` effect of a non-static skill, including GENERAL,
+SELF, PVE, PVP and CHANNELING scopes. Static/item skills and recovery herbs are excluded, as are periodic healing,
+regeneration, HP redistribution and other non-HEAL effects. Each effect has its own attribution, so a multi-effect
+skill may produce more than one heal callback. HP changes on another thread are not credited to the skill.
+
+Registrations are owned by the module's `ModuleHandles`, with owner-specific failure diagnostics. Listeners run
+on the native thread after resource changes, outside the status monitor; they must be quick and must not block.
+With no listeners, the platform allocates no capture and changes no combat rules. V1 disable/removal still takes
+effect after restart. The DPS Meter module is a separate consumer and is not included in this platform change.
 
 ## 4. Lifecycle and the levels of removal
 
