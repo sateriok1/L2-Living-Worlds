@@ -153,6 +153,7 @@ public class PhantomPartyManager
 	private static final int REBUFF_MAX_REFUSALS = 3; // a forced rebuff skips a buff the server refused this many times in a row
 	private static final int ASSIST_MAX_RANGE = 2200; // don't assist a mob the leader targeted across the map
 	private static final int DANGER_RANGE = 700;
+	private static final int PARTY_DEFENSE_RANGE = 900; // how far around the leader a mob on the party is noticed and answered
 	// FakePlayerPartyPickup: after a fight a member collects ground drops this close to it...
 	private static final int PARTY_LOOT_SCAN_RANGE = SUPPORT_RANGE;
 	private static final int PARTY_LOOT_PICKUP_RANGE = 40; // ...picking each one up once this close...
@@ -2995,6 +2996,17 @@ public class PhantomPartyManager
 			{
 				focus = attackerOnMe(state, null, false);
 			}
+			// Defend the party: a mob that has latched onto the leader or another member is everybody's problem, the
+			// way a human party reacts when something aggros mid-hunt. Covers "nothing targeted" and also a leader
+			// target nobody is fighting yet (still walking in) while another mob is already chewing on a partymate.
+			if ((focus == null) || (!focus.isRaid() && !isHatingParty(state, focus)))
+			{
+				final Monster defend = partyAttacker(state, focus);
+				if (defend != null)
+				{
+					focus = defend;
+				}
+			}
 
 			// Engage the chosen focus - the shared fight logic (raid aggro-easing, nuker CC, caster range-hold, tank
 			// threat, dagger rear, archer positioning, auto-attack upkeep), reused by camp mode. Returns false only
@@ -3073,6 +3085,21 @@ public class PhantomPartyManager
 						npc.getAI().setIntention(Intention.ATTACK, mob); // a caster just holds the target - AutoUse nukes it
 					}
 					break;
+				}
+			}
+			// Nothing on this member, but a mob may be on the leader or another member: help them.
+			if (npc.getTarget() == null)
+			{
+				final Monster defend = partyAttacker(state, null);
+				if (defend != null)
+				{
+					standIfSitting(npc);
+					npc.setTarget(defend);
+					if (!castsSpells(state))
+					{
+						npc.setRunning();
+						npc.getAI().setIntention(Intention.ATTACK, defend);
+					}
 				}
 			}
 		}
@@ -5553,6 +5580,49 @@ public class PhantomPartyManager
 			return mob;
 		}
 		return null;
+	}
+
+	/** @return {@code true} if this mob's current victim is the member itself or anyone in its party (or a party summon). */
+	private boolean isHatingParty(Member state, Monster mob)
+	{
+		WorldObject target = mob.getTarget();
+		if ((target != null) && target.isSummon())
+		{
+			target = target.asSummon().getOwner();
+		}
+		return (target instanceof Creature) && ((target == state.npc) || isPartyCreature(state.owner, (Creature) target));
+	}
+
+	/**
+	 * The nearest live mob that has latched onto the leader or any party member (summons count as their owner), or
+	 * {@code null}. Raids are left to the raid logic, forbidden/peace-zone targets are never picked, and
+	 * {@code exclude} (the mob already being fought) is skipped. Scanned around the leader, so a mob beating on the
+	 * human is found even when this member is a screen away.
+	 */
+	private Monster partyAttacker(Member state, Monster exclude)
+	{
+		final Player npc = state.npc;
+		final Player owner = state.owner;
+		if ((owner == null) || npc.isInsideZone(ZoneId.PEACE))
+		{
+			return null;
+		}
+		Monster best = null;
+		double bestDistance = Double.MAX_VALUE;
+		for (Monster mob : World.getInstance().getVisibleObjectsInRange(owner, Monster.class, PARTY_DEFENSE_RANGE))
+		{
+			if (mob.isDead() || (mob == exclude) || mob.isRaid() || PhantomManager.isPhantomForbiddenTarget(mob) || mob.isInsideZone(ZoneId.PEACE) || !isHatingParty(state, mob))
+			{
+				continue;
+			}
+			final double distance = npc.calculateDistance2D(mob);
+			if ((distance <= ASSIST_MAX_RANGE) && (distance < bestDistance))
+			{
+				best = mob;
+				bestDistance = distance;
+			}
+		}
+		return best;
 	}
 
 	/** The best control skill this member can peel with, resolved once (archers stun/slow, casters sleep/root). */
