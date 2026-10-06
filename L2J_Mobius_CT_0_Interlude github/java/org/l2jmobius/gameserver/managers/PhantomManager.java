@@ -5364,10 +5364,9 @@ public class PhantomManager implements IXmlReader
 
 	/**
 	 * Phase 2 react-to-flagged: an idle aggressor phantom occasionally engages a nearby flagged (purple) or red (PK)
-	 * target. It considers at most once per {@link #PVP_REACT_SCAN_INTERVAL_MS}, and only while react-to-flagged is
-	 * enabled and this phantom is an aggressor. On a consideration it picks the nearest eligible target and rolls
-	 * {@link PhantomPvpManager#rollReactEngage()}; whether it engages or declines, it then waits out the engage
-	 * cooldown before reconsidering, so PK-reaction is occasional rather than an every-tick dogpile.
+	 * target. When configured, any phantom may consider red targets. Red targets are selected ahead of purple targets,
+	 * then the nearest target within that reputation class is considered. Whether it engages or declines, it waits out
+	 * the engage cooldown before reconsidering, so reactions are occasional rather than an every-tick dogpile.
 	 */
 	private void reactToFlagged(Player phantom, PhantomData data, long now)
 	{
@@ -5375,12 +5374,11 @@ public class PhantomManager implements IXmlReader
 		{
 			return;
 		}
-		// An aggressor reacts to a purple or red target; with PhantomPvpRedReactAll every other phantom reacts to a red one too.
-		if (!data.aggressor && !FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL)
+		if (!PhantomPvpManager.mayReactToTarget(data.aggressor, FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL, true))
 		{
 			return;
 		}
-		final Player target = flaggedReactTarget(phantom, now, !data.aggressor);
+		final Player target = flaggedReactTarget(phantom, data.aggressor, now);
 		if (target == null)
 		{
 			data.nextInitiateAt = now + PVP_REACT_SCAN_INTERVAL_MS; // nothing to react to; scan again shortly
@@ -5403,7 +5401,7 @@ public class PhantomManager implements IXmlReader
 	 *         zone, not a clan or ally member, not newbie-protected, inside the initiate level band, not on the
 	 *         per-target dogpile cooldown, and legally attackable by the phantom.
 	 */
-	private Player flaggedReactTarget(Player phantom, long now, boolean redOnly)
+	private Player flaggedReactTarget(Player phantom, boolean aggressor, long now)
 	{
 		Player best = null;
 		double bestDistance = Double.MAX_VALUE;
@@ -5413,9 +5411,10 @@ public class PhantomManager implements IXmlReader
 			{
 				continue; // includes the phantom-versus-phantom gate: skip a phantom target when that is disabled
 			}
-			if (((p.getPvpFlag() == 0) && (p.getKarma() <= 0)) || (redOnly && (p.getKarma() <= 0)))
+			final boolean red = p.getKarma() > 0;
+			if (((p.getPvpFlag() == 0) && !red) || !PhantomPvpManager.mayReactToTarget(aggressor, FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL, red))
 			{
-				continue; // only already-flagged or red targets (only red ones for a phantom that is not an aggressor); a clean white player is Phase 4 (ganking), not this
+				continue; // only flagged or red targets, and only red for non-aggressors
 			}
 			if (sameClanOrAlly(phantom, p) || p.isNewbie() || !p.isAutoAttackable(phantom))
 			{
@@ -5435,7 +5434,7 @@ public class PhantomManager implements IXmlReader
 				_pvpVictimCooldownUntil.remove(p.getObjectId(), until); // stale entry; prune it
 			}
 			final double distance = phantom.calculateDistance2D(p);
-			if (distance < bestDistance)
+			if ((best == null) || PhantomPvpManager.preferReactTarget(red, distance, best.getKarma() > 0, bestDistance))
 			{
 				bestDistance = distance;
 				best = p;
