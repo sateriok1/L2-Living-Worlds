@@ -6,9 +6,13 @@ import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import l2data as L, stats_model as S, combat_sim as C, rotations as R
 line, bname = sys.argv[1], sys.argv[2]
-TABLE = [int(x) for x in sys.argv[3:]] or [315, 190, 255]
+args = [x for x in sys.argv[3:] if not x.startswith("--")]
+TABLE = [int(x) for x in args] or [315, 190, 255]
 MAXLV = {255: 45}
-here = os.path.dirname(os.path.abspath(__file__)); slug = line.lower()
+for a in sys.argv[3:]:
+    if a.startswith("--max="):            # e.g. --max=100:45,245:45  (skill id : maxLevel from the playstyle entry)
+        MAXLV = {int(k): int(v) for k, v in (x.split(":") for x in a.split("=")[1].split(","))}
+here = os.path.dirname(os.path.abspath(__file__)); slug = line.lower().replace(" ", "_")
 opt = json.load(open(os.path.join(here, R.rot_file(slug, bname))))
 names, parent = L.load_classes(); trees = L.load_trees(); sk_all = L.load_skills()
 leaf = [k for k, v in names.items() if v == line][0]

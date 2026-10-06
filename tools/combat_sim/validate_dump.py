@@ -50,7 +50,7 @@ for r in rows:
     cid = S.class_at(leaf, lv, parent)
     t = S.template(cid)
     # feed the dump's own STR/DEX/CON as an "armor" delta against the template, so formulas are tested independently of sets
-    chest = equip.get(r["sample"], {}).get("CHEST")
+    chest = equip.get(r["sample"], {}).get("CHEST") or equip.get(r["sample"], {}).get("FULL_ARMOR")
     ents = []
     if chest and int(chest["item_id"]) in set_skills:
         for sid in set_skills[int(chest["item_id"])]:
