@@ -125,7 +125,7 @@ def _apply(entries, stat):
     return mul, add, sets
 
 
-def compute(class_id, level, weapon, armor, learned_skills):
+def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
     """weapon: dict(p_atk, p_atk_spd, crit, weapon_type, hands, special_skill 'id:level' or '').
     armor: dict(str, dex, con, p_atk_mul, p_atk_spd_mul, accuracy_add) or None.
     learned_skills: {skill id: level}. Returns the stat dict the simulator needs."""
@@ -136,6 +136,8 @@ def compute(class_id, level, weapon, armor, learned_skills):
         sk = _skill_elements().get(sid)
         if sk is not None and (sk.findtext("operateType") or "").strip() == "P":
             entries += passive_entries(sid, lv, wt, hands)
+    for sid, lv in buffs:                         # buffs: (skill id, level), applied like passives (weapon conditions honoured)
+        entries += passive_entries(sid, lv, wt, hands)
     sp = weapon.get("special_skill")
     if sp:
         sid, lv = (int(x) for x in sp.split(":"))
@@ -157,6 +159,9 @@ def compute(class_id, level, weapon, armor, learned_skills):
     m, ad, _ = _apply(entries, "critRate")
     crit = float(weapon["crit"]) * dex_b * 10 * m + ad
     acc_m, acc_a, _ = _apply(entries, "accCombat")
+    crit_mul, crit_add, _ = _apply(entries, "critDmg")[0], _apply(entries, "critDmgAdd")[1], None
+    reuse_mul = _apply(entries, "pReuse")[0]
+    mp_mul = _apply(entries, "physicalMpConsumeRate")[0]
     tl = t["levels"][min(level, max(t["levels"]))]
     men_b = bonus("MEN", t["baseMEN"])
     m, ad, _ = _apply(entries, "maxMp")
@@ -171,7 +176,7 @@ def compute(class_id, level, weapon, armor, learned_skills):
     hp_regen = (tl["hpRegen"] * lvl_mod * con_b * 1.1) * m + ad
     return {"str": strv, "dex": dexv, "p_atk": patk, "p_atk_spd": spd, "crit_pct": crit / 10.0,
             "acc_bonus": acc_a + float(a.get("accuracy_add", 0) or 0),
-            "str_bonus": str_b, "hp_max": hp_max, "hp_regen_3s": hp_regen, "mp_max": mp_max, "mp_regen_3s": mp_regen}
+            "crit_mul": crit_mul, "crit_add": crit_add, "reuse_mul": reuse_mul, "mp_mul": mp_mul, "str_bonus": str_b, "hp_max": hp_max, "hp_regen_3s": hp_regen, "mp_max": mp_max, "mp_regen_3s": mp_regen}
 
 
 def class_at(leaf_id, level, parent):

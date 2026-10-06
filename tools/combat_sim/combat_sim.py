@@ -32,6 +32,10 @@ class Actor:
     hp_max: float = 0.0         # 0 = HP costs are ignored
     hp_regen_3s: float = 0.0
     hp_reserve: float = 0.5     # a skill that costs HP is refused if it would drop HP below this fraction of max
+    crit_mul: float = 1.0       # critDmg multiplier (Death Whisper, Dance of Fire): crit damage = 2 * crit_mul
+    crit_add: float = 0.0       # critDmgAdd: flat crit damage = crit_add * 77 / defence
+    reuse_mul: float = 1.0      # pReuse multiplier (Song of Champion): scales physical skill reuse
+    mp_mul: float = 1.0         # physicalMpConsumeRate multiplier
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -63,13 +67,13 @@ def skill_dmg(skill, actor, dummy):
     base = 76 * (actor.patk * shot + skill.power) * actor.prox / dummy.pdef
     # physical skills roll crit from the skill's own baseCritRate and STR (Formulas.calcCrit), not weapon crit or Focus
     crit = min(1.0, skill.base_crit * 10 * actor.str_bonus / 1000.0)
-    return base * (1 - crit) + base * 2 * crit
+    return base * (1 - crit) + (base * 2 * actor.crit_mul + actor.crit_add * 77 / dummy.pdef) * crit
 
 
 def auto_dmg(actor, dummy):
     shot = 2 if actor.soulshot else 1
     base = 76 * actor.patk * shot * actor.prox / dummy.pdef
-    return base * (1 - actor.crit) + base * 2 * actor.crit
+    return base * (1 - actor.crit) + (base * 2 * actor.crit_mul + actor.crit_add * 77 / dummy.pdef) * actor.crit
 
 
 def cast_ms(skill, actor):
@@ -88,8 +92,9 @@ def cast_ms(skill, actor):
 def reuse_ms(skill, actor):
     if skill.static_reuse:
         return skill.reuse
-    spd = actor.matk_spd if (skill.damage_kind() == "magic" or skill.magic) else actor.patk_spd
-    return skill.reuse * 333.0 / spd
+    magic = skill.damage_kind() == "magic" or skill.magic
+    spd = actor.matk_spd if magic else actor.patk_spd
+    return skill.reuse * (1.0 if magic else actor.reuse_mul) * 333.0 / spd
 
 
 @dataclass
@@ -127,7 +132,7 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
 
     def can(sid):
         s = skills[sid]
-        if mp - s.mp < actor.mp_reserve:
+        if mp - s.mp * actor.mp_mul < actor.mp_reserve:
             return False
         return not (actor.hp_max and s.hp_cost and (hp - s.hp_cost) < actor.hp_reserve * actor.hp_max)
 
@@ -164,8 +169,8 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
                 continue
             dmg, cms, rms = sd[chosen]
             sk = skills[chosen]
-            mp -= sk.mp
-            mp_used += sk.mp
+            mp -= sk.mp * actor.mp_mul
+            mp_used += sk.mp * actor.mp_mul
             if actor.hp_max and sk.hp_cost:
                 hp -= sk.hp_cost
                 hp_used += sk.hp_cost
