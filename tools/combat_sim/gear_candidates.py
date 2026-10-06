@@ -41,6 +41,9 @@ for iid, it in items.items():
     if s.get("weapon_type") not in wtypes or s.get("is_magic_weapon") == "true": continue
     if int(s.get("price", "0") or 0) <= 0 or s.get("is_tradable") == "false" and s.get("is_dropable") == "false": continue
     st = {x.get("type"): float(x.text) for x in it.findall("stats/stat")}
+    nm = it.get("name")
+    if nm.startswith(("_", "Monster")) or nm.strip().isdigit() or st.get("pAtk", 0) > 600 or st.get("pAtk", 0) <= 0:
+        continue      # placeholder / monster / GM rows
     sa = it.find("skills/skill")
     eff = ""
     if sa is not None:

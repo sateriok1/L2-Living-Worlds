@@ -1,0 +1,17 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect
+Dreadnought,NG,16,Great Spear,,POLE,2H,31.0,21.0,325.0,8.0,SS-NG,,
+Dreadnought,D,297,Glaive,,POLE,2H,92.0,54.0,325.0,8.0,SS-D,,
+Dreadnought,C,299,Orcish Poleaxe,,POLE,2H,156.0,83.0,325.0,8.0,SS-C,,
+Dreadnought,C,301,Scorpion,,POLE,2H,144.0,78.0,325.0,8.0,SS-C,,
+Dreadnought,C,4846,Scorpion,Anger,POLE,2H,144.0,78.0,325.0,8.0,SS-C,3600:3,"pAtk +24.77, maxHp x0.85"
+Dreadnought,C,303,Widow Maker,,POLE,2H,144.0,78.0,325.0,8.0,SS-C,,
+Dreadnought,B,97,Lance,,POLE,2H,194.0,99.0,325.0,8.0,SS-B,,
+Dreadnought,B,4858,Lance,Anger,POLE,2H,194.0,99.0,325.0,8.0,SS-B,3600:6,"pAtk +30.12, maxHp x0.85"
+Dreadnought,B,300,Great Axe,,POLE,2H,175.0,91.0,325.0,8.0,SS-B,,
+Dreadnought,B,4855,Great Axe,Anger,POLE,2H,175.0,91.0,325.0,8.0,SS-B,3600:5,"pAtk +28.59, maxHp x0.85"
+Dreadnought,A,8683,Tiphon's Spear,,POLE,2H,251.0,121.0,325.0,8.0,SS-A,,
+Dreadnought,A,305,Tallum Glaive,,POLE,2H,232.0,114.0,325.0,8.0,SS-A,,
+Dreadnought,A,5632,Tallum Glaive,Guidance,POLE,2H,232.0,114.0,325.0,8.0,SS-A,3602:8,accCombat +3.95
+Dreadnought,S,6370,Saint Spear,,POLE,2H,281.0,132.0,325.0,8.0,SS-S,,
+Dreadnought,S,6600,Saint Spear,Guidance,POLE,2H,281.0,132.0,325.0,8.0,SS-S,3602:9,accCombat +5.27
+Dreadnought,S,6601,Saint Spear,Haste,POLE,2H,281.0,132.0,325.0,8.0,SS-S,3601:9,pAtkSpd x1.07
