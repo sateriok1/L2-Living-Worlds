@@ -177,13 +177,10 @@ def read_csv(path):
 
 
 def options(weapons, armors, level):
-    """Top-grade weapon variants x armor sets of the same grade that the level allows (the user's 'top gear' rule)."""
-    allowed = [g for g in GRADES if WEAR_LEVEL[g] <= level]
-    if not allowed:
-        return []
-    top = allowed[-1]
-    ws = [w for w in weapons if w["grade"] == top]
-    ars = [a for a in armors if a["grade"] == top]
+    """Every weapon and armor set whose grade is wearable at this level (grade wear level <= level), any grade mix.
+    Nothing above the level's grade is ever offered; a lower-grade armor can pair with a higher-grade weapon."""
+    ws = [w for w in weapons if WEAR_LEVEL[w["grade"]] <= level]
+    ars = [a for a in armors if WEAR_LEVEL[a["grade"]] <= level]
     return [(w, a) for w in ws for a in ars]
 
 
@@ -198,5 +195,5 @@ if __name__ == "__main__":
         ls = L.learned(cid, lv, trees, parent)
         for w, a in options(W, A, lv):
             r = compute(class_at(cid, lv, parent), lv, w, a, ls)
-            print(f"L{lv} {w['weapon_name']} {w['variant'] or '-'} + {a['set_name']}: "
+            print(f"L{lv} {w['grade']}:{w['weapon_name']} {w['variant'] or '-'} + {a['grade']}:{a['set_name']}: "
                   f"PAtk {r['p_atk']:.0f}  AtkSpd {r['p_atk_spd']:.0f}  Crit {r['crit_pct']:.1f}%  STR {r['str']:.0f} DEX {r['dex']:.0f}")
