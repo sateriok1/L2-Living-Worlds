@@ -9592,6 +9592,2543 @@
    }
   }
  ],
+ "61": [
+  {
+   "weapon": "Berserker Blade Focus",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 589.3304999999999,
+    "p_atk_spd": 344.5,
+    "crit_pct": 15.810000000000002,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 342.05023600000004,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 68.0
+    },
+    "10": {
+     "dps": 277.41909333370006,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 258.44661992633337,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 173.0
+    },
+    "20": {
+     "dps": 234.06438322265004,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "25": {
+     "dps": 228.74772862276004,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 256.27652611160005,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 278.0
+    },
+    "35": {
+     "dps": 242.6538328258857,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "40": {
+     "dps": 236.26717733397496,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 204.0
+    },
+    "45": {
+     "dps": 236.87405039557768,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 228.74772862275987,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "55": {
+     "dps": 237.8642690308362,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "60": {
+     "dps": 238.97096235248316,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "65": {
+     "dps": 234.59973716293825,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "70": {
+     "dps": 233.97179261957123,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 230.0830109487998,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "80": {
+     "dps": 236.26717733397476,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "85": {
+     "dps": 235.3397947326586,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "90": {
+     "dps": 232.97417923511088,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 735.0
+    },
+    "95": {
+     "dps": 233.09259440999975,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "100": {
+     "dps": 231.34124250054978,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "105": {
+     "dps": 231.27343224403782,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "110": {
+     "dps": 235.53013803083616,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "115": {
+     "dps": 232.23402534364317,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "120": {
+     "dps": 233.73524250054976,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1013.0
+    }
+   }
+  },
+  {
+   "weapon": "Berserker Blade Focus",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 561.5002499999999,
+    "p_atk_spd": 372.06,
+    "crit_pct": 15.810000000000002,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 387.2408194039,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 68.0
+    },
+    "10": {
+     "dps": 270.57220060585007,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 269.8980006731667,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "20": {
+     "dps": 249.02366311072507,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 136.0
+    },
+    "25": {
+     "dps": 231.12789436936006,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 258.08692147446675,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "35": {
+     "dps": 249.45780778034293,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "40": {
+     "dps": 249.0236631107251,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "45": {
+     "dps": 240.33517772021122,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 251.18880123092012,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "55": {
+     "dps": 250.32561655431832,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "60": {
+     "dps": 243.58822664438347,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "65": {
+     "dps": 245.0743909957155,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "70": {
+     "dps": 240.57691805232872,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 246.00616230269347,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "80": {
+     "dps": 244.94708576096883,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "85": {
+     "dps": 246.00363149336476,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "90": {
+     "dps": 243.08077668709456,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "95": {
+     "dps": 238.31616869550007,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "100": {
+     "dps": 245.76240123092003,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "105": {
+     "dps": 243.53721462833343,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "110": {
+     "dps": 244.4177213821228,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1013.0
+    },
+    "115": {
+     "dps": 240.48232400932616,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "120": {
+     "dps": 238.69902407625426,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    }
+   }
+  },
+  {
+   "weapon": "Berserker Blade Haste",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 589.3304999999999,
+    "p_atk_spd": 368.615,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 342.05023600000004,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 68.0
+    },
+    "10": {
+     "dps": 272.49452980959995,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 272.0339220106666,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "20": {
+     "dps": 240.46586791279992,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "25": {
+     "dps": 231.24248249535992,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 259.2399610794666,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "35": {
+     "dps": 249.96981532891425,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "40": {
+     "dps": 246.53927231359998,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "45": {
+     "dps": 240.74034659271118,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 239.48264117792013,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "55": {
+     "dps": 247.02636365381832,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "60": {
+     "dps": 242.1667599816001,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "65": {
+     "dps": 244.3933712455386,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "70": {
+     "dps": 237.34825227222868,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 242.82580391125347,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "80": {
+     "dps": 244.77823916480006,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 735.0
+    },
+    "85": {
+     "dps": 241.81180985072942,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 735.0
+    },
+    "90": {
+     "dps": 240.74034659271112,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "95": {
+     "dps": 238.29869365759996,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "100": {
+     "dps": 242.50693839535995,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "105": {
+     "dps": 241.5554399577904,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "110": {
+     "dps": 241.20297058167262,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    },
+    "115": {
+     "dps": 240.78808201530427,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "120": {
+     "dps": 236.82864966546654,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    }
+   }
+  },
+  {
+   "weapon": "Berserker Blade Haste",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 561.5002499999999,
+    "p_atk_spd": 398.10420000000005,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 392.88205700000003,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "10": {
+     "dps": 289.02658012239993,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 280.11558328906654,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "20": {
+     "dps": 251.9948416836,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 136.0
+    },
+    "25": {
+     "dps": 268.25548474688,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 267.26183555946665,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "35": {
+     "dps": 265.2993371129143,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 383.0
+    },
+    "40": {
+     "dps": 251.9948416836001,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "45": {
+     "dps": 244.56998185706678,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "50": {
+     "dps": 262.9088866468801,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "55": {
+     "dps": 255.8418154285092,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "60": {
+     "dps": 255.6486930122668,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 593.0
+    },
+    "65": {
+     "dps": 247.34091436689243,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "70": {
+     "dps": 255.53458808594291,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 255.98518818837334,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 735.0
+    },
+    "80": {
+     "dps": 255.83138557869992,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 803.0
+    },
+    "85": {
+     "dps": 249.4676317577411,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "90": {
+     "dps": 245.89560239591094,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "95": {
+     "dps": 256.0681934703998,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "100": {
+     "dps": 252.52333895911977,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "105": {
+     "dps": 250.78417109493307,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "110": {
+     "dps": 247.80175891992698,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "115": {
+     "dps": 252.76917576834748,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "120": {
+     "dps": 253.16602634559965,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1155.0
+    }
+   }
+  },
+  {
+   "weapon": "Great Sword Focus",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 640.98735,
+    "p_atk_spd": 344.5,
+    "crit_pct": 15.370000000000001,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 349.9020772,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 68.0
+    },
+    "10": {
+     "dps": 289.80636794923,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 270.9016181880333,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 173.0
+    },
+    "20": {
+     "dps": 246.55324330743503,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "25": {
+     "dps": 242.20462667220406,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 269.52129176564006,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 278.0
+    },
+    "35": {
+     "dps": 255.8051241799257,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "40": {
+     "dps": 250.09306671115246,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 204.0
+    },
+    "45": {
+     "dps": 250.38207184706437,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 242.2046266722039,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "55": {
+     "dps": 251.24239867160716,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "60": {
+     "dps": 252.7799208181182,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "65": {
+     "dps": 248.1899355962906,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "70": {
+     "dps": 247.4615557131856,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 243.99126324751995,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "80": {
+     "dps": 250.09306671115252,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "85": {
+     "dps": 249.09301094376946,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "90": {
+     "dps": 246.5273497840445,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 735.0
+    },
+    "95": {
+     "dps": 246.97281393900013,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "100": {
+     "dps": 245.01475367384512,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "105": {
+     "dps": 245.2564639827583,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "110": {
+     "dps": 249.08671860797105,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "115": {
+     "dps": 246.11362966965328,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "120": {
+     "dps": 247.4087536738452,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1013.0
+    }
+   }
+  },
+  {
+   "weapon": "Great Sword Focus",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 609.7881749999999,
+    "p_atk_spd": 372.06,
+    "crit_pct": 15.370000000000001,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 398.6267615298099,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 68.0
+    },
+    "10": {
+     "dps": 282.14629034471494,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 282.7581003830166,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "20": {
+     "dps": 262.9030630319775,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 136.0
+    },
+    "25": {
+     "dps": 244.50860273154404,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 271.0724529262867,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "35": {
+     "dps": 262.9003647538515,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "40": {
+     "dps": 262.9030630319776,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "45": {
+     "dps": 253.85390561400118,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 265.0870159134681,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "55": {
+     "dps": 263.85860819502284,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "60": {
+     "dps": 257.49898450112846,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "65": {
+     "dps": 259.13112246945934,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "70": {
+     "dps": 254.3353659366815,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 259.63152948487743,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "80": {
+     "dps": 258.85000413384074,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "85": {
+     "dps": 260.0186378959342,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "90": {
+     "dps": 256.8242922212129,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "95": {
+     "dps": 252.3466082494501,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "100": {
+     "dps": 259.6606159134681,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "105": {
+     "dps": 257.4800073327906,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "110": {
+     "dps": 258.1688388399969,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1013.0
+    },
+    "115": {
+     "dps": 254.1825134290201,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    },
+    "120": {
+     "dps": 252.5027351911126,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    }
+   }
+  },
+  {
+   "weapon": "Sword of Ipos Focus",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 847.61475,
+    "p_atk_spd": 344.5,
+    "crit_pct": 14.64,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 381.309442,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 68.0
+    },
+    "10": {
+     "dps": 339.8325141315999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 321.2516642573333,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 173.0
+    },
+    "20": {
+     "dps": 297.0652393201999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "25": {
+     "dps": 296.7318888596799,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 323.1364180087999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 278.0
+    },
+    "35": {
+     "dps": 309.0463532230857,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "40": {
+     "dps": 306.23145773030006,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 204.0
+    },
+    "45": {
+     "dps": 305.0855581481779,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 296.7318888596801,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "55": {
+     "dps": 305.4488048277819,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "60": {
+     "dps": 308.83733686553353,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "65": {
+     "dps": 303.2601849136617,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "70": {
+     "dps": 302.1021048308573,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 300.4723572784002,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "80": {
+     "dps": 306.2314577303002,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "85": {
+     "dps": 304.92901695256495,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "90": {
+     "dps": 301.4467693431113,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 735.0
+    },
+    "95": {
+     "dps": 303.3306178800002,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "100": {
+     "dps": 300.42436994740024,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "105": {
+     "dps": 302.0366757736383,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "110": {
+     "dps": 304.0069285096002,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "115": {
+     "dps": 302.4755226529742,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "120": {
+     "dps": 302.81836994740024,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1013.0
+    }
+   }
+  },
+  {
+   "weapon": "Sword of Ipos Focus",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 802.9398749999999,
+    "p_atk_spd": 372.06,
+    "crit_pct": 14.64,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 444.4761217252,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 68.0
+    },
+    "10": {
+     "dps": 328.9010368378,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 334.70781870866665,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "20": {
+     "dps": 319.2610398692999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 136.0
+    },
+    "25": {
+     "dps": 298.7648562404799,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 323.6257621170666,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "35": {
+     "dps": 317.3690879433143,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "40": {
+     "dps": 319.2610398693,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "45": {
+     "dps": 308.6418644699112,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 321.5355313805601,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "55": {
+     "dps": 318.68510133000007,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "60": {
+     "dps": 314.0078590547333,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "65": {
+     "dps": 316.2278093332614,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "70": {
+     "dps": 310.11130872548557,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 314.86641827381317,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "80": {
+     "dps": 315.32115425837475,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "85": {
+     "dps": 316.94151063585855,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "90": {
+     "dps": 312.5283789546442,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "95": {
+     "dps": 309.3529739939996,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "100": {
+     "dps": 316.10913138055963,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "105": {
+     "dps": 314.3815081196187,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "110": {
+     "dps": 313.90950683798167,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1013.0
+    },
+    "115": {
+     "dps": 311.07611588535633,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    },
+    "120": {
+     "dps": 309.7741545109999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    }
+   }
+  },
+  {
+   "weapon": "Sword of Ipos Haste",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 847.61475,
+    "p_atk_spd": 365.17,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 384.6815780815999,
+     "order": [
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 0.0
+    },
+    "10": {
+     "dps": 333.8802243111999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 340.2402492346666,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "20": {
+     "dps": 307.59125833159993,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "25": {
+     "dps": 301.9781494979199,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 328.0011517482666,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 315.0
+    },
+    "35": {
+     "dps": 318.10810675359994,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 204.0
+    },
+    "40": {
+     "dps": 316.32643689919996,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "45": {
+     "dps": 309.1595599466666,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "50": {
+     "dps": 301.97814949791996,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "55": {
+     "dps": 316.1725143617454,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "60": {
+     "dps": 313.11861434519994,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 525.0
+    },
+    "65": {
+     "dps": 312.9870704976,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "70": {
+     "dps": 308.5734254890285,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "75": {
+     "dps": 308.30074724757327,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "80": {
+     "dps": 313.07454917469994,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "85": {
+     "dps": 311.1010882916705,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "90": {
+     "dps": 311.85272923635546,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 803.0
+    },
+    "95": {
+     "dps": 307.5998838527999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "100": {
+     "dps": 311.4539685642399,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 544.0
+    },
+    "105": {
+     "dps": 312.7409800713904,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 945.0
+    },
+    "110": {
+     "dps": 308.39812106952735,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "115": {
+     "dps": 310.0345073979132,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    },
+    "120": {
+     "dps": 305.85158149060027,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    }
+   }
+  },
+  {
+   "weapon": "Sword of Ipos Haste",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 802.9398749999999,
+    "p_atk_spd": 394.3836,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1048.131,
+    "mp_regen_3s": 5.836050000000002
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 447.9302915,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "10": {
+     "dps": 356.3615805628,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 105.0
+    },
+    "15": {
+     "dps": 345.7000102504,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 136.0
+    },
+    "20": {
+     "dps": 312.5302772894,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "25": {
+     "dps": 338.04783837536,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 210.0
+    },
+    "30": {
+     "dps": 334.5671414014667,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 204.0
+    },
+    "35": {
+     "dps": 334.141847304,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 272.0
+    },
+    "40": {
+     "dps": 320.8050544652,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "45": {
+     "dps": 314.5814783719111,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 420.0
+    },
+    "50": {
+     "dps": 330.92957487855995,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "55": {
+     "dps": 324.9171471282907,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 340.0
+    },
+    "60": {
+     "dps": 323.56331352379976,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "65": {
+     "dps": 319.04251014701515,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 630.0
+    },
+    "70": {
+     "dps": 324.59938829062816,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 408.0
+    },
+    "75": {
+     "dps": 325.0654345858662,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "80": {
+     "dps": 321.2983992758495,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 476.0
+    },
+    "85": {
+     "dps": 321.40423285148194,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "90": {
+     "dps": 318.25915711671064,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "95": {
+     "dps": 325.1512852191994,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "100": {
+     "dps": 322.13336443951937,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 612.0
+    },
+    "105": {
+     "dps": 322.8662516685328,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "110": {
+     "dps": 320.22655248476326,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "115": {
+     "dps": 322.30304810643435,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 680.0
+    },
+    "120": {
+     "dps": 323.2378048245998,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1155.0
+    }
+   }
+  }
+ ],
  "62": [
   {
    "weapon": "Berserker Blade Focus",
@@ -27324,6 +29861,1486 @@
    }
   }
  ],
+ "76": [
+  {
+   "weapon": "Heavens Divider Haste",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 1107.52639,
+    "p_atk_spd": 368.615,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1513.836,
+    "mp_regen_3s": 7.13295
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 574.1460112799999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "10": {
+     "dps": 472.31769603740804,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 120.0
+    },
+    "15": {
+     "dps": 474.55299559712006,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 240.0
+    },
+    "20": {
+     "dps": 424.397090486544,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 240.0
+    },
+    "25": {
+     "dps": 412.56550576385285,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 240.0
+    },
+    "30": {
+     "dps": 455.58892428987735,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 360.0
+    },
+    "35": {
+     "dps": 442.68181608747886,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 360.0
+    },
+    "40": {
+     "dps": 435.81081445132804,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 480.0
+    },
+    "45": {
+     "dps": 427.969520275968,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 480.0
+    },
+    "50": {
+     "dps": 430.44982075916164,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "55": {
+     "dps": 441.94725424256006,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "60": {
+     "dps": 430.1333534526347,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 600.0
+    },
+    "65": {
+     "dps": 433.8941412421662,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 720.0
+    },
+    "70": {
+     "dps": 426.74012282077723,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "75": {
+     "dps": 435.4188872378283,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "80": {
+     "dps": 434.40614969350406,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "85": {
+     "dps": 430.33750364524434,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "90": {
+     "dps": 430.7088580728818,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "95": {
+     "dps": 424.66792272844805,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 960.0
+    },
+    "100": {
+     "dps": 431.2806060458528,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 960.0
+    },
+    "105": {
+     "dps": 431.30399001609754,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "110": {
+     "dps": 433.2344168696756,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "115": {
+     "dps": 428.59081241325913,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1200.0
+    },
+    "120": {
+     "dps": 423.7635713816987,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Haste",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 1052.422495,
+    "p_atk_spd": 398.10420000000005,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1513.836,
+    "mp_regen_3s": 7.13295
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 658.14232886,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 120.0
+    },
+    "10": {
+     "dps": 502.60468866155196,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 120.0
+    },
+    "15": {
+     "dps": 488.923706931552,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 240.0
+    },
+    "20": {
+     "dps": 450.656868562328,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "25": {
+     "dps": 471.4971606218625,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 240.0
+    },
+    "30": {
+     "dps": 469.8412577634774,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 360.0
+    },
+    "35": {
+     "dps": 467.8577060783133,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 443.0
+    },
+    "40": {
+     "dps": 450.65686856232804,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "45": {
+     "dps": 439.14688855130305,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "50": {
+     "dps": 463.28857158386245,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 600.0
+    },
+    "55": {
+     "dps": 452.7229785728843,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 600.0
+    },
+    "60": {
+     "dps": 452.9924300224212,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 683.0
+    },
+    "65": {
+     "dps": 442.68842086238743,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "70": {
+     "dps": 452.30208500628106,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 720.0
+    },
+    "75": {
+     "dps": 452.9193955706324,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "80": {
+     "dps": 453.10920809542586,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 923.0
+    },
+    "85": {
+     "dps": 444.5633497329616,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "90": {
+     "dps": 439.1468885513028,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "95": {
+     "dps": 453.03311067459174,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1080.0
+    },
+    "100": {
+     "dps": 447.73480756401733,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1080.0
+    },
+    "105": {
+     "dps": 445.7240199861742,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "110": {
+     "dps": 441.23961218967094,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "115": {
+     "dps": 448.12924248115445,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1200.0
+    },
+    "120": {
+     "dps": 448.688930022421,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1320.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Haste",
+   "armor": "Draconic Leather",
+   "stats": {
+    "str": 41.0,
+    "dex": 27.0,
+    "p_atk": 1052.1775888000002,
+    "p_atk_spd": 386.9762,
+    "crit_pct": 8.56,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.24,
+    "mp_max": 1513.836,
+    "mp_regen_3s": 7.13295
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 658.0864902464,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 120.0
+    },
+    "10": {
+     "dps": 499.8928549250433,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "15": {
+     "dps": 460.0434000321622,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 240.0
+    },
+    "20": {
+     "dps": 431.84309329461894,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 240.0
+    },
+    "25": {
+     "dps": 436.6882999477534,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 323.0
+    },
+    "30": {
+     "dps": 455.45017275114407,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 360.0
+    },
+    "35": {
+     "dps": 439.99188708412186,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 360.0
+    },
+    "40": {
+     "dps": 442.6944112034309,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 480.0
+    },
+    "45": {
+     "dps": 429.6250720884694,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "50": {
+     "dps": 454.1340999477533,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 563.0
+    },
+    "55": {
+     "dps": 442.40103260421006,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "60": {
+     "dps": 443.5400404338835,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "65": {
+     "dps": 432.01306429907004,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 720.0
+    },
+    "70": {
+     "dps": 425.9580006407071,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 720.0
+    },
+    "75": {
+     "dps": 444.6338912092452,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 581.0
+    },
+    "80": {
+     "dps": 435.54629201864316,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 840.0
+    },
+    "85": {
+     "dps": 437.07957366687566,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 960.0
+    },
+    "90": {
+     "dps": 429.6250720884698,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "95": {
+     "dps": 437.96376361624596,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 960.0
+    },
+    "100": {
+     "dps": 436.6518503721272,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "105": {
+     "dps": 437.5764825715637,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "110": {
+     "dps": 433.47037759476495,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "115": {
+     "dps": 429.7213252246444,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "120": {
+     "dps": 439.0055840389549,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 913.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Focus",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 1107.52639,
+    "p_atk_spd": 344.5,
+    "crit_pct": 16.910000000000004,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1513.836,
+    "mp_regen_3s": 7.13295
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 574.1460112799999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "10": {
+     "dps": 483.8839892274479,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "15": {
+     "dps": 454.8076558941146,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "20": {
+     "dps": 414.9098607658789,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "25": {
+     "dps": 410.65228204768226,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "30": {
+     "dps": 454.3021522186892,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 249.0
+    },
+    "35": {
+     "dps": 431.5756269561867,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 249.0
+    },
+    "40": {
+     "dps": 426.83141948352534,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 249.0
+    },
+    "45": {
+     "dps": 423.47848278840564,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "50": {
+     "dps": 410.65228204768226,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "55": {
+     "dps": 425.23961906402457,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "60": {
+     "dps": 431.05802422712014,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "65": {
+     "dps": 420.6086743158934,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "70": {
+     "dps": 418.89769680957585,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "75": {
+     "dps": 417.2126481672638,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "80": {
+     "dps": 426.83141948352534,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "85": {
+     "dps": 425.05633535081495,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 581.0
+    },
+    "90": {
+     "dps": 417.843009796946,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 581.0
+    },
+    "95": {
+     "dps": 421.9070872298001,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "100": {
+     "dps": 415.57255663736873,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "105": {
+     "dps": 419.3576958937404,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "110": {
+     "dps": 421.7826868728306,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "115": {
+     "dps": 420.5583077555292,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "120": {
+     "dps": 419.5623361501925,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Focus",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 1052.422495,
+    "p_atk_spd": 372.06,
+    "crit_pct": 16.910000000000004,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1513.836,
+    "mp_regen_3s": 7.13295
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 659.279641796742,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "10": {
+     "dps": 469.903954733484,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "15": {
+     "dps": 471.99742891906465,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "20": {
+     "dps": 447.50749424604044,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "25": {
+     "dps": 414.11164893087755,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "30": {
+     "dps": 454.97298107518833,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 249.0
+    },
+    "35": {
+     "dps": 443.41079666829967,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 249.0
+    },
+    "40": {
+     "dps": 447.50749424604055,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "45": {
+     "dps": 428.95424684872796,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "50": {
+     "dps": 451.12305989287785,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "55": {
+     "dps": 444.90050487838755,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "60": {
+     "dps": 438.9952703241027,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "65": {
+     "dps": 441.85597085995846,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "70": {
+     "dps": 430.33256348926335,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "75": {
+     "dps": 438.7859229055448,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "80": {
+     "dps": 441.12332630458724,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 581.0
+    },
+    "85": {
+     "dps": 443.1857410684483,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "90": {
+     "dps": 434.149214768547,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "95": {
+     "dps": 430.98545031899016,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "100": {
+     "dps": 442.4001598928777,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "105": {
+     "dps": 439.144804194501,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "110": {
+     "dps": 436.57799285536385,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "115": {
+     "dps": 433.85884926282483,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "120": {
+     "dps": 431.36630096966405,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Focus",
+   "armor": "Draconic Leather",
+   "stats": {
+    "str": 41.0,
+    "dex": 27.0,
+    "p_atk": 1052.1775888000002,
+    "p_atk_spd": 361.66,
+    "crit_pct": 16.990000000000002,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.24,
+    "mp_max": 1513.836,
+    "mp_regen_3s": 7.13295
+   },
+   "skills": {
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 565.7329934976,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "10": {
+     "dps": 469.9697660416423,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "15": {
+     "dps": 472.0773109237827,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "20": {
+     "dps": 424.2217091776529,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "25": {
+     "dps": 414.2186750592591,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 166.0
+    },
+    "30": {
+     "dps": 455.06300057338615,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 249.0
+    },
+    "35": {
+     "dps": 430.14755819708284,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 249.0
+    },
+    "40": {
+     "dps": 435.91566350845534,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "45": {
+     "dps": 418.6644680007673,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "50": {
+     "dps": 414.21867505925894,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 332.0
+    },
+    "55": {
+     "dps": 436.49739806696465,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "60": {
+     "dps": 431.3064931101913,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 415.0
+    },
+    "65": {
+     "dps": 427.5706679510721,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "70": {
+     "dps": 423.758944424973,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "75": {
+     "dps": 414.21867505925894,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 498.0
+    },
+    "80": {
+     "dps": 429.5352971270566,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 581.0
+    },
+    "85": {
+     "dps": 426.2806642716817,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 581.0
+    },
+    "90": {
+     "dps": 423.8617810366795,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "95": {
+     "dps": 421.2483472234692,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 664.0
+    },
+    "100": {
+     "dps": 424.0005498966989,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "105": {
+     "dps": 430.3433220940771,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "110": {
+     "dps": 423.5393030870401,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 747.0
+    },
+    "115": {
+     "dps": 425.832916026215,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    },
+    "120": {
+     "dps": 419.78383218925865,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 830.0
+    }
+   }
+  }
+ ],
  "77": [
   {
    "weapon": "Heavens Divider Haste",
@@ -30591,6 +34608,1644 @@
     },
     "120": {
      "dps": 490.19860892698136,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1145.0
+    }
+   }
+  }
+ ],
+ "80": [
+  {
+   "weapon": "Heavens Divider Haste",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 1208.009454,
+    "p_atk_spd": 368.615,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1645.491,
+    "mp_regen_3s": 7.305870000000001
+   },
+   "skills": {
+    "362": "Armor Crush",
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 623.458363315104,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 35.0
+    },
+    "10": {
+     "dps": 567.1619979946912,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 155.0
+    },
+    "15": {
+     "dps": 545.328129107313,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 201.0
+    },
+    "20": {
+     "dps": 521.4743672852608,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 310.0
+    },
+    "25": {
+     "dps": 496.8547720947201,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 310.0
+    },
+    "30": {
+     "dps": 533.020180046687,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 400,
+     "mp_used": 271.0
+    },
+    "35": {
+     "dps": 516.9425509232832,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 465.0
+    },
+    "40": {
+     "dps": 516.1829361421576,
+     "order": [
+      "Fatal Strike",
+      "Power Smash",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 585.0
+    },
+    "45": {
+     "dps": 507.2854121048647,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 583.0
+    },
+    "50": {
+     "dps": 514.6695623114059,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 583.0
+    },
+    "55": {
+     "dps": 514.7421705871999,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash",
+      "Armor Crush"
+     ],
+     "hold": 0,
+     "mp_used": 740.0
+    },
+    "60": {
+     "dps": 508.18909135547653,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 738.0
+    },
+    "65": {
+     "dps": 508.39497914923055,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 858.0
+    },
+    "70": {
+     "dps": 498.8927154941606,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 673.0
+    },
+    "75": {
+     "dps": 499.5764371520368,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash",
+      "Armor Crush"
+     ],
+     "hold": 0,
+     "mp_used": 895.0
+    },
+    "80": {
+     "dps": 508.8646947663709,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1013.0
+    },
+    "85": {
+     "dps": 502.74321822802517,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 400,
+     "mp_used": 743.0
+    },
+    "90": {
+     "dps": 505.18936607853306,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1168.0
+    },
+    "95": {
+     "dps": 497.8719282131644,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "100": {
+     "dps": 498.89602088770755,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1205.0
+    },
+    "105": {
+     "dps": 505.7860169554605,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1286.0
+    },
+    "110": {
+     "dps": 501.1129712758222,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1323.0
+    },
+    "115": {
+     "dps": 499.73597455237467,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1110.0
+    },
+    "120": {
+     "dps": 499.0024517174895,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1478.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Haste",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 1151.569707,
+    "p_atk_spd": 398.10420000000005,
+    "crit_pct": 8.48,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1645.491,
+    "mp_regen_3s": 7.305870000000001
+   },
+   "skills": {
+    "362": "Armor Crush",
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 813.557132010856,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 118.0
+    },
+    "10": {
+     "dps": 596.6604343647753,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 118.0
+    },
+    "15": {
+     "dps": 540.2952123960266,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 190.0
+    },
+    "20": {
+     "dps": 528.4665252528569,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 310.0
+    },
+    "25": {
+     "dps": 553.2810948355593,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "30": {
+     "dps": 551.1978282901631,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 428.0
+    },
+    "35": {
+     "dps": 527.4167242874286,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 465.0
+    },
+    "40": {
+     "dps": 526.1820511372346,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 500.0
+    },
+    "45": {
+     "dps": 522.492985880136,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 620.0
+    },
+    "50": {
+     "dps": 537.8218402564897,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 703.0
+    },
+    "55": {
+     "dps": 535.9779765137067,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 738.0
+    },
+    "60": {
+     "dps": 532.3948504561769,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 858.0
+    },
+    "65": {
+     "dps": 521.0150279420033,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 400,
+     "mp_used": 625.0
+    },
+    "70": {
+     "dps": 533.8434793322391,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 893.0
+    },
+    "75": {
+     "dps": 529.1327328773824,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 791.0
+    },
+    "80": {
+     "dps": 521.6424980433931,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike"
+     ],
+     "hold": 400,
+     "mp_used": 743.0
+    },
+    "85": {
+     "dps": 526.0320254422139,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "90": {
+     "dps": 523.1426530089931,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash",
+      "Power Strike"
+     ],
+     "hold": 400,
+     "mp_used": 1301.0
+    },
+    "95": {
+     "dps": 526.215247309474,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Armor Crush"
+     ],
+     "hold": 0,
+     "mp_used": 992.0
+    },
+    "100": {
+     "dps": 525.7814518982941,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1027.0
+    },
+    "105": {
+     "dps": 523.9830065827095,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1110.0
+    },
+    "110": {
+     "dps": 521.406309777911,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1478.0
+    },
+    "115": {
+     "dps": 523.4117383132777,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1478.0
+    },
+    "120": {
+     "dps": 524.0303226535478,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1228.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Haste",
+   "armor": "Draconic Leather",
+   "stats": {
+    "str": 41.0,
+    "dex": 27.0,
+    "p_atk": 1151.31886368,
+    "p_atk_spd": 386.9762,
+    "crit_pct": 8.56,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.24,
+    "mp_max": 1645.491,
+    "mp_regen_3s": 7.305870000000001
+   },
+   "skills": {
+    "362": "Armor Crush",
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 703.4633388612372,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 35.0
+    },
+    "10": {
+     "dps": 550.757029889917,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 155.0
+    },
+    "15": {
+     "dps": 539.1092240932882,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 190.0
+    },
+    "20": {
+     "dps": 527.5921617094243,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 310.0
+    },
+    "25": {
+     "dps": 535.5958775511701,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 310.0
+    },
+    "30": {
+     "dps": 548.6965033759062,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 354.0
+    },
+    "35": {
+     "dps": 524.5914335446262,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 354.0
+    },
+    "40": {
+     "dps": 510.61058696653873,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 585.0
+    },
+    "45": {
+     "dps": 511.18870091470444,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 620.0
+    },
+    "50": {
+     "dps": 516.8309049150494,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 620.0
+    },
+    "55": {
+     "dps": 516.7384237864112,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 655.0
+    },
+    "60": {
+     "dps": 521.7379763505486,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 673.0
+    },
+    "65": {
+     "dps": 505.78571977899634,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 895.0
+    },
+    "70": {
+     "dps": 508.47678557480873,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash",
+      "Armor Crush",
+      "Power Strike"
+     ],
+     "hold": 400,
+     "mp_used": 990.0
+    },
+    "75": {
+     "dps": 517.7880460363721,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1013.0
+    },
+    "80": {
+     "dps": 509.47998031893576,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1050.0
+    },
+    "85": {
+     "dps": 510.34041435080985,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1131.0
+    },
+    "90": {
+     "dps": 506.74169067540515,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "95": {
+     "dps": 507.0081452336713,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1205.0
+    },
+    "100": {
+     "dps": 512.6126185969894,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1286.0
+    },
+    "105": {
+     "dps": 506.76234983322,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 1360.0
+    },
+    "110": {
+     "dps": 505.17005177243925,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 400,
+     "mp_used": 1062.0
+    },
+    "115": {
+     "dps": 509.5885095615375,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1358.0
+    },
+    "120": {
+     "dps": 507.06228643621705,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 1145.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Focus",
+   "armor": "Plated Leather",
+   "stats": {
+    "str": 44.0,
+    "dex": 26.0,
+    "p_atk": 1208.009454,
+    "p_atk_spd": 344.5,
+    "crit_pct": 16.910000000000004,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.38,
+    "mp_max": 1645.491,
+    "mp_regen_3s": 7.305870000000001
+   },
+   "skills": {
+    "362": "Armor Crush",
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 623.458363315104,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 35.0
+    },
+    "10": {
+     "dps": 526.3963272636049,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 35.0
+    },
+    "15": {
+     "dps": 525.0292214460787,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 201.0
+    },
+    "20": {
+     "dps": 507.8186136888483,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "25": {
+     "dps": 492.1217491934996,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "30": {
+     "dps": 491.64683954575406,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "35": {
+     "dps": 516.2212208850973,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 354.0
+    },
+    "40": {
+     "dps": 491.9436580755952,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 354.0
+    },
+    "45": {
+     "dps": 484.1885698572016,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 437.0
+    },
+    "50": {
+     "dps": 492.12174919349985,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 472.0
+    },
+    "55": {
+     "dps": 490.7220332769017,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 0,
+     "mp_used": 620.0
+    },
+    "60": {
+     "dps": 494.9976016795921,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 555.0
+    },
+    "65": {
+     "dps": 492.0121546594048,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 590.0
+    },
+    "70": {
+     "dps": 487.02184819159396,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 673.0
+    },
+    "75": {
+     "dps": 483.1760110596279,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 673.0
+    },
+    "80": {
+     "dps": 482.5767616066446,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 858.0
+    },
+    "85": {
+     "dps": 494.1517627130941,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 791.0
+    },
+    "90": {
+     "dps": 484.58781580731545,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 791.0
+    },
+    "95": {
+     "dps": 488.74216040799257,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 826.0
+    },
+    "100": {
+     "dps": 485.4124455930955,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "105": {
+     "dps": 484.550629670274,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1168.0
+    },
+    "110": {
+     "dps": 489.1382530176872,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 400,
+     "mp_used": 944.0
+    },
+    "115": {
+     "dps": 486.2256274130074,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1027.0
+    },
+    "120": {
+     "dps": 488.0279528088436,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1110.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Focus",
+   "armor": "Tallum Heavy",
+   "stats": {
+    "str": 42.0,
+    "dex": 26.0,
+    "p_atk": 1151.569707,
+    "p_atk_spd": 372.06,
+    "crit_pct": 16.910000000000004,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.29,
+    "mp_max": 1645.491,
+    "mp_regen_3s": 7.305870000000001
+   },
+   "skills": {
+    "362": "Armor Crush",
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 683.1594064424812,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 83.0
+    },
+    "10": {
+     "dps": 560.2567824731499,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 118.0
+    },
+    "15": {
+     "dps": 543.5537652045812,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 201.0
+    },
+    "20": {
+     "dps": 517.0038635293906,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "25": {
+     "dps": 495.4581396062975,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "30": {
+     "dps": 531.6625572148042,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 400,
+     "mp_used": 271.0
+    },
+    "35": {
+     "dps": 513.9720375682552,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 354.0
+    },
+    "40": {
+     "dps": 513.4939992056536,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 437.0
+    },
+    "45": {
+     "dps": 516.4027736808364,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 472.0
+    },
+    "50": {
+     "dps": 512.0358532098566,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 583.0
+    },
+    "55": {
+     "dps": 512.5218911368592,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 555.0
+    },
+    "60": {
+     "dps": 514.7844809989791,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 590.0
+    },
+    "65": {
+     "dps": 514.4278078965533,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 673.0
+    },
+    "70": {
+     "dps": 501.71736960039226,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 400,
+     "mp_used": 625.0
+    },
+    "75": {
+     "dps": 513.0096676410377,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 893.0
+    },
+    "80": {
+     "dps": 513.5843944697134,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 791.0
+    },
+    "85": {
+     "dps": 507.44856208407873,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 791.0
+    },
+    "90": {
+     "dps": 509.1584555937042,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "95": {
+     "dps": 503.9014444526631,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "100": {
+     "dps": 507.82071821447806,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "105": {
+     "dps": 509.2686195022332,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 0,
+     "mp_used": 1027.0
+    },
+    "110": {
+     "dps": 504.723466066401,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1027.0
+    },
+    "115": {
+     "dps": 504.9593036577506,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1110.0
+    },
+    "120": {
+     "dps": 508.547404684803,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1441.0
+    }
+   }
+  },
+  {
+   "weapon": "Heavens Divider Focus",
+   "armor": "Draconic Leather",
+   "stats": {
+    "str": 41.0,
+    "dex": 27.0,
+    "p_atk": 1151.31886368,
+    "p_atk_spd": 361.66,
+    "crit_pct": 16.990000000000002,
+    "acc_bonus": 3.0,
+    "str_bonus": 1.24,
+    "mp_max": 1645.491,
+    "mp_regen_3s": 7.305870000000001
+   },
+   "skills": {
+    "362": "Armor Crush",
+    "190": "Fatal Strike",
+    "315": "Crush of Doom",
+    "255": "Power Smash",
+    "3": "Power Strike"
+   },
+   "windows": {
+    "5": {
+     "dps": 608.4730852220007,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 35.0
+    },
+    "10": {
+     "dps": 559.3724444334329,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 118.0
+    },
+    "15": {
+     "dps": 508.8833897255564,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 201.0
+    },
+    "20": {
+     "dps": 516.1481476910437,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "25": {
+     "dps": 474.3384321538721,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 236.0
+    },
+    "30": {
+     "dps": 509.14352523063025,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Armor Crush"
+     ],
+     "hold": 0,
+     "mp_used": 319.0
+    },
+    "35": {
+     "dps": 513.2576532816124,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 354.0
+    },
+    "40": {
+     "dps": 500.08860666013624,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 437.0
+    },
+    "45": {
+     "dps": 504.29458609651056,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 400,
+     "mp_used": 472.0
+    },
+    "50": {
+     "dps": 484.5750844873779,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 472.0
+    },
+    "55": {
+     "dps": 502.6290759534728,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Armor Crush"
+     ],
+     "hold": 0,
+     "mp_used": 555.0
+    },
+    "60": {
+     "dps": 497.1713788975906,
+     "order": [
+      "Crush of Doom",
+      "Armor Crush",
+      "Fatal Strike"
+     ],
+     "hold": 400,
+     "mp_used": 507.0
+    },
+    "65": {
+     "dps": 498.0590413373468,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 673.0
+    },
+    "70": {
+     "dps": 491.73097362326826,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 673.0
+    },
+    "75": {
+     "dps": 487.98730193188,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 400,
+     "mp_used": 708.0
+    },
+    "80": {
+     "dps": 499.4116919447321,
+     "order": [
+      "Fatal Strike",
+      "Crush of Doom",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 976.0
+    },
+    "85": {
+     "dps": 494.84968311369823,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 791.0
+    },
+    "90": {
+     "dps": 496.330915739869,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1131.0
+    },
+    "95": {
+     "dps": 492.54170078053585,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 909.0
+    },
+    "100": {
+     "dps": 491.0470521968624,
+     "order": [
+      "Crush of Doom",
+      "Fatal Strike",
+      "Armor Crush",
+      "Power Smash"
+     ],
+     "hold": 400,
+     "mp_used": 1168.0
+    },
+    "105": {
+     "dps": 494.10626159011554,
+     "order": [
+      "Armor Crush",
+      "Crush of Doom",
+      "Fatal Strike"
+     ],
+     "hold": 400,
+     "mp_used": 944.0
+    },
+    "110": {
+     "dps": 494.8410589562407,
+     "order": [
+      "Armor Crush",
+      "Fatal Strike",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1027.0
+    },
+    "115": {
+     "dps": 491.0612424933521,
+     "order": [
+      "Fatal Strike",
+      "Armor Crush",
+      "Crush of Doom"
+     ],
+     "hold": 0,
+     "mp_used": 1110.0
+    },
+    "120": {
+     "dps": 493.01462495560855,
      "order": [
       "Armor Crush",
       "Fatal Strike",

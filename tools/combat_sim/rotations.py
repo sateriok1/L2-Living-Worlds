@@ -76,7 +76,8 @@ if __name__ == "__main__":
     weapons = S.read_csv(os.path.join(here, f"gear_{slug}_weapons.csv"))
     armors = S.read_csv(os.path.join(here, f"gear_{slug}_armor.csv"))
     bps = json.load(open(os.path.join(here, "breakpoints.json")))[line]
-    levels = [int(x) for x in sys.argv[2:]] or [b["level"] for b in bps]
+    # skill breakpoints plus the levels where a new gear grade becomes wearable, plus the cap
+    levels = [int(x) for x in sys.argv[2:]] or sorted({b["level"] for b in bps} | {S.WEAR_LEVEL[g] for g in S.GRADES if S.WEAR_LEVEL[g] > 1} | {80})
     result = {}
     for lv in levels:
         result[lv] = solve_level(line, leaf, lv, weapons, armors, names, parent, trees, sk_all)
