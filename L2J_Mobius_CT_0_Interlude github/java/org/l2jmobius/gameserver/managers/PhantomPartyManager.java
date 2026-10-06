@@ -52,6 +52,7 @@ import org.l2jmobius.gameserver.config.custom.AutoPlayConfig;
 import org.l2jmobius.gameserver.config.custom.FakePlayersConfig;
 import org.l2jmobius.gameserver.ai.Intention;
 import org.l2jmobius.gameserver.config.NpcConfig;
+import org.l2jmobius.gameserver.config.GeneralConfig;
 import org.l2jmobius.gameserver.geoengine.GeoEngine;
 import org.l2jmobius.gameserver.managers.PhantomManager.PartyRole;
 import org.l2jmobius.gameserver.model.Location;
@@ -71,6 +72,9 @@ import org.l2jmobius.gameserver.model.events.holders.actor.player.trade.OnPlayer
 import org.l2jmobius.gameserver.model.events.holders.actor.player.trade.OnPlayerTradeStart;
 import org.l2jmobius.gameserver.model.events.listeners.ConsumerEventListener;
 import org.l2jmobius.gameserver.model.groups.Party;
+import org.l2jmobius.gameserver.model.instancezone.Instance;
+import org.l2jmobius.gameserver.model.olympiad.Olympiad;
+import org.l2jmobius.gameserver.model.sevensigns.SevenSigns;
 import org.l2jmobius.gameserver.model.groups.PartyDistributionType;
 import org.l2jmobius.gameserver.model.groups.PartyMessageType;
 import org.l2jmobius.gameserver.handler.IItemHandler;
@@ -1339,6 +1343,16 @@ public class PhantomPartyManager
 		}
 
 		// Summon Friend ("summon me", "summon <name>"): only a member that knows it (Elemental Summoner / Master) answers.
+		if ((state.npc.getKnownSkill(PhantomServitorRules.SUMMON_FRIEND) != null) && PhantomServitorRules.isSummonCancellation(text))
+		{
+			state.summonFor = null;
+			if (state.npc.isCastingNow() && (state.npc.getLastSkillCast() != null) && (state.npc.getLastSkillCast().getId() == PhantomServitorRules.SUMMON_FRIEND))
+			{
+				state.npc.abortCast();
+			}
+			deliver(state, "ok, cancelling the summon");
+			return true;
+		}
 		if ((state.npc.getKnownSkill(PhantomServitorRules.SUMMON_FRIEND) != null) && PhantomServitorRules.isSummonRequest(text))
 		{
 			handleSummonRequest(state, owner, text);
@@ -2900,6 +2914,7 @@ public class PhantomPartyManager
 			{
 				return;
 			}
+			stopServitorCombat(npc);
 			if (!restForMp(state) && state.following)
 			{
 				driveFollow(state, owner); // "stop": passive, but still with the leader ("hold" clears following)
@@ -3417,16 +3432,18 @@ public class PhantomPartyManager
 		// the "phantoms nuked a seller in Gludio" bug. Stand down - dropping the target lets the caller rest/hold.
 		if (npc.isInsideZone(ZoneId.PEACE) || focus.isInsideZone(ZoneId.PEACE))
 		{
+			stopServitorCombat(npc);
 			npc.setTarget(null);
 			return false;
 		}
 		state.sitOrdered = false; // fighting ends a "sit" order: after the fight the normal rest rules decide
-		commandServitor(state, focus); // a summoner's servitor fights what its master fights
 		// A DPS that ripped raid aggro off the tank holds fire for a beat so the taunt can land (raid-only; no-op on trash).
 		if (isDps(state.role) && easeAggro(state, focus))
 		{
+			stopServitorCombat(npc);
 			return true;
 		}
+		commandServitor(state, focus); // a summoner's servitor respects its master's hold-fire gate
 		if (castsSpells(state))
 		{
 			// A nuker casts from range - it must NEVER be given a physical ATTACK intention (that walked a caster into
@@ -3578,19 +3595,28 @@ public class PhantomPartyManager
 	private boolean maintainServitor(Member state)
 	{
 		final Player npc = state.npc;
-		if (!npc.getPlayerClass().isSummoner() || npc.isDead() || npc.isCastingNow())
+		if (!npc.getPlayerClass().isSummoner() || npc.isDead())
+		{
+			return false;
+		}
+		final Summon pet = npc.getSummon();
+		if ((pet != null) && pet.isServitor() && !pet.isDead() && pet.isCastingNow() && (pet.getLastSkillCast() != null) && !pet.getLastSkillCast().hasNegativeEffect())
+		{
+			return true; // passive hold/pull ticks must let beneficial pet casts finish; explicit Stop still cancels them
+		}
+		if (npc.isCastingNow())
 		{
 			return false;
 		}
 		final boolean busy = npc.isAttackingNow() || underAttack(npc);
-		final Summon pet = npc.getSummon();
 		if (pet == null)
 		{
 			if (busy)
 			{
 				return false;
 			}
-			final int summonId = PhantomServitorRules.pickSummon(id -> castable(npc, npc.getKnownSkill(id)));
+			stockServitorCrystals(npc);
+			final int summonId = PhantomServitorRules.pickSummon(id -> canCastSupportSkill(npc, npc.getKnownSkill(id), npc));
 			if (summonId == 0)
 			{
 				return false; // none learned yet, on reuse, or short of MP: retried on a later tick
@@ -3599,7 +3625,6 @@ public class PhantomPartyManager
 			{
 				return true;
 			}
-			stockServitorCrystals(npc);
 			npc.setTarget(npc);
 			return castManaged(state, npc.getKnownSkill(summonId));
 		}
@@ -3612,8 +3637,14 @@ public class PhantomPartyManager
 			state.buffedPetOid = pet.getObjectId();
 			PhantomBuffs.applyFullBuffsToServitor(pet); // same kit a spawned phantom gets, for every new servitor
 		}
+		final long now = System.currentTimeMillis();
+		if (((now - state.lastServitorSkillAt) >= PhantomServitorRules.SERVITOR_SKILL_GAP_MS) && tryServitorUtility(pet, null, false))
+		{
+			state.lastServitorSkillAt = now;
+			return true;
+		}
 		final Skill heal = npc.getKnownSkill(PhantomServitorRules.SERVITOR_HEAL);
-		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && castable(npc, heal) && readyToCast(npc))
+		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && canCastSupportSkill(npc, heal, pet) && readyToCast(npc))
 		{
 			npc.setTarget(pet);
 			return castManaged(state, heal);
@@ -3623,7 +3654,7 @@ public class PhantomPartyManager
 			return false;
 		}
 		final Skill recharge = npc.getKnownSkill(PhantomServitorRules.SERVITOR_RECHARGE);
-		if (PhantomServitorRules.servitorNeedsRecharge(pet.getCurrentMpPercent()) && castable(npc, recharge) && readyToCast(npc))
+		if (PhantomServitorRules.servitorNeedsRecharge(pet.getCurrentMpPercent()) && canCastSupportSkill(npc, recharge, pet) && readyToCast(npc))
 		{
 			npc.setTarget(pet);
 			return castManaged(state, recharge);
@@ -3631,7 +3662,7 @@ public class PhantomPartyManager
 		for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
 		{
 			final Skill buff = npc.getKnownSkill(buffId);
-			if ((buff != null) && !pet.isAffectedBySkill(buffId) && castable(npc, buff) && readyToCast(npc))
+			if ((buff != null) && !pet.isAffectedBySkill(buffId) && canCastSupportSkill(npc, buff, pet) && readyToCast(npc))
 			{
 				npc.setTarget(pet);
 				return castManaged(state, buff);
@@ -3657,6 +3688,11 @@ public class PhantomPartyManager
 		{
 			return;
 		}
+		if (tryServitorUtility(pet, focus, false))
+		{
+			state.lastServitorSkillAt = now;
+			return;
+		}
 		for (Skill skill : PetSkillData.getInstance().getKnownSkills(pet))
 		{
 			if (!skill.isPassive() && skill.isDamage() && !pet.isSkillDisabled(skill) && (pet.getCurrentMp() >= skill.getMpConsume()))
@@ -3674,9 +3710,21 @@ public class PhantomPartyManager
 	/** "summon me": remember who to bring; {@link #serveSummonFriend} carries it out when the cast can land. */
 	private void handleSummonRequest(Member state, Player owner, String text)
 	{
+		state.summonFor = null;
 		final Skill skill = state.npc.getKnownSkill(PhantomServitorRules.SUMMON_FRIEND);
-		final Player named = findPartyMemberByName(state, text);
-		final Player target = ((named != null) && (named != state.npc)) ? named : owner;
+		final String requested = PhantomServitorRules.summonTarget(text);
+		Player target = requested.equalsIgnoreCase("me") ? owner : null;
+		if ((target == null) && (state.npc.getParty() != null))
+		{
+			for (Player member : state.npc.getParty().getMembers())
+			{
+				if (member.getName().equalsIgnoreCase(requested))
+				{
+					target = member;
+					break;
+				}
+			}
+		}
 		if ((target == null) || (target == state.npc) || (target.getParty() == null) || (target.getParty() != state.npc.getParty()) || isPhantomMember(target))
 		{
 			deliver(state, "i can only summon a real player in my party");
@@ -3744,11 +3792,20 @@ public class PhantomPartyManager
 			}
 			return false;
 		}
+		if (!canSummonFriendTarget(npc, target))
+		{
+			if (!state.summonWaitSaid)
+			{
+				state.summonWaitSaid = true;
+				deliver(state, "can't summon you in your current state or from here, ask when you're clear");
+			}
+			return false; // retain the order until its normal expiry without spending native reuse
+		}
 		if (npc.isCastingNow())
 		{
 			return true;
 		}
-		if (!castable(npc, skill))
+		if (!canCastSupportSkill(npc, skill, target))
 		{
 			return false; // short of MP: it rests as usual and the order waits
 		}
@@ -4170,6 +4227,12 @@ public class PhantomPartyManager
 	/** Stop remains passive while following; Hold also stops movement. Both revoke earlier attack permission. */
 	private void stopCombat(Member state, Player owner, boolean holdPosition)
 	{
+		state.summonFor = null;
+		stopServitorCombat(state.npc);
+		if (state.npc.isCastingNow() && (state.npc.getLastSkillCast() != null) && (state.npc.getLastSkillCast().getId() == PhantomServitorRules.SUMMON_FRIEND))
+		{
+			state.npc.abortCast();
+		}
 		stopCamp(owner);
 		clearRaidRelease(owner);
 		state.pullOrdered = false;
@@ -4460,6 +4523,7 @@ public class PhantomPartyManager
 	/** A member waiting on the tank's pull: stop attacking and stay near the leader (no target, so AutoUse stays quiet). */
 	private void holdForPull(Member state)
 	{
+		stopServitorCombat(state.npc);
 		final Player npc = state.npc;
 		standIfSitting(npc);
 		npc.setTarget(null);
@@ -4836,6 +4900,142 @@ public class PhantomPartyManager
 	static boolean castable(Player npc, Skill skill)
 	{
 		return (skill != null) && !npc.isSkillDisabled(skill) && (npc.getCurrentMp() >= skill.getMpConsume());
+	}
+
+	/** Use support servitors' native abilities, with hostile focus already authorized by the caller. */
+	static boolean tryServitorUtility(Summon pet, Creature focus, boolean forceUse)
+	{
+		if ((pet == null) || !pet.isServitor() || pet.isDead() || pet.isCastingNow() || (pet.getOwner() == null) || pet.getOwner().isAlikeDead())
+		{
+			return false;
+		}
+		final List<Skill> skills = PetSkillData.getInstance().getKnownSkills(pet);
+		// Heal and matching cures take priority over buffs, then the targeted Nightshade curse.
+		for (int id : new int[] { 4707, 4701, 4704, 4699, 4700, 4702, 4703, 4705 })
+		{
+			for (Skill skill : skills)
+			{
+				if ((skill.getId() != id) || skill.isPassive() || pet.isSkillDisabled(skill))
+				{
+					continue;
+				}
+				final WorldObject target = servitorUtilityTarget(pet, skill, focus);
+				if ((target != null) && skill.checkCondition(pet, target, false) && pet.checkDoCastConditions(skill))
+				{
+					pet.setTarget(target);
+					if (pet.useMagic(skill, (id == 4705) && forceUse, false))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private static WorldObject servitorUtilityTarget(Summon pet, Skill skill, Creature focus)
+	{
+		final int id = skill.getId();
+		if (id == 4705)
+		{
+			return ((focus != null) && !focus.isAlikeDead() && (focus.getInstanceId() == pet.getInstanceId()) && !hasServitorSlot(focus, AbnormalType.DEBUFF_NIGHTSHADE)) ? focus : null;
+		}
+		final Player owner = pet.getOwner();
+		final List<Player> friends = new ArrayList<>();
+		friends.add(owner);
+		if (owner.getParty() != null)
+		{
+			for (Player member : owner.getParty().getMembers())
+			{
+				if (member != owner)
+				{
+					friends.add(member);
+				}
+			}
+		}
+		final int range = (id == 4707) ? skill.getCastRange() : skill.getAffectRange();
+		friends.removeIf(friend -> friend.isAlikeDead() || (friend.getInstanceId() != pet.getInstanceId()) || !Skill.addCharacter(pet, friend, range, false));
+		if (id == 4707)
+		{
+			return friends.stream().filter(friend -> friend.getCurrentHpPercent() < 60).min(java.util.Comparator.comparingDouble(Player::getCurrentHpPercent)).orElse(null);
+		}
+		if ((id == 4701) || (id == 4704))
+		{
+			final Set<AbnormalType> slots = (id == 4701)
+				? EnumSet.of(AbnormalType.ATTACK_TIME_UP, AbnormalType.HIT_DOWN, AbnormalType.PA_DOWN)
+				: EnumSet.of(AbnormalType.SLEEP, AbnormalType.ROOT_MAGICALLY, AbnormalType.STUN, AbnormalType.PARALYZE, AbnormalType.SILENCE);
+			return friends.stream().anyMatch(friend -> friend.getEffectList().getDebuffs().stream().anyMatch(info -> slots.contains(info.getSkill().getAbnormalType()))) ? pet : null;
+		}
+		final AbnormalType slot = ((id == 4699) || (id == 4700)) ? AbnormalType.BUFF_QUEEN_OF_CAT : AbnormalType.BUFF_UNICORN_SERAPHIM;
+		if (friends.isEmpty() || friends.stream().allMatch(friend -> hasServitorSlot(friend, slot)))
+		{
+			return null; // these alternatives share a native slot; never alternate them on a buffed party
+		}
+		int preferred = (slot == AbnormalType.BUFF_QUEEN_OF_CAT) ? 4699 : (friends.stream().anyMatch(friend -> friend.getCurrentMpPercent() < 70) ? 4702 : 4703);
+		for (Player friend : friends)
+		{
+			for (BuffInfo info : friend.getEffectList().getBuffs())
+			{
+				if (info.getSkill().getAbnormalType() == slot)
+				{
+					preferred = info.getSkill().getId(); // preserve the current party variant when filling missing buffs
+				}
+			}
+		}
+		final int chosen = preferred;
+		return ((id == chosen) || PetSkillData.getInstance().getKnownSkills(pet).stream().noneMatch(known -> known.getId() == chosen)) ? pet : null;
+	}
+
+	private static boolean hasServitorSlot(Creature creature, AbnormalType slot)
+	{
+		return creature.getEffectList().getEffects().stream().anyMatch(info -> info.getSkill().getAbnormalType() == slot);
+	}
+
+	/** New preparation/upkeep paths must obey native resources and XML conditions, including initial MP. */
+	static boolean canCastSupportSkill(Player npc, Skill skill, WorldObject target)
+	{
+		return (skill != null) && !npc.isDead() && !npc.isSkillDisabled(skill)
+			&& ((skill.getId() != PhantomServitorRules.SUMMON_FRIEND) || ((target instanceof Player) && canSummonFriendTarget(npc, (Player) target)))
+			&& skill.checkCondition(npc, target, false) && npc.checkDoCastConditions(skill);
+	}
+
+	/** Preflight the native CallPc effect's completion gates before spending its 450-second reuse. */
+	static boolean canSummonFriendTarget(Player caster, Player target)
+	{
+		if ((target == caster) || target.isAlikeDead() || target.isInStoreMode() || target.isRooted() || target.isInCombat()
+			|| target.isInOlympiadMode() || Olympiad.getInstance().isRegisteredInComp(target) || target.isFestivalParticipant()
+			|| target.isOnEvent() || target.inObserverMode() || target.isInsideZone(ZoneId.NO_SUMMON_FRIEND) || target.isInsideZone(ZoneId.JAIL))
+		{
+			return false;
+		}
+		if (caster.getInstanceId() > 0)
+		{
+			final Instance instance = InstanceManager.getInstance().getInstance(caster.getInstanceId());
+			if (!GeneralConfig.ALLOW_SUMMON_IN_INSTANCE || (instance == null) || !instance.isSummonAllowed())
+			{
+				return false;
+			}
+		}
+		if (caster.isIn7sDungeon())
+		{
+			final SevenSigns signs = SevenSigns.getInstance();
+			final int cabal = signs.getPlayerCabal(target.getObjectId());
+			return signs.isSealValidationPeriod() ? (cabal == signs.getCabalHighestScore()) : (cabal != SevenSigns.CABAL_NULL);
+		}
+		return true;
+	}
+
+	/** Owner standdown must also stop the independently driven servitor. */
+	static void stopServitorCombat(Player npc)
+	{
+		final Summon pet = npc.getSummon();
+		if (pet != null)
+		{
+			pet.abortAttack();
+			pet.abortCast();
+			pet.setTarget(null);
+			pet.getAI().setIntention(Intention.IDLE);
+		}
 	}
 
 	/** Lazily resolves the tank's two taunt skills from its known list (it may know one, both, or neither). */

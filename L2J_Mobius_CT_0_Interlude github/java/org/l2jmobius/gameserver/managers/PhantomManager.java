@@ -55,6 +55,7 @@ import org.l2jmobius.gameserver.data.sql.CharInfoTable;
 import org.l2jmobius.gameserver.data.sql.ClanTable;
 import org.l2jmobius.gameserver.data.xml.ExperienceData;
 import org.l2jmobius.gameserver.data.xml.ItemData;
+import org.l2jmobius.gameserver.data.xml.PetSkillData;
 import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData;
 import org.l2jmobius.gameserver.data.xml.PlayerTemplateData;
 import org.l2jmobius.gameserver.data.xml.SkillData;
@@ -68,6 +69,7 @@ import org.l2jmobius.gameserver.model.World;
 import org.l2jmobius.gameserver.model.WorldObject;
 import org.l2jmobius.gameserver.model.actor.Creature;
 import org.l2jmobius.gameserver.model.actor.Player;
+import org.l2jmobius.gameserver.model.actor.Summon;
 import org.l2jmobius.gameserver.model.actor.appearance.PlayerAppearance;
 import org.l2jmobius.gameserver.model.actor.enums.creature.Race;
 import org.l2jmobius.gameserver.model.actor.enums.player.PlayerClass;
@@ -103,8 +105,6 @@ import org.l2jmobius.gameserver.model.item.type.EtcItemType;
 import org.l2jmobius.gameserver.model.item.type.WeaponType;
 import org.l2jmobius.gameserver.model.itemcontainer.Inventory;
 import org.l2jmobius.gameserver.model.skill.AbnormalType;
-import org.l2jmobius.gameserver.data.xml.PetSkillData;
-import org.l2jmobius.gameserver.model.actor.Summon;
 import org.l2jmobius.gameserver.model.skill.Skill;
 import org.l2jmobius.gameserver.model.skill.targets.TargetType;
 import org.l2jmobius.gameserver.model.zone.ZoneId;
@@ -1222,6 +1222,7 @@ public class PhantomManager implements IXmlReader
 		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
 		boolean encounterCpPotions; // carries and drinks CP potions (the strong encounters); the others use only HP and MP potions
 		long encounterPrepUntil; // until then it may cast its self-buffs and summon its servitor before the fight
+		boolean encounterPreparing; // approach time starts only after the initial preparation finishes
 		final Set<Integer> encounterPrepDone = new HashSet<>(); // skills already tried in the preparation (a refused cast is not retried)
 		int encounterPetBuffedOid; // object id of the servitor that already got the spawn kit (a re-summoned one gets it again)
 		long encounterPetSkillAt;
@@ -6088,7 +6089,8 @@ public class PhantomManager implements IXmlReader
 		data.encounterGroup = group;
 		data.encounterVictimOid = victim.getObjectId();
 		data.encounterPhase = ENC_APPROACH;
-		data.encounterDeadline = now + (group.style().approachSeconds * 1000L);
+		data.encounterDeadline = 0;
+		data.encounterPreparing = true;
 		data.encounterLastMoveAt = now;
 		data.encounterLastX = victim.getX();
 		data.encounterLastY = victim.getY();
@@ -6178,6 +6180,7 @@ public class PhantomManager implements IXmlReader
 		phantom.getInventory().destroyItemByItemId(ItemProcessType.DESTROY, ENC_ESCAPE_SCROLL_ID, 1, phantom, null);
 		phantom.broadcastPacket(new MagicSkillUse(phantom, phantom, ENC_ESCAPE_SKILL_ID, 1, 0, 0));
 		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		stopEncounterCombat(phantom);
 		if (data.pvpTargetOid != 0)
 		{
 			endPvp(phantom, data, victim);
@@ -6201,19 +6204,24 @@ public class PhantomManager implements IXmlReader
 
 	/**
 	 * Before the fight: a summoner calls its servitor (and gives it the same buffs a spawned phantom gets, plus its
-	 * shields), then everyone casts its class self-buffs. One cast per tick, each skill tried once, for at most
-	 * {@link #ENC_PREP_MS} from the spawn.
+	 * shields), then everyone casts its class self-buffs. One new cast per tick, each skill tried once, for at most
+	 * {@link #ENC_PREP_MS} from the spawn. A cast already in progress can finish after that budget.
 	 * @return {@code true} while it is busy with this
 	 */
 	private boolean prepareEncounterActor(Player phantom, PhantomData data, long now)
 	{
-		if (phantom.isDead() || (now >= data.encounterPrepUntil))
+		if (phantom.isDead())
 		{
 			return false;
 		}
 		if (phantom.isCastingNow())
 		{
 			return true;
+		}
+		prepareEncounterPet(phantom, data);
+		if (now >= data.encounterPrepUntil)
+		{
+			return false;
 		}
 		if (!PhantomPartyManager.readyToCast(phantom))
 		{
@@ -6224,10 +6232,10 @@ public class PhantomManager implements IXmlReader
 			final Summon pet = phantom.getSummon();
 			if (pet == null)
 			{
-				final int summonId = PhantomServitorRules.pickSummon(id -> PhantomPartyManager.castable(phantom, phantom.getKnownSkill(id)));
+				PhantomPartyManager.stockServitorCrystals(phantom);
+				final int summonId = PhantomServitorRules.pickSummon(id -> PhantomPartyManager.canCastSupportSkill(phantom, phantom.getKnownSkill(id), phantom));
 				if ((summonId != 0) && data.encounterPrepDone.add(-summonId))
 				{
-					PhantomPartyManager.stockServitorCrystals(phantom);
 					phantom.setTarget(phantom);
 					phantom.doCast(phantom.getKnownSkill(summonId));
 					return true;
@@ -6235,15 +6243,10 @@ public class PhantomManager implements IXmlReader
 			}
 			else if (pet.isServitor() && !pet.isDead())
 			{
-				if (data.encounterPetBuffedOid != pet.getObjectId())
-				{
-					data.encounterPetBuffedOid = pet.getObjectId();
-					PhantomBuffs.applyFullBuffsToServitor(pet);
-				}
 				for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
 				{
 					final Skill buff = phantom.getKnownSkill(buffId);
-					if ((buff != null) && !pet.isAffectedBySkill(buffId) && PhantomPartyManager.castable(phantom, buff) && data.encounterPrepDone.add(buffId))
+					if ((buff != null) && !pet.isAffectedBySkill(buffId) && PhantomPartyManager.canCastSupportSkill(phantom, buff, pet) && data.encounterPrepDone.add(buffId))
 					{
 						phantom.setTarget(pet);
 						phantom.doCast(buff);
@@ -6255,7 +6258,7 @@ public class PhantomManager implements IXmlReader
 		for (int id : PhantomEncounterBuffs.forClass(phantom.getPlayerClass().getId()))
 		{
 			final Skill skill = phantom.getKnownSkill(id);
-			if ((skill != null) && !phantom.isAffectedBySkill(id) && PhantomPartyManager.castable(phantom, skill) && data.encounterPrepDone.add(id))
+			if ((skill != null) && !phantom.isAffectedBySkill(id) && PhantomPartyManager.canCastSupportSkill(phantom, skill, phantom) && data.encounterPrepDone.add(id))
 			{
 				phantom.setTarget(phantom);
 				phantom.doCast(skill);
@@ -6265,11 +6268,57 @@ public class PhantomManager implements IXmlReader
 		return false;
 	}
 
-	/** Sends a summoner's servitor at the fight's target, and now and then has it use one of its damage skills. */
+	/** A summon finishing after the cast budget still receives its kit before combat. */
+	private static void prepareEncounterPet(Player phantom, PhantomData data)
+	{
+		final Summon pet = phantom.getSummon();
+		if ((pet != null) && pet.isServitor() && !pet.isDead() && (data.encounterPetBuffedOid != pet.getObjectId()))
+		{
+			PhantomBuffs.applyFullBuffsToServitor(pet);
+			data.encounterPetBuffedOid = pet.getObjectId();
+		}
+	}
+
+	/** Encounter companions leave immediately when their owner's one fight ends. */
+	private static void stopEncounterCombat(Player phantom)
+	{
+		phantom.abortAttack();
+		phantom.abortCast();
+		final Summon pet = phantom.getSummon();
+		PhantomPartyManager.stopServitorCombat(phantom);
+		if (pet != null)
+		{
+			pet.unSummon(phantom);
+		}
+	}
+
+	/** Recheck the exact encounter pair and native owner target gate before forcing a pet skill. */
+	private static boolean encounterPetAttackAllowed(Player phantom, PhantomData data, Player target)
+	{
+		return (target != null) && !phantom.isDead() && !target.isDead() && data.encounterActor && FakePlayersConfig.PHANTOM_PVP_ENABLED //
+			&& (data.encounterPhase == ENC_FIGHT) && (data.encounterEndAt == 0) //
+			&& PhantomEncounterRules.isHostile(phantom.getObjectId(), target.getObjectId()) //
+			&& (phantom.getInstanceId() == 0) && (target.getInstanceId() == 0) //
+			&& !phantom.isInDuel() && !target.isInDuel() && !phantom.isInOlympiadMode() && !target.isInOlympiadMode() //
+			&& !phantom.isOnEvent() && !target.isOnEvent() && !target.inObserverMode() //
+			&& !phantom.isInsideZone(ZoneId.PEACE) && !phantom.isInsideZone(ZoneId.NO_PVP) //
+			&& !target.isInsideZone(ZoneId.PEACE) && !target.isInsideZone(ZoneId.NO_PVP) && target.isAutoAttackable(phantom);
+	}
+
+	/** Send the servitor at the fight's target and periodically try a native damage skill. */
 	private static void commandEncounterPet(Player phantom, PhantomData data, Player target)
 	{
 		final Summon pet = phantom.getSummon();
-		if ((pet == null) || !pet.isServitor() || pet.isDead() || target.isDead() || pet.isCastingNow())
+		if (!encounterPetAttackAllowed(phantom, data, target))
+		{
+			PhantomPartyManager.stopServitorCombat(phantom);
+			if (pet != null)
+			{
+				pet.unSummon(phantom);
+			}
+			return;
+		}
+		if ((pet == null) || !pet.isServitor() || pet.isDead() || pet.isCastingNow())
 		{
 			return;
 		}
@@ -6282,12 +6331,17 @@ public class PhantomManager implements IXmlReader
 		{
 			return;
 		}
+		if (PhantomPartyManager.tryServitorUtility(pet, target, true))
+		{
+			data.encounterPetSkillAt = now;
+			return;
+		}
 		for (Skill skill : PetSkillData.getInstance().getKnownSkills(pet))
 		{
 			if (!skill.isPassive() && skill.isDamage() && !pet.isSkillDisabled(skill) && (pet.getCurrentMp() >= skill.getMpConsume()))
 			{
 				pet.setTarget(target);
-				if (pet.useMagic(skill, false, false))
+				if (pet.useMagic(skill, true, false))
 				{
 					data.encounterPetSkillAt = now;
 					return;
@@ -6386,6 +6440,7 @@ public class PhantomManager implements IXmlReader
 		if (phantom.isDead())
 		{
 			PhantomEncounterRules.clearHostile(phantom.getObjectId());
+			stopEncounterCombat(phantom);
 			if ((style.defeatLines.length > 0) && group.claimDefeatLine())
 			{
 				sayNearby(phantom, style.defeatLines); // the first to fall whines
@@ -6404,9 +6459,11 @@ public class PhantomManager implements IXmlReader
 			}
 			return;
 		}
-		final boolean gone = (victim == null) || !victim.isOnline() || victim.isInsideZone(ZoneId.PEACE) || (victim.getInstanceId() != 0) //
-			|| phantom.isInsideZone(ZoneId.PEACE) || (phantom.calculateDistance2D(victim) > ENC_LEASH);
-		if (gone || (now >= data.encounterDeadline))
+		final boolean gone = (victim == null) || !victim.isOnline() || victim.isInsideZone(ZoneId.PEACE) || victim.isInsideZone(ZoneId.NO_PVP) || (victim.getInstanceId() != 0) //
+			|| phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP) || (phantom.getInstanceId() != 0) //
+			|| victim.isInDuel() || phantom.isInDuel() || victim.isInOlympiadMode() || phantom.isInOlympiadMode() //
+			|| victim.isOnEvent() || phantom.isOnEvent() || victim.inObserverMode() || (phantom.calculateDistance2D(victim) > ENC_LEASH);
+		if (gone || (!data.encounterPreparing && (now >= data.encounterDeadline)))
 		{
 			endEncounter(phantom, data, victim, now, 1500, false); // victim escaped or the clock ran out: it simply leaves
 			return;
@@ -6420,9 +6477,15 @@ public class PhantomManager implements IXmlReader
 		{
 			return; // it read its scroll and is gone: counted as down
 		}
-		if ((data.encounterPhase != ENC_FIGHT) && prepareEncounterActor(phantom, data, now))
+		prepareEncounterPet(phantom, data);
+		if (data.encounterPreparing)
 		{
-			return; // casting its buffs or summoning: it joins the fight when it is ready, even if the group has started
+			if (prepareEncounterActor(phantom, data, now))
+			{
+				return; // let an initial cast finish, even if the group's fight has started
+			}
+			data.encounterPreparing = false;
+			data.encounterDeadline = now + (style.approachSeconds * 1000L);
 		}
 		final double distance = phantom.calculateDistance2D(victim);
 		switch (data.encounterPhase)
@@ -6519,6 +6582,7 @@ public class PhantomManager implements IXmlReader
 	private void endEncounter(Player phantom, PhantomData data, Player victim, long now, long leaveMs, boolean won)
 	{
 		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		stopEncounterCombat(phantom);
 		if (data.pvpTargetOid != 0)
 		{
 			endPvp(phantom, data, victim);

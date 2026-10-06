@@ -36,6 +36,7 @@ on:
   push:
     branches:
       - main
+      - fix/encounter-preparation
     paths:
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/FakePlayerChatParsing.java"
       - "L2J_Mobius_CT_0_Interlude github/java/org/l2jmobius/gameserver/managers/FakePlayerStorePricing.java"

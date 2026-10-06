@@ -12,12 +12,17 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomSpotIntegrationTest.java"
       - "L2J_Mobius_CT_0_Interlude github/tests/core/spot-stubs/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/run_phantom_spot.py"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomPreparationIntegrationTest.java"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/preparation-stubs/**"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/encounter-stubs/org/l2jmobius/gameserver/geoengine/**"
+      - "L2J_Mobius_CT_0_Interlude github/tests/run_phantom_preparation.py"
       - ".github/workflows/party-defense-tests.yml"
   push:
     branches:
       - main
       - release/party-mob-defense
       - release/spot-defense-fixes
+      - fix/encounter-preparation
     paths:
       - "L2J_Mobius_CT_0_Interlude github/java/**"
       - "L2J_Mobius_CT_0_Interlude github/dist/libs/**"
@@ -28,6 +33,10 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomSpotIntegrationTest.java"
       - "L2J_Mobius_CT_0_Interlude github/tests/core/spot-stubs/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/run_phantom_spot.py"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomPreparationIntegrationTest.java"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/preparation-stubs/**"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/encounter-stubs/org/l2jmobius/gameserver/geoengine/**"
+      - "L2J_Mobius_CT_0_Interlude github/tests/run_phantom_preparation.py"
       - ".github/workflows/party-defense-tests.yml"
   workflow_dispatch:
 
@@ -66,3 +75,5 @@ jobs:
         run: python tests/run_party_defense.py --core "../build/party-defense/dist/libs/GameServer.jar"
       - name: Run native hunting-spot regressions
         run: python tests/run_phantom_spot.py --core "../build/party-defense/dist/libs/GameServer.jar"
+      - name: Run native encounter-preparation regressions
+        run: python tests/run_phantom_preparation.py --core "../build/party-defense/dist/libs/GameServer.jar"
