@@ -1,0 +1,19 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect,reuse_delay
+Spectral Dancer,NG,3908,Fang of Coyote,,SWORD,1H,58.0,42.0,277.0,8.0,SS-NG,,,0
+Spectral Dancer,D,2499,Elven Long Sword,,SWORD,1H,92.0,54.0,379.0,8.0,SS-D,,,0
+Spectral Dancer,D,5129,Doll Knife,,DUAL,2H,200.0,6.0,325.0,8.0,SS-D,,,0
+Spectral Dancer,C,2582,Katana*Katana,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3045:8,pAtkSpd x1.04,0
+Spectral Dancer,C,2583,Katana*Spirit Sword,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3046:8,accCombat +2.9,0
+Spectral Dancer,C,2599,Raid Sword*Raid Sword,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3045:8,pAtkSpd x1.04,0
+Spectral Dancer,C,2575,Shamshir*Raid Sword,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3044:8,critRate +40.4,0
+Spectral Dancer,C,2572,Shamshir*Shamshir,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3046:8,accCombat +2.9,0
+Spectral Dancer,C,2592,Spirit Sword*Raid Sword,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3044:8,critRate +40.4,0
+Spectral Dancer,C,2565,Stormbringer*Raid Sword,,DUAL,2H,183.0,81.0,325.0,8.0,SS-C,3045:7,pAtkSpd x1.02,0
+Spectral Dancer,C,2564,Stormbringer*Spirit Sword,,DUAL,2H,183.0,81.0,325.0,8.0,SS-C,3044:7,critRate +24.8,0
+Spectral Dancer,B,2626,Samurai Long Sword*Samurai Long Sword,,DUAL,2H,236.0,99.0,325.0,8.0,SS-B,3045:14,pAtkSpd x1.04,0
+Spectral Dancer,B,2611,Caliburs*Samurai Long Sword,,DUAL,2H,228.0,97.0,325.0,8.0,SS-B,3045:13,pAtkSpd x1.05,0
+Spectral Dancer,B,2616,Sword of Limit*Samurai Long Sword,,DUAL,2H,228.0,97.0,325.0,8.0,SS-B,3046:13,accCombat +3.8,0
+Spectral Dancer,B,2625,Tsurugi*Samurai Long Sword,,DUAL,2H,228.0,97.0,325.0,8.0,SS-B,3044:13,critRate +52.6,0
+Spectral Dancer,B,2605,Raid Sword*Samurai Long Sword,,DUAL,2H,220.0,94.0,325.0,8.0,SS-B,3044:12,critRate +43.7,0
+Spectral Dancer,B,2581,Shamshir*Samurai Long Sword,,DUAL,2H,220.0,94.0,325.0,8.0,SS-B,3046:12,accCombat +3.2,0
+Spectral Dancer,A,5706,Damascus*Damascus,,DUAL,2H,282.0,114.0,325.0,8.0,SS-A,3046:20,accCombat +6.5,0

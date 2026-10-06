@@ -44,10 +44,11 @@ for r in rows:
          "weapon_type": r["weapon_type"], "hands": hands, "special_skill": ""}
     if ALL:
         leaf = int(r["class_id"])
-    ls = L.learned(S.class_at(leaf, lv, parent), lv, trees, parent)
+    cid_now = int(r["class_id"]) if ALL else S.class_at(leaf, lv, parent)     # the dump's class_id is already the class the phantom had at that level
+    ls = L.learned(cid_now, lv, trees, parent)
     for sid, lvl in sk:                                           # weapon special ability skills are applied like passives
         ls = dict(ls); ls[sid] = lvl
-    cid = S.class_at(leaf, lv, parent)
+    cid = cid_now
     t = S.template(cid)
     # feed the dump's own STR/DEX/CON as an "armor" delta against the template, so formulas are tested independently of sets
     chest = equip.get(r["sample"], {}).get("CHEST") or equip.get(r["sample"], {}).get("FULL_ARMOR")
