@@ -36,6 +36,7 @@ class Actor:
     crit_add: float = 0.0       # critDmgAdd: flat crit damage = crit_add * 77 / defence
     reuse_mul: float = 1.0      # pReuse multiplier (Song of Champion): scales physical skill reuse
     mp_mul: float = 1.0         # physicalMpConsumeRate multiplier
+    mp_drain_per_s: float = 0.0 # toggle upkeep (e.g. Vicious Stance)
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -103,7 +104,7 @@ class Policy:
     hold_ms: int = 0            # wait this long for a higher-priority skill instead of filling with a lower one
 
 
-def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=None):
+def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=None, later=None):
     """Returns (total_damage, mp_used, casts dict). `skills` maps id -> SkillDef.
     Tracks MP and HP (skills can cost both), and the expected effect of defence-lowering debuffs (e.g. Armor Crush's stun,
     pDef x0.7 for its duration, landing with its activate rate): while active, hits are scaled by 1 + p * (1/mult - 1).
@@ -116,17 +117,20 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
     mp_used = hp_used = 0.0
     casts = {sid: 0 for sid in policy.order}
     casts["auto"] = 0
-    a_dmg = auto_dmg(actor, dummy)
-    a_int = 500000.0 / actor.patk_spd
-    mp_per_ms = actor.mp_regen_3s / 3000.0
     hp_per_ms = actor.hp_regen_3s / 3000.0
-    sd = {sid: (skill_dmg(skills[sid], actor, dummy), cast_ms(skills[sid], actor), reuse_ms(skills[sid], actor)) for sid in policy.order}
+
+    def derive():
+        return (auto_dmg(actor, dummy), 500000.0 / actor.patk_spd, (actor.mp_regen_3s / 3000.0) - actor.mp_drain_per_s / 1000.0,
+                {sid: (skill_dmg(skills[sid], actor, dummy), cast_ms(skills[sid], actor), reuse_ms(skills[sid], actor)) for sid in policy.order})
+
+    a_dmg, a_int, mp_per_ms, sd = derive()
+    switched = later is None
     deb = [0.0, 0.0, 1.0, 1.0]       # until, probability active, pDef mult, mDef mult
 
     def advance(dt):
         nonlocal t, mp, hp
         t += dt
-        mp = min(actor.mp_max, mp + mp_per_ms * dt)
+        mp = max(0.0, min(actor.mp_max, mp + mp_per_ms * dt))
         if actor.hp_max:
             hp = min(actor.hp_max, hp + hp_per_ms * dt)
 
@@ -147,6 +151,10 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
             timeline.append((t, total, mp_used))
 
     while t < duration_ms:
+        if not switched and t >= later[0]:          # a temporary buff (e.g. Rage) has ended: continue with the after-stats
+            switched = True
+            actor = later[1]
+            a_dmg, a_int, mp_per_ms, sd = derive()
         chosen = None
         for sid in policy.order:
             if can(sid) and ready_at[sid] <= t:

@@ -18,9 +18,24 @@ HOLDS = (0, 400, 1000)
 SPAWN_BUFFS = [1204, 1068, 1086, 1077, 1242, 1240, 1268, 1087, 1040, 1243, 1044, 1259, 1035, 1036, 1045, 1048, 1062]   # PhantomBuffs.applyFullBuffs for a damage dealer, max level
 
 
+RAGE_ID, RAGE_MS = 94, 90000      # Rage: abnormalTime 90 s, so it only covers the first 90 s of a long fight
+VICIOUS_ID = 312                  # Vicious Stance toggle: +critDmgAdd, upkeep 0.8 * (level-1)/7.5 MP per second
+
+
+def split_name(name):
+    """'fighterplus_max_self_vicious' -> ('fighterplus_max', rage, vicious)."""
+    vicious = name.endswith("_self_vicious")
+    rage = vicious or name.endswith("_self")
+    base = name.replace("_self_vicious", "").replace("_self", "")
+    return base, rage, vicious
+
+
 def buff_set(name):
-    """(skill id, level) pairs. 'spawn' = what a spawned phantom gets (max level, as the server applies them);
+    """Permanent buffs: (skill id, level) pairs; level None = the level the class has learned. 'spawn' = what a spawned phantom gets (max level, as the server applies them);
     'fighterplus' = the Scheme Buffer FIGHTER_GROUP preset at the levels it lists."""
+    base, rage, vicious = split_name(name)
+    if (base, rage, vicious) != (name, False, False):
+        return buff_set(base) + (((VICIOUS_ID, None),) if vicious else ())
     if name == "none":
         return ()
     els = S._skill_elements()
@@ -36,6 +51,25 @@ def buff_set(name):
             out.append((i, int(els[i].get("levels")) if name.endswith("_max") else lv))
         return tuple(out)
     raise SystemExit("unknown buff set " + name)
+
+
+def temp_set(name):
+    return ((RAGE_ID, None),) if split_name(name)[1] else ()
+
+
+def setup(level, cid, w, a, learned, bname):
+    """(stats with every buff, the actor, the actor that continues after Rage expires or None)."""
+    perm, temp = buff_set(bname), temp_set(bname)
+    st = S.compute(cid, level, w, a, learned, perm + temp)
+    drain = 0.8 * (level - 1) / 7.5 if (split_name(bname)[2] and VICIOUS_ID in learned) else 0.0
+    actor = build_actor(st, w)
+    actor.mp_drain_per_s = drain
+    later = None
+    if temp and RAGE_ID in learned:
+        after = build_actor(S.compute(cid, level, w, a, learned, perm), w)
+        after.mp_drain_per_s = drain
+        later = (RAGE_MS, after)
+    return st, actor, later
 
 
 def build_actor(st, w):
@@ -65,16 +99,16 @@ def at(tl, ms):
     return (tl[i][1], tl[i][2]) if i >= 0 else (0.0, 0.0)
 
 
-def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_all, buffs=()):
+def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_all, bname="none"):
     cid = S.class_at(leaf_id, level, parent)
     learned = L.learned(cid, level, trees, parent)
     rows = []
     for w, a in S.options(weapons, armors, level):
-        rows.append(((w, a), S.compute(cid, level, w, a, learned, buffs)))
+        rows.append(((w, a), setup(level, cid, w, a, learned, bname)[0]))
     rows = pareto(rows)
     out = []
     for (w, a), st in rows:
-        actor = build_actor(st, w)
+        st, actor, later = setup(level, cid, w, a, learned, bname)
         skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
         ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
         best = {ms: None for ms in WINDOWS}
@@ -82,7 +116,7 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
             for perm in itertools.permutations(ids, k):
                 for h in (HOLDS if k > 1 else (0,)):
                     tl, pol = [], C.Policy(perm, h)
-                    _, _, casts = C.simulate(actor, DUMMY, skills, pol, WINDOWS[-1] * 1000, timeline=tl)
+                    _, _, casts = C.simulate(actor, DUMMY, skills, pol, WINDOWS[-1] * 1000, timeline=tl, later=later)
                     for ms in WINDOWS:
                         dmg, mp = at(tl, ms * 1000)
                         if best[ms] is None or dmg > best[ms][0] + 1e-9:
@@ -97,7 +131,6 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
 if __name__ == "__main__":
     args = [x for x in sys.argv[1:] if not x.startswith("--")]
     bname = next((x.split("=")[1] for x in sys.argv if x.startswith("--buffs=")), "none")
-    buffs = buff_set(bname)
     line = args[0]
     here = os.path.dirname(os.path.abspath(__file__))
     names, parent = L.load_classes()
@@ -112,7 +145,7 @@ if __name__ == "__main__":
     levels = [int(x) for x in args[1:]] or sorted({b["level"] for b in bps} | {S.WEAR_LEVEL[g] for g in S.GRADES if S.WEAR_LEVEL[g] > 1} | {80})
     result = {}
     for lv in levels:
-        result[lv] = solve_level(line, leaf, lv, weapons, armors, names, parent, trees, sk_all, buffs)
+        result[lv] = solve_level(line, leaf, lv, weapons, armors, names, parent, trees, sk_all, bname)
         best = max(result[lv], key=lambda r: r["windows"][60]["dps"])
         print(f"L{lv}: {len(result[lv])} combos; best@60s {best['weapon']} + {best['armor']}: "
               f"{best['windows'][60]['dps']:.0f} dps, order {best['windows'][60]['order']}, mp used {best['windows'][60]['mp_used']:.0f}/{best['stats']['mp_max']:.0f}", flush=True)

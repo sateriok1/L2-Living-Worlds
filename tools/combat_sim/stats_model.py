@@ -14,6 +14,7 @@ import l2data as L
 
 WEAR_LEVEL = {"NG": 1, "D": 20, "C": 40, "B": 52, "A": 61, "S": 76}
 GRADES = ["NG", "D", "C", "B", "A", "S"]
+MAX_PCRIT_RATE, MAX_PATK_SPEED = 500, 1500   # Player.ini caps
 _cache = {}
 
 
@@ -89,7 +90,7 @@ def passive_entries(skill_id, level, weapon_type, hands):
     tables = {t.get("name"): t.text.split() for t in sk.findall("table")}
     out = []
     for eff in sk.findall("effects/effect"):
-        if eff.get("name") != "Buff":
+        if eff.get("name") not in ("Buff", "MpConsumePerLevel"):        # toggles such as Vicious Stance carry their stats on MpConsumePerLevel
             continue
         for e in eff:
             if e.tag not in ("add", "mul", "sub", "set", "div"):
@@ -137,6 +138,10 @@ def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
         if sk is not None and (sk.findtext("operateType") or "").strip() == "P":
             entries += passive_entries(sid, lv, wt, hands)
     for sid, lv in buffs:                         # buffs: (skill id, level), applied like passives (weapon conditions honoured)
+        if lv is None:                            # None = the level this class has learned at this character level
+            lv = learned_skills.get(sid)
+            if lv is None:
+                continue
         entries += passive_entries(sid, lv, wt, hands)
     sp = weapon.get("special_skill")
     if sp:
@@ -154,10 +159,10 @@ def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
     # attack speed
     m, ad, _ = _apply(entries, "pAtkSpd")
     m *= float(a.get("p_atk_spd_mul", 1) or 1)
-    spd = float(weapon["p_atk_spd"]) * dex_b * m + ad
+    spd = min(float(weapon["p_atk_spd"]) * dex_b * m + ad, MAX_PATK_SPEED)        # Player.ini MaxPAtkSpeed = 1500
     # crit (per 1000)
     m, ad, _ = _apply(entries, "critRate")
-    crit = float(weapon["crit"]) * dex_b * 10 * m + ad
+    crit = min(float(weapon["crit"]) * dex_b * 10 * m + ad, MAX_PCRIT_RATE)       # Player.ini MaxPCritRate = 500 (per 1000)
     acc_m, acc_a, _ = _apply(entries, "accCombat")
     crit_mul, crit_add, _ = _apply(entries, "critDmg")[0], _apply(entries, "critDmgAdd")[1], None
     reuse_mul = _apply(entries, "pReuse")[0]

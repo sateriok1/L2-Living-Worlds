@@ -7,14 +7,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import l2data as L, stats_model as S, combat_sim as C, rotations as R
 
 line, bname = sys.argv[1], sys.argv[2]
+ref = sys.argv[3] if len(sys.argv) > 3 else "none"      # the buff set to compare against (default: no buffs)
 here = os.path.dirname(os.path.abspath(__file__))
 slug = line.lower().replace(" ", "_")
-base = json.load(open(os.path.join(here, f"rotations_{slug}.json")))
+base = json.load(open(os.path.join(here, f"rotations_{slug}.json" if ref == "none" else f"rotations_{slug}_{ref}.json")))
 buffd = json.load(open(os.path.join(here, f"rotations_{slug}_{bname}.json")))
 names, parent = L.load_classes(); trees = L.load_trees(); sk_all = L.load_skills()
 leaf = [k for k, v in names.items() if v == line][0]
 W = S.read_csv(os.path.join(here, f"gear_{slug}_weapons.csv")); A = S.read_csv(os.path.join(here, f"gear_{slug}_armor.csv"))
-buffs = R.buff_set(bname)
+print(f"[comparing {bname} against {ref}]")
 THRESH = 0.01
 
 
@@ -29,11 +30,10 @@ def dps_of(level, weapon_label, armor_label, order_ids, hold, ms):
     a = next(x for x in A if x["set_name"] == armor_label)
     cid = S.class_at(leaf, level, parent)
     learned = L.learned(cid, level, trees, parent)
-    st = S.compute(cid, level, w, a, learned, buffs)
-    actor = R.build_actor(st, w)
+    st, actor, later = R.setup(level, cid, w, a, learned, bname)
     skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
     tl = []
-    C.simulate(actor, R.DUMMY, skills, C.Policy(tuple(order_ids), hold), R.WINDOWS[-1] * 1000, timeline=tl)
+    C.simulate(actor, R.DUMMY, skills, C.Policy(tuple(order_ids), hold), R.WINDOWS[-1] * 1000, timeline=tl, later=later)
     return R.at(tl, ms * 1000)[0] / ms
 
 
