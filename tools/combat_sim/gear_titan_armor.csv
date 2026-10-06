@@ -1,0 +1,9 @@
+line,grade,set_name,set_skill,str,dex,con,p_atk_mul,p_atk_spd_mul,accuracy_add,notes
+Titan,NG,none,,0,0,0,1,1,0,
+Titan,D,none,,0,0,0,1,1,0,
+Titan,C,Plated Leather,3511,4,0,-1,1,1,0,
+Titan,B,Blue Wolf Heavy,3524,3,-2,-1,1,1,0,run speed and HP regen only otherwise
+Titan,A,Tallum Heavy,3531,2,0,-2,1,1.08,0,attack speed +8%
+Titan,A,Majestic Heavy,3537,2,0,-2,1.04,1,3.1,P.Atk +4% and accuracy +3.1
+Titan,S,Imperial Crusader,3553,2,-2,0,1,1,0,shield piece not needed for the stat bonus; Titan uses a 2H weapon
+Titan,S,Draconic Leather,3555,1,1,-2,1.04,1.04,0,P.Atk +4% and attack speed +4%
