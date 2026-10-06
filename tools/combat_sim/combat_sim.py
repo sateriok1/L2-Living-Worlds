@@ -29,6 +29,9 @@ class Actor:
     spiritshot: int = 0         # 0 none, 1 spirit, 2 blessed
     prox: float = 1.0           # 1.0 front, 1.1 side, 1.2 behind
     mp_reserve: float = 0.0     # MP the policy refuses to spend below
+    hp_max: float = 0.0         # 0 = HP costs are ignored
+    hp_regen_3s: float = 0.0
+    hp_reserve: float = 0.5     # a skill that costs HP is refused if it would drop HP below this fraction of max
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -97,69 +100,90 @@ class Policy:
 
 def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=None):
     """Returns (total_damage, mp_used, casts dict). `skills` maps id -> SkillDef.
-    If `timeline` is a list, (time_ms, cumulative_damage) is appended after every action so one run answers many windows."""
+    Tracks MP and HP (skills can cost both), and the expected effect of defence-lowering debuffs (e.g. Armor Crush's stun,
+    pDef x0.7 for its duration, landing with its activate rate): while active, hits are scaled by 1 + p * (1/mult - 1).
+    If `timeline` is a list, (time_ms, cumulative_damage, mp_used) is appended after every action so one run answers many windows."""
     t = 0.0
     mp = actor.mp_max if start_mp is None else start_mp
+    hp = actor.hp_max
     ready_at = {sid: 0.0 for sid in policy.order}
     total = 0.0
-    mp_used = 0.0
+    mp_used = hp_used = 0.0
     casts = {sid: 0 for sid in policy.order}
     casts["auto"] = 0
     a_dmg = auto_dmg(actor, dummy)
     a_int = 500000.0 / actor.patk_spd
-    regen_per_ms = actor.mp_regen_3s / 3000.0
+    mp_per_ms = actor.mp_regen_3s / 3000.0
+    hp_per_ms = actor.hp_regen_3s / 3000.0
     sd = {sid: (skill_dmg(skills[sid], actor, dummy), cast_ms(skills[sid], actor), reuse_ms(skills[sid], actor)) for sid in policy.order}
+    deb = [0.0, 0.0, 1.0, 1.0]       # until, probability active, pDef mult, mDef mult
 
     def advance(dt):
-        nonlocal t, mp
+        nonlocal t, mp, hp
         t += dt
-        mp = min(actor.mp_max, mp + regen_per_ms * dt)
+        mp = min(actor.mp_max, mp + mp_per_ms * dt)
+        if actor.hp_max:
+            hp = min(actor.hp_max, hp + hp_per_ms * dt)
+
+    def can(sid):
+        s = skills[sid]
+        if mp - s.mp < actor.mp_reserve:
+            return False
+        return not (actor.hp_max and s.hp_cost and (hp - s.hp_cost) < actor.hp_reserve * actor.hp_max)
+
+    def uplift(kind):
+        if t >= deb[0]:
+            return 1.0
+        m = deb[2] if kind == "phys" else deb[3]
+        return 1.0 + deb[1] * (1.0 / m - 1.0)
+
+    def record():
+        if timeline is not None:
+            timeline.append((t, total, mp_used))
 
     while t < duration_ms:
         chosen = None
-        soonest = None
         for sid in policy.order:
-            if mp - skills[sid].mp < actor.mp_reserve:
-                continue
-            if ready_at[sid] <= t:
+            if can(sid) and ready_at[sid] <= t:
                 chosen = sid
                 break
-            wait = ready_at[sid] - t
-            if soonest is None or wait < soonest[1]:
-                soonest = (sid, wait)
-        if chosen is not None and soonest is not None:
-            # a higher priority skill is not ready but a lower one is: does holding for it pay?
-            pass
         if chosen is not None:
-            # something higher priority is about to be ready: wait or fill
             hold = None
             for sid in policy.order:
                 if sid == chosen:
                     break
-                if mp - skills[sid].mp >= actor.mp_reserve and 0 < ready_at[sid] - t <= policy.hold_ms:
+                if can(sid) and 0 < ready_at[sid] - t <= policy.hold_ms:
                     hold = ready_at[sid] - t
                     break
             if hold is not None:
                 if a_int <= hold + 1:
-                    advance(a_int); total += a_dmg; casts["auto"] += 1
-                    if timeline is not None: timeline.append((t, total, mp_used))
+                    advance(a_int); total += a_dmg * uplift("phys"); casts["auto"] += 1
+                    record()
                 else:
                     advance(hold)
                 continue
             dmg, cms, rms = sd[chosen]
-            mp -= skills[chosen].mp
-            mp_used += skills[chosen].mp
+            sk = skills[chosen]
+            mp -= sk.mp
+            mp_used += sk.mp
+            if actor.hp_max and sk.hp_cost:
+                hp -= sk.hp_cost
+                hp_used += sk.hp_cost
             ready_at[chosen] = t + rms
             casts[chosen] += 1
             advance(cms)
-            total += dmg
-            if timeline is not None: timeline.append((t, total, mp_used))
+            total += dmg * uplift(sk.damage_kind() or "phys")     # the debuff lands after this hit, so it does not boost it
+            if sk.debuff:
+                pm, mm, dur, chance = sk.debuff
+                p_prev = deb[1] if t < deb[0] else 0.0
+                deb[:] = [t + dur, 1 - (1 - p_prev) * (1 - chance), pm, mm]
+            record()
             continue
-        # nothing castable: auto attack
         advance(a_int)
-        total += a_dmg
+        total += a_dmg * uplift("phys")
         casts["auto"] += 1
-        if timeline is not None: timeline.append((t, total, mp_used))
+        record()
+    casts["hp_used"] = hp_used
     return total, mp_used, casts
 
 

@@ -10,7 +10,7 @@ DAMAGE_EFFECTS = {"PhysicalDamage", "MagicalDamage", "HpDrain", "EnergyDamage", 
 class SkillDef:
     """One skill at one level, with every table already resolved to a number."""
     __slots__ = ("id", "level", "name", "magic", "op", "power", "mp", "hit", "cool", "reuse", "range",
-                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost")
+                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff")
 
     def damage_kind(self):
         for e in self.effects:
@@ -88,6 +88,20 @@ def load_skills():
                 d.magic_level = val("magicLevel", lv)
                 d.base_crit = val("baseCritRate", lv)
                 d.hp_cost = val("hpConsume", lv)
+                d.debuff = None     # (pDef mult, mDef mult, duration ms, land chance) from a Stun/debuff effect that lowers defence
+                for eff in sk.findall("effects/effect"):
+                    pm = mm = 1.0
+                    for mul in eff.findall("mul"):
+                        try:
+                            v = float(mul.text)
+                        except (TypeError, ValueError):
+                            continue
+                        if mul.get("stat") == "pDef":
+                            pm = v
+                        elif mul.get("stat") == "mDef":
+                            mm = v
+                    if pm < 1 or mm < 1:
+                        d.debuff = (pm, mm, val("abnormalTime", lv, 0) * 1000.0, val("activateRate", lv, 100.0) / 100.0)
                 d.target = (sk.findtext("targetType") or "").strip()
                 d.effects = effects
                 d.weapons = weapons
@@ -146,6 +160,6 @@ def load_template(class_id):
         out["baseMAtkSpd"] = float(sd.findtext("baseMAtkSpd") or 333)
         out["levels"] = {}
         for lv in root.iter("level"):
-            out["levels"][int(lv.get("val"))] = {k: float(lv.findtext(k)) for k in ("hp", "mp", "mpRegen")}
+            out["levels"][int(lv.get("val"))] = {k: float(lv.findtext(k)) for k in ("hp", "mp", "mpRegen", "hpRegen")}
         return out
     raise KeyError(class_id)
