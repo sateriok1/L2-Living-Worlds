@@ -9,11 +9,15 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomPartyDefenseTest.java"
       - "L2J_Mobius_CT_0_Interlude github/tests/core/party-defense-stubs/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/run_party_defense.py"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomSpotIntegrationTest.java"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/spot-stubs/**"
+      - "L2J_Mobius_CT_0_Interlude github/tests/run_phantom_spot.py"
       - ".github/workflows/party-defense-tests.yml"
   push:
     branches:
       - main
       - release/party-mob-defense
+      - release/spot-defense-fixes
     paths:
       - "L2J_Mobius_CT_0_Interlude github/java/**"
       - "L2J_Mobius_CT_0_Interlude github/dist/libs/**"
@@ -21,6 +25,9 @@ on:
       - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomPartyDefenseTest.java"
       - "L2J_Mobius_CT_0_Interlude github/tests/core/party-defense-stubs/**"
       - "L2J_Mobius_CT_0_Interlude github/tests/run_party_defense.py"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/PhantomSpotIntegrationTest.java"
+      - "L2J_Mobius_CT_0_Interlude github/tests/core/spot-stubs/**"
+      - "L2J_Mobius_CT_0_Interlude github/tests/run_phantom_spot.py"
       - ".github/workflows/party-defense-tests.yml"
   workflow_dispatch:
 
@@ -57,3 +64,5 @@ jobs:
           ant -Dbuild="../build/party-defense" jar
       - name: Run native party-defense regressions
         run: python tests/run_party_defense.py --core "../build/party-defense/dist/libs/GameServer.jar"
+      - name: Run native hunting-spot regressions
+        run: python tests/run_phantom_spot.py --core "../build/party-defense/dist/libs/GameServer.jar"

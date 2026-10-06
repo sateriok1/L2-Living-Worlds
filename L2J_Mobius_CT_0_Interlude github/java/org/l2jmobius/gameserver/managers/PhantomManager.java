@@ -76,6 +76,7 @@ import org.l2jmobius.gameserver.model.clan.Clan;
 import org.l2jmobius.gameserver.model.actor.holders.player.AutoUseSettingsHolder;
 import org.l2jmobius.gameserver.model.actor.holders.player.ClassType;
 import org.l2jmobius.gameserver.model.actor.holders.player.Duel;
+import org.l2jmobius.gameserver.model.actor.holders.npc.AggroInfo;
 import org.l2jmobius.gameserver.model.actor.holders.npc.FakePlayerAppearance;
 import org.l2jmobius.gameserver.model.actor.instance.Chest;
 import org.l2jmobius.gameserver.model.actor.instance.Monster;
@@ -1207,6 +1208,11 @@ public class PhantomManager implements IXmlReader
 		long spotAttackAt; // when the hunter follows through (0 = no ultimatum given)
 		long spotCooldownUntil;
 		int spotStealOid; // the mob whose theft was last counted, so one mob is one theft
+		Monster spotEngagedMonster; // native hunter damage observed before a real player's damage
+		AggroInfo spotEngagedDamage; // identity changes when the native aggro entry is cleared on respawn
+		long spotEngagedAt;
+		int spotWarnedOid; // offender who received the pending ultimatum
+		final Set<Integer> spotCrowding = new HashSet<>(); // previous observed crowd, guarded with spotScores by data
 		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
 		volatile boolean encounterActor;
 		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
@@ -5121,6 +5127,13 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void pvpCombat()
 	{
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE)
+		{
+			for (PhantomData data : _phantoms.values())
+			{
+				clearSpotDefenseState(data);
+			}
+		}
 		// Gate on the master switch, not one behavior: this driver also services active engagements, react-to-flagged,
 		// and party/clan-defense engagements armed by startPvpDefense. Each behavior is gated individually below.
 		if (!PhantomPvpManager.pvpEnabled())
@@ -5149,6 +5162,13 @@ public class PhantomManager implements IXmlReader
 		for (PhantomData data : _phantoms.values())
 		{
 			final Player phantom = data.player;
+			if (data.olympian || data.encounterActor || data.recruited || data.role.isBuddy() || data.resting || data.dormant || data.dispersing || phantom.isDead() || (data.pvpTargetOid != 0) || phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP))
+			{
+				synchronized (data)
+				{
+					resetSpotObservation(data);
+				}
+			}
 			if (data.olympian)
 			{
 				continue; // an Olympiad noble fights only in its matches, driven by serviceOlympian
@@ -5423,17 +5443,13 @@ public class PhantomManager implements IXmlReader
 		"you want this spot? come and take it"
 	};
 
-	/** @return a real player (not a phantom, not offline) fighting this monster, or {@code null}. */
-	private static Player realPlayerOn(Monster monster)
+	/** @return a currently eligible real player with positive native damage against this monster. */
+	private Player realPlayerOn(Player phantom, Monster monster, long now)
 	{
-		final WorldObject target = monster.getTarget();
-		if ((target instanceof Player) && !((Player) target).isInOfflineMode())
+		for (Map.Entry<Creature, AggroInfo> entry : monster.getAggroList().entrySet())
 		{
-			return (Player) target;
-		}
-		for (Creature attacker : monster.getAggroList().keySet())
-		{
-			if (attacker.isPlayer() && !attacker.asPlayer().isInOfflineMode())
+			final Creature attacker = entry.getKey();
+			if (attacker.isPlayer() && (entry.getValue().getDamage() > 0) && spotOffender(phantom, attacker.asPlayer(), now))
 			{
 				return attacker.asPlayer();
 			}
@@ -5441,15 +5457,104 @@ public class PhantomManager implements IXmlReader
 		return null;
 	}
 
+	private static void resetSpotEngagement(PhantomData data)
+	{
+		data.spotEngagedMonster = null;
+		data.spotEngagedDamage = null;
+		data.spotEngagedAt = 0;
+	}
+
+	/** All claim changes invalidate earlier theft evidence, including dropping and reclaiming the same mob. */
+	private static void setClaimedMob(PhantomData data, int objectId)
+	{
+		synchronized (data)
+		{
+			if (data.claimedOid != objectId)
+			{
+				resetSpotEngagement(data);
+			}
+			data.claimedOid = objectId;
+		}
+	}
+
+	/** Remember a real hunter hit only while the monster is still uncontested. Native totals have no hit order. */
+	private void observeSpotEngagement(PhantomData data, Monster monster, long now)
+	{
+		synchronized (data)
+		{
+			resetSpotEngagement(data);
+			if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (data.claimedOid != monster.getObjectId()))
+			{
+				return;
+			}
+			final AggroInfo hunterDamage = monster.getAggroList().get(data.player);
+			if ((hunterDamage == null) || (hunterDamage.getDamage() <= 0))
+			{
+				return;
+			}
+			for (Map.Entry<Creature, AggroInfo> entry : monster.getAggroList().entrySet())
+			{
+				if ((entry.getKey() != data.player) && entry.getKey().isPlayer() && !_phantoms.containsKey(entry.getKey().getObjectId()) && (entry.getValue().getDamage() > 0))
+				{
+					return; // a player hit first, or both first appeared together: do not infer theft
+				}
+			}
+			data.spotEngagedMonster = monster;
+			data.spotEngagedDamage = hunterDamage;
+			data.spotEngagedAt = now;
+		}
+	}
+
+	private static void resetSpotObservation(PhantomData data)
+	{
+		data.spotScoreAt = 0;
+		data.spotCrowding.clear();
+		data.spotAttackAt = 0;
+		data.spotWarnedOid = 0;
+		resetSpotEngagement(data);
+	}
+
+	/** Reloading either off switch forgets all grievances, even for actors skipped by the normal PvP driver. */
+	private static void clearSpotDefenseState(PhantomData data)
+	{
+		synchronized (data)
+		{
+			resetSpotObservation(data);
+			data.spotScores.clear();
+			data.spotNextAt = 0;
+			data.spotWarnNextAt = 0;
+			data.spotCooldownUntil = 0;
+			data.spotStealOid = 0;
+		}
+	}
+
 	/** A player took a mob this hunter had claimed: that adds to the hunter's annoyance with them. */
 	private void noteKillSteal(PhantomData data, Monster monster, long now)
 	{
-		if (!FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (data.claimedOid != monster.getObjectId()) || (data.spotStealOid == monster.getObjectId()))
+		synchronized (data)
+		{
+			noteKillStealLocked(data, monster, now);
+		}
+	}
+
+	private void noteKillStealLocked(PhantomData data, Monster monster, long now)
+	{
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE)
+		{
+			clearSpotDefenseState(data);
+			return;
+		}
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || data.resting || data.dormant || data.dispersing || data.recruited || data.role.isBuddy() || data.olympian || data.encounterActor || (data.pvpTargetOid != 0) || (now < data.spotCooldownUntil) || (data.claimedOid != monster.getObjectId()) || (data.spotStealOid == monster.getObjectId()))
 		{
 			return;
 		}
-		final Player thief = realPlayerOn(monster);
-		if ((thief == null) || _phantoms.containsKey(thief.getObjectId()))
+		final AggroInfo hunterDamage = monster.getAggroList().get(data.player);
+		if ((data.spotEngagedMonster != monster) || (data.spotEngagedDamage != hunterDamage) || (hunterDamage == null) || (hunterDamage.getDamage() <= 0) || (now <= data.spotEngagedAt) || ((now - data.spotEngagedAt) > (3 * DECONFLICT_INTERVAL)))
+		{
+			return; // an internal reservation or unordered damage totals are not evidence of a stolen pull
+		}
+		final Player thief = realPlayerOn(data.player, monster, now);
+		if (thief == null)
 		{
 			return;
 		}
@@ -5460,11 +5565,11 @@ public class PhantomManager implements IXmlReader
 	/** @return whether this real player is out hunting where the hunter could be annoyed by it. */
 	private boolean spotOffender(Player phantom, Player p, long now)
 	{
-		if (_phantoms.containsKey(p.getObjectId()) || p.isInOfflineMode() || p.isDead() || p.isInsideZone(ZoneId.PEACE) || p.isInsideZone(ZoneId.NO_PVP))
+		if (_phantoms.containsKey(p.getObjectId()) || p.isInOfflineMode() || p.isDead() || phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP) || p.isInsideZone(ZoneId.PEACE) || p.isInsideZone(ZoneId.NO_PVP))
 		{
 			return false;
 		}
-		if (!validPvpOpponent(phantom, p) || sameClanOrAlly(phantom, p) || p.isNewbie() || !p.isAutoAttackable(phantom))
+		if (!validPvpOpponent(phantom, p) || sameClanOrAlly(phantom, p) || p.isNewbie() || (phantom.isInParty() && (phantom.getParty() == p.getParty())) || phantom.isInDuel() || p.isInDuel() || phantom.isInOlympiadMode() || p.isInOlympiadMode() || phantom.isOnEvent() || p.isOnEvent() || p.inObserverMode() || p.isGM() || (phantom.getInstanceId() != 0) || (p.getInstanceId() != 0))
 		{
 			return false;
 		}
@@ -5482,7 +5587,25 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void spotDefense(Player phantom, PhantomData data, long now)
 	{
-		if (!FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (now < data.spotNextAt) || data.resting || (now < data.spotCooldownUntil))
+		synchronized (data)
+		{
+			spotDefenseLocked(phantom, data, now);
+		}
+	}
+
+	private void spotDefenseLocked(Player phantom, PhantomData data, long now)
+	{
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE)
+		{
+			clearSpotDefenseState(data);
+			return;
+		}
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || data.resting || data.dormant || data.dispersing || data.recruited || data.role.isBuddy() || data.olympian || data.encounterActor || (data.pvpTargetOid != 0) || phantom.isDead() || phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP) || (now < data.spotCooldownUntil))
+		{
+			resetSpotObservation(data);
+			return;
+		}
+		if (now < data.spotNextAt)
 		{
 			return;
 		}
@@ -5491,7 +5614,14 @@ public class PhantomManager implements IXmlReader
 		{
 			data.spotTemper = PhantomSpotRules.rollTemper(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_HOT_PERCENT, FakePlayersConfig.PHANTOM_PVP_SPOT_NORMAL_PERCENT);
 		}
-		final long elapsed = (data.spotScoreAt == 0) ? 0 : (now - data.spotScoreAt);
+		final long gap = now - data.spotScoreAt;
+		// Only adjacent observed samples count. PvP, dormancy and disabled ticks leave gaps.
+		final long elapsed = ((data.spotScoreAt != 0) && (gap >= 0) && (gap <= 4000)) ? gap : 0;
+		if (elapsed == 0)
+		{
+			data.spotAttackAt = 0;
+			data.spotWarnedOid = 0;
+		}
 		data.spotScoreAt = now;
 		final Set<Integer> crowding = new HashSet<>();
 		Player worst = null;
@@ -5500,15 +5630,26 @@ public class PhantomManager implements IXmlReader
 			if (spotOffender(phantom, p, now) && (p.isAttackingNow() || ((p.getTarget() instanceof Monster) && p.isInCombat())))
 			{
 				crowding.add(p.getObjectId());
-				data.spotScores.merge(p.getObjectId(), PhantomSpotRules.crowd(0, elapsed), Double::sum);
+				if (data.spotCrowding.contains(p.getObjectId()) && (elapsed > 0))
+				{
+					data.spotScores.merge(p.getObjectId(), PhantomSpotRules.crowd(0, elapsed), Double::sum);
+				}
 			}
 		}
+		data.spotCrowding.clear();
+		data.spotCrowding.addAll(crowding);
 		final double limit = PhantomSpotRules.thresholdFor(data.spotTemper, FakePlayersConfig.PHANTOM_PVP_SPOT_HOT_LIMIT, FakePlayersConfig.PHANTOM_PVP_SPOT_NORMAL_LIMIT, FakePlayersConfig.PHANTOM_PVP_SPOT_PATIENT_LIMIT);
 		double worstScore = 0;
 		final Iterator<Map.Entry<Integer, Double>> it = data.spotScores.entrySet().iterator();
 		while (it.hasNext())
 		{
 			final Map.Entry<Integer, Double> e = it.next();
+			final Player p = World.getInstance().getPlayer(e.getKey());
+			if ((p == null) || !spotOffender(phantom, p, now))
+			{
+				it.remove(); // protected/offline players cannot retain hidden actionable grievances
+				continue;
+			}
 			if (!crowding.contains(e.getKey()))
 			{
 				e.setValue(PhantomSpotRules.fade(e.getValue(), elapsed)); // not offending right now: cools down
@@ -5518,7 +5659,6 @@ public class PhantomManager implements IXmlReader
 				it.remove();
 				continue;
 			}
-			final Player p = World.getInstance().getPlayer(e.getKey());
 			if ((p != null) && (e.getValue() > worstScore) && spotOffender(phantom, p, now) && (phantom.calculateDistance2D(p) <= (FakePlayersConfig.PHANTOM_PVP_SPOT_RADIUS * 1.5)))
 			{
 				worstScore = e.getValue();
@@ -5528,10 +5668,13 @@ public class PhantomManager implements IXmlReader
 		if ((worst == null) || (worstScore < PhantomSpotRules.warnAt(limit)))
 		{
 			data.spotAttackAt = 0; // calmed down, or the player is gone
+			data.spotWarnedOid = 0;
 			return;
 		}
 		if (worstScore < limit)
 		{
+			data.spotAttackAt = 0;
+			data.spotWarnedOid = 0;
 			if (now >= data.spotWarnNextAt)
 			{
 				data.spotWarnNextAt = now + 120_000L;
@@ -5539,8 +5682,9 @@ public class PhantomManager implements IXmlReader
 			}
 			return;
 		}
-		if (data.spotAttackAt == 0)
+		if ((data.spotAttackAt == 0) || (data.spotWarnedOid != worst.getObjectId()))
 		{
+			data.spotWarnedOid = worst.getObjectId();
 			data.spotAttackAt = now + ((data.spotTemper == PhantomSpotRules.Temper.HOT) ? 3000 : 6000);
 			sayNearby(phantom, SPOT_ULTIMATUM_LINES);
 			return;
@@ -5550,13 +5694,22 @@ public class PhantomManager implements IXmlReader
 			return;
 		}
 		data.spotAttackAt = 0;
+		data.spotWarnedOid = 0;
 		data.spotScores.clear();
+		data.spotCrowding.clear();
+		data.spotScoreAt = 0;
 		final long cooldownMs = FakePlayersConfig.PHANTOM_PVP_SPOT_COOLDOWN_SECONDS * 1000L;
 		data.spotCooldownUntil = now + cooldownMs;
-		final boolean duel = !PhantomSpotRules.realFight(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_FIGHT_PERCENT) && PhantomPvpManager.duelsEnabled() && phantom.canDuel() && worst.canDuel() && !worst.isProcessingRequest();
-		if (duel && armDuel(data, worst, DUEL_APPROACH))
+		final boolean attackable = worst.isAutoAttackable(phantom);
+		// A clean white farmer can be warned and challenged, but never gains a forced PvP exception.
+		final boolean realFight = attackable && PhantomSpotRules.realFight(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_FIGHT_PERCENT);
+		if (!realFight)
 		{
-			_duelTargetCooldownUntil.put(worst.getObjectId(), now + DUEL_TARGET_COOLDOWN_MS);
+			if (PhantomPvpManager.duelsEnabled() && phantom.canDuel() && worst.canDuel() && !phantom.isProcessingRequest() && !worst.isProcessingRequest() && armDuel(data, worst, DUEL_APPROACH))
+			{
+				_duelTargetCooldownUntil.put(worst.getObjectId(), now + DUEL_TARGET_COOLDOWN_MS);
+			}
+			// The selected duel is authoritative. An unavailable challenge never becomes ordinary PvP.
 			return;
 		}
 		_pvpVictimCooldownUntil.put(worst.getObjectId(), now + cooldownMs);
@@ -6318,7 +6471,7 @@ public class PhantomManager implements IXmlReader
 			endRest(phantom);
 			data.resting = false;
 		}
-		data.claimedOid = 0; // release any monster it owned to the hunt pool
+		setClaimedMob(data, 0); // release any monster it owned to the hunt pool
 	}
 
 	/** Validates the current opponent (alive, in range, out of a peace zone, engagement not expired) then drives it, or disengages. */
@@ -7077,7 +7230,7 @@ public class PhantomManager implements IXmlReader
 				{
 					final WorldObject claimed = World.getInstance().findObject(data.claimedOid);
 					final boolean killed = (claimed == null) || ((claimed instanceof Monster) && ((Monster) claimed).isDead());
-					data.claimedOid = 0;
+					setClaimedMob(data, 0);
 					if (killed)
 					{
 						beginHuntPause(phantom, data, now);
@@ -7096,10 +7249,11 @@ public class PhantomManager implements IXmlReader
 				{
 					noteKillSteal(data, monster, System.currentTimeMillis());
 					yieldTarget(phantom);
-					data.claimedOid = 0;
+					setClaimedMob(data, 0);
 					needsTarget.add(data);
 					continue;
 				}
+				observeSpotEngagement(data, monster, now);
 				// Retaliation: turn on a mob that is attacking this hunter while it IGNORES it - typically an add that
 				// jumped the hunter while it was running to a not-yet-engaged target. Only when the current focus is
 				// NOT itself already fighting the hunter: once the hunter is trading blows with a mob, a second mob
@@ -7116,7 +7270,7 @@ public class PhantomManager implements IXmlReader
 						yieldTarget(phantom); // drop the old focus (it was not yet claimed by us this tick)
 						final int attackerId = attacker.getObjectId();
 						owner.put(attackerId, phantom);
-						data.claimedOid = attackerId;
+						setClaimedMob(data, attackerId);
 						data.nextRetargetAt = now + RETARGET_COOLDOWN;
 						data.lastMobX = attacker.getX();
 						data.lastMobY = attacker.getY();
@@ -7137,7 +7291,7 @@ public class PhantomManager implements IXmlReader
 				if (cur == null)
 				{
 					owner.put(id, phantom);
-					data.claimedOid = id;
+					setClaimedMob(data, id);
 				}
 				else if (phantom.calculateDistance2D(monster) < cur.calculateDistance2D(monster))
 				{
@@ -7146,16 +7300,16 @@ public class PhantomManager implements IXmlReader
 					final PhantomData curData = _phantoms.get(cur.getObjectId());
 					if (curData != null)
 					{
-						curData.claimedOid = 0;
+						setClaimedMob(curData, 0);
 						needsTarget.add(curData);
 					}
 					owner.put(id, phantom);
-					data.claimedOid = id;
+					setClaimedMob(data, id);
 				}
 				else
 				{
 					yieldTarget(phantom);
-					data.claimedOid = 0;
+					setClaimedMob(data, 0);
 					needsTarget.add(data);
 				}
 				// A field fighter that owns this live focus drives its class playstyle from here (paced by the
@@ -7186,7 +7340,7 @@ public class PhantomManager implements IXmlReader
 				if (mob != null)
 				{
 					owner.put(mob.getObjectId(), phantom);
-					data.claimedOid = mob.getObjectId();
+					setClaimedMob(data, mob.getObjectId());
 					phantom.setTarget(mob);
 					// Fighters engage now; mages just take the target - the mage tick positions and AutoUse nukes.
 					if (!data.mage)
@@ -7404,7 +7558,7 @@ public class PhantomManager implements IXmlReader
 		data.disperseUntil = System.currentTimeMillis() + DISPERSE_DURATION;
 		data.resting = false;
 		data.huntPauseUntil = 0;
-		data.claimedOid = 0;
+		setClaimedMob(data, 0);
 		if (phantom.isSitting())
 		{
 			phantom.standUp();

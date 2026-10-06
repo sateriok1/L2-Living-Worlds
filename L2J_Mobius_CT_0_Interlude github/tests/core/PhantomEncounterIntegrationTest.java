@@ -251,6 +251,8 @@ public class PhantomEncounterIntegrationTest
 		{
 			final Player actor = player(30001 + phase);
 			final Object data = allocate(dataType);
+			set(data, dataType, "spotScores", new java.util.HashMap<Integer, Double>());
+			set(data, dataType, "spotCrowding", new java.util.HashSet<Integer>());
 			set(data, dataType, "player", actor);
 			set(data, dataType, "recruited", true);
 			set(data, dataType, "encounterActor", true);
