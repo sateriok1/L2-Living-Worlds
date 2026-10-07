@@ -2,14 +2,20 @@
  "Arcana Lord": {
   "20": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
@@ -18,14 +24,20 @@
   },
   "21": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
@@ -34,14 +46,20 @@
   },
   "22": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
@@ -50,14 +68,20 @@
   },
   "23": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
@@ -66,14 +90,20 @@
   },
   "24": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 1,
     "npc": "Mew the Cat",
@@ -82,14 +112,20 @@
   },
   "25": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
@@ -98,14 +134,20 @@
   },
   "26": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
@@ -114,14 +156,20 @@
   },
   "27": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
@@ -130,14 +178,20 @@
   },
   "28": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
@@ -146,14 +200,20 @@
   },
   "29": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 2,
     "npc": "Mew the Cat",
@@ -162,14 +222,20 @@
   },
   "30": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
@@ -178,14 +244,20 @@
   },
   "31": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
@@ -194,14 +266,20 @@
   },
   "32": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
@@ -210,14 +288,20 @@
   },
   "33": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
@@ -226,14 +310,20 @@
   },
   "34": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 3,
     "npc": "Mew the Cat",
@@ -242,14 +332,20 @@
   },
   "35": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
@@ -258,14 +354,20 @@
   },
   "36": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
@@ -274,14 +376,20 @@
   },
   "37": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
@@ -290,14 +398,20 @@
   },
   "38": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
@@ -306,14 +420,20 @@
   },
   "39": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mew the Cat",
     "skill_level": 4,
     "npc": "Mew the Cat",
@@ -323,6 +443,11 @@
   "40": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -330,6 +455,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -339,6 +469,11 @@
   "41": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -346,6 +481,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -355,6 +495,11 @@
   "42": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -362,6 +507,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -371,6 +521,11 @@
   "43": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -378,6 +533,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kat the Cat",
     "skill_level": 5,
     "npc": "Kat the Cat",
@@ -387,6 +547,11 @@
   "44": {
    "none": {
     "dps": 54.6,
+    "auto": 54.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -394,6 +559,11 @@
    },
    "party": {
     "dps": 82.6,
+    "auto": 82.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -403,6 +573,11 @@
   "45": {
    "none": {
     "dps": 54.6,
+    "auto": 54.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -410,6 +585,11 @@
    },
    "party": {
     "dps": 82.6,
+    "auto": 82.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -419,6 +599,11 @@
   "46": {
    "none": {
     "dps": 54.6,
+    "auto": 54.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -426,6 +611,11 @@
    },
    "party": {
     "dps": 82.6,
+    "auto": 82.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -435,6 +625,11 @@
   "47": {
    "none": {
     "dps": 54.6,
+    "auto": 54.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -442,6 +637,11 @@
    },
    "party": {
     "dps": 82.6,
+    "auto": 82.6,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Kai the Cat",
     "skill_level": 2,
     "npc": "Kai the Cat",
@@ -450,529 +650,727 @@
   },
   "48": {
    "none": {
-    "dps": 67.2,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 71.8,
+    "auto": 40.4,
+    "skill": 31.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    },
    "party": {
-    "dps": 102.0,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 118.5,
+    "auto": 61.3,
+    "skill": 57.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    }
   },
   "49": {
    "none": {
-    "dps": 67.2,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 71.8,
+    "auto": 40.4,
+    "skill": 31.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    }
   },
   "50": {
    "none": {
-    "dps": 67.2,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 71.8,
+    "auto": 40.4,
+    "skill": 31.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    }
   },
   "51": {
    "none": {
-    "dps": 67.2,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 71.8,
+    "auto": 40.4,
+    "skill": 31.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 3,
-    "npc": "Kai the Cat",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 7,
+    "npc": "Mew the Cat",
+    "npc_level": 42
    }
   },
   "52": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    }
   },
   "53": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    }
   },
   "54": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    }
   },
   "55": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 4,
-    "npc": "Kai the Cat",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 8,
+    "npc": "Mew the Cat",
+    "npc_level": 50
    }
   },
   "56": {
    "none": {
-    "dps": 97.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 5,
-    "npc": "Kai the Cat",
+    "dps": 124.9,
+    "auto": 88.6,
+    "skill": 36.3,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 9,
+    "npc": "Mew the Cat",
     "npc_level": 58
    },
    "party": {
-    "dps": 196.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 5,
-    "npc": "Kai the Cat",
+    "dps": 246.0,
+    "auto": 178.8,
+    "skill": 67.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 9,
+    "npc": "Mew the Cat",
     "npc_level": 58
    }
   },
   "57": {
    "none": {
-    "dps": 97.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 5,
-    "npc": "Kai the Cat",
+    "dps": 124.9,
+    "auto": 88.6,
+    "skill": 36.3,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 9,
+    "npc": "Mew the Cat",
     "npc_level": 58
    },
    "party": {
-    "dps": 196.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 5,
-    "npc": "Kai the Cat",
+    "dps": 246.0,
+    "auto": 178.8,
+    "skill": 67.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 9,
+    "npc": "Mew the Cat",
     "npc_level": 58
    }
   },
   "58": {
    "none": {
-    "dps": 105.9,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 6,
-    "npc": "Kai the Cat",
+    "dps": 149.8,
+    "auto": 96.3,
+    "skill": 53.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 10,
+    "npc": "Mew the Cat",
     "npc_level": 60
    },
    "party": {
-    "dps": 222.3,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 6,
-    "npc": "Kai the Cat",
+    "dps": 300.9,
+    "auto": 202.1,
+    "skill": 98.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 10,
+    "npc": "Mew the Cat",
     "npc_level": 60
    }
   },
   "59": {
    "none": {
-    "dps": 105.9,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 6,
-    "npc": "Kai the Cat",
+    "dps": 149.8,
+    "auto": 96.3,
+    "skill": 53.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 10,
+    "npc": "Mew the Cat",
     "npc_level": 60
    },
    "party": {
-    "dps": 222.3,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 6,
-    "npc": "Kai the Cat",
+    "dps": 300.9,
+    "auto": 202.1,
+    "skill": 98.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 10,
+    "npc": "Mew the Cat",
     "npc_level": 60
    }
   },
   "60": {
    "none": {
-    "dps": 114.6,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 7,
-    "npc": "Kai the Cat",
+    "dps": 158.6,
+    "auto": 104.2,
+    "skill": 54.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 11,
+    "npc": "Mew the Cat",
     "npc_level": 62
    },
    "party": {
-    "dps": 240.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 7,
-    "npc": "Kai the Cat",
+    "dps": 318.5,
+    "auto": 218.8,
+    "skill": 99.7,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 11,
+    "npc": "Mew the Cat",
     "npc_level": 62
    }
   },
   "61": {
    "none": {
-    "dps": 114.6,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 7,
-    "npc": "Kai the Cat",
+    "dps": 158.6,
+    "auto": 104.2,
+    "skill": 54.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 11,
+    "npc": "Mew the Cat",
     "npc_level": 62
    },
    "party": {
-    "dps": 240.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 7,
-    "npc": "Kai the Cat",
+    "dps": 318.5,
+    "auto": 218.8,
+    "skill": 99.7,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 11,
+    "npc": "Mew the Cat",
     "npc_level": 62
    }
   },
   "62": {
    "none": {
-    "dps": 123.6,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 8,
-    "npc": "Kai the Cat",
+    "dps": 167.6,
+    "auto": 112.4,
+    "skill": 55.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 12,
+    "npc": "Mew the Cat",
     "npc_level": 64
    },
    "party": {
-    "dps": 259.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 8,
-    "npc": "Kai the Cat",
+    "dps": 336.3,
+    "auto": 236.0,
+    "skill": 100.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 12,
+    "npc": "Mew the Cat",
     "npc_level": 64
    }
   },
   "63": {
    "none": {
-    "dps": 123.6,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 8,
-    "npc": "Kai the Cat",
+    "dps": 167.6,
+    "auto": 112.4,
+    "skill": 55.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 12,
+    "npc": "Mew the Cat",
     "npc_level": 64
    },
    "party": {
-    "dps": 259.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 8,
-    "npc": "Kai the Cat",
+    "dps": 336.3,
+    "auto": 236.0,
+    "skill": 100.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 12,
+    "npc": "Mew the Cat",
     "npc_level": 64
    }
   },
   "64": {
    "none": {
-    "dps": 132.8,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 9,
-    "npc": "Kai the Cat",
+    "dps": 176.5,
+    "auto": 120.7,
+    "skill": 55.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 13,
+    "npc": "Mew the Cat",
     "npc_level": 66
    },
    "party": {
-    "dps": 278.8,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 9,
-    "npc": "Kai the Cat",
+    "dps": 354.3,
+    "auto": 253.5,
+    "skill": 100.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 13,
+    "npc": "Mew the Cat",
     "npc_level": 66
    }
   },
   "65": {
    "none": {
-    "dps": 132.8,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 9,
-    "npc": "Kai the Cat",
+    "dps": 176.5,
+    "auto": 120.7,
+    "skill": 55.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 13,
+    "npc": "Mew the Cat",
     "npc_level": 66
    },
    "party": {
-    "dps": 278.8,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 9,
-    "npc": "Kai the Cat",
+    "dps": 354.3,
+    "auto": 253.5,
+    "skill": 100.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 13,
+    "npc": "Mew the Cat",
     "npc_level": 66
    }
   },
   "66": {
    "none": {
-    "dps": 142.1,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 10,
-    "npc": "Kai the Cat",
+    "dps": 185.5,
+    "auto": 129.2,
+    "skill": 56.3,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 14,
+    "npc": "Mew the Cat",
     "npc_level": 68
    },
    "party": {
-    "dps": 307.0,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 10,
-    "npc": "Kai the Cat",
+    "dps": 377.2,
+    "auto": 279.1,
+    "skill": 98.1,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 14,
+    "npc": "Mew the Cat",
     "npc_level": 68
    }
   },
   "67": {
    "none": {
-    "dps": 142.1,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 10,
-    "npc": "Kai the Cat",
+    "dps": 185.5,
+    "auto": 129.2,
+    "skill": 56.3,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 14,
+    "npc": "Mew the Cat",
     "npc_level": 68
    },
    "party": {
-    "dps": 307.0,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 10,
-    "npc": "Kai the Cat",
+    "dps": 377.2,
+    "auto": 279.1,
+    "skill": 98.1,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 14,
+    "npc": "Mew the Cat",
     "npc_level": 68
    }
   },
   "68": {
    "none": {
-    "dps": 151.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 11,
-    "npc": "Kai the Cat",
+    "dps": 214.8,
+    "auto": 137.8,
+    "skill": 77.1,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 15,
+    "npc": "Mew the Cat",
     "npc_level": 70
    },
    "party": {
-    "dps": 327.3,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 11,
-    "npc": "Kai the Cat",
+    "dps": 436.7,
+    "auto": 297.5,
+    "skill": 139.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 15,
+    "npc": "Mew the Cat",
     "npc_level": 70
    }
   },
   "69": {
    "none": {
-    "dps": 151.5,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 11,
-    "npc": "Kai the Cat",
+    "dps": 214.8,
+    "auto": 137.8,
+    "skill": 77.1,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 15,
+    "npc": "Mew the Cat",
     "npc_level": 70
    },
    "party": {
-    "dps": 327.3,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 11,
-    "npc": "Kai the Cat",
+    "dps": 436.7,
+    "auto": 297.5,
+    "skill": 139.2,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 15,
+    "npc": "Mew the Cat",
     "npc_level": 70
    }
   },
   "70": {
    "none": {
-    "dps": 160.9,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 12,
-    "npc": "Kai the Cat",
+    "dps": 224.3,
+    "auto": 146.3,
+    "skill": 78.0,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 16,
+    "npc": "Mew the Cat",
     "npc_level": 72
    },
    "party": {
-    "dps": 347.6,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 12,
-    "npc": "Kai the Cat",
+    "dps": 456.0,
+    "auto": 316.0,
+    "skill": 140.0,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 16,
+    "npc": "Mew the Cat",
     "npc_level": 72
    }
   },
   "71": {
    "none": {
-    "dps": 160.9,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 12,
-    "npc": "Kai the Cat",
+    "dps": 224.3,
+    "auto": 146.3,
+    "skill": 78.0,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 16,
+    "npc": "Mew the Cat",
     "npc_level": 72
    },
    "party": {
-    "dps": 347.6,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 12,
-    "npc": "Kai the Cat",
+    "dps": 456.0,
+    "auto": 316.0,
+    "skill": 140.0,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 16,
+    "npc": "Mew the Cat",
     "npc_level": 72
    }
   },
   "72": {
    "none": {
-    "dps": 170.2,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 13,
-    "npc": "Kai the Cat",
+    "dps": 233.6,
+    "auto": 154.7,
+    "skill": 78.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 17,
+    "npc": "Mew the Cat",
     "npc_level": 74
    },
    "party": {
-    "dps": 367.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 13,
-    "npc": "Kai the Cat",
+    "dps": 474.8,
+    "auto": 334.2,
+    "skill": 140.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 17,
+    "npc": "Mew the Cat",
     "npc_level": 74
    }
   },
   "73": {
    "none": {
-    "dps": 170.2,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 13,
-    "npc": "Kai the Cat",
+    "dps": 233.6,
+    "auto": 154.7,
+    "skill": 78.8,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 17,
+    "npc": "Mew the Cat",
     "npc_level": 74
    },
    "party": {
-    "dps": 367.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 13,
-    "npc": "Kai the Cat",
+    "dps": 474.8,
+    "auto": 334.2,
+    "skill": 140.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 17,
+    "npc": "Mew the Cat",
     "npc_level": 74
    }
   },
   "74": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    },
    "party": {
-    "dps": 398.3,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 499.5,
+    "auto": 362.1,
+    "skill": 137.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    }
   },
   "75": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    },
    "party": {
-    "dps": 398.3,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 499.5,
+    "auto": 362.1,
+    "skill": 137.4,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    }
   },
   "76": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    },
    "party": {
-    "dps": 555.8,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 659.8,
+    "auto": 505.3,
+    "skill": 154.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    }
   },
   "77": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    },
    "party": {
-    "dps": 555.8,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 659.8,
+    "auto": 505.3,
+    "skill": 154.6,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    }
   },
   "78": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    }
   },
   "79": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    }
   },
   "80": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Kai the Cat",
-    "skill_level": 14,
-    "npc": "Kai the Cat",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Mew the Cat",
+    "skill_level": 18,
+    "npc": "Mew the Cat",
     "npc_level": 76
    }
   }
@@ -980,14 +1378,20 @@
  "Elemental Master": {
   "20": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
@@ -996,14 +1400,20 @@
   },
   "21": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
@@ -1012,14 +1422,20 @@
   },
   "22": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
@@ -1028,14 +1444,20 @@
   },
   "23": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
@@ -1044,14 +1466,20 @@
   },
   "24": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 1,
     "npc": "Mirage the Unicorn",
@@ -1060,14 +1488,20 @@
   },
   "25": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
@@ -1076,14 +1510,20 @@
   },
   "26": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
@@ -1092,14 +1532,20 @@
   },
   "27": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
@@ -1108,14 +1554,20 @@
   },
   "28": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
@@ -1124,14 +1576,20 @@
   },
   "29": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 2,
     "npc": "Mirage the Unicorn",
@@ -1140,14 +1598,20 @@
   },
   "30": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
@@ -1156,14 +1620,20 @@
   },
   "31": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
@@ -1172,14 +1642,20 @@
   },
   "32": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
@@ -1188,14 +1664,20 @@
   },
   "33": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
@@ -1204,14 +1686,20 @@
   },
   "34": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 3,
     "npc": "Mirage the Unicorn",
@@ -1220,14 +1708,20 @@
   },
   "35": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
@@ -1236,14 +1730,20 @@
   },
   "36": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
@@ -1252,14 +1752,20 @@
   },
   "37": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
@@ -1268,14 +1774,20 @@
   },
   "38": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
@@ -1284,14 +1796,20 @@
   },
   "39": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Mirage the Unicorn",
     "skill_level": 4,
     "npc": "Mirage the Unicorn",
@@ -1301,6 +1819,11 @@
   "40": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1308,6 +1831,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1317,6 +1845,11 @@
   "41": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1324,6 +1857,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1333,6 +1871,11 @@
   "42": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1340,6 +1883,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1349,6 +1897,11 @@
   "43": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1356,6 +1909,11 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [
+     "HealMagic"
+    ],
     "summon": "Summon Boxer the Unicorn",
     "skill_level": 5,
     "npc": "Boxer the Unicorn",
@@ -1364,14 +1922,20 @@
   },
   "44": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
@@ -1380,14 +1944,20 @@
   },
   "45": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
@@ -1396,14 +1966,20 @@
   },
   "46": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
@@ -1412,14 +1988,20 @@
   },
   "47": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 2,
     "npc": "Merrow the Unicorn",
@@ -1428,529 +2010,727 @@
   },
   "48": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 3,
     "npc": "Merrow the Unicorn",
     "npc_level": 50
    },
    "party": {
-    "dps": 102.0,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 3,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 50
+    "dps": 118.5,
+    "auto": 61.3,
+    "skill": 57.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 7,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 42
    }
   },
   "49": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 3,
     "npc": "Merrow the Unicorn",
     "npc_level": 50
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 3,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 7,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 42
    }
   },
   "50": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 3,
     "npc": "Merrow the Unicorn",
     "npc_level": 50
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 3,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 7,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 42
    }
   },
   "51": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [],
     "summon": "Summon Merrow the Unicorn",
     "skill_level": 3,
     "npc": "Merrow the Unicorn",
     "npc_level": 50
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 3,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 7,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 42
    }
   },
   "52": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    }
   },
   "53": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    }
   },
   "54": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    }
   },
   "55": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 4,
-    "npc": "Merrow the Unicorn",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 8,
+    "npc": "Mirage the Unicorn",
+    "npc_level": 50
    }
   },
   "56": {
    "none": {
-    "dps": 97.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 5,
-    "npc": "Merrow the Unicorn",
+    "dps": 124.9,
+    "auto": 88.6,
+    "skill": 36.3,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 9,
+    "npc": "Mirage the Unicorn",
     "npc_level": 58
    },
    "party": {
-    "dps": 196.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 5,
-    "npc": "Merrow the Unicorn",
+    "dps": 246.0,
+    "auto": 178.8,
+    "skill": 67.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 9,
+    "npc": "Mirage the Unicorn",
     "npc_level": 58
    }
   },
   "57": {
    "none": {
-    "dps": 97.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 5,
-    "npc": "Merrow the Unicorn",
+    "dps": 124.9,
+    "auto": 88.6,
+    "skill": 36.3,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 9,
+    "npc": "Mirage the Unicorn",
     "npc_level": 58
    },
    "party": {
-    "dps": 196.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 5,
-    "npc": "Merrow the Unicorn",
+    "dps": 246.0,
+    "auto": 178.8,
+    "skill": 67.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 9,
+    "npc": "Mirage the Unicorn",
     "npc_level": 58
    }
   },
   "58": {
    "none": {
-    "dps": 105.9,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 6,
-    "npc": "Merrow the Unicorn",
+    "dps": 149.8,
+    "auto": 96.3,
+    "skill": 53.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 10,
+    "npc": "Mirage the Unicorn",
     "npc_level": 60
    },
    "party": {
-    "dps": 222.3,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 6,
-    "npc": "Merrow the Unicorn",
+    "dps": 300.9,
+    "auto": 202.1,
+    "skill": 98.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 10,
+    "npc": "Mirage the Unicorn",
     "npc_level": 60
    }
   },
   "59": {
    "none": {
-    "dps": 105.9,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 6,
-    "npc": "Merrow the Unicorn",
+    "dps": 149.8,
+    "auto": 96.3,
+    "skill": 53.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 10,
+    "npc": "Mirage the Unicorn",
     "npc_level": 60
    },
    "party": {
-    "dps": 222.3,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 6,
-    "npc": "Merrow the Unicorn",
+    "dps": 300.9,
+    "auto": 202.1,
+    "skill": 98.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 10,
+    "npc": "Mirage the Unicorn",
     "npc_level": 60
    }
   },
   "60": {
    "none": {
-    "dps": 114.6,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 7,
-    "npc": "Merrow the Unicorn",
+    "dps": 158.6,
+    "auto": 104.2,
+    "skill": 54.4,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 11,
+    "npc": "Mirage the Unicorn",
     "npc_level": 62
    },
    "party": {
-    "dps": 240.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 7,
-    "npc": "Merrow the Unicorn",
+    "dps": 318.5,
+    "auto": 218.8,
+    "skill": 99.7,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 11,
+    "npc": "Mirage the Unicorn",
     "npc_level": 62
    }
   },
   "61": {
    "none": {
-    "dps": 114.6,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 7,
-    "npc": "Merrow the Unicorn",
+    "dps": 158.6,
+    "auto": 104.2,
+    "skill": 54.4,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 11,
+    "npc": "Mirage the Unicorn",
     "npc_level": 62
    },
    "party": {
-    "dps": 240.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 7,
-    "npc": "Merrow the Unicorn",
+    "dps": 318.5,
+    "auto": 218.8,
+    "skill": 99.7,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 11,
+    "npc": "Mirage the Unicorn",
     "npc_level": 62
    }
   },
   "62": {
    "none": {
-    "dps": 123.6,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 8,
-    "npc": "Merrow the Unicorn",
+    "dps": 167.6,
+    "auto": 112.4,
+    "skill": 55.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 12,
+    "npc": "Mirage the Unicorn",
     "npc_level": 64
    },
    "party": {
-    "dps": 259.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 8,
-    "npc": "Merrow the Unicorn",
+    "dps": 336.3,
+    "auto": 236.0,
+    "skill": 100.4,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 12,
+    "npc": "Mirage the Unicorn",
     "npc_level": 64
    }
   },
   "63": {
    "none": {
-    "dps": 123.6,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 8,
-    "npc": "Merrow the Unicorn",
+    "dps": 167.6,
+    "auto": 112.4,
+    "skill": 55.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 12,
+    "npc": "Mirage the Unicorn",
     "npc_level": 64
    },
    "party": {
-    "dps": 259.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 8,
-    "npc": "Merrow the Unicorn",
+    "dps": 336.3,
+    "auto": 236.0,
+    "skill": 100.4,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 12,
+    "npc": "Mirage the Unicorn",
     "npc_level": 64
    }
   },
   "64": {
    "none": {
-    "dps": 132.8,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 9,
-    "npc": "Merrow the Unicorn",
+    "dps": 176.5,
+    "auto": 120.7,
+    "skill": 55.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 13,
+    "npc": "Mirage the Unicorn",
     "npc_level": 66
    },
    "party": {
-    "dps": 278.8,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 9,
-    "npc": "Merrow the Unicorn",
+    "dps": 354.3,
+    "auto": 253.5,
+    "skill": 100.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 13,
+    "npc": "Mirage the Unicorn",
     "npc_level": 66
    }
   },
   "65": {
    "none": {
-    "dps": 132.8,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 9,
-    "npc": "Merrow the Unicorn",
+    "dps": 176.5,
+    "auto": 120.7,
+    "skill": 55.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 13,
+    "npc": "Mirage the Unicorn",
     "npc_level": 66
    },
    "party": {
-    "dps": 278.8,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 9,
-    "npc": "Merrow the Unicorn",
+    "dps": 354.3,
+    "auto": 253.5,
+    "skill": 100.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 13,
+    "npc": "Mirage the Unicorn",
     "npc_level": 66
    }
   },
   "66": {
    "none": {
-    "dps": 142.1,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 10,
-    "npc": "Merrow the Unicorn",
+    "dps": 185.5,
+    "auto": 129.2,
+    "skill": 56.3,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 14,
+    "npc": "Mirage the Unicorn",
     "npc_level": 68
    },
    "party": {
-    "dps": 307.0,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 10,
-    "npc": "Merrow the Unicorn",
+    "dps": 377.2,
+    "auto": 279.1,
+    "skill": 98.1,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 14,
+    "npc": "Mirage the Unicorn",
     "npc_level": 68
    }
   },
   "67": {
    "none": {
-    "dps": 142.1,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 10,
-    "npc": "Merrow the Unicorn",
+    "dps": 185.5,
+    "auto": 129.2,
+    "skill": 56.3,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 14,
+    "npc": "Mirage the Unicorn",
     "npc_level": 68
    },
    "party": {
-    "dps": 307.0,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 10,
-    "npc": "Merrow the Unicorn",
+    "dps": 377.2,
+    "auto": 279.1,
+    "skill": 98.1,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 14,
+    "npc": "Mirage the Unicorn",
     "npc_level": 68
    }
   },
   "68": {
    "none": {
-    "dps": 151.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 11,
-    "npc": "Merrow the Unicorn",
+    "dps": 214.8,
+    "auto": 137.8,
+    "skill": 77.1,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 15,
+    "npc": "Mirage the Unicorn",
     "npc_level": 70
    },
    "party": {
-    "dps": 327.3,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 11,
-    "npc": "Merrow the Unicorn",
+    "dps": 436.7,
+    "auto": 297.5,
+    "skill": 139.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 15,
+    "npc": "Mirage the Unicorn",
     "npc_level": 70
    }
   },
   "69": {
    "none": {
-    "dps": 151.5,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 11,
-    "npc": "Merrow the Unicorn",
+    "dps": 214.8,
+    "auto": 137.8,
+    "skill": 77.1,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 15,
+    "npc": "Mirage the Unicorn",
     "npc_level": 70
    },
    "party": {
-    "dps": 327.3,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 11,
-    "npc": "Merrow the Unicorn",
+    "dps": 436.7,
+    "auto": 297.5,
+    "skill": 139.2,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 15,
+    "npc": "Mirage the Unicorn",
     "npc_level": 70
    }
   },
   "70": {
    "none": {
-    "dps": 160.9,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 12,
-    "npc": "Merrow the Unicorn",
+    "dps": 224.3,
+    "auto": 146.3,
+    "skill": 78.0,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 16,
+    "npc": "Mirage the Unicorn",
     "npc_level": 72
    },
    "party": {
-    "dps": 347.6,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 12,
-    "npc": "Merrow the Unicorn",
+    "dps": 456.0,
+    "auto": 316.0,
+    "skill": 140.0,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 16,
+    "npc": "Mirage the Unicorn",
     "npc_level": 72
    }
   },
   "71": {
    "none": {
-    "dps": 160.9,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 12,
-    "npc": "Merrow the Unicorn",
+    "dps": 224.3,
+    "auto": 146.3,
+    "skill": 78.0,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 16,
+    "npc": "Mirage the Unicorn",
     "npc_level": 72
    },
    "party": {
-    "dps": 347.6,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 12,
-    "npc": "Merrow the Unicorn",
+    "dps": 456.0,
+    "auto": 316.0,
+    "skill": 140.0,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 16,
+    "npc": "Mirage the Unicorn",
     "npc_level": 72
    }
   },
   "72": {
    "none": {
-    "dps": 170.2,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 13,
-    "npc": "Merrow the Unicorn",
+    "dps": 233.6,
+    "auto": 154.7,
+    "skill": 78.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 17,
+    "npc": "Mirage the Unicorn",
     "npc_level": 74
    },
    "party": {
-    "dps": 367.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 13,
-    "npc": "Merrow the Unicorn",
+    "dps": 474.8,
+    "auto": 334.2,
+    "skill": 140.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 17,
+    "npc": "Mirage the Unicorn",
     "npc_level": 74
    }
   },
   "73": {
    "none": {
-    "dps": 170.2,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 13,
-    "npc": "Merrow the Unicorn",
+    "dps": 233.6,
+    "auto": 154.7,
+    "skill": 78.8,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 17,
+    "npc": "Mirage the Unicorn",
     "npc_level": 74
    },
    "party": {
-    "dps": 367.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 13,
-    "npc": "Merrow the Unicorn",
+    "dps": 474.8,
+    "auto": 334.2,
+    "skill": 140.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 17,
+    "npc": "Mirage the Unicorn",
     "npc_level": 74
    }
   },
   "74": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    },
    "party": {
-    "dps": 398.3,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 499.5,
+    "auto": 362.1,
+    "skill": 137.4,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    }
   },
   "75": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    },
    "party": {
-    "dps": 398.3,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 499.5,
+    "auto": 362.1,
+    "skill": 137.4,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    }
   },
   "76": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    },
    "party": {
-    "dps": 555.8,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 659.8,
+    "auto": 505.3,
+    "skill": 154.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    }
   },
   "77": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    },
    "party": {
-    "dps": 555.8,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 659.8,
+    "auto": 505.3,
+    "skill": 154.6,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    }
   },
   "78": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    }
   },
   "79": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    }
   },
   "80": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Merrow the Unicorn",
-    "skill_level": 14,
-    "npc": "Merrow the Unicorn",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Mirage the Unicorn",
+    "skill_level": 18,
+    "npc": "Mirage the Unicorn",
     "npc_level": 76
    }
   }
@@ -1958,14 +2738,20 @@
  "Spectral Master": {
   "20": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
@@ -1974,14 +2760,20 @@
   },
   "21": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
@@ -1990,14 +2782,20 @@
   },
   "22": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
@@ -2006,14 +2804,20 @@
   },
   "23": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
@@ -2022,14 +2826,20 @@
   },
   "24": {
    "none": {
-    "dps": 16.0,
+    "dps": 22.1,
+    "auto": 16.0,
+    "skill": 6.1,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
     "npc_level": 27
    },
    "party": {
-    "dps": 17.9,
+    "dps": 24.8,
+    "auto": 17.9,
+    "skill": 6.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 1,
     "npc": "Silhouette",
@@ -2038,14 +2848,20 @@
   },
   "25": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
@@ -2054,14 +2870,20 @@
   },
   "26": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
@@ -2070,14 +2892,20 @@
   },
   "27": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
@@ -2086,14 +2914,20 @@
   },
   "28": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
@@ -2102,14 +2936,20 @@
   },
   "29": {
    "none": {
-    "dps": 31.1,
+    "dps": 36.8,
+    "auto": 31.1,
+    "skill": 5.8,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
     "npc_level": 37
    },
    "party": {
-    "dps": 35.1,
+    "dps": 46.0,
+    "auto": 35.1,
+    "skill": 10.9,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 2,
     "npc": "Silhouette",
@@ -2118,14 +2958,20 @@
   },
   "30": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
@@ -2134,14 +2980,20 @@
   },
   "31": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
@@ -2150,14 +3002,20 @@
   },
   "32": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
@@ -2166,14 +3024,20 @@
   },
   "33": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
@@ -2182,14 +3046,20 @@
   },
   "34": {
    "none": {
-    "dps": 55.5,
+    "dps": 67.1,
+    "auto": 55.5,
+    "skill": 11.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
     "npc_level": 47
    },
    "party": {
-    "dps": 62.6,
+    "dps": 83.9,
+    "auto": 62.6,
+    "skill": 21.3,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 3,
     "npc": "Silhouette",
@@ -2198,14 +3068,20 @@
   },
   "35": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
@@ -2214,14 +3090,20 @@
   },
   "36": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
@@ -2230,14 +3112,20 @@
   },
   "37": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
@@ -2246,14 +3134,20 @@
   },
   "38": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
@@ -2262,14 +3156,20 @@
   },
   "39": {
    "none": {
-    "dps": 76.3,
+    "dps": 85.8,
+    "auto": 76.3,
+    "skill": 9.5,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
     "npc_level": 54
    },
    "party": {
-    "dps": 95.0,
+    "dps": 119.6,
+    "auto": 95.0,
+    "skill": 24.6,
+    "support": [],
     "summon": "Summon Silhouette",
     "skill_level": 4,
     "npc": "Silhouette",
@@ -2279,6 +3179,9 @@
   "40": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2286,6 +3189,9 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2295,6 +3201,9 @@
   "41": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2302,6 +3211,9 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2311,6 +3223,9 @@
   "42": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2318,6 +3233,9 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2327,6 +3245,9 @@
   "43": {
    "none": {
     "dps": 93.7,
+    "auto": 93.7,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2334,6 +3255,9 @@
    },
    "party": {
     "dps": 123.0,
+    "auto": 123.0,
+    "skill": 0.0,
+    "support": [],
     "summon": "Summon Shadow",
     "skill_level": 5,
     "npc": "Shadow",
@@ -2342,14 +3266,24 @@
   },
   "44": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
@@ -2358,14 +3292,24 @@
   },
   "45": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
@@ -2374,14 +3318,24 @@
   },
   "46": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
@@ -2390,14 +3344,24 @@
   },
   "47": {
    "none": {
-    "dps": 54.6,
+    "dps": 55.5,
+    "auto": 54.6,
+    "skill": 0.9,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
     "npc_level": 46
    },
    "party": {
-    "dps": 82.6,
+    "dps": 86.3,
+    "auto": 82.6,
+    "skill": 3.7,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 2,
     "npc": "Soulless",
@@ -2406,529 +3370,735 @@
   },
   "48": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 3,
     "npc": "Soulless",
     "npc_level": 50
    },
    "party": {
-    "dps": 102.0,
-    "summon": "Summon Soulless",
-    "skill_level": 3,
-    "npc": "Soulless",
-    "npc_level": 50
+    "dps": 118.5,
+    "auto": 61.3,
+    "skill": 57.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 7,
+    "npc": "Silhouette",
+    "npc_level": 42
    }
   },
   "49": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 3,
     "npc": "Soulless",
     "npc_level": 50
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Soulless",
-    "skill_level": 3,
-    "npc": "Soulless",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 7,
+    "npc": "Silhouette",
+    "npc_level": 42
    }
   },
   "50": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 3,
     "npc": "Soulless",
     "npc_level": 50
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Soulless",
-    "skill_level": 3,
-    "npc": "Soulless",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 7,
+    "npc": "Silhouette",
+    "npc_level": 42
    }
   },
   "51": {
    "none": {
-    "dps": 67.2,
+    "dps": 72.4,
+    "auto": 67.2,
+    "skill": 5.2,
+    "support": [
+     "RangeDebuff"
+    ],
     "summon": "Summon Soulless",
     "skill_level": 3,
     "npc": "Soulless",
     "npc_level": 50
    },
    "party": {
-    "dps": 109.7,
-    "summon": "Summon Soulless",
-    "skill_level": 3,
-    "npc": "Soulless",
-    "npc_level": 50
+    "dps": 120.5,
+    "auto": 66.0,
+    "skill": 54.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 7,
+    "npc": "Silhouette",
+    "npc_level": 42
    }
   },
   "52": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    }
   },
   "53": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    }
   },
   "54": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    }
   },
   "55": {
    "none": {
-    "dps": 81.5,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 95.3,
+    "auto": 61.1,
+    "skill": 34.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    },
    "party": {
-    "dps": 163.7,
-    "summon": "Summon Soulless",
-    "skill_level": 4,
-    "npc": "Soulless",
-    "npc_level": 54
+    "dps": 188.3,
+    "auto": 122.6,
+    "skill": 65.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 8,
+    "npc": "Silhouette",
+    "npc_level": 50
    }
   },
   "56": {
    "none": {
-    "dps": 97.4,
-    "summon": "Summon Soulless",
-    "skill_level": 5,
-    "npc": "Soulless",
+    "dps": 124.9,
+    "auto": 88.6,
+    "skill": 36.3,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 9,
+    "npc": "Silhouette",
     "npc_level": 58
    },
    "party": {
-    "dps": 196.7,
-    "summon": "Summon Soulless",
-    "skill_level": 5,
-    "npc": "Soulless",
+    "dps": 246.0,
+    "auto": 178.8,
+    "skill": 67.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 9,
+    "npc": "Silhouette",
     "npc_level": 58
    }
   },
   "57": {
    "none": {
-    "dps": 97.4,
-    "summon": "Summon Soulless",
-    "skill_level": 5,
-    "npc": "Soulless",
+    "dps": 124.9,
+    "auto": 88.6,
+    "skill": 36.3,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 9,
+    "npc": "Silhouette",
     "npc_level": 58
    },
    "party": {
-    "dps": 196.7,
-    "summon": "Summon Soulless",
-    "skill_level": 5,
-    "npc": "Soulless",
+    "dps": 246.0,
+    "auto": 178.8,
+    "skill": 67.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 9,
+    "npc": "Silhouette",
     "npc_level": 58
    }
   },
   "58": {
    "none": {
-    "dps": 105.9,
-    "summon": "Summon Soulless",
-    "skill_level": 6,
-    "npc": "Soulless",
+    "dps": 149.8,
+    "auto": 96.3,
+    "skill": 53.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 10,
+    "npc": "Silhouette",
     "npc_level": 60
    },
    "party": {
-    "dps": 222.3,
-    "summon": "Summon Soulless",
-    "skill_level": 6,
-    "npc": "Soulless",
+    "dps": 300.9,
+    "auto": 202.1,
+    "skill": 98.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 10,
+    "npc": "Silhouette",
     "npc_level": 60
    }
   },
   "59": {
    "none": {
-    "dps": 105.9,
-    "summon": "Summon Soulless",
-    "skill_level": 6,
-    "npc": "Soulless",
+    "dps": 149.8,
+    "auto": 96.3,
+    "skill": 53.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 10,
+    "npc": "Silhouette",
     "npc_level": 60
    },
    "party": {
-    "dps": 222.3,
-    "summon": "Summon Soulless",
-    "skill_level": 6,
-    "npc": "Soulless",
+    "dps": 300.9,
+    "auto": 202.1,
+    "skill": 98.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 10,
+    "npc": "Silhouette",
     "npc_level": 60
    }
   },
   "60": {
    "none": {
-    "dps": 114.6,
-    "summon": "Summon Soulless",
-    "skill_level": 7,
-    "npc": "Soulless",
+    "dps": 158.6,
+    "auto": 104.2,
+    "skill": 54.4,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 11,
+    "npc": "Silhouette",
     "npc_level": 62
    },
    "party": {
-    "dps": 240.7,
-    "summon": "Summon Soulless",
-    "skill_level": 7,
-    "npc": "Soulless",
+    "dps": 318.5,
+    "auto": 218.8,
+    "skill": 99.7,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 11,
+    "npc": "Silhouette",
     "npc_level": 62
    }
   },
   "61": {
    "none": {
-    "dps": 114.6,
-    "summon": "Summon Soulless",
-    "skill_level": 7,
-    "npc": "Soulless",
+    "dps": 158.6,
+    "auto": 104.2,
+    "skill": 54.4,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 11,
+    "npc": "Silhouette",
     "npc_level": 62
    },
    "party": {
-    "dps": 240.7,
-    "summon": "Summon Soulless",
-    "skill_level": 7,
-    "npc": "Soulless",
+    "dps": 318.5,
+    "auto": 218.8,
+    "skill": 99.7,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 11,
+    "npc": "Silhouette",
     "npc_level": 62
    }
   },
   "62": {
    "none": {
-    "dps": 123.6,
-    "summon": "Summon Soulless",
-    "skill_level": 8,
-    "npc": "Soulless",
+    "dps": 167.6,
+    "auto": 112.4,
+    "skill": 55.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 12,
+    "npc": "Silhouette",
     "npc_level": 64
    },
    "party": {
-    "dps": 259.5,
-    "summon": "Summon Soulless",
-    "skill_level": 8,
-    "npc": "Soulless",
+    "dps": 336.3,
+    "auto": 236.0,
+    "skill": 100.4,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 12,
+    "npc": "Silhouette",
     "npc_level": 64
    }
   },
   "63": {
    "none": {
-    "dps": 123.6,
-    "summon": "Summon Soulless",
-    "skill_level": 8,
-    "npc": "Soulless",
+    "dps": 167.6,
+    "auto": 112.4,
+    "skill": 55.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 12,
+    "npc": "Silhouette",
     "npc_level": 64
    },
    "party": {
-    "dps": 259.5,
-    "summon": "Summon Soulless",
-    "skill_level": 8,
-    "npc": "Soulless",
+    "dps": 336.3,
+    "auto": 236.0,
+    "skill": 100.4,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 12,
+    "npc": "Silhouette",
     "npc_level": 64
    }
   },
   "64": {
    "none": {
-    "dps": 132.8,
-    "summon": "Summon Soulless",
-    "skill_level": 9,
-    "npc": "Soulless",
+    "dps": 176.5,
+    "auto": 120.7,
+    "skill": 55.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 13,
+    "npc": "Silhouette",
     "npc_level": 66
    },
    "party": {
-    "dps": 278.8,
-    "summon": "Summon Soulless",
-    "skill_level": 9,
-    "npc": "Soulless",
+    "dps": 354.3,
+    "auto": 253.5,
+    "skill": 100.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 13,
+    "npc": "Silhouette",
     "npc_level": 66
    }
   },
   "65": {
    "none": {
-    "dps": 132.8,
-    "summon": "Summon Soulless",
-    "skill_level": 9,
-    "npc": "Soulless",
+    "dps": 176.5,
+    "auto": 120.7,
+    "skill": 55.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 13,
+    "npc": "Silhouette",
     "npc_level": 66
    },
    "party": {
-    "dps": 278.8,
-    "summon": "Summon Soulless",
-    "skill_level": 9,
-    "npc": "Soulless",
+    "dps": 354.3,
+    "auto": 253.5,
+    "skill": 100.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 13,
+    "npc": "Silhouette",
     "npc_level": 66
    }
   },
   "66": {
    "none": {
-    "dps": 142.1,
-    "summon": "Summon Soulless",
-    "skill_level": 10,
-    "npc": "Soulless",
+    "dps": 185.5,
+    "auto": 129.2,
+    "skill": 56.3,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 14,
+    "npc": "Silhouette",
     "npc_level": 68
    },
    "party": {
-    "dps": 307.0,
-    "summon": "Summon Soulless",
-    "skill_level": 10,
-    "npc": "Soulless",
+    "dps": 377.2,
+    "auto": 279.1,
+    "skill": 98.1,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 14,
+    "npc": "Silhouette",
     "npc_level": 68
    }
   },
   "67": {
    "none": {
-    "dps": 142.1,
-    "summon": "Summon Soulless",
-    "skill_level": 10,
-    "npc": "Soulless",
+    "dps": 185.5,
+    "auto": 129.2,
+    "skill": 56.3,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 14,
+    "npc": "Silhouette",
     "npc_level": 68
    },
    "party": {
-    "dps": 307.0,
-    "summon": "Summon Soulless",
-    "skill_level": 10,
-    "npc": "Soulless",
+    "dps": 377.2,
+    "auto": 279.1,
+    "skill": 98.1,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 14,
+    "npc": "Silhouette",
     "npc_level": 68
    }
   },
   "68": {
    "none": {
-    "dps": 151.5,
-    "summon": "Summon Soulless",
-    "skill_level": 11,
-    "npc": "Soulless",
+    "dps": 214.8,
+    "auto": 137.8,
+    "skill": 77.1,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 15,
+    "npc": "Silhouette",
     "npc_level": 70
    },
    "party": {
-    "dps": 327.3,
-    "summon": "Summon Soulless",
-    "skill_level": 11,
-    "npc": "Soulless",
+    "dps": 436.7,
+    "auto": 297.5,
+    "skill": 139.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 15,
+    "npc": "Silhouette",
     "npc_level": 70
    }
   },
   "69": {
    "none": {
-    "dps": 151.5,
-    "summon": "Summon Soulless",
-    "skill_level": 11,
-    "npc": "Soulless",
+    "dps": 214.8,
+    "auto": 137.8,
+    "skill": 77.1,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 15,
+    "npc": "Silhouette",
     "npc_level": 70
    },
    "party": {
-    "dps": 327.3,
-    "summon": "Summon Soulless",
-    "skill_level": 11,
-    "npc": "Soulless",
+    "dps": 436.7,
+    "auto": 297.5,
+    "skill": 139.2,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 15,
+    "npc": "Silhouette",
     "npc_level": 70
    }
   },
   "70": {
    "none": {
-    "dps": 160.9,
-    "summon": "Summon Soulless",
-    "skill_level": 12,
-    "npc": "Soulless",
+    "dps": 224.3,
+    "auto": 146.3,
+    "skill": 78.0,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 16,
+    "npc": "Silhouette",
     "npc_level": 72
    },
    "party": {
-    "dps": 347.6,
-    "summon": "Summon Soulless",
-    "skill_level": 12,
-    "npc": "Soulless",
+    "dps": 456.0,
+    "auto": 316.0,
+    "skill": 140.0,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 16,
+    "npc": "Silhouette",
     "npc_level": 72
    }
   },
   "71": {
    "none": {
-    "dps": 160.9,
-    "summon": "Summon Soulless",
-    "skill_level": 12,
-    "npc": "Soulless",
+    "dps": 224.3,
+    "auto": 146.3,
+    "skill": 78.0,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 16,
+    "npc": "Silhouette",
     "npc_level": 72
    },
    "party": {
-    "dps": 347.6,
-    "summon": "Summon Soulless",
-    "skill_level": 12,
-    "npc": "Soulless",
+    "dps": 456.0,
+    "auto": 316.0,
+    "skill": 140.0,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 16,
+    "npc": "Silhouette",
     "npc_level": 72
    }
   },
   "72": {
    "none": {
-    "dps": 170.2,
-    "summon": "Summon Soulless",
-    "skill_level": 13,
-    "npc": "Soulless",
+    "dps": 233.6,
+    "auto": 154.7,
+    "skill": 78.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 17,
+    "npc": "Silhouette",
     "npc_level": 74
    },
    "party": {
-    "dps": 367.7,
-    "summon": "Summon Soulless",
-    "skill_level": 13,
-    "npc": "Soulless",
+    "dps": 474.8,
+    "auto": 334.2,
+    "skill": 140.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 17,
+    "npc": "Silhouette",
     "npc_level": 74
    }
   },
   "73": {
    "none": {
-    "dps": 170.2,
-    "summon": "Summon Soulless",
-    "skill_level": 13,
-    "npc": "Soulless",
+    "dps": 233.6,
+    "auto": 154.7,
+    "skill": 78.8,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 17,
+    "npc": "Silhouette",
     "npc_level": 74
    },
    "party": {
-    "dps": 367.7,
-    "summon": "Summon Soulless",
-    "skill_level": 13,
-    "npc": "Soulless",
+    "dps": 474.8,
+    "auto": 334.2,
+    "skill": 140.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 17,
+    "npc": "Silhouette",
     "npc_level": 74
    }
   },
   "74": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    },
    "party": {
-    "dps": 398.3,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 499.5,
+    "auto": 362.1,
+    "skill": 137.4,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    }
   },
   "75": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    },
    "party": {
-    "dps": 398.3,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 499.5,
+    "auto": 362.1,
+    "skill": 137.4,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    }
   },
   "76": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    },
    "party": {
-    "dps": 555.8,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 659.8,
+    "auto": 505.3,
+    "skill": 154.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    }
   },
   "77": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    },
    "party": {
-    "dps": 555.8,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 659.8,
+    "auto": 505.3,
+    "skill": 154.6,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    }
   },
   "78": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    }
   },
   "79": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    }
   },
   "80": {
    "none": {
-    "dps": 179.4,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 242.6,
+    "auto": 163.1,
+    "skill": 79.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    },
    "party": {
-    "dps": 817.7,
-    "summon": "Summon Soulless",
-    "skill_level": 14,
-    "npc": "Soulless",
+    "dps": 879.9,
+    "auto": 743.3,
+    "skill": 136.5,
+    "support": [],
+    "summon": "Summon Silhouette",
+    "skill_level": 18,
+    "npc": "Silhouette",
     "npc_level": 76
    }
   }

@@ -17,7 +17,9 @@ def load_npcs():
             a = n.find("stats/attack")
             if a is None:
                 continue
-            out[int(n.get("id"))] = dict(name=n.get("name"), level=int(n.get("level")), patk=float(a.get("physical")), spd=float(a.get("attackSpeed")), crit=float(a.get("critical")))
+            par = {p.get("name"): (int(p.get("id")), int(p.get("level"))) for p in n.findall("parameters/skill")}
+            out[int(n.get("id"))] = dict(name=n.get("name"), level=int(n.get("level")), patk=float(a.get("physical")), matk=float(a.get("magical")), spd=float(a.get("attackSpeed")), crit=float(a.get("critical")),
+                                         dd=par.get("DDMagic") or par.get("RangeDD"), support=[(k, v) for k, v in par.items() if k not in ("DDMagic", "RangeDD")])
     return out
 
 def summon_npc(sid, lv):
@@ -33,7 +35,29 @@ def summon_npc(sid, lv):
             return int(t)
     return None
 
-def pet_dps(npc, entries):
+SK = None
+def pet_dps(npc, entries, mag_entries=None):
+    """Returns (total, auto, skill) DPS. The pet fires its one damaging skill (DDMagic / RangeDD parameter, at that parameter's level) every time it is ready, autos otherwise.
+    Magic skill uses spirit shots (x2) and the pet's M.Atk; party tier: physical kit on autos, caster kit (Acumen, Empower...) on the skill's M.Atk."""
+    global SK
+    auto = pet_auto(npc, entries)
+    if not npc.get("dd"):
+        return auto, auto, 0.0
+    if SK is None:
+        SK = L.load_skills()
+    sd = SK.get(npc["dd"])
+    if sd is None:
+        return auto, auto, 0.0
+    mul, add, _ = S._apply(mag_entries or [], "mAtk"); matk = npc["matk"] * mul + add
+    mul, add, _ = S._apply(entries, "pAtk"); patk = npc["patk"] * mul + add
+    mul, add, _ = S._apply(entries, "pAtkSpd"); spd = min(npc["spd"] * mul + add, S.MAX_PATK_SPEED)
+    mul, add, _ = S._apply(mag_entries or [], "mAtkSpd"); mspd = 333 * mul + add
+    mul, add, _ = S._apply(entries, "critRate"); crit = min(npc["crit"] * 10 * mul + add, S.MAX_PCRIT_RATE) / 1000.0
+    a = C.Actor(patk=patk, patk_spd=spd, matk=matk, matk_spd=mspd, mp_max=1e12, mp_regen_3s=0, crit=crit, soulshot=True, spiritshot=1)
+    tot = C.simulate(a, DUMMY, {npc["dd"][0]: sd}, C.Policy((npc["dd"][0],), 0), 120000)[0] / 120.0
+    return tot, auto, tot - auto
+
+def pet_auto(npc, entries):
     mul, add, _ = S._apply(entries, "pAtk"); patk = npc["patk"] * mul + add
     mul, add, _ = S._apply(entries, "pAtkSpd"); spd = min(npc["spd"] * mul + add, S.MAX_PATK_SPEED)
     mul, add, _ = S._apply(entries, "critRate"); crit = min(npc["crit"] * 10 * mul + add, S.MAX_PCRIT_RATE) / 1000.0
@@ -63,10 +87,14 @@ def main():
             pent = []
             for sid, lv in buffs:
                 pent += S.passive_entries(sid, lv, "SWORD", 1)
+            ment = []
+            for sid, lv in PB.party_buffs(lvl, "BLUNT", 2, parent, trees, magic=True):
+                ment += S.passive_entries(sid, lv, "BLUNT", 2)
             row = {}
-            for tier, ent in (("none", []), ("party", pent)):
-                best = max(((pet_dps(npcs[n], ent), sid, lv, n) for sid, lv, n in cands))
-                row[tier] = dict(dps=round(best[0], 1), summon=S._skill_elements()[best[1]].get("name"), skill_level=best[2], npc=npcs[best[3]]["name"], npc_level=npcs[best[3]]["level"])
+            for tier, ent, ment_ in (("none", [], []), ("party", pent, ment)):
+                best = max(((pet_dps(npcs[n], ent, ment_)[0], sid, lv, n) for sid, lv, n in cands))
+                tot, au, skd = pet_dps(npcs[best[3]], ent, ment_)
+                row[tier] = dict(dps=round(tot, 1), auto=round(au, 1), skill=round(skd, 1), support=[k for k, _ in npcs[best[3]]["support"]], summon=S._skill_elements()[best[1]].get("name"), skill_level=best[2], npc=npcs[best[3]]["name"], npc_level=npcs[best[3]]["level"])
             res[line][lvl] = row
     json.dump(res, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "servitors.json"), "w"), indent=1)
     for line, d in res.items():
