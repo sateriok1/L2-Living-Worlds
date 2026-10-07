@@ -10,7 +10,7 @@ Mechanics mirrored from the server source (Formulas.calcPhysDam / calcMagicDam /
   skill reuse     reuseDelay * 333 / PAtkSpd (or MAtkSpd), unless static reuse
   auto interval   (500000 + weapon reuse_delay*333) / PAtkSpd ms   (reuse_delay is 0 except bows)
 """
-import itertools, math
+import itertools, math, os
 from dataclasses import dataclass, field
 
 
@@ -55,6 +55,9 @@ class Dummy:
     mdef: float = 300.0
 
 
+ALLOW_RACE = bool(os.environ.get("L2_UNDEAD"))      # undead profile: race-restricted skills (Disrupt Undead, Holy Strike, Might of Heaven...) count, as if the target were undead
+
+
 def usable(skill, actor):
     if skill.charge_gain > 0 and skill.dot is None:
         pass                                  # Sonic Focus / Sonic Rage: builds charges (Sonic Rage also hits), so it may take a slot in a rotation
@@ -62,7 +65,7 @@ def usable(skill, actor):
         return False
     if skill.weapons and actor.weapon not in skill.weapons:
         return False
-    if skill.flags & {"charge", "rear", "race"}:
+    if skill.flags & ({"charge", "rear"} | (set() if ALLOW_RACE else {"race"})):
         return False
     if "backstab" in skill.flags and actor.position == "front":
         return False                  # Backstab.calcSuccess: never lands from in front

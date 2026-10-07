@@ -13,7 +13,7 @@ WINDOWS = [5, 15, 30, 45, 60, 90, 120]
 MODEL_MP = os.environ.get("L2_MP", "infinite") == "finite"   # first tests assume infinite mana (user decision); L2_MP=finite charges MP and regen
 TIMED_BUFFS = os.environ.get("L2_BUFF_TIME", "infinite") == "finite"   # first tests assume buffs never expire; finite = Rage ends at 90 s
 POSITION = os.environ.get("L2_POS", "")        # '' = no positioning model; 'front' = target faces the attacker (bad), 'behind' = perfect positioning
-MP_SUFFIX = ("" if not MODEL_MP else "_finitemp") + ("_timed" if TIMED_BUFFS else "") + (("_" + POSITION) if POSITION else "")
+MP_SUFFIX = ("_undead" if os.environ.get("L2_UNDEAD") else "") + ("" if not MODEL_MP else "_finitemp") + ("_timed" if TIMED_BUFFS else "") + (("_" + POSITION) if POSITION else "")
 MODEL_HP = False        # HP costs ignored: phantom health is assumed maintained (user decision); set True to charge them
 DUMMY = C.Dummy()          # defence scales every hit equally, so it cannot change which rotation is best
 HOLDS = (0, 400, 1000)
