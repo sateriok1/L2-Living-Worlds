@@ -17,6 +17,8 @@ MP_SUFFIX = ("" if not MODEL_MP else "_finitemp") + ("_timed" if TIMED_BUFFS els
 MODEL_HP = False        # HP costs ignored: phantom health is assumed maintained (user decision); set True to charge them
 DUMMY = C.Dummy()          # defence scales every hit equally, so it cannot change which rotation is best
 HOLDS = (0, 400, 1000)
+ONLY_TYPE = os.environ.get('L2_ONLY_TYPE')            # restrict the weapon type from level L2_ONLY_FROM on
+ONLY_FROM = int(os.environ.get('L2_ONLY_FROM', '0'))
 MAX_POLICIES = 20000      # cap on priority orders tried per gear combo; longer orders are dropped when a class has many usable skills
 
 
@@ -194,6 +196,8 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
     rows = []
     foci = [f for f in (355, 357) if f in learned] if bname.endswith("_dagger") else []
     for w, a in S.options(weapons, armors, level):
+        if ONLY_TYPE and level >= ONLY_FROM and w.get('weapon_type') != ONLY_TYPE:
+            continue                    # e.g. Duelist: dual swords from L40 (nobody runs 1H + shield)
         for f in (foci or [None]):
             rows.append(((w, a, f), setup(level, cid, w, a, learned, bname, f)[0]))
     rows = pareto(rows)
