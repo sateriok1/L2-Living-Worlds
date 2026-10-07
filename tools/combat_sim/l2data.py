@@ -69,6 +69,8 @@ def load_skills():
                     if u.get("kind"):
                         weapons |= set(u.get("kind").split(","))
             flags = set()
+            if cond is not None and any(t.get("race") for t in cond.iter("target")):
+                flags.add("race")             # only works on one monster race (e.g. Disrupt Undead): not part of a general rotation
             if sk.find("conditions/rear") is not None or "behind" in ET.tostring(sk, encoding="unicode").lower()[:0]:
                 flags.add("rear")
             for e in effects:

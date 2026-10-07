@@ -59,7 +59,7 @@ def usable(skill, actor):
         return False
     if skill.weapons and actor.weapon not in skill.weapons:
         return False
-    if skill.flags & {"charge", "rear"}:
+    if skill.flags & {"charge", "rear", "race"}:
         return False
     if "backstab" in skill.flags and actor.position == "front":
         return False                  # Backstab.calcSuccess: never lands from in front
