@@ -15,7 +15,7 @@ HANDS = next((a.split("=")[1] for a in sys.argv if a.startswith("--hands=")), No
 ONLY_ARMOR = next((a.split("=")[1].split(",") for a in sys.argv if a.startswith("--armor=")), None)   # e.g. HEAVY overrides the mastery-derived armor types
 ARMOR_MASTERY = {"Light Armor Mastery": "LIGHT", "Heavy Armor Mastery": "HEAVY", "Robe Mastery": "MAGIC", "Robe Armor Mastery": "MAGIC"}
 GR = {"NONE": "NG"}
-OFFENCE = {"pAtk", "pAtkSpd", "critRate", "accCombat"}
+OFFENCE = {"pAtk", "pAtkSpd", "critRate", "accCombat", "blowRate"}
 here = os.path.dirname(os.path.abspath(__file__))
 names, parent = L.load_classes(); trees = L.load_trees(); sk = L.load_skills()
 leaf = [k for k, v in names.items() if v == line][0]

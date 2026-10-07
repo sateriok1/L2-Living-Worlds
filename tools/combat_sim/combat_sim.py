@@ -38,6 +38,10 @@ class Actor:
     mp_mul: float = 1.0         # physicalMpConsumeRate multiplier
     mp_drain_per_s: float = 0.0 # toggle upkeep (e.g. Vicious Stance)
     weapon_reuse: float = 0.0   # weapon reuse_delay (bows: 1500): auto cycle = (500000 + reuse_delay*333) / PAtkSpd  (Creature.calculateReuseTime, doAttackHitByBow)
+    position: str = "front"     # where the attacker stands: front (target faces it), side, behind. Sets prox, the blow success multiplier and Backstab availability
+    dex_bonus: float = 1.0      # DEX bonus: blow success = blowChance * dex_bonus * side * blow_mul
+    blow_mul: float = 1.0       # blowRate multiplier from passives, weapon abilities and buffs (Assassination, Mighty Mortal, Mortal Strike)
+    crit_pos: float = 1.0       # critDmgPos multiplier at this position (Focus Death / Focus Power); autos and skills crit for 2 * crit_mul * crit_pos
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -54,13 +58,38 @@ def usable(skill, actor):
         return False
     if skill.flags & {"charge", "rear"}:
         return False
+    if "backstab" in skill.flags and actor.position == "front":
+        return False                  # Backstab.calcSuccess: never lands from in front
     if skill.static_reuse is False and skill.hit <= 0 and skill.reuse <= 0:
         return False
     return True
 
 
-def skill_dmg(skill, actor, dummy):
+BLOW_SIDE = {"front": 1.0, "side": 1.5, "behind": 2.0}     # Formulas.calcBlowSuccess position multiplier
+
+
+def blow_chance(skill, actor, boost=1.0):
+    rate = skill.blow_chance * actor.dex_bonus * BLOW_SIDE[actor.position] * actor.blow_mul * boost
+    return min(1.0, math.ceil(rate) / 100.0)          # Rnd.get(100) < rate
+
+
+def blow_dmg(skill, actor, dummy, boost=1.0):
+    """Expected damage of a blow / Backstab cast (Formulas.calcBlowDamage / calcBackstabDamage, blow success and crit included).
+    Differences from other skills: soulshots give x1.458, critDmg and critDmgPos (halved) always apply, critDmgAdd is flat * 6.1, and a crit doubles the whole hit."""
+    ss = 1.458 if actor.soulshot else 1.0
+    if "backstab" in skill.flags:
+        base = 77 * (skill.power + actor.patk) / dummy.pdef * ss
+    else:
+        base = 77 * (skill.power + actor.patk * ss) / dummy.pdef
+    dmg = base * actor.prox * actor.crit_mul * ((actor.crit_pos - 1) / 2 + 1) + actor.crit_add * 6.1 * 77 / dummy.pdef
+    crit = min(1.0, skill.base_crit * 10 * actor.str_bonus / 1000.0)
+    return dmg * (1 + crit) * blow_chance(skill, actor, boost)
+
+
+def skill_dmg(skill, actor, dummy, boost=1.0):
     """Expected damage of one cast (crit-weighted)."""
+    if "blow" in skill.flags:
+        return blow_dmg(skill, actor, dummy, boost)
     if skill.damage_kind() == "magic":
         shot = 4 if actor.spiritshot == 2 else 2 if actor.spiritshot == 1 else 1
         base = 91 * math.sqrt(actor.matk * shot) / dummy.mdef * skill.power
@@ -69,13 +98,13 @@ def skill_dmg(skill, actor, dummy):
     base = 76 * (actor.patk * shot + skill.power) * actor.prox / dummy.pdef
     # physical skills roll crit from the skill's own baseCritRate and STR (Formulas.calcCrit), not weapon crit or Focus
     crit = min(1.0, skill.base_crit * 10 * actor.str_bonus / 1000.0)
-    return base * (1 - crit) + (base * 2 * actor.crit_mul + actor.crit_add * 77 / dummy.pdef) * crit
+    return base * (1 - crit) + (base * 2 * actor.crit_mul * actor.crit_pos + actor.crit_add * 77 / dummy.pdef) * crit
 
 
 def auto_dmg(actor, dummy):
     shot = 2 if actor.soulshot else 1
     base = 76 * actor.patk * shot * actor.prox / dummy.pdef
-    return base * (1 - actor.crit) + (base * 2 * actor.crit_mul + actor.crit_add * 77 / dummy.pdef) * actor.crit
+    return base * (1 - actor.crit) + (base * 2 * actor.crit_mul * actor.crit_pos + actor.crit_add * 77 / dummy.pdef) * actor.crit
 
 
 def cast_ms(skill, actor):
@@ -127,6 +156,7 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
     a_dmg, a_int, mp_per_ms, sd = derive()
     switched = later is None
     deb = [0.0, 0.0, 1.0, 1.0]       # until, probability active, pDef mult, mDef mult
+    boost = [0.0, 1.0]               # until, blowRate multiplier a blow gave itself (Critical Blow)
 
     def advance(dt):
         nonlocal t, mp, hp
@@ -178,6 +208,8 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
                 continue
             dmg, cms, rms = sd[chosen]
             sk = skills[chosen]
+            if "blow" in sk.flags and t < boost[0]:
+                dmg = skill_dmg(sk, actor, dummy, boost[1])
             mp -= sk.mp * actor.mp_mul
             mp_used += sk.mp * actor.mp_mul
             if actor.hp_max and sk.hp_cost:
@@ -187,6 +219,8 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
             casts[chosen] += 1
             advance(cms)
             total += dmg * uplift(sk.damage_kind() or "phys")     # the debuff lands after this hit, so it does not boost it
+            if sk.self_blow:
+                boost[:] = [t + sk.self_blow[1], sk.self_blow[0]]
             if sk.debuff:
                 pm, mm, dur, chance = sk.debuff
                 p_prev = deb[1] if t < deb[0] else 0.0

@@ -12,7 +12,8 @@ import l2data as L, stats_model as S, combat_sim as C
 WINDOWS = list(range(5, 125, 5))
 MODEL_MP = os.environ.get("L2_MP", "infinite") == "finite"   # first tests assume infinite mana (user decision); L2_MP=finite charges MP and regen
 TIMED_BUFFS = os.environ.get("L2_BUFF_TIME", "infinite") == "finite"   # first tests assume buffs never expire; finite = Rage ends at 90 s
-MP_SUFFIX = ("" if not MODEL_MP else "_finitemp") + ("_timed" if TIMED_BUFFS else "")
+POSITION = os.environ.get("L2_POS", "")        # '' = no positioning model; 'front' = target faces the attacker (bad), 'behind' = perfect positioning
+MP_SUFFIX = ("" if not MODEL_MP else "_finitemp") + ("_timed" if TIMED_BUFFS else "") + (("_" + POSITION) if POSITION else "")
 MODEL_HP = False        # HP costs ignored: phantom health is assumed maintained (user decision); set True to charge them
 DUMMY = C.Dummy()          # defence scales every hit equally, so it cannot change which rotation is best
 HOLDS = (0, 400, 1000)
@@ -41,6 +42,7 @@ VICIOUS_ID = 312                  # Vicious Stance toggle: +critDmgAdd, upkeep 0
 
 def split_name(name):
     """'fighterplus_max_self_vicious' -> ('fighterplus_max', rage, vicious)."""
+    name = name.replace("_dagger", "")
     vicious = name.endswith("_self_vicious")
     rage = vicious or name.endswith("_self")
     base = name.replace("_self_vicious", "").replace("_self", "")
@@ -50,6 +52,9 @@ def split_name(name):
 def buff_set(name):
     """Permanent buffs: (skill id, level) pairs; level None = the level the class has learned. 'spawn' = what a spawned phantom gets (max level, as the server applies them);
     'fighterplus' = the Scheme Buffer FIGHTER_GROUP preset at the levels it lists."""
+    if name.endswith("_dagger"):
+        # dagger self-buffs, assumed up for the whole fight (<= 120 s: each is cast once at the start): Vicious Stance, Mortal Strike (blowRate), the better Focus (rear crit damage)
+        return buff_set(name[:-7]) + ((VICIOUS_ID, None), (410, None))
     base, rage, vicious = split_name(name)
     if (base, rage, vicious) != (name, False, False):
         return buff_set(base) + (((VICIOUS_ID, None),) if vicious else ())
@@ -74,9 +79,11 @@ def temp_set(name):
     return ((RAGE_ID, None),) if split_name(name)[1] else ()
 
 
-def setup(level, cid, w, a, learned, bname):
+def setup(level, cid, w, a, learned, bname, focus=None):
     """(stats with every buff, the actor, the actor that continues after Rage expires or None)."""
     perm, temp = buff_set(bname), temp_set(bname)
+    if focus:
+        perm = perm + ((focus, None),)      # Focus Death / Focus Power: one per fight (shared buff slot), chosen per gear row
     if split_name(bname)[0] == "party":
         import party_buffs
         global _PARENT, _TREES
@@ -84,7 +91,8 @@ def setup(level, cid, w, a, learned, bname):
             _PARENT, _TREES = L.load_classes()[1], L.load_trees()
         perm = tuple(party_buffs.party_buffs(level, w["weapon_type"], w["hands"], _PARENT, _TREES)) + perm
     st = S.compute(cid, level, w, a, learned, perm + temp)
-    drain = 0.8 * (level - 1) / 7.5 if (split_name(bname)[2] and VICIOUS_ID in learned) else 0.0
+    st["crit_pos_now"] = st["crit_pos"][POSITION or "front"]
+    drain = 0.8 * (level - 1) / 7.5 if ((split_name(bname)[2] or bname.endswith("_dagger")) and VICIOUS_ID in learned) else 0.0
     actor = build_actor(st, w)
     actor.mp_drain_per_s = drain
     later = None
@@ -99,12 +107,14 @@ def build_actor(st, w):
     return C.Actor(patk=st["p_atk"], patk_spd=st["p_atk_spd"], matk=1, matk_spd=333, mp_max=st["mp_max"] if MODEL_MP else 1e12,
                    mp_regen_3s=st["mp_regen_3s"] if MODEL_MP else 0.0, weapon=w["weapon_type"], crit=min(1.0, st["crit_pct"] / 100.0),
                    str_bonus=st["str_bonus"], crit_mul=st["crit_mul"], crit_add=st["crit_add"], reuse_mul=st["reuse_mul"],
-                   mp_mul=st["mp_mul"], weapon_reuse=float(w.get("reuse_delay") or 0), hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
+                   mp_mul=st["mp_mul"], weapon_reuse=float(w.get("reuse_delay") or 0),
+                   position=POSITION or "front", prox={"behind": 1.2, "side": 1.1}.get(POSITION, 1.0), dex_bonus=st["dex_bonus"], blow_mul=st["blow_mul"],
+                   crit_pos=st["crit_pos"][POSITION or "front"], hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
 
 
 def pareto(rows):
     """Drop combos that are no better on P.Atk, attack speed, auto crit, STR bonus and MP than another combo."""
-    keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "crit_mul") + (("mp_max", "mp_regen_3s") if MODEL_MP else ()) + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
+    keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "crit_mul", "blow_mul", "crit_pos_now") + (("mp_max", "mp_regen_3s") if MODEL_MP else ()) + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
     keep = []
     for i, a in enumerate(rows):
         dom = False
@@ -130,12 +140,14 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
     cid = S.class_at(leaf_id, level, parent)
     learned = L.learned(cid, level, trees, parent)
     rows = []
+    foci = [f for f in (355, 357) if f in learned] if bname.endswith("_dagger") else []
     for w, a in S.options(weapons, armors, level):
-        rows.append(((w, a), setup(level, cid, w, a, learned, bname)[0]))
+        for f in (foci or [None]):
+            rows.append(((w, a, f), setup(level, cid, w, a, learned, bname, f)[0]))
     rows = pareto(rows)
     out = []
-    for (w, a), st in rows:
-        st, actor, later = setup(level, cid, w, a, learned, bname)
+    for (w, a, f), st in rows:
+        st, actor, later = setup(level, cid, w, a, learned, bname, f)
         skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
         ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
         best = {ms: None for ms in WINDOWS}
@@ -148,7 +160,7 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
                         dmg, mp = at(tl, ms * 1000)
                         if best[ms] is None or dmg > best[ms][0] + 1e-9:
                             best[ms] = (dmg, perm, h, mp)
-        out.append({"weapon": f"{w['weapon_name']} {w['variant']}".strip(), "armor": a["set_name"], "stats": st,
+        out.append({"weapon": f"{w['weapon_name']} {w['variant']}".strip(), "armor": a["set_name"], "focus_id": f, "focus": (sk_all[(f, 1)].name if f else ""), "stats": st,
                     "skills": {sid: skills[sid].name for sid in ids},
                     "windows": {ms: {"dps": b[0] / ms, "order": [skills[x].name for x in b[1]], "order_ids": list(b[1]), "hold": b[2], "mp_used": b[3]}
                                 for ms, b in best.items()}})

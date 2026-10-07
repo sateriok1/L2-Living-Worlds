@@ -77,5 +77,19 @@ mul = math.prod(v for f, s_, v in ents if f == "mul" and s_ == "pAtk")
 add = sum(v for f, s_, v in ents if f == "add" and s_ == "pAtk")
 check("Titan 80 P.Atk", st["p_atk"], 342 * strb * 1.69 * mul + add)
 print("passive P.Atk adds:", add, "mul:", mul)
+
+# Blows (Formulas.calcBlowSuccess / calcBlowDamage / calcBackstabDamage), hand-computed
+B = C.Actor(patk=1000, patk_spd=400, matk=1, matk_spd=333, mp_max=1000, mp_regen_3s=0, weapon="DAGGER", crit=0.0, str_bonus=1.0,
+            dex_bonus=1.2, blow_mul=1.3, position="behind", prox=1.2, crit_mul=1.0, crit_add=0.0, crit_pos=1.0)
+mb = SK[(16, 24)]            # Mortal Blow 24: power 977, blowChance 20, FatalBlow, baseCritRate 0
+bs = SK[(30, 37)]            # Backstab 37: power 5479, blowChance 30, baseCritRate 20
+check("blow chance behind", C.blow_chance(mb, B), math.ceil(20 * 1.2 * 2 * 1.3) / 100)
+B.position = "front"; B.prox = 1.0
+check("blow chance front", C.blow_chance(mb, B), math.ceil(20 * 1.2 * 1 * 1.3) / 100)
+check("Backstab unusable from the front", float(C.usable(bs, B)), 0.0)
+B.position = "behind"; B.prox = 1.2
+check("Backstab usable from behind", float(C.usable(bs, B)), 1.0)
+check("Mortal Blow dmg", C.skill_dmg(mb, B, D), 77 * (977 + 1000 * 1.458) / 400 * 1.2 * C.blow_chance(mb, B))
+check("Backstab dmg (20% crit)", C.skill_dmg(bs, B, D), 77 * (5479 + 1000) / 400 * 1.458 * 1.2 * (1 + 0.2) * C.blow_chance(bs, B))
 print("FAILED: %s" % fails if fails else "all passed")
 sys.exit(1 if fails else 0)

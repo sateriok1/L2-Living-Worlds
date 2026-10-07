@@ -101,6 +101,23 @@ def passive_entries(skill_id, level, weapon_type, hands):
     return out
 
 
+def crit_pos_mult(skill_id, position):
+    """critDmgPos multiplier a buff gives when the attacker is `position` ('front', 'side', 'behind') of the target (Focus Death / Focus Power)."""
+    sk = _skill_elements().get(skill_id)
+    out = 1.0
+    if sk is None:
+        return out
+    for e in sk.iter("mul"):
+        if e.get("stat") != "critDmgPos":
+            continue
+        front = e.find("player[@front='true']") is not None
+        behind = e.find("player[@behind='true']") is not None
+        side = e.find("and") is not None
+        if (position == "front" and front) or (position == "behind" and behind) or (position == "side" and side):
+            out *= float(e.findtext("value"))
+    return out
+
+
 def template(class_id):
     if class_id not in _cache.setdefault("tpl", {}):
         _cache["tpl"][class_id] = L.load_template(class_id)
@@ -165,6 +182,12 @@ def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
     crit = min(float(weapon["crit"]) * dex_b * 10 * m + ad, MAX_PCRIT_RATE)       # Player.ini MaxPCritRate = 500 (per 1000)
     acc_m, acc_a, _ = _apply(entries, "accCombat")
     crit_mul, crit_add, _ = _apply(entries, "critDmg")[0], _apply(entries, "critDmgAdd")[1], None
+    blow_mul = _apply(entries, "blowRate")[0]
+    crit_pos = {p: 1.0 for p in ("front", "side", "behind")}
+    for sid, lv in buffs:
+        if sid in (355, 357) and (lv is not None or sid in learned_skills):
+            for p in crit_pos:
+                crit_pos[p] = max(crit_pos[p], crit_pos_mult(sid, p))    # Focus Death and Focus Power share an abnormal type: only one applies
     reuse_mul = _apply(entries, "pReuse")[0]
     mp_mul = _apply(entries, "physicalMpConsumeRate")[0]
     tl = t["levels"][min(level, max(t["levels"]))]
@@ -181,7 +204,7 @@ def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
     hp_regen = (tl["hpRegen"] * lvl_mod * con_b * 1.1) * m + ad
     return {"str": strv, "dex": dexv, "p_atk": patk, "p_atk_spd": spd, "crit_pct": crit / 10.0,
             "acc_bonus": acc_a + float(a.get("accuracy_add", 0) or 0),
-            "crit_mul": crit_mul, "crit_add": crit_add, "reuse_mul": reuse_mul, "mp_mul": mp_mul, "str_bonus": str_b, "hp_max": hp_max, "hp_regen_3s": hp_regen, "mp_max": mp_max, "mp_regen_3s": mp_regen}
+            "dex_bonus": dex_b, "blow_mul": blow_mul, "crit_pos": crit_pos, "crit_mul": crit_mul, "crit_add": crit_add, "reuse_mul": reuse_mul, "mp_mul": mp_mul, "str_bonus": str_b, "hp_max": hp_max, "hp_regen_3s": hp_regen, "mp_max": mp_max, "mp_regen_3s": mp_regen}
 
 
 def class_at(leaf_id, level, parent):

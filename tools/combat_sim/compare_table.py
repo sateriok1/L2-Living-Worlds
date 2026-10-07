@@ -1,5 +1,5 @@
 """Score the CURRENT phantom playstyle table against the simulator optimum.
-Usage: python3 compare_table.py <Line> <buffset> [order_ids...]   (default Titan ROTATION from PhantomPlaystyles.xml: 315 190 255<=L45)
+Usage: [L2_POS=front|behind] python3 compare_table.py <Line> <buffset> [order_ids...]   (default Titan ROTATION from PhantomPlaystyles.xml: 315 190 255<=L45)
 Same gear as the optimum's best combo; infinite mana/duration (MP gates mpAbove ignored); CONTROL skills that need a blunt weapon drop out
 with a sword. Reports table DPS / best DPS per level at selected windows."""
 import json, os, sys
@@ -25,7 +25,7 @@ for lv in sorted(opt, key=int):
     best = max(opt[lv], key=lambda r: r["windows"]["60"]["dps"])
     w = next(x for x in W if f"{x['weapon_name']} {x['variant']}".strip() == best["weapon"]); a = next(x for x in A if x["set_name"] == best["armor"])
     level = int(lv); cid = S.class_at(leaf, level, parent); learned = L.learned(cid, level, trees, parent)
-    st, actor, later = R.setup(level, cid, w, a, learned, bname)
+    st, actor, later = R.setup(level, cid, w, a, learned, bname, best.get("focus_id"))
     skills = {sid: sk_all[(sid, l)] for sid, l in learned.items() if (sid, l) in sk_all}
     order = tuple(s for s in TABLE if s in skills and C.usable(skills[s], actor) and level <= MAXLV.get(s, 99))
     tl = []; C.simulate(actor, R.DUMMY, skills, C.Policy(order, 0), 120000, timeline=tl, later=later)

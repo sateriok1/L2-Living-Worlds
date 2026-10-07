@@ -4,19 +4,19 @@ import xml.etree.ElementTree as ET
 
 ROOT = os.environ.get("L2_PROJECT", "/home/claude/teravibes/l2-living-worlds/L2J_Mobius_CT_0_Interlude github")
 DATA = os.path.join(ROOT, "dist/game/data")
-DAMAGE_EFFECTS = {"PhysicalDamage", "MagicalDamage", "HpDrain", "EnergyDamage", "FatalBlow"}
+DAMAGE_EFFECTS = {"PhysicalDamage", "MagicalDamage", "HpDrain", "EnergyDamage", "FatalBlow", "Backstab"}
 
 
 class SkillDef:
     """One skill at one level, with every table already resolved to a number."""
     __slots__ = ("id", "level", "name", "magic", "op", "power", "mp", "hit", "cool", "reuse", "range",
-                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff")
+                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff", "blow_chance", "self_blow")
 
     def damage_kind(self):
         for e in self.effects:
             if e in ("MagicalDamage", "HpDrain"):
                 return "magic"
-            if e in ("PhysicalDamage", "FatalBlow", "EnergyDamage"):
+            if e in ("PhysicalDamage", "FatalBlow", "EnergyDamage", "Backstab"):
                 return "magic" if self.magic else "phys"
         return None
 
@@ -74,6 +74,10 @@ def load_skills():
             for e in effects:
                 if e and ("Charge" in e or "Force" in e):
                     flags.add("charge")
+            if "FatalBlow" in effects:
+                flags.add("blow")
+            if "Backstab" in effects:
+                flags.add("blow"); flags.add("backstab")
             for lv in range(1, levels + 1):
                 d = SkillDef()
                 d.id, d.level, d.name, d.op = sid, lv, name, op
@@ -88,6 +92,18 @@ def load_skills():
                 d.magic_level = val("magicLevel", lv)
                 d.base_crit = val("baseCritRate", lv)
                 d.hp_cost = val("hpConsume", lv)
+                d.blow_chance = val("blowChance", lv, 0.0)
+                d.self_blow = None      # (blowRate multiplier, duration ms) a blow gives itself, e.g. Critical Blow
+                for eff in sk.findall("selfEffects/effect"):
+                    for mul in eff.findall("mul"):
+                        if mul.get("stat") == "blowRate":
+                            txt = (mul.text or "").strip()
+                            arr = tables.get(txt)
+                            try:
+                                v = float(arr[min(lv - 1, len(arr) - 1)]) if arr else float(txt)
+                            except (ValueError, TypeError):
+                                continue
+                            d.self_blow = (v, val("abnormalTime", lv, 0) * 1000.0)
                 d.debuff = None     # (pDef mult, mDef mult, duration ms, land chance) from a Stun/debuff effect that lowers defence
                 for eff in sk.findall("effects/effect"):
                     pm = mm = 1.0

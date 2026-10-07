@@ -1,0 +1,15 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect,reuse_delay
+Ghost Hunter,NG,219,Sword Breaker,,DAGGER,1H,27.0,21.0,433.0,12.0,SS-NG,,,0
+Ghost Hunter,D,225,Mithril Dagger,,DAGGER,1H,80.0,54.0,433.0,12.0,SS-D,,,0
+Ghost Hunter,C,228,Crystal Dagger,,DAGGER,1H,136.0,83.0,433.0,12.0,SS-C,,,0
+Ghost Hunter,C,4776,Crystal Dagger,Mortal Strike,DAGGER,1H,136.0,83.0,433.0,12.0,SS-C,3035:4,blowRate x1.44,0
+Ghost Hunter,B,234,Demon's Dagger,,DAGGER,1H,170.0,99.0,433.0,12.0,SS-B,,,0
+Ghost Hunter,B,4782,Demon's Dagger,Mortal Strike,DAGGER,1H,170.0,99.0,433.0,12.0,SS-B,3035:6,blowRate x1.4,0
+Ghost Hunter,B,229,Kris,,DAGGER,1H,153.0,91.0,433.0,12.0,SS-B,,,0
+Ghost Hunter,B,4778,Kris,Focus,DAGGER,1H,153.0,91.0,433.0,12.0,SS-B,3011:5,critRate +71.9,0
+Ghost Hunter,A,8682,Naga Storm,,DAGGER,1H,220.0,121.0,433.0,12.0,SS-A,,,0
+Ghost Hunter,A,8800,Naga Storm,Focus,DAGGER,1H,220.0,121.0,433.0,12.0,SS-A,3051:2,critRate +67.3,0
+Ghost Hunter,A,236,Soul Separator,,DAGGER,1H,203.0,114.0,433.0,12.0,SS-A,,,0
+Ghost Hunter,A,5617,Soul Separator,Guidance,DAGGER,1H,203.0,114.0,433.0,12.0,SS-A,3064:1,accCombat +3.95,0
+Ghost Hunter,S,6367,Angel Slayer,,DAGGER,1H,246.0,132.0,433.0,12.0,SS-S,,,0
+Ghost Hunter,S,6592,Angel Slayer,Haste,DAGGER,1H,246.0,132.0,433.0,12.0,SS-S,3564:1,pAtkSpd x1.07,0
