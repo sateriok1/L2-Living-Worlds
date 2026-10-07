@@ -123,6 +123,7 @@ def build_actor(st, w):
                    crit_pos=st["crit_pos"][POSITION or "front"], hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
 
 
+SEED = {}
 FAST_MAGE = os.environ.get('L2_FULL') is None      # L2_FULL=1 keeps the exhaustive caster search
 MAGE_ROWS = 6
 MAGE_SKILLS = 5          # more usable skills than this -> greedy selection
@@ -182,8 +183,9 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
         ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
         if IS_MAGE and FAST_MAGE and len(ids) > MAGE_SKILLS:
             # casters: build the rotation greedily (add the skill, at the position, that raises damage most), then search every order of just those skills
-            cur = []
-            cur_d = C.simulate(actor, DUMMY, skills, C.Policy((), 0), 60000, later=later)[0]
+            near = [v for k, v in sorted(SEED.items()) if k <= level]
+            cur = [i for i in (near[-1] if near else []) if i in ids][:GREEDY_MAX]      # start from the no-buff rotation
+            cur_d = C.simulate(actor, DUMMY, skills, C.Policy(tuple(cur), 0), 60000, later=later)[0]
             while len(cur) < GREEDY_MAX:
                 best_gain = None
                 for i in ids:
@@ -240,6 +242,13 @@ if __name__ == "__main__":
         pb = [tuple(party_buffs.party_buffs(l, "BLUNT" if IS_MAGE else "SWORD", "2H", parent, trees, magic=IS_MAGE)) for l in range(1, 81)]
         levels = sorted(set(levels) | {l for l in range(2, 81) if pb[l - 1] != pb[l - 2]})
         print("party breakpoints added; levels:", levels, flush=True)
+    SEED = {}
+    if IS_MAGE and bname != "none" and os.path.exists(os.path.join(here, rot_file(slug, "none"))):
+        # buffed tiers start from the no-buff answer: its best rotation's skills are always in the candidate set
+        base = json.load(open(os.path.join(here, rot_file(slug, "none"))))
+        for lv_, rows_ in base.items():
+            b_ = max(rows_, key=lambda r: r["windows"]["60"]["dps"])
+            SEED[int(lv_)] = list(b_["windows"]["60"]["order_ids"])
     result = {}
     outp = os.path.join(here, rot_file(slug, bname))
     merge_old = {}
