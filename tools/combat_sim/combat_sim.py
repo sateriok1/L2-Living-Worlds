@@ -45,7 +45,7 @@ class Actor:
     mcrit_mul: float = 1.0      # mCritPower multiplier on magic crit damage
     mreuse_mul: float = 1.0     # mReuse multiplier: scales magic skill reuse
     mmp_mul: float = 1.0        # magicalMpConsumeRate multiplier
-    charges_start: int = 0      # Sonic charges the fight starts with (they last 10 minutes, so a bot could pre-charge)
+    charges_start: int = -1     # Sonic charges the fight starts with: -1 = full (they last 10 minutes, so a bot pre-charges before a pull)
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -192,7 +192,7 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
     def mpm(s):
         return actor.mmp_mul if (s.damage_kind() == "magic" or s.magic) else actor.mp_mul
 
-    charges = [actor.charges_start]
+    charges = [actor.charges_start if actor.charges_start >= 0 else max([s.charge_gain for s in skills.values()] or [0])]
 
     def can(sid):
         s = skills[sid]
