@@ -10,7 +10,7 @@ DAMAGE_EFFECTS = {"PhysicalDamage", "MagicalDamage", "HpDrain", "EnergyDamage", 
 class SkillDef:
     """One skill at one level, with every table already resolved to a number."""
     __slots__ = ("id", "level", "name", "magic", "op", "power", "mp", "hit", "cool", "reuse", "range",
-                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff", "blow_chance", "self_blow", "dot")
+                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff", "blow_chance", "self_blow", "dot", "charge_use", "charge_gain", "energy")
 
     def damage_kind(self):
         for e in self.effects:
@@ -109,6 +109,28 @@ def load_skills():
                             # DamOverTime.onActionTime: damage per tick = power * ticks * EffectTickRatio(666) / 1000, one tick every ticks * 666 ms -> power per second
                             iv = ticks * 666.0
                             d.dot = (pw, iv, math.floor(dur / iv) * iv, val("activateRate", lv, 100.0) / 100.0, (sk.findtext("abnormalType") or "").strip())
+                d.charge_use = int(val("chargeConsume", lv, 0))      # Sonic/Force charges the skill consumes (Player.Charges condition)
+                d.charge_gain, d.energy = 0, False
+                for eff in list(sk.findall("effects/effect")) + list(sk.findall("selfEffects/effect")):
+                    if eff.get("name") == "FocusEnergy":       # +1 charge, up to the table's maximum
+                        txt = (eff.findtext("charge") or "").strip()
+                        arr = tables.get(txt)
+                        try:
+                            d.charge_gain = int(float(arr[min(lv - 1, len(arr) - 1)]) if arr else float(txt))
+                        except (ValueError, TypeError):
+                            pass
+                    elif eff.get("name") == "EnergyDamage":     # Sonic Blaster / Double+Triple Sonic Slash...: (P.Atk + power) * shots * charge boost * 77 / P.Def
+                        d.energy = True
+                        txt = (eff.findtext("power") or "").strip()
+                        arr = tables.get(txt)
+                        try:
+                            d.power = float(arr[min(lv - 1, len(arr) - 1)]) if arr else float(txt)
+                        except (ValueError, TypeError):
+                            pass
+                        try:
+                            d.base_crit = float(eff.findtext("criticalChance") or 0)    # percent, times the STR bonus
+                        except ValueError:
+                            pass
                 d.blow_chance = val("blowChance", lv, 0.0)
                 d.self_blow = None      # (blowRate multiplier, duration ms) a blow gives itself, e.g. Critical Blow
                 for eff in sk.findall("selfEffects/effect"):

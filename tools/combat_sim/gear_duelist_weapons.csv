@@ -1,0 +1,76 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect,reuse_delay
+Duelist,NG,3908,Fang of Coyote,,SWORD,1H,58.0,42.0,277.0,8.0,SS-NG,,,0
+Duelist,NG,5284,Zweihander,,SWORD,2H,38.0,21.0,325.0,8.0,SS-NG,,,0
+Duelist,D,159,Bonebreaker,,BLUNT,1H,92.0,54.0,379.0,4.0,SS-D,,,0
+Duelist,D,2499,Elven Long Sword,,SWORD,1H,92.0,54.0,379.0,8.0,SS-D,,,0
+Duelist,D,5129,Doll Knife,,DUAL,2H,200.0,6.0,325.0,8.0,SS-D,,,0
+Duelist,C,135,Samurai Longsword,,SWORD,1H,156.0,83.0,379.0,8.0,SS-C,,,0
+Duelist,C,4708,Samurai Longsword,Focus,SWORD,1H,156.0,83.0,379.0,8.0,SS-C,3010:4,critRate +73.3,0
+Duelist,C,4710,Samurai Longsword,Haste,SWORD,1H,156.0,83.0,379.0,8.0,SS-C,3036:4,pAtkSpd x1.07,0
+Duelist,C,2503,Yaksa Mace,,BLUNT,1H,156.0,83.0,379.0,4.0,SS-C,,,0
+Duelist,C,4744,Yaksa Mace,Anger,BLUNT,1H,156.0,83.0,379.0,4.0,SS-C,3012:4,"pAtk +26.78, maxHp x0.85",0
+Duelist,C,5286,Berserker Blade,,SWORD,2H,190.0,83.0,325.0,8.0,SS-C,,,0
+Duelist,C,6347,Berserker Blade,Focus,SWORD,2H,190.0,83.0,325.0,8.0,SS-C,3010:4,critRate +73.3,0
+Duelist,C,6349,Berserker Blade,Haste,SWORD,2H,190.0,83.0,325.0,8.0,SS-C,3037:4,pAtkSpd x1.07,0
+Duelist,C,7897,Dwarven Hammer,,BLUNT,2H,190.0,83.0,325.0,4.0,SS-C,,,0
+Duelist,C,8121,Dwarven Hammer,Anger,BLUNT,2H,190.0,83.0,325.0,4.0,SS-C,3012:4,"pAtk +26.78, maxHp x0.85",0
+Duelist,C,2582,Katana*Katana,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3045:8,pAtkSpd x1.04,0
+Duelist,C,2575,Shamshir*Raid Sword,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3044:8,critRate +40.4,0
+Duelist,C,2572,Shamshir*Shamshir,,DUAL,2H,190.0,83.0,325.0,8.0,SS-C,3046:8,accCombat +2.9,0
+Duelist,C,2565,Stormbringer*Raid Sword,,DUAL,2H,183.0,81.0,325.0,8.0,SS-C,3045:7,pAtkSpd x1.02,0
+Duelist,C,2564,Stormbringer*Spirit Sword,,DUAL,2H,183.0,81.0,325.0,8.0,SS-C,3044:7,critRate +24.8,0
+Duelist,C,2561,Stormbringer*Stormbringer,,DUAL,2H,175.0,78.0,325.0,8.0,SS-C,3046:6,accCombat +2.2,0
+Duelist,B,171,Deadman's Glory,,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,,,0
+Duelist,B,4750,Deadman's Glory,Anger,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,3012:6,"pAtk +30.12, maxHp x0.85",0
+Duelist,B,4752,Deadman's Glory,Haste,BLUNT,1H,194.0,99.0,379.0,4.0,SS-B,3036:6,pAtkSpd x1.06,0
+Duelist,B,79,Sword of Damascus,,SWORD,1H,194.0,99.0,379.0,8.0,SS-B,,,0
+Duelist,B,4717,Sword of Damascus,Focus,SWORD,1H,194.0,99.0,379.0,8.0,SS-B,3010:6,critRate +64.5,0
+Duelist,B,4719,Sword of Damascus,Haste,SWORD,1H,194.0,99.0,379.0,8.0,SS-B,3036:6,pAtkSpd x1.06,0
+Duelist,B,136,Blade of Serenity,,SWORD,1H,175.0,91.0,379.0,8.0,SS-B,,,0
+Duelist,B,91,Heavy War Axe,,BLUNT,1H,175.0,91.0,379.0,4.0,SS-B,,,0
+Duelist,B,4747,Heavy War Axe,Anger,BLUNT,1H,175.0,91.0,379.0,4.0,SS-B,3012:5,"pAtk +28.59, maxHp x0.85",0
+Duelist,B,4715,Keshanberk,Focus,SWORD,1H,175.0,91.0,379.0,8.0,SS-B,3010:5,critRate +68.9,0
+Duelist,B,4714,Keshanberk,Guidance,SWORD,1H,175.0,91.0,379.0,8.0,SS-B,3007:5,accCombat +5.02,0
+Duelist,B,7883,Guardian Sword,,SWORD,2H,236.0,99.0,325.0,8.0,SS-B,,,0
+Duelist,B,2626,Samurai Long Sword*Samurai Long Sword,,DUAL,2H,236.0,99.0,325.0,8.0,SS-B,3045:14,pAtkSpd x1.04,0
+Duelist,B,7901,Star Buster,,BLUNT,2H,236.0,99.0,325.0,4.0,SS-B,,,0
+Duelist,B,8133,Star Buster,Haste,BLUNT,2H,236.0,99.0,325.0,4.0,SS-B,3036:6,pAtkSpd x1.06,0
+Duelist,B,2611,Caliburs*Samurai Long Sword,,DUAL,2H,228.0,97.0,325.0,8.0,SS-B,3045:13,pAtkSpd x1.05,0
+Duelist,B,2616,Sword of Limit*Samurai Long Sword,,DUAL,2H,228.0,97.0,325.0,8.0,SS-B,3046:13,accCombat +3.8,0
+Duelist,B,2625,Tsurugi*Samurai Long Sword,,DUAL,2H,228.0,97.0,325.0,8.0,SS-B,3044:13,critRate +52.6,0
+Duelist,B,2605,Raid Sword*Samurai Long Sword,,DUAL,2H,220.0,94.0,325.0,8.0,SS-B,3044:12,critRate +43.7,0
+Duelist,B,2581,Shamshir*Samurai Long Sword,,DUAL,2H,220.0,94.0,325.0,8.0,SS-B,3046:12,accCombat +3.2,0
+Duelist,B,2608,Caliburs*Sword of Delusion,,DUAL,2H,213.0,91.0,325.0,8.0,SS-B,3044:11,critRate +54,0
+Duelist,B,2609,Caliburs*Sword of Nightmare,,DUAL,2H,213.0,91.0,325.0,8.0,SS-B,3045:11,pAtkSpd x1.05,0
+Duelist,B,78,Great Sword,,SWORD,2H,213.0,91.0,325.0,8.0,SS-B,,,0
+Duelist,B,4725,Great Sword,Focus,SWORD,2H,213.0,91.0,325.0,8.0,SS-B,3010:5,critRate +68.9,0
+Duelist,B,7900,Ice Storm Hammer,,BLUNT,2H,213.0,91.0,325.0,4.0,SS-B,,,0
+Duelist,B,8130,Ice Storm Hammer,Anger,BLUNT,2H,213.0,91.0,325.0,4.0,SS-B,3012:5,"pAtk +28.59, maxHp x0.85",0
+Duelist,B,8129,Ice Storm Hammer,Focus,BLUNT,2H,213.0,91.0,325.0,4.0,SS-B,3010:5,critRate +68.9,0
+Duelist,B,2571,Stormbringer*Samurai Long sword,,DUAL,2H,213.0,91.0,325.0,8.0,SS-B,3046:11,accCombat +3.9,0
+Duelist,A,8680,Barakiel's Axe,,BLUNT,1H,251.0,121.0,379.0,4.0,SS-A,,,0
+Duelist,A,8796,Barakiel's Axe,Focus,BLUNT,1H,251.0,121.0,379.0,4.0,SS-A,3050:2,critRate +61.6,0
+Duelist,A,8795,Barakiel's Axe,Haste,BLUNT,1H,251.0,121.0,379.0,4.0,SS-A,3068:3,pAtkSpd x1.06,0
+Duelist,A,8678,Sirra's Blade,,SWORD,1H,251.0,121.0,379.0,8.0,SS-A,,,0
+Duelist,A,8788,Sirra's Blade,Haste,SWORD,1H,251.0,121.0,379.0,8.0,SS-A,3068:3,pAtkSpd x1.06,0
+Duelist,A,2500,Dark Legion's Edge,,SWORD,1H,232.0,114.0,379.0,8.0,SS-A,,,0
+Duelist,A,164,Elysian,,BLUNT,1H,232.0,114.0,379.0,4.0,SS-A,,,0
+Duelist,A,5603,Elysian,Anger,BLUNT,1H,232.0,114.0,379.0,4.0,SS-A,3057:2,"pAtk +32.05, maxHp x0.85",0
+Duelist,A,8681,Behemoth's Tuning Fork,,BLUNT,2H,305.0,121.0,325.0,4.0,SS-A,,,0
+Duelist,A,8799,Behemoth's Tuning Fork,Anger,BLUNT,2H,305.0,121.0,325.0,4.0,SS-A,3057:3,"pAtk +32.05, maxHp x0.85",0
+Duelist,A,8797,Behemoth's Tuning Fork,Focus,BLUNT,2H,305.0,121.0,325.0,4.0,SS-A,3050:2,critRate +61.6,0
+Duelist,A,8679,Sword of Ipos,,SWORD,2H,305.0,121.0,325.0,8.0,SS-A,,,0
+Duelist,A,8791,Sword of Ipos,Focus,SWORD,2H,305.0,121.0,325.0,8.0,SS-A,3050:2,critRate +61.6,0
+Duelist,A,8792,Sword of Ipos,Haste,SWORD,2H,305.0,121.0,325.0,8.0,SS-A,3068:3,pAtkSpd x1.06,0
+Duelist,A,5706,Damascus*Damascus,,DUAL,2H,282.0,114.0,325.0,8.0,SS-A,3046:20,accCombat +6.5,0
+Duelist,A,7902,Doom Crusher,,BLUNT,2H,282.0,114.0,325.0,4.0,SS-A,,,0
+Duelist,A,8136,Doom Crusher,Anger,BLUNT,2H,282.0,114.0,325.0,4.0,SS-A,3057:2,"pAtk +32.05, maxHp x0.85",0
+Duelist,A,81,Dragon Slayer,,SWORD,2H,282.0,114.0,325.0,8.0,SS-A,,,0
+Duelist,S,6365,Basalt Battlehammer,,BLUNT,1H,281.0,132.0,379.0,4.0,SS-S,,,0
+Duelist,S,6364,Forgotten Blade,,SWORD,1H,281.0,132.0,379.0,8.0,SS-S,,,0
+Duelist,S,6583,Forgotten Blade,Focus,SWORD,1H,281.0,132.0,379.0,8.0,SS-S,3566:1,critRate +84.3,0
+Duelist,S,6581,Forgotten Blade,Haste,SWORD,1H,281.0,132.0,379.0,8.0,SS-S,3564:1,pAtkSpd x1.07,0
+Duelist,S,6369,Dragon Hunter Axe,,BLUNT,2H,342.0,132.0,325.0,4.0,SS-S,,,0
+Duelist,S,6372,Heaven's Divider,,SWORD,2H,342.0,132.0,325.0,8.0,SS-S,,,0
+Duelist,S,6607,Heavens Divider,Focus,SWORD,2H,342.0,132.0,325.0,8.0,SS-S,3566:1,critRate +84.3,0
+Duelist,S,6605,Heavens Divider,Haste,SWORD,2H,342.0,132.0,325.0,8.0,SS-S,3564:1,pAtkSpd x1.07,0

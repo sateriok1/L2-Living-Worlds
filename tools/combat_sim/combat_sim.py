@@ -45,6 +45,7 @@ class Actor:
     mcrit_mul: float = 1.0      # mCritPower multiplier on magic crit damage
     mreuse_mul: float = 1.0     # mReuse multiplier: scales magic skill reuse
     mmp_mul: float = 1.0        # magicalMpConsumeRate multiplier
+    charges_start: int = 0      # Sonic charges the fight starts with (they last 10 minutes, so a bot could pre-charge)
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -55,7 +56,9 @@ class Dummy:
 
 
 def usable(skill, actor):
-    if skill.dot is None and (skill.damage_kind() is None or skill.power <= 0):
+    if skill.charge_gain > 0 and skill.dot is None:
+        pass                                  # Sonic Focus / Sonic Rage: builds charges (Sonic Rage also hits), so it may take a slot in a rotation
+    elif skill.dot is None and (skill.damage_kind() is None or skill.power <= 0):
         return False
     if skill.weapons and actor.weapon not in skill.weapons:
         return False
@@ -89,8 +92,20 @@ def blow_dmg(skill, actor, dummy, boost=1.0):
     return dmg * (1 + crit) * blow_chance(skill, actor, boost)
 
 
+def energy_dmg(skill, actor, dummy, charges):
+    """EnergyDamage.onStart: (P.Atk + power) * soulshot * ((charges before the cast - 1) * 0.2 + 1) * 77 / P.Def; crit (15% * STR bonus) doubles it and adds the flat critDmgAdd."""
+    boost = (max(charges, 1) - 1) * 0.2 + 1
+    base = (actor.patk + skill.power) * (2 if actor.soulshot else 1) * boost * 77.0 / dummy.pdef
+    crit = min(1.0, skill.base_crit * actor.str_bonus / 100.0)
+    return base * (1 - crit) + (base * 2 + actor.crit_add) * crit
+
+
 def skill_dmg(skill, actor, dummy, boost=1.0):
     """Expected damage of one cast (crit-weighted)."""
+    if skill.energy:
+        return energy_dmg(skill, actor, dummy, max(skill.charge_use, 1))
+    if skill.charge_gain > 0 and skill.damage_kind() is None:
+        return 0.0
     if skill.dot is not None and skill.damage_kind() is None:
         return 0.0                 # a pure DoT deals its damage over time (see simulate); Sting-type skills also hit directly, below
     if "blow" in skill.flags:
@@ -177,8 +192,14 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
     def mpm(s):
         return actor.mmp_mul if (s.damage_kind() == "magic" or s.magic) else actor.mp_mul
 
+    charges = [actor.charges_start]
+
     def can(sid):
         s = skills[sid]
+        if s.charge_use and charges[0] < s.charge_use:
+            return False
+        if s.charge_gain and charges[0] >= s.charge_gain:
+            return False
         if s.dot is not None:
             cur = dots.get(s.dot[4])
             if cur is not None and cur[0] > t + 1 and cur[1] >= s.dot[0] * s.dot[3] / 1000.0 - 1e-12:
@@ -233,6 +254,12 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
                 hp_used += sk.hp_cost
             ready_at[chosen] = t + rms
             casts[chosen] += 1
+            if sk.energy:
+                dmg = energy_dmg(sk, actor, dummy, charges[0])
+            if sk.charge_use:
+                charges[0] -= sk.charge_use
+            if sk.charge_gain:
+                charges[0] = min(sk.charge_gain, charges[0] + 1)
             advance(cms)
             total += dmg * uplift(sk.damage_kind() or "phys")     # the debuff lands after this hit, so it does not boost it
             if sk.dot is not None:

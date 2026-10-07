@@ -9,7 +9,7 @@ import itertools, json, os, sys, bisect
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import l2data as L, stats_model as S, combat_sim as C
 
-WINDOWS = list(range(5, 125, 5))
+WINDOWS = [5, 15, 30, 45, 60, 90, 120]
 MODEL_MP = os.environ.get("L2_MP", "infinite") == "finite"   # first tests assume infinite mana (user decision); L2_MP=finite charges MP and regen
 TIMED_BUFFS = os.environ.get("L2_BUFF_TIME", "infinite") == "finite"   # first tests assume buffs never expire; finite = Rage ends at 90 s
 POSITION = os.environ.get("L2_POS", "")        # '' = no positioning model; 'front' = target faces the attacker (bad), 'behind' = perfect positioning
@@ -130,6 +130,40 @@ MAGE_SKILLS = 5          # more usable skills than this -> greedy selection
 GREEDY_MAX = 6
 
 
+CHARGE_DURS = (15, 60, 120)     # fight lengths whose greedy rotations are pooled for charge classes
+CHARGE_ROWS = 6
+CHARGE_PER_TYPE = 3
+CHARGE_SKILLS = 7
+
+
+def greedy_set(actor, skills, ids, dur_ms, later, gmax=6):
+    """Greedy rotation build for classes whose attacks need charges: start from the charge builders, then insert the skill (at the position) that adds most damage."""
+    gens = [i for i in ids if skills[i].charge_gain]
+    best = None
+    for g in ([[x] for x in gens] + ([gens] if len(gens) > 1 else []) or [[]]):
+        cur = list(g)
+        cur_d = C.simulate(actor, DUMMY, skills, C.Policy(tuple(cur), 0), dur_ms, later=later)[0]
+        forced = True
+        while len(cur) < gmax:
+            gain = None
+            for i in ids:
+                if i in cur:
+                    continue
+                for pos in range(len(cur) + 1):
+                    cand = tuple(cur[:pos] + [i] + cur[pos:])
+                    d = C.simulate(actor, DUMMY, skills, C.Policy(cand, 0), dur_ms, later=later)[0]
+                    if gain is None or d > gain[0]:
+                        gain = (d, cand)
+            if gain is None or (gain[0] < cur_d * 1.002 and not (forced and gain[0] >= cur_d * 0.5)):
+                break
+            if any(skills[i].charge_use for i in gain[1]):
+                forced = False
+            cur_d, cur = gain[0], list(gain[1])
+        if best is None or cur_d > best[1]:
+            best = (cur, cur_d)
+    return best
+
+
 def pareto(rows):
     """Drop combos that are no better on P.Atk, attack speed, auto crit, STR bonus and MP than another combo."""
     keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "crit_mul", "blow_mul", "crit_pos_now", "m_atk", "m_atk_spd", "m_crit") + (("mp_max", "mp_regen_3s") if MODEL_MP else ()) + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
@@ -137,7 +171,7 @@ def pareto(rows):
     for i, a in enumerate(rows):
         dom = False
         for j, b in enumerate(rows):
-            if i != j and all(b[1][k] >= a[1][k] for k in keys) and any(b[1][k] > a[1][k] for k in keys):
+            if i != j and b[0][0].get('weapon_type') == a[0][0].get('weapon_type') and all(b[1][k] >= a[1][k] for k in keys) and any(b[1][k] > a[1][k] for k in keys):
                 dom = True
                 break
         if not dom:
@@ -176,6 +210,35 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
                 best = max(best, C.simulate(act, DUMMY, sk, C.Policy((i,), 0), 60000, later=lat)[0])
             return best
         rows = sorted(rows, key=solo, reverse=True)[:MAGE_ROWS]
+    CHARGE = any(sk_all[(sid, lv)].charge_use or sk_all[(sid, lv)].charge_gain for sid, lv in learned.items() if (sid, lv) in sk_all)
+    if CHARGE:
+        # charge classes (Duelist): rank the gear rows by the greedy rotation each one gets over a few fight lengths, keep the best few, then search orders of the union set
+        scored = []
+        for (w, a, f), st in rows:
+            _s, actor, later = setup(level, cid, w, a, learned, bname, f)
+            skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
+            ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
+            union, score = [], 0.0
+            for dur in CHARGE_DURS:
+                cur, d = greedy_set(actor, skills, ids, dur * 1000, later)
+                score += d / dur
+                union += [i for i in cur if i not in union]
+            scored.append((score, ((w, a, f), st), union))
+        scored.sort(key=lambda x: -x[0])
+        picked, per_type, seen = [], {}, set()
+        for sc, row, union in scored:                    # the best row of every weapon type first (each type unlocks different skills), then the best remaining
+            t = row[0][0].get("weapon_type")
+            if t not in seen:
+                seen.add(t); per_type[t] = 1; picked.append((row, union))
+        for sc, row, union in scored:
+            t = row[0][0].get("weapon_type")
+            if len(picked) >= CHARGE_ROWS:
+                break
+            if per_type.get(t, 0) < CHARGE_PER_TYPE and not any(row is p[0] for p in picked):
+                per_type[t] = per_type.get(t, 0) + 1
+                picked.append((row, union))
+        rows = [r_ for r_, _u in picked]
+        unions = {id(r_): u for r_, u in picked}
     out = []
     for (w, a, f), st in rows:
         st, actor, later = setup(level, cid, w, a, learned, bname, f)
@@ -200,6 +263,8 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
                     break
                 cur_d, cur = best_gain[0], list(best_gain[1])
             ids = cur
+        if CHARGE:
+            ids = [i for i in unions[id(next(x for x in rows if x[0] == (w, a, f)))][:CHARGE_SKILLS] if i in ids] if False else [i for i in unions[id(next(x for x in rows if x[0][0] == w and x[0][1] == a and x[0][2] == f))] if i in ids][:CHARGE_SKILLS]
         if len(ids) > 7:
             # too many skills for a full permutation search: drop those that add under 0.3% over plain autos even on their own
             base = C.simulate(actor, DUMMY, skills, C.Policy((), 0), 60000, later=later)[0]
