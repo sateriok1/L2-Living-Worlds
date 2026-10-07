@@ -6543,7 +6543,7 @@ public class PhantomManager implements IXmlReader
 	 */
 	public synchronized Player spawnTeamFighter(Team team, boolean solo, Location where, Location rally, int level, PartyRole role, int enchant, String fixedName, int classId)
 	{
-		if (!PhantomPvpManager.pvpEnabled() || (team == null) || (!solo && (team == Team.NONE)) || (where == null) || (role == null))
+		if (!FakePlayersConfig.FAKE_PLAYERS_ENABLED || !PhantomPvpManager.pvpEnabled() || (team == null) || (!solo && (team == Team.NONE)) || (where == null) || (role == null)) // FPC-258
 		{
 			return null;
 		}
@@ -7010,7 +7010,7 @@ public class PhantomManager implements IXmlReader
 	/** Makes a geared phantom that stays put, takes duels from anyone, and challenges only when {@link #challengeToDuel} says so. */
 	public synchronized Player spawnArenaDuelist(Location where, int level, PartyRole role, int enchant, String fixedName, int classId)
 	{
-		if (!PhantomPvpManager.duelsEnabled() || (where == null) || (role == null)) // FPC-254: none while duels are off
+		if (!FakePlayersConfig.FAKE_PLAYERS_ENABLED || !PhantomPvpManager.duelsEnabled() || (where == null) || (role == null)) // FPC-254/258: none while off
 		{
 			return null;
 		}

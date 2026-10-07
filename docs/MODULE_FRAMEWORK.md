@@ -299,6 +299,9 @@ effect after restart. The DPS Meter module is a separate consumer and is not inc
 `context.teams()` runs team events with phantoms. It uses the server's own event flags, so team members cannot hurt each
 other, enemies can, players outside the event cannot attack them, a team circle shows over every head, nobody pays a death penalty and parties cannot cross teams.
 
+- One team event runs at a time: the server's event flags carry no event identity. The first module to spawn or
+  join a participant holds the slot; another module's `spawn`, `spawnSolo`, `join` and `joinSolo` are refused (null
+  or false) until all of its participants have left. Players outside the event cannot attack or use skills on them.
 - `available()` is true when fake players and phantom PvP are on. While phantom PvP is off, `spawn` returns null,
   and switching it off removes every team fighter.
 - `spawn(blue, where, rally, level, role, enchant, name, classId)` makes a geared fighter. It buffs, then hunts the

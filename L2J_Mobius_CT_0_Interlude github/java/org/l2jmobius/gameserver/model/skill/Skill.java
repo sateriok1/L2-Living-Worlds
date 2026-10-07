@@ -1105,6 +1105,12 @@ public class Skill
 					return false;
 				}
 				
+				// Living World (FPC-257): a player outside an event never hits an event player with an area skill.
+				if (Player.isEventOutsider(player, targetPlayer))
+				{
+					return false;
+				}
+				
 				// Auto play target mode check.
 				if (player.isAutoPlaying() && ((targetPlayer.getPvpFlag() == 0) || (targetPlayer.getKarma() < 1)))
 				{

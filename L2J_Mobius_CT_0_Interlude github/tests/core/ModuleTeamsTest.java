@@ -1,5 +1,8 @@
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Set;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -11,6 +14,10 @@ import org.l2jmobius.gameserver.model.actor.Player;
 import org.l2jmobius.gameserver.model.actor.enums.creature.Team;
 import org.l2jmobius.gameserver.model.actor.holders.player.AutoPlaySettingsHolder;
 import org.l2jmobius.gameserver.model.zone.ZoneId;
+import org.l2jmobius.gameserver.model.World;
+import org.l2jmobius.gameserver.model.effects.EffectType;
+import org.l2jmobius.gameserver.model.skill.Skill;
+import org.l2jmobius.gameserver.model.skill.targets.TargetType;
 import org.l2jmobius.gameserver.modules.ModuleTeams;
 
 /** Native team-event rules: solo flag reset, teammate protection, outsider gate, lock restore and party validation. */
@@ -55,6 +62,18 @@ public class ModuleTeamsTest
 		return player;
 	}
 
+	private static Skill skill(boolean debuff) throws Exception
+	{
+		final Skill skill = allocate(Skill.class);
+		set(skill, Skill.class, "_effectPoint", -1);
+		set(skill, Skill.class, "_targetType", TargetType.ONE);
+		set(skill, Skill.class, "_effectRange", 1000);
+		set(skill, Skill.class, "_isDebuff", debuff);
+		set(skill, Skill.class, "_isPvPOnly", false);
+		set(skill, Skill.class, "_effectTypes", debuff ? new Byte[0] : new Byte[] { (byte) EffectType.MAGICAL_ATTACK.ordinal() });
+		return skill;
+	}
+
 	private static void event(Player player, Team team, boolean solo) throws Exception
 	{
 		set(player, Creature.class, "_team", team);
@@ -97,6 +116,40 @@ public class ModuleTeamsTest
 		// Outsider gate: a player outside the event cannot attack event players; event enemies still can.
 		check(!a.isAutoAttackable(outsider), "an outsider cannot attack an event player");
 		check(a.isAutoAttackable(red), "an event enemy can attack");
+
+		// FPC-257: hostile skills and area skills follow the same event rule as auto attacks.
+		final Skill nuke = skill(false);
+		final Skill debuff = skill(true);
+		check(!outsider.checkPvpSkill(a, nuke), "an outsider cannot use a damage skill on an event player");
+		check(!outsider.checkPvpSkill(a, debuff), "an outsider cannot debuff an event player");
+		check(!Skill.checkForAreaOffensiveSkills(outsider, a, nuke, false), "an outsider's area skill skips an event player");
+		check(!Skill.checkForAreaOffensiveSkills(outsider, a, nuke, true), "an outsider's area skill skips an event player in an arena too");
+		check(red.checkPvpSkill(a, nuke), "red can use a damage skill on blue");
+		check(red.checkPvpSkill(a, debuff), "red can debuff blue");
+		check(Skill.checkForAreaOffensiveSkills(red, a, nuke, false), "red's area skill hits blue");
+		check(!b.checkPvpSkill(a, debuff), "blue cannot debuff a blue teammate");
+		check(!Skill.checkForAreaOffensiveSkills(b, a, nuke, false), "blue's area skill skips a blue teammate");
+
+		// FPC-259: one team event at a time; another module is refused while the first has live participants.
+		final ModuleTeams other = teams();
+		final Method claim = ModuleTeams.class.getDeclaredMethod("claim");
+		claim.setAccessible(true);
+		final Field membersField = ModuleTeams.class.getDeclaredField("_members");
+		membersField.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		final Set<Integer> members = (Set<Integer>) membersField.get(teams);
+		final Field playersField = World.class.getDeclaredField("_allPlayers");
+		playersField.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		final Map<Integer, Player> world = (Map<Integer, Player>) playersField.get(World.getInstance());
+		check((boolean) claim.invoke(teams), "the first module takes the event slot");
+		members.add(a.getObjectId());
+		world.put(a.getObjectId(), a);
+		check(!((boolean) claim.invoke(other)), "a second module is refused while the first has a live participant");
+		check(!other.joinSolo(outsider), "a refused joinSolo changes nothing");
+		check(!outsider.isOnEvent(), "the refused player stays off the event");
+		world.remove(a.getObjectId());
+		check((boolean) claim.invoke(other), "the slot frees once the participant is gone");
 
 		// FPC-253: unlock restores the earlier state instead of clearing it.
 		b.setInvul(true);

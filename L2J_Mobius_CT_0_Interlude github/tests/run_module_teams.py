@@ -16,7 +16,7 @@ def main():
         parser.error(f"Build the core first; missing {core}")
     dependencies = sorted(p for p in (project / "dist" / "libs").glob("*.jar") if "-sources" not in p.name)
     classpath = os.pathsep.join(str(p) for p in [core, *dependencies])
-    fixtures = []
+    fixtures = sorted((project / "tests" / "core" / "encounter-stubs").rglob("*.java"))
     test = project / "tests" / "core" / "ModuleTeamsTest.java"
     with tempfile.TemporaryDirectory(prefix="l2-teams-") as classes:
         subprocess.run(

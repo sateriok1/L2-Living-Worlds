@@ -42,7 +42,15 @@ public class ModuleTeams
 	 * Players held by {@link #lock}, with the immobilized and invulnerable state each had before, so unlocking restores
 	 * exactly that state instead of clearing it (FPC-245, FPC-253).
 	 */
-	private final java.util.Map<Integer, boolean[]> _locked = new java.util.concurrent.ConcurrentHashMap<>();
+	private static final java.util.Map<Integer, boolean[]> _locked = new java.util.concurrent.ConcurrentHashMap<>(); // shared: the flags are global
+
+	/**
+	 * FPC-259: the server's event flags (on event, solo, BLUE/RED) are global and carry no event identity, so one team
+	 * event runs at a time. The module whose surface holds live participants owns it; another module's spawn and join
+	 * calls are refused until every participant has left, been discarded or gone offline.
+	 */
+	private static ModuleTeams _owner;
+	private final java.util.Set<Integer> _members = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
 	ModuleTeams()
 	{
@@ -68,24 +76,76 @@ public class ModuleTeams
 	 */
 	public Player spawn(boolean blue, Location where, Location rally, int level, PartyRole role, int enchant, String name, int classId)
 	{
-		return PhantomManager.getInstance().spawnTeamFighter(blue ? Team.BLUE : Team.RED, where, rally, level, role, enchant, name, classId);
+		if (!claim())
+		{
+			return null;
+		}
+		return track(PhantomManager.getInstance().spawnTeamFighter(blue ? Team.BLUE : Team.RED, where, rally, level, role, enchant, name, classId));
+	}
+
+	/**
+	 * Takes the single team-event slot for this module, or confirms it already has it (FPC-259).
+	 * @return {@code false} if another module's event still has live participants
+	 */
+	private boolean claim()
+	{
+		synchronized (ModuleTeams.class)
+		{
+			if ((_owner != null) && (_owner != this) && _owner.hasLiveMembers())
+			{
+				java.util.logging.Logger.getLogger("ModuleTeams").warning("ModuleTeams: another module's team event is still running; only one runs at a time.");
+				return false;
+			}
+			_owner = this;
+			return true;
+		}
+	}
+
+	/** @return {@code true} if any participant this surface added is still in the world and on the event */
+	boolean hasLiveMembers()
+	{
+		_members.removeIf(id ->
+		{
+			final Player p = org.l2jmobius.gameserver.model.World.getInstance().getPlayer(id);
+			return (p == null) || !p.isOnEvent();
+		});
+		return !_members.isEmpty();
+	}
+
+	private Player track(Player player)
+	{
+		if (player != null)
+		{
+			_members.add(player.getObjectId());
+		}
+		return player;
 	}
 
 	/** Puts a free-for-all fighter at a spot: on no team, an enemy of every other solo player. Same arguments as {@link #spawn}. */
 	public Player spawnSolo(Location where, Location rally, int level, PartyRole role, int enchant, String name, int classId)
 	{
-		return PhantomManager.getInstance().spawnTeamFighter(Team.NONE, true, where, rally, level, role, enchant, name, classId);
+		if (!claim())
+		{
+			return null;
+		}
+		return track(PhantomManager.getInstance().spawnTeamFighter(Team.NONE, true, where, rally, level, role, enchant, name, classId));
 	}
 
-	/** Puts a real player into a free-for-all: on no team, an enemy of every other solo player. */
-	public void joinSolo(Player player)
+	/**
+	 * Puts a real player into a free-for-all: on no team, an enemy of every other solo player.
+	 * @return {@code false} if refused because another module's team event is running (FPC-259)
+	 */
+	public boolean joinSolo(Player player)
 	{
-		if (player != null)
+		if ((player == null) || !claim())
 		{
-			player.setTeam(Team.NONE);
-			player.setOnSoloEvent(true);
-			player.setOnEvent(true);
+			return false;
 		}
+		track(player);
+		player.setTeam(Team.NONE);
+		player.setOnSoloEvent(true);
+		player.setOnEvent(true);
+		return true;
 	}
 
 	/** Strips a real player's buffs and gives the ones a spawned fighter arrives with (full buff set plus the class's own self-buffs). */
@@ -189,15 +249,21 @@ public class ModuleTeams
 		}
 	}
 
-	/** Puts a real player on a team. They keep their own gear and skills. */
-	public void join(Player player, boolean blue)
+	/**
+	 * Puts a real player on a team. They keep their own gear and skills.
+	 * @return {@code false} if refused because another module's team event is running (FPC-259)
+	 */
+	public boolean join(Player player, boolean blue)
 	{
-		if (player != null)
+		if ((player == null) || !claim())
 		{
-			player.setOnSoloEvent(false); // FPC-247: a stale solo flag would bypass the teammate protection
-			player.setTeam(blue ? Team.BLUE : Team.RED);
-			player.setOnEvent(true);
+			return false;
 		}
+		track(player);
+		player.setOnSoloEvent(false); // FPC-247: a stale solo flag would bypass the teammate protection
+		player.setTeam(blue ? Team.BLUE : Team.RED);
+		player.setOnEvent(true);
+		return true;
 	}
 
 	/** Takes a real player off their team, and frees them if {@link #lock} still holds them. */
@@ -205,6 +271,7 @@ public class ModuleTeams
 	{
 		if (player != null)
 		{
+			_members.remove(player.getObjectId());
 			unlock(player);
 			player.setOnEvent(false);
 			player.setOnSoloEvent(false);
@@ -252,6 +319,10 @@ public class ModuleTeams
 	/** Takes a fighter off its team and removes it. */
 	public void discard(Player fighter)
 	{
+		if (fighter != null)
+		{
+			_members.remove(fighter.getObjectId());
+		}
 		PhantomManager.getInstance().discardTeamFighter(fighter);
 	}
 

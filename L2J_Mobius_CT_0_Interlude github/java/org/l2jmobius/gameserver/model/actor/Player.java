@@ -8437,8 +8437,7 @@ public class Player extends Playable
 		if (isOnEvent())
 		{
 			// Living World: a player (or summon) outside the event cannot attack an event player; monsters returned above.
-			final Player actingPlayer = attacker.asPlayer();
-			if ((actingPlayer != null) && !actingPlayer.isOnEvent())
+			if (isEventOutsider(attacker.asPlayer(), this))
 			{
 				return false;
 			}
@@ -9067,6 +9066,17 @@ public class Player extends Playable
 	 * @param skill Skill instance with the skill being casted
 	 * @return {@code false} if the skill is a pvpSkill and target is not a valid pvp target, {@code true} otherwise.
 	 */
+	/**
+	 * Living World (FPC-256, FPC-257): one rule for auto attacks, hostile skills and area skills.
+	 * @param actor the attacking player (a summon's owner), or {@code null} for a non-player
+	 * @param target the player being attacked
+	 * @return {@code true} if {@code target} is on an event and {@code actor} is a player who is not
+	 */
+	public static boolean isEventOutsider(Player actor, Player target)
+	{
+		return (actor != null) && (target != null) && (actor != target) && target.isOnEvent() && !actor.isOnEvent();
+	}
+	
 	public boolean checkPvpSkill(WorldObject target, Skill skill)
 	{
 		if ((skill == null) || (target == null))
@@ -9105,6 +9115,13 @@ public class Player extends Playable
 			if (target.isInsideZone(ZoneId.PEACE))
 			{
 				return false;
+			}
+			
+			// Living World (FPC-257): event rules decide hostile skills on an event player, the same as auto attacks.
+			// An outsider never may; another participant may when the target is solo or on the other team.
+			if (targetPlayer.isOnEvent())
+			{
+				return !isEventOutsider(this, targetPlayer) && (targetPlayer.isOnSoloEvent() || (getTeam() != targetPlayer.getTeam()));
 			}
 			
 			// PvP Skills
