@@ -112,7 +112,7 @@ KIND = {"Titan": "melee", "Maestro": "melee", "Fortune Seeker": "melee", "Dreadn
         "Shillien Templar": "melee", "Sword Muse": "melee", "Spectral Dancer": "melee", "Sagittarius": "bow", "Moonlight Sentinel": "bow", "Ghost Sentinel": "bow",
         "Adventurer": "dagger", "Wind Rider": "dagger", "Ghost Hunter": "dagger", "Archmage": "spell", "Soultaker": "spell", "Mystic Muse": "spell", "Storm Screamer": "spell",
         "Arcana Lord": "summoner", "Elemental Master": "summoner", "Spectral Master": "summoner", "Dominator": "support", "Doom Cryer": "support",
-        "Duelist": "charge", "Hierophant": "support", "Cardinal": "support", "Eva's Saint": "support", "Shillien Saint": "support"}
+        "Duelist": "charge", "Grand Khavatari": "charge", "Hierophant": "support", "Cardinal": "support", "Eva's Saint": "support", "Shillien Saint": "support"}
 
 
 def findings(line, order, sk, datas):
