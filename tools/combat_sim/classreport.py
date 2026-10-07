@@ -105,13 +105,14 @@ CAVEATS = {
     "dagger": "Positioning is the main variable: 'behind' assumes the mob never turns, 'facing' assumes it always faces the dagger; real fights sit in between. Instant-kill 'Lethal' procs, Bleed/Sting weapon abilities and blow evasion are not modelled. Focus, Vicious Stance and Mortal Strike are assumed up for the whole fight.",
     "spell": "Spell success is assumed (no magic resist rolls); blessed spirit shots always charged; infinite mana (finite mana changes the picture a lot for nukers); flat DoTs use the skill's nominal land chance; area spells are scored on one target.",
     "support": "Heals, buffs and debuffs have no damage value in this study; the numbers show only what the class can do with its own attack skills while idle.",
+    "charge": "Fights start with full Sonic charges (they last 10 minutes, so a bot pre-charges before a pull; charge-spending skills then run out and Sonic Focus rebuilds them one per cast). Dual swords from L40 (1H + shield not considered). Single target only; Sonic Storm and Sonic Buster are scored on one target; crit uses the energy-skill 15% x STR bonus; HP costs (Sonic Focus, Sonic Rage), shields and evasion ignored; infinite mana.",
     "summoner": "Servitor, cubic and summon damage is NOT modelled, so the numbers are the summoner's own spells only and understate real output.",
 }
 KIND = {"Titan": "melee", "Maestro": "melee", "Fortune Seeker": "melee", "Dreadnought": "melee", "Phoenix Knight": "melee", "Hell Knight": "melee", "Eva's Templar": "melee",
         "Shillien Templar": "melee", "Sword Muse": "melee", "Spectral Dancer": "melee", "Sagittarius": "bow", "Moonlight Sentinel": "bow", "Ghost Sentinel": "bow",
         "Adventurer": "dagger", "Wind Rider": "dagger", "Ghost Hunter": "dagger", "Archmage": "spell", "Soultaker": "spell", "Mystic Muse": "spell", "Storm Screamer": "spell",
         "Arcana Lord": "summoner", "Elemental Master": "summoner", "Spectral Master": "summoner", "Dominator": "support", "Doom Cryer": "support",
-        "Hierophant": "support", "Cardinal": "support", "Eva's Saint": "support", "Shillien Saint": "support"}
+        "Duelist": "charge", "Hierophant": "support", "Cardinal": "support", "Eva's Saint": "support", "Shillien Saint": "support"}
 
 
 def findings(line, order, sk, datas):
