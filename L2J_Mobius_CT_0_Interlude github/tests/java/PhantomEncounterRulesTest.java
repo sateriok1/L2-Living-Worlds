@@ -16,6 +16,7 @@ public class PhantomEncounterRulesTest
 		testListener();
 		testStrikeRules();
 		testHostileRegistry();
+		testActorLifecycle();
 		System.out.println("Ran " + checks + " checks, " + failures + " failure(s).");
 		System.out.println(failures == 0 ? "OK" : "FAILED");
 		System.exit(failures == 0 ? 0 : 1);
@@ -106,6 +107,20 @@ public class PhantomEncounterRulesTest
 		truth(!PhantomEncounterRules.isHostile(11, 20), "only that actor");
 		PhantomEncounterRules.clearHostile(10);
 		truth(!PhantomEncounterRules.isHostile(10, 20), "cleared");
+	}
+
+	private static void testActorLifecycle()
+	{
+		truth(!PhantomEncounterRules.isEncounterActor(30), "ordinary player has no protection");
+		PhantomEncounterRules.registerActor(30);
+		truth(PhantomEncounterRules.isEncounterActor(30), "actor protected before combat");
+		PhantomEncounterRules.markHostile(30, 40);
+		PhantomEncounterRules.clearHostile(30);
+		truth(PhantomEncounterRules.isEncounterActor(30), "departure and corpse protection outlast hostility");
+		PhantomEncounterRules.markHostile(30, 40);
+		PhantomEncounterRules.unregisterActor(30);
+		truth(!PhantomEncounterRules.isEncounterActor(30), "despawn removes protection");
+		truth(!PhantomEncounterRules.isHostile(30, 40), "despawn removes hostility too");
 	}
 
 	private static void eq(Object expected, Object actual, String what)

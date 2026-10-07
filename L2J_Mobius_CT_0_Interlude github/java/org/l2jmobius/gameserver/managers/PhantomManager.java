@@ -55,19 +55,21 @@ import org.l2jmobius.gameserver.data.sql.CharInfoTable;
 import org.l2jmobius.gameserver.data.sql.ClanTable;
 import org.l2jmobius.gameserver.data.xml.ExperienceData;
 import org.l2jmobius.gameserver.data.xml.ItemData;
+import org.l2jmobius.gameserver.data.xml.PetSkillData;
 import org.l2jmobius.gameserver.data.xml.PhantomPlaystyleData;
 import org.l2jmobius.gameserver.data.xml.PlayerTemplateData;
 import org.l2jmobius.gameserver.data.xml.SkillData;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.GearContext;
-import org.l2jmobius.gameserver.taskmanagers.AttackStanceTaskManager;
 import org.l2jmobius.gameserver.managers.PhantomWeaponSets.WeaponKind;
 import org.l2jmobius.gameserver.geoengine.GeoEngine;
+import org.l2jmobius.gameserver.handler.ItemHandler;
 import org.l2jmobius.gameserver.model.Location;
 import org.l2jmobius.gameserver.model.StatSet;
 import org.l2jmobius.gameserver.model.World;
 import org.l2jmobius.gameserver.model.WorldObject;
 import org.l2jmobius.gameserver.model.actor.Creature;
 import org.l2jmobius.gameserver.model.actor.Player;
+import org.l2jmobius.gameserver.model.actor.Summon;
 import org.l2jmobius.gameserver.model.actor.appearance.PlayerAppearance;
 import org.l2jmobius.gameserver.model.actor.enums.creature.Race;
 import org.l2jmobius.gameserver.model.actor.enums.creature.Team;
@@ -77,6 +79,7 @@ import org.l2jmobius.gameserver.model.clan.Clan;
 import org.l2jmobius.gameserver.model.actor.holders.player.AutoUseSettingsHolder;
 import org.l2jmobius.gameserver.model.actor.holders.player.ClassType;
 import org.l2jmobius.gameserver.model.actor.holders.player.Duel;
+import org.l2jmobius.gameserver.model.actor.holders.npc.AggroInfo;
 import org.l2jmobius.gameserver.model.actor.holders.npc.FakePlayerAppearance;
 import org.l2jmobius.gameserver.model.actor.instance.Chest;
 import org.l2jmobius.gameserver.model.actor.instance.Monster;
@@ -90,7 +93,6 @@ import org.l2jmobius.gameserver.model.events.listeners.AbstractEventListener;
 import org.l2jmobius.gameserver.model.events.listeners.ConsumerEventListener;
 import org.l2jmobius.gameserver.model.groups.Party;
 import org.l2jmobius.gameserver.model.item.Armor;
-import org.l2jmobius.gameserver.handler.ItemHandler;
 import org.l2jmobius.gameserver.model.item.EtcItem;
 import org.l2jmobius.gameserver.model.item.ItemTemplate;
 import org.l2jmobius.gameserver.model.item.Weapon;
@@ -104,8 +106,6 @@ import org.l2jmobius.gameserver.model.item.type.EtcItemType;
 import org.l2jmobius.gameserver.model.item.type.WeaponType;
 import org.l2jmobius.gameserver.model.itemcontainer.Inventory;
 import org.l2jmobius.gameserver.model.skill.AbnormalType;
-import org.l2jmobius.gameserver.data.xml.PetSkillData;
-import org.l2jmobius.gameserver.model.actor.Summon;
 import org.l2jmobius.gameserver.model.skill.Skill;
 import org.l2jmobius.gameserver.model.skill.targets.TargetType;
 import org.l2jmobius.gameserver.model.zone.ZoneId;
@@ -113,11 +113,12 @@ import org.l2jmobius.gameserver.network.Disconnection;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.SystemMessageId;
 import org.l2jmobius.gameserver.network.enums.ChatType;
-import org.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
 import org.l2jmobius.gameserver.network.serverpackets.CreatureSay;
 import org.l2jmobius.gameserver.network.serverpackets.ExDuelAskStart;
 import org.l2jmobius.gameserver.network.serverpackets.L2Friend;
+import org.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
+import org.l2jmobius.gameserver.taskmanagers.AttackStanceTaskManager;
 import org.l2jmobius.gameserver.taskmanagers.AutoPlayTaskManager;
 import org.l2jmobius.gameserver.taskmanagers.AutoUseTaskManager;
 
@@ -300,6 +301,8 @@ public class PhantomManager implements IXmlReader
 	// Recruited members should still use strong, role-correct weapons, but choosing the single most expensive
 	// template made every member of a role/grade look identical. Roll among the strongest few compatible items.
 	private static final int PARTY_WEAPON_CANDIDATES = 6;
+	/** A caster weapon counts among the strongest of its grade at this share of the best reference price or more. */
+	private static final double CASTER_TOP_TIER = 0.9;
 	// Safety ceiling on total live phantom Player objects (each is far heavier than an NPC fake player).
 	private static final int MAX_PHANTOMS = 200;
 	// Proximity dormancy: a phantom only runs the (costly) auto-hunt while a real, client-connected player
@@ -494,8 +497,9 @@ public class PhantomManager implements IXmlReader
 		NONE(0),
 		ELDER(30), // Elven Elder - mage buffs, heals, recharge
 		PROPHET(17), // Prophet - fighter buffs (Heal granted)
-		WARCRYER(52), // Warcryer - Orc buffs (Heal granted)
-		BOUNTY_HUNTER(55); // Bounty Hunter - spoils stuff for you and shares loot afterwards
+		WARCRYER(52); // Warcryer - Orc buffs (Heal granted)
+		// No Bounty Hunter here: it is a physical spoiler run by PhantomPartyManager (PartyRole.BOUNTY_HUNTER). As a
+		// buddy it got the caster loadout, and a befriended class 55 came back as a support buddy (FPC-206).
 
 		final int classId;
 
@@ -531,11 +535,6 @@ public class PhantomManager implements IXmlReader
 				case "WARCRYER":
 				{
 					return WARCRYER;
-				}
-				case "BUDDY_BOUNTY_HUNTER":
-				case "BOUNTY_HUNTER":
-				{
-					return BOUNTY_HUNTER;
 				}
 				default:
 				{
@@ -1204,17 +1203,6 @@ public class PhantomManager implements IXmlReader
 		boolean companion;
 		Runnable onCompanionLeave; // run once after the companion is saved and removed from the world (may be null)
 		int companionOwnerId; // objectId of the player who summoned this companion
-		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
-		volatile boolean encounterActor;
-		volatile boolean arenaDuelist; // stands where it was put, takes duels from anyone and challenges on a module's say-so (ModuleDuels)
-		volatile boolean teamFighter;
-		volatile boolean teamHold; // buffs but does not fight or move until released // fights the other team of a module's team event until a module says stop (ModuleTeams)
-		volatile Location teamRally; // where it heads when no enemy is in sight
-		long teamRetargetAt; // when it may pick a different enemy
-		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
-		boolean encounterCpPotions; // carries and drinks CP potions (the strong encounters); the others use only HP and MP potions
-		long encounterPrepUntil; // until then it may cast its self-buffs and summon its servitor before the fight
-		final Set<Integer> encounterPrepDone = new HashSet<>(); // skills already tried in the preparation (a refused cast is not retried)
 		// Spot defense (see PhantomSpotRules): how annoyed this hunter is at each real player, and where it stands in the warning ladder.
 		PhantomSpotRules.Temper spotTemper; // rolled on first use
 		final Map<Integer, Double> spotScores = new HashMap<>();
@@ -1224,8 +1212,25 @@ public class PhantomManager implements IXmlReader
 		long spotAttackAt; // when the hunter follows through (0 = no ultimatum given)
 		long spotCooldownUntil;
 		int spotStealOid; // the mob whose theft was last counted, so one mob is one theft
-		int petBuffedOid; // object id of the servitor that already got the spawn kit (a re-summoned one gets it again)
-		long petSkillAt;
+		Monster spotEngagedMonster; // native hunter damage observed before a real player's damage
+		AggroInfo spotEngagedDamage; // identity changes when the native aggro entry is cleared on respawn
+		long spotEngagedAt;
+		int spotWarnedOid; // offender who received the pending ultimatum
+		final Set<Integer> spotCrowding = new HashSet<>(); // previous observed crowd, guarded with spotScores by data
+		// Encounter actor (see ModuleEncounters): exists only to fight one player once, then leaves.
+		volatile boolean encounterActor;
+		volatile boolean arenaDuelist; // stands where it was put, takes duels from anyone and challenges on a module's say-so (ModuleDuels)
+		volatile boolean teamFighter; // fights the other team of a module's team event until a module says stop (ModuleTeams)
+		volatile boolean teamHold; // buffs but does not fight or move until released
+		volatile Location teamRally; // where it heads when no enemy is in sight
+		long teamRetargetAt; // when it may pick a different enemy
+		int encounterEscapeChance; // percent chance to read a Blessed Scroll of Escape at low HP (0 = carries none)
+		boolean encounterCpPotions; // carries and drinks CP potions (the strong encounters); the others use only HP and MP potions
+		long encounterPrepUntil; // until then it may cast its self-buffs and summon its servitor before the fight
+		boolean encounterPreparing; // approach time starts only after the initial preparation finishes
+		final Set<Integer> encounterPrepDone = new HashSet<>(); // skills already tried in the preparation (a refused cast is not retried)
+		int encounterPetBuffedOid; // object id of the servitor that already got the spawn kit (a re-summoned one gets it again; also used by summoner hunters)
+		long encounterPetSkillAt;
 		boolean encounterEscapeOnRout; // a lost fight (3/4 of the group down, outnumbered) is a reason to read it too
 		boolean encounterEscapeRolled;
 		volatile int encounterVictimOid; // the real player this actor came for
@@ -2008,7 +2013,7 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/** @return the {@link BuddyRole} whose support class the given classId is, or {@link BuddyRole#NONE}. */
-	private static BuddyRole buddyRoleForClass(int classId)
+	static BuddyRole buddyRoleForClass(int classId)
 	{
 		for (BuddyRole role : BuddyRole.values())
 		{
@@ -2966,7 +2971,7 @@ public class PhantomManager implements IXmlReader
 			// A party member of a multi-weapon line also carries its spare (PhantomWeaponSets), switched on the
 			// leader's order. Same grade, so the same shots fit; diet mode keeps the extra weight harmless.
 			final WeaponKind spareKind = mage ? null : PhantomWeaponSets.spareKind(phantom.getPlayerClass(), context);
-			final ItemTemplate spare = (spareKind == null) ? null : randomTopEquip(grade, spareKind::matches);
+			final ItemTemplate spare = (spareKind == null) ? null : randomInGrade(grade, spareKind::matches); // none in grade: no spare (FPC-202)
 			if ((spare != null) && (spare.getId() != weapon.getId()))
 			{
 				final Item spareItem = phantom.getInventory().addItem(ItemProcessType.REWARD, spare.getId(), 1, phantom, null);
@@ -3059,12 +3064,38 @@ public class PhantomManager implements IXmlReader
 	 */
 	private static ItemTemplate partyWeapon(PlayerClass playerClass, PartyRole role, boolean mage, CrystalType grade, GearContext context)
 	{
+		final ItemTemplate weapon = partyWeaponInGrade(playerClass, role, mage, grade, context);
+		if (weapon != null)
+		{
+			return weapon;
+		}
+		// Only when the phantom's grade has no weapon at all for its class and role (the gear audit finds no such
+		// case with the shipped data): the same choice one grade lower beats an unarmed party member.
+		LOGGER.warning(PhantomManager.class.getSimpleName() + ": no " + grade + "-grade weapon for " + playerClass + " (" + role + "), using a lower grade.");
+		for (int ordinal = grade.ordinal() - 1; ordinal >= 0; ordinal--)
+		{
+			final ItemTemplate lower = partyWeaponInGrade(playerClass, role, mage, CrystalType.values()[ordinal], context);
+			if (lower != null)
+			{
+				return lower;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * {@link #partyWeapon} without leaving the grade: every pick below is made only among weapons of {@code grade}
+	 * (FPC-202). A role or class weapon the grade lacks falls to the next option in the same grade, and {@code null}
+	 * means the grade has nothing that fits at all.
+	 */
+	private static ItemTemplate partyWeaponInGrade(PlayerClass playerClass, PartyRole role, boolean mage, CrystalType grade, GearContext context)
+	{
 		if (mage && isWarcryerLine(playerClass))
 		{
 			// Orc Shaman, Warcryer and Doomcryer buff first and melee between buffs, so a party one carries a one-handed
 			// magic blunt (the usual party Warcryer weapon: casting stats for the buffs, and a real weapon to hit with)
 			// instead of a staff or a book. Picked from the current class, so it follows the class at every spawn.
-			final ItemTemplate mace = randomTopEquip(grade, item -> (item instanceof Weapon) && item.isMagicWeapon() && (((Weapon) item).getItemType() == WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
+			final ItemTemplate mace = casterWeapon(role, grade, item -> (item instanceof Weapon) && item.isMagicWeapon() && (((Weapon) item).getItemType() == WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
 			if (mace != null)
 			{
 				return mace;
@@ -3074,11 +3105,11 @@ public class PhantomManager implements IXmlReader
 		{
 			// Magic melee weapons are valid caster weapons too. Keep both one-handed (R_HAND) and two-handed
 			// (LR_HAND) templates; gearParty adds a shield only for the former.
-			return randomTopEquip(grade, item -> item.isMagicWeapon() && ((item.getBodyPart() == BodyPart.R_HAND) || (item.getBodyPart() == BodyPart.LR_HAND)));
+			return casterWeapon(role, grade, item -> item.isMagicWeapon() && ((item.getBodyPart() == BodyPart.R_HAND) || (item.getBodyPart() == BodyPart.LR_HAND)));
 		}
 		if (role == PartyRole.ARCHER)
 		{
-			final ItemTemplate bow = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.BOW));
+			final ItemTemplate bow = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.BOW));
 			if (bow != null)
 			{
 				return bow;
@@ -3086,7 +3117,7 @@ public class PhantomManager implements IXmlReader
 		}
 		else if (role == PartyRole.DAGGER)
 		{
-			final ItemTemplate dagger = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DAGGER));
+			final ItemTemplate dagger = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DAGGER));
 			if (dagger != null)
 			{
 				return dagger;
@@ -3095,7 +3126,7 @@ public class PhantomManager implements IXmlReader
 		else if (role == PartyRole.DANCER)
 		{
 			// Dances hard-require equipped dual swords (<using kind="DUAL"/> in the skill data).
-			final ItemTemplate dual = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DUAL));
+			final ItemTemplate dual = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DUAL));
 			if (dual != null)
 			{
 				return dual;
@@ -3104,7 +3135,7 @@ public class PhantomManager implements IXmlReader
 		else if (role == PartyRole.MONK)
 		{
 			// Tyrant / Grand Khavatari force skills require hand-to-hand weapons.
-			final ItemTemplate fist = randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.DUALFIST) || isPhysicalWeapon(item, WeaponType.FIST));
+			final ItemTemplate fist = randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.DUALFIST) || isPhysicalWeapon(item, WeaponType.FIST));
 			if (fist != null)
 			{
 				return fist;
@@ -3121,7 +3152,8 @@ public class PhantomManager implements IXmlReader
 		// Default fighter weapon. A TANK or SINGER needs a one-handed sword so its shield remains equipped.
 		else if (role == PartyRole.BOUNTY_HUNTER)
 		{
-			final ItemTemplate blunt = bestEquip(grade, item -> (item instanceof Weapon) && (((Weapon) item).getItemType() == WeaponType.BLUNT));
+			// A physical one-handed blunt: a staff is a blunt too, and so are the two-handed hammers (FPC-202).
+			final ItemTemplate blunt = bestInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.BLUNT) && (item.getBodyPart() == BodyPart.R_HAND));
 			if (blunt != null) {
 				return blunt;
 			}
@@ -3129,7 +3161,7 @@ public class PhantomManager implements IXmlReader
 		// Sword fallback (and the default melee weapon). A TANK or SINGER needs a ONE-handed sword so its shield fits
 		// the left hand; a two-handed sword would otherwise be unequipped when the shield goes on.
 		final boolean oneHandOnly = (role == PartyRole.TANK) || (role == PartyRole.SINGER);
-		return randomTopEquip(grade, item -> isPhysicalWeapon(item, WeaponType.SWORD) && (!oneHandOnly || (item.getBodyPart() == BodyPart.R_HAND)));
+		return randomInGrade(grade, item -> isPhysicalWeapon(item, WeaponType.SWORD) && (!oneHandOnly || (item.getBodyPart() == BodyPart.R_HAND)));
 	}
 
 	/**
@@ -3140,8 +3172,8 @@ public class PhantomManager implements IXmlReader
 	 */
 	private static ItemTemplate warriorWeapon(PlayerClass playerClass, CrystalType grade, GearContext context)
 	{
-		final WeaponKind kind = PhantomWeaponSets.mainKind(playerClass, context);
-		return (kind == null) ? null : randomTopEquip(grade, kind::matches);
+		final WeaponKind kind = PhantomWeaponSets.mainKind(playerClass, context, option -> randomInGrade(grade, option::matches) != null);
+		return (kind == null) ? null : randomInGrade(grade, kind::matches);
 	}
 
 	/** Exact physical weapon family, excluding caster-oriented magic variants of the same item type. */
@@ -3274,33 +3306,136 @@ public class PhantomManager implements IXmlReader
 	}
 
 	/**
+	 * A caster weapon of {@code grade} the way a player of the role would pick it: among the strongest weapons of the
+	 * grade (reference price within {@link #CASTER_TOP_TIER} of the best), the special abilities that suit the role
+	 * win ({@link #casterSaScore}), and the roll is among the best and next-best scores so casters still vary.
+	 * @return {@code null} when the grade has no match
+	 */
+	private static ItemTemplate casterWeapon(PartyRole role, CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
+		long topPrice = 0;
+		for (ItemTemplate item : candidates)
+		{
+			topPrice = Math.max(topPrice, item.getReferencePrice());
+		}
+		int bestScore = Integer.MIN_VALUE;
+		final List<ItemTemplate> topTier = new ArrayList<>();
+		for (ItemTemplate item : candidates)
+		{
+			if (item.getReferencePrice() >= (topPrice * CASTER_TOP_TIER))
+			{
+				topTier.add(item);
+				bestScore = Math.max(bestScore, casterSaScore(role, item));
+			}
+		}
+		final List<ItemTemplate> picks = new ArrayList<>();
+		for (ItemTemplate item : topTier)
+		{
+			if (casterSaScore(role, item) >= (bestScore - 1))
+			{
+				picks.add(item);
+			}
+		}
+		return picks.isEmpty() ? null : picks.get(Rnd.get(picks.size()));
+	}
+
+	/**
+	 * How much a caster of {@code role} wants the weapon's special ability (the part of the name after " - "). Casting
+	 * speed (Acumen) first for everyone; then damage for a nuker and mana for a healer or buffer. A weapon without a
+	 * special ability scores 1, so a defensive or niche one (Magic Hold, Magic Poison, Rsk. Evasion...) ranks below it.
+	 */
+	static int casterSaScore(PartyRole role, ItemTemplate item)
+	{
+		final String name = item.getName();
+		final int dash = name.indexOf(" - ");
+		if (dash < 0)
+		{
+			return 1;
+		}
+		final String sa = name.substring(dash + 3).toLowerCase();
+		if (sa.equals("acumen"))
+		{
+			return 5;
+		}
+		final boolean mana = sa.equals("mana up") || sa.equals("mp regeneration") || sa.equals("magic regeneration");
+		final boolean damage = sa.equals("empower") || sa.equals("m. atk.") || sa.equals("magic damage");
+		if (role == PartyRole.NUKER)
+		{
+			return damage ? 4 : (sa.equals("mana up") ? 3 : (mana ? 2 : 0));
+		}
+		if (mana)
+		{
+			return 4;
+		}
+		if (damage)
+		{
+			return 2;
+		}
+		return ((role == PartyRole.BUFFER) && (sa.equals("mental shield") || sa.equals("blessed body"))) ? 2 : 0;
+	}
+
+	/** {@link #randomTopEquip} limited to {@code grade}: {@code null} when that grade has no match. */
+	private static ItemTemplate randomInGrade(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		return topEquip(grade, filter, false);
+	}
+
+	/** {@link #bestEquip} limited to {@code grade}: {@code null} when that grade has no match. */
+	private static ItemTemplate bestInGrade(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
+		ItemTemplate best = null;
+		for (ItemTemplate item : candidates)
+		{
+			if ((best == null) || (item.getReferencePrice() > best.getReferencePrice()))
+			{
+				best = item;
+			}
+		}
+		return best;
+	}
+
+	/** Player gear of exactly {@code grade} that matches {@code filter}. */
+	private static List<ItemTemplate> gradeCandidates(CrystalType grade, Predicate<ItemTemplate> filter)
+	{
+		final List<ItemTemplate> candidates = new ArrayList<>();
+		for (ItemTemplate item : ItemData.getInstance().getAllItems())
+		{
+			if ((item == null) || !item.isEquipable() || !item.isTradeable() || (item.getReferencePrice() <= 0) || (item.getCrystalType() != grade) || !FakePlayerGearFilter.isPlayerGear(item))
+			{
+				continue;
+			}
+			if (filter.test(item))
+			{
+				candidates.add(item);
+			}
+		}
+		return candidates;
+	}
+
+	/**
 	 * A random item among the strongest role-compatible weapon templates in the requested grade. This keeps recruited
 	 * members combat-capable without making every archer, caster, tank, or melee member use one deterministic item.
 	 * Falls through to lower grades only when the requested grade has no compatible player gear at all.
 	 */
 	private static ItemTemplate randomTopEquip(CrystalType desired, Predicate<ItemTemplate> filter)
 	{
+		return topEquip(desired, filter, true);
+	}
+
+	private static ItemTemplate topEquip(CrystalType desired, Predicate<ItemTemplate> filter, boolean stepDown)
+	{
 		CrystalType grade = desired;
 		while (grade != null)
 		{
-			final List<ItemTemplate> candidates = new ArrayList<>();
-			for (ItemTemplate item : ItemData.getInstance().getAllItems())
-			{
-				if ((item == null) || !item.isEquipable() || !item.isTradeable() || (item.getReferencePrice() <= 0) || (item.getCrystalType() != grade) || !FakePlayerGearFilter.isPlayerGear(item))
-				{
-					continue;
-				}
-				if (filter.test(item))
-				{
-					candidates.add(item);
-				}
-			}
+			final List<ItemTemplate> candidates = gradeCandidates(grade, filter);
 			if (!candidates.isEmpty())
 			{
 				candidates.sort(Comparator.comparingLong(ItemTemplate::getReferencePrice).reversed().thenComparingInt(ItemTemplate::getId));
 				return candidates.get(Rnd.get(Math.min(PARTY_WEAPON_CANDIDATES, candidates.size())));
 			}
-			grade = (grade.ordinal() > 0) ? CrystalType.values()[grade.ordinal() - 1] : null;
+			grade = (stepDown && (grade.ordinal() > 0)) ? CrystalType.values()[grade.ordinal() - 1] : null;
 		}
 		return null;
 	}
@@ -4082,8 +4217,13 @@ public class PhantomManager implements IXmlReader
 		catch (Exception e)
 		{
 			LOGGER.warning(getClass().getSimpleName() + ": Failed to despawn phantom " + objectId + ": " + e.getMessage());
+			if (PhantomEncounterRules.isEncounterActor(objectId))
+			{
+				return; // Keep protection and tracking so an encounter tick can retry world removal.
+			}
 		}
 		_phantoms.remove(objectId);
+		PhantomEncounterRules.unregisterActor(objectId);
 		_promoted.remove(objectId); // the DB row now carries the regular account; the live-instance bridge is done
 		if (persistent)
 		{
@@ -4342,6 +4482,12 @@ public class PhantomManager implements IXmlReader
 			{
 				BotClanManager.getInstance().attach(phantom, BotClanManager.getInstance().getRandomClan());
 			}
+		}
+		if (ENCOUNTER_ENCHANT.get() != null)
+		{
+			// Protect encounter gear before publishing the actor to the world. AutoUse targets characters.
+			PhantomEncounterRules.registerActor(phantom.getObjectId());
+			phantom.getAutoPlaySettings().setNextTargetMode(2);
 		}
 		enterWorld(phantom, spawnLocation);
 
@@ -4907,19 +5053,29 @@ public class PhantomManager implements IXmlReader
 	 */
 	private boolean tendHunterServitor(Player phantom, PhantomData data, Monster focus)
 	{
-		if (!phantom.getPlayerClass().isSummoner() || phantom.isDead() || phantom.isCastingNow())
+		if (!phantom.getPlayerClass().isSummoner() || phantom.isDead())
+		{
+			return false;
+		}
+		final Summon pet = phantom.getSummon();
+		if (phantom.isInsideZone(ZoneId.PEACE))
+		{
+			PhantomPartyManager.stopServitorCombat(phantom); // never send the servitor at anything inside a town
+			focus = null;
+		}
+		if (phantom.isCastingNow())
 		{
 			return false;
 		}
 		final boolean busy = phantom.isAttackingNow() || underAttack(phantom);
-		final Summon pet = phantom.getSummon();
 		if (pet == null)
 		{
 			if (busy)
 			{
 				return false;
 			}
-			final int summonId = PhantomServitorRules.pickSummon(id -> PhantomPartyManager.castable(phantom, phantom.getKnownSkill(id)));
+			PhantomPartyManager.stockServitorCrystals(phantom);
+			final int summonId = PhantomServitorRules.pickSummon(id -> PhantomPartyManager.canCastSupportSkill(phantom, phantom.getKnownSkill(id), phantom));
 			if (summonId == 0)
 			{
 				return false; // none learned yet, on reuse, or short of MP: retried next tick
@@ -4928,7 +5084,6 @@ public class PhantomManager implements IXmlReader
 			{
 				return true;
 			}
-			PhantomPartyManager.stockServitorCrystals(phantom);
 			phantom.setTarget(phantom);
 			phantom.doCast(phantom.getKnownSkill(summonId));
 			return true;
@@ -4937,13 +5092,13 @@ public class PhantomManager implements IXmlReader
 		{
 			return false;
 		}
-		if (data.petBuffedOid != pet.getObjectId())
+		if (data.encounterPetBuffedOid != pet.getObjectId())
 		{
-			data.petBuffedOid = pet.getObjectId();
+			data.encounterPetBuffedOid = pet.getObjectId();
 			PhantomBuffs.applyFullBuffsToServitor(pet); // the same kit a spawned phantom gets
 		}
 		final Skill heal = phantom.getKnownSkill(PhantomServitorRules.SERVITOR_HEAL);
-		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && PhantomPartyManager.castable(phantom, heal) && PhantomPartyManager.readyToCast(phantom))
+		if (PhantomServitorRules.servitorNeedsHeal(pet.getCurrentHpPercent()) && PhantomPartyManager.canCastSupportSkill(phantom, heal, pet) && PhantomPartyManager.readyToCast(phantom))
 		{
 			phantom.setTarget(pet);
 			phantom.doCast(heal);
@@ -4952,7 +5107,7 @@ public class PhantomManager implements IXmlReader
 		if (!busy)
 		{
 			final Skill recharge = phantom.getKnownSkill(PhantomServitorRules.SERVITOR_RECHARGE);
-			if (PhantomServitorRules.servitorNeedsRecharge(pet.getCurrentMpPercent()) && PhantomPartyManager.castable(phantom, recharge) && PhantomPartyManager.readyToCast(phantom))
+			if (PhantomServitorRules.servitorNeedsRecharge(pet.getCurrentMpPercent()) && PhantomPartyManager.canCastSupportSkill(phantom, recharge, pet) && PhantomPartyManager.readyToCast(phantom))
 			{
 				phantom.setTarget(pet);
 				phantom.doCast(recharge);
@@ -4961,7 +5116,7 @@ public class PhantomManager implements IXmlReader
 			for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
 			{
 				final Skill buff = phantom.getKnownSkill(buffId);
-				if ((buff != null) && !pet.isAffectedBySkill(buffId) && PhantomPartyManager.castable(phantom, buff) && PhantomPartyManager.readyToCast(phantom))
+				if ((buff != null) && !pet.isAffectedBySkill(buffId) && PhantomPartyManager.canCastSupportSkill(phantom, buff, pet) && PhantomPartyManager.readyToCast(phantom))
 				{
 					phantom.setTarget(pet);
 					phantom.doCast(buff);
@@ -4969,9 +5124,9 @@ public class PhantomManager implements IXmlReader
 				}
 			}
 		}
-		if ((focus != null) && !focus.isDead())
+		if ((focus != null) && !focus.isDead() && !focus.isInsideZone(ZoneId.PEACE))
 		{
-			commandEncounterPet(phantom, data, focus);
+			commandPetAttack(phantom, data, focus, false);
 		}
 		return false;
 	}
@@ -5075,10 +5230,18 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void pvpCombat()
 	{
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE)
+		{
+			for (PhantomData data : _phantoms.values())
+			{
+				clearSpotDefenseState(data);
+			}
+		}
 		// Gate on the master switch, not one behavior: this driver also services active engagements, react-to-flagged,
 		// and party/clan-defense engagements armed by startPvpDefense. Each behavior is gated individually below.
 		if (!PhantomPvpManager.pvpEnabled())
 		{
+			removeDisabledEncounters();
 			// FPC-115: switched off (a config reload). Release every open engagement once, or the hunt and party ticks
 			// would keep deferring to phantoms nothing drives any more. Idle after that, as before.
 			if (_pvpWasEnabled)
@@ -5102,6 +5265,13 @@ public class PhantomManager implements IXmlReader
 		for (PhantomData data : _phantoms.values())
 		{
 			final Player phantom = data.player;
+			if (data.olympian || data.encounterActor || data.recruited || data.role.isBuddy() || data.resting || data.dormant || data.dispersing || phantom.isDead() || (data.pvpTargetOid != 0) || phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP))
+			{
+				synchronized (data)
+				{
+					resetSpotObservation(data);
+				}
+			}
 			if (data.olympian)
 			{
 				continue; // an Olympiad noble fights only in its matches, driven by serviceOlympian
@@ -5345,10 +5515,9 @@ public class PhantomManager implements IXmlReader
 
 	/**
 	 * Phase 2 react-to-flagged: an idle aggressor phantom occasionally engages a nearby flagged (purple) or red (PK)
-	 * target. It considers at most once per {@link #PVP_REACT_SCAN_INTERVAL_MS}, and only while react-to-flagged is
-	 * enabled and this phantom is an aggressor. On a consideration it picks the nearest eligible target and rolls
-	 * {@link PhantomPvpManager#rollReactEngage()}; whether it engages or declines, it then waits out the engage
-	 * cooldown before reconsidering, so PK-reaction is occasional rather than an every-tick dogpile.
+	 * target. When configured, any phantom may consider red targets. Red targets are selected ahead of purple targets,
+	 * then the nearest target within that reputation class is considered. Whether it engages or declines, it waits out
+	 * the engage cooldown before reconsidering, so reactions are occasional rather than an every-tick dogpile.
 	 */
 	private void reactToFlagged(Player phantom, PhantomData data, long now)
 	{
@@ -5356,12 +5525,11 @@ public class PhantomManager implements IXmlReader
 		{
 			return;
 		}
-		// An aggressor reacts to a purple or red target; with PhantomPvpRedReactAll every other phantom reacts to a red one too.
-		if (!data.aggressor && !FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL)
+		if (!PhantomPvpManager.mayReactToTarget(data.aggressor, FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL, true))
 		{
 			return;
 		}
-		final Player target = flaggedReactTarget(phantom, now, !data.aggressor);
+		final Player target = flaggedReactTarget(phantom, data.aggressor, now);
 		if (target == null)
 		{
 			data.nextInitiateAt = now + PVP_REACT_SCAN_INTERVAL_MS; // nothing to react to; scan again shortly
@@ -5393,17 +5561,13 @@ public class PhantomManager implements IXmlReader
 		"you want this spot? come and take it"
 	};
 
-	/** @return a real player (not a phantom, not offline) fighting this monster, or {@code null}. */
-	private static Player realPlayerOn(Monster monster)
+	/** @return a currently eligible real player with positive native damage against this monster. */
+	private Player realPlayerOn(Player phantom, Monster monster, long now)
 	{
-		final WorldObject target = monster.getTarget();
-		if ((target instanceof Player) && !((Player) target).isInOfflineMode())
+		for (Map.Entry<Creature, AggroInfo> entry : monster.getAggroList().entrySet())
 		{
-			return (Player) target;
-		}
-		for (Creature attacker : monster.getAggroList().keySet())
-		{
-			if (attacker.isPlayer() && !attacker.asPlayer().isInOfflineMode())
+			final Creature attacker = entry.getKey();
+			if (attacker.isPlayer() && (entry.getValue().getDamage() > 0) && spotOffender(phantom, attacker.asPlayer(), now))
 			{
 				return attacker.asPlayer();
 			}
@@ -5411,15 +5575,104 @@ public class PhantomManager implements IXmlReader
 		return null;
 	}
 
+	private static void resetSpotEngagement(PhantomData data)
+	{
+		data.spotEngagedMonster = null;
+		data.spotEngagedDamage = null;
+		data.spotEngagedAt = 0;
+	}
+
+	/** All claim changes invalidate earlier theft evidence, including dropping and reclaiming the same mob. */
+	private static void setClaimedMob(PhantomData data, int objectId)
+	{
+		synchronized (data)
+		{
+			if (data.claimedOid != objectId)
+			{
+				resetSpotEngagement(data);
+			}
+			data.claimedOid = objectId;
+		}
+	}
+
+	/** Remember a real hunter hit only while the monster is still uncontested. Native totals have no hit order. */
+	private void observeSpotEngagement(PhantomData data, Monster monster, long now)
+	{
+		synchronized (data)
+		{
+			resetSpotEngagement(data);
+			if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (data.claimedOid != monster.getObjectId()))
+			{
+				return;
+			}
+			final AggroInfo hunterDamage = monster.getAggroList().get(data.player);
+			if ((hunterDamage == null) || (hunterDamage.getDamage() <= 0))
+			{
+				return;
+			}
+			for (Map.Entry<Creature, AggroInfo> entry : monster.getAggroList().entrySet())
+			{
+				if ((entry.getKey() != data.player) && entry.getKey().isPlayer() && !_phantoms.containsKey(entry.getKey().getObjectId()) && (entry.getValue().getDamage() > 0))
+				{
+					return; // a player hit first, or both first appeared together: do not infer theft
+				}
+			}
+			data.spotEngagedMonster = monster;
+			data.spotEngagedDamage = hunterDamage;
+			data.spotEngagedAt = now;
+		}
+	}
+
+	private static void resetSpotObservation(PhantomData data)
+	{
+		data.spotScoreAt = 0;
+		data.spotCrowding.clear();
+		data.spotAttackAt = 0;
+		data.spotWarnedOid = 0;
+		resetSpotEngagement(data);
+	}
+
+	/** Reloading either off switch forgets all grievances, even for actors skipped by the normal PvP driver. */
+	private static void clearSpotDefenseState(PhantomData data)
+	{
+		synchronized (data)
+		{
+			resetSpotObservation(data);
+			data.spotScores.clear();
+			data.spotNextAt = 0;
+			data.spotWarnNextAt = 0;
+			data.spotCooldownUntil = 0;
+			data.spotStealOid = 0;
+		}
+	}
+
 	/** A player took a mob this hunter had claimed: that adds to the hunter's annoyance with them. */
 	private void noteKillSteal(PhantomData data, Monster monster, long now)
 	{
-		if (!FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (data.claimedOid != monster.getObjectId()) || (data.spotStealOid == monster.getObjectId()))
+		synchronized (data)
+		{
+			noteKillStealLocked(data, monster, now);
+		}
+	}
+
+	private void noteKillStealLocked(PhantomData data, Monster monster, long now)
+	{
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE)
+		{
+			clearSpotDefenseState(data);
+			return;
+		}
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || data.resting || data.dormant || data.dispersing || data.recruited || data.role.isBuddy() || data.olympian || data.encounterActor || (data.pvpTargetOid != 0) || (now < data.spotCooldownUntil) || (data.claimedOid != monster.getObjectId()) || (data.spotStealOid == monster.getObjectId()))
 		{
 			return;
 		}
-		final Player thief = realPlayerOn(monster);
-		if ((thief == null) || _phantoms.containsKey(thief.getObjectId()))
+		final AggroInfo hunterDamage = monster.getAggroList().get(data.player);
+		if ((data.spotEngagedMonster != monster) || (data.spotEngagedDamage != hunterDamage) || (hunterDamage == null) || (hunterDamage.getDamage() <= 0) || (now <= data.spotEngagedAt) || ((now - data.spotEngagedAt) > (3 * DECONFLICT_INTERVAL)))
+		{
+			return; // an internal reservation or unordered damage totals are not evidence of a stolen pull
+		}
+		final Player thief = realPlayerOn(data.player, monster, now);
+		if (thief == null)
 		{
 			return;
 		}
@@ -5430,11 +5683,11 @@ public class PhantomManager implements IXmlReader
 	/** @return whether this real player is out hunting where the hunter could be annoyed by it. */
 	private boolean spotOffender(Player phantom, Player p, long now)
 	{
-		if (_phantoms.containsKey(p.getObjectId()) || p.isInOfflineMode() || p.isDead() || p.isInsideZone(ZoneId.PEACE) || p.isInsideZone(ZoneId.NO_PVP))
+		if (_phantoms.containsKey(p.getObjectId()) || p.isInOfflineMode() || p.isDead() || phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP) || p.isInsideZone(ZoneId.PEACE) || p.isInsideZone(ZoneId.NO_PVP))
 		{
 			return false;
 		}
-		if (!validPvpOpponent(phantom, p) || sameClanOrAlly(phantom, p) || p.isNewbie() || !p.isAutoAttackable(phantom))
+		if (!validPvpOpponent(phantom, p) || sameClanOrAlly(phantom, p) || p.isNewbie() || (phantom.isInParty() && (phantom.getParty() == p.getParty())) || phantom.isInDuel() || p.isInDuel() || phantom.isInOlympiadMode() || p.isInOlympiadMode() || phantom.isOnEvent() || p.isOnEvent() || p.inObserverMode() || p.isGM() || (phantom.getInstanceId() != 0) || (p.getInstanceId() != 0))
 		{
 			return false;
 		}
@@ -5452,7 +5705,25 @@ public class PhantomManager implements IXmlReader
 	 */
 	private void spotDefense(Player phantom, PhantomData data, long now)
 	{
-		if (!FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || (now < data.spotNextAt) || data.resting || (now < data.spotCooldownUntil))
+		synchronized (data)
+		{
+			spotDefenseLocked(phantom, data, now);
+		}
+	}
+
+	private void spotDefenseLocked(Player phantom, PhantomData data, long now)
+	{
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE)
+		{
+			clearSpotDefenseState(data);
+			return;
+		}
+		if (!PhantomPvpManager.pvpEnabled() || !FakePlayersConfig.PHANTOM_PVP_SPOT_DEFENSE || data.resting || data.dormant || data.dispersing || data.recruited || data.role.isBuddy() || data.olympian || data.encounterActor || (data.pvpTargetOid != 0) || phantom.isDead() || phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP) || (now < data.spotCooldownUntil))
+		{
+			resetSpotObservation(data);
+			return;
+		}
+		if (now < data.spotNextAt)
 		{
 			return;
 		}
@@ -5461,7 +5732,14 @@ public class PhantomManager implements IXmlReader
 		{
 			data.spotTemper = PhantomSpotRules.rollTemper(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_HOT_PERCENT, FakePlayersConfig.PHANTOM_PVP_SPOT_NORMAL_PERCENT);
 		}
-		final long elapsed = (data.spotScoreAt == 0) ? 0 : (now - data.spotScoreAt);
+		final long gap = now - data.spotScoreAt;
+		// Only adjacent observed samples count. PvP, dormancy and disabled ticks leave gaps.
+		final long elapsed = ((data.spotScoreAt != 0) && (gap >= 0) && (gap <= 4000)) ? gap : 0;
+		if (elapsed == 0)
+		{
+			data.spotAttackAt = 0;
+			data.spotWarnedOid = 0;
+		}
 		data.spotScoreAt = now;
 		final Set<Integer> crowding = new HashSet<>();
 		Player worst = null;
@@ -5470,15 +5748,26 @@ public class PhantomManager implements IXmlReader
 			if (spotOffender(phantom, p, now) && (p.isAttackingNow() || ((p.getTarget() instanceof Monster) && p.isInCombat())))
 			{
 				crowding.add(p.getObjectId());
-				data.spotScores.merge(p.getObjectId(), PhantomSpotRules.crowd(0, elapsed), Double::sum);
+				if (data.spotCrowding.contains(p.getObjectId()) && (elapsed > 0))
+				{
+					data.spotScores.merge(p.getObjectId(), PhantomSpotRules.crowd(0, elapsed), Double::sum);
+				}
 			}
 		}
+		data.spotCrowding.clear();
+		data.spotCrowding.addAll(crowding);
 		final double limit = PhantomSpotRules.thresholdFor(data.spotTemper, FakePlayersConfig.PHANTOM_PVP_SPOT_HOT_LIMIT, FakePlayersConfig.PHANTOM_PVP_SPOT_NORMAL_LIMIT, FakePlayersConfig.PHANTOM_PVP_SPOT_PATIENT_LIMIT);
 		double worstScore = 0;
 		final Iterator<Map.Entry<Integer, Double>> it = data.spotScores.entrySet().iterator();
 		while (it.hasNext())
 		{
 			final Map.Entry<Integer, Double> e = it.next();
+			final Player p = World.getInstance().getPlayer(e.getKey());
+			if ((p == null) || !spotOffender(phantom, p, now))
+			{
+				it.remove(); // protected/offline players cannot retain hidden actionable grievances
+				continue;
+			}
 			if (!crowding.contains(e.getKey()))
 			{
 				e.setValue(PhantomSpotRules.fade(e.getValue(), elapsed)); // not offending right now: cools down
@@ -5488,7 +5777,6 @@ public class PhantomManager implements IXmlReader
 				it.remove();
 				continue;
 			}
-			final Player p = World.getInstance().getPlayer(e.getKey());
 			if ((p != null) && (e.getValue() > worstScore) && spotOffender(phantom, p, now) && (phantom.calculateDistance2D(p) <= (FakePlayersConfig.PHANTOM_PVP_SPOT_RADIUS * 1.5)))
 			{
 				worstScore = e.getValue();
@@ -5498,10 +5786,13 @@ public class PhantomManager implements IXmlReader
 		if ((worst == null) || (worstScore < PhantomSpotRules.warnAt(limit)))
 		{
 			data.spotAttackAt = 0; // calmed down, or the player is gone
+			data.spotWarnedOid = 0;
 			return;
 		}
 		if (worstScore < limit)
 		{
+			data.spotAttackAt = 0;
+			data.spotWarnedOid = 0;
 			if (now >= data.spotWarnNextAt)
 			{
 				data.spotWarnNextAt = now + 120_000L;
@@ -5509,8 +5800,9 @@ public class PhantomManager implements IXmlReader
 			}
 			return;
 		}
-		if (data.spotAttackAt == 0)
+		if ((data.spotAttackAt == 0) || (data.spotWarnedOid != worst.getObjectId()))
 		{
+			data.spotWarnedOid = worst.getObjectId();
 			data.spotAttackAt = now + ((data.spotTemper == PhantomSpotRules.Temper.HOT) ? 3000 : 6000);
 			sayNearby(phantom, SPOT_ULTIMATUM_LINES);
 			return;
@@ -5520,13 +5812,22 @@ public class PhantomManager implements IXmlReader
 			return;
 		}
 		data.spotAttackAt = 0;
+		data.spotWarnedOid = 0;
 		data.spotScores.clear();
+		data.spotCrowding.clear();
+		data.spotScoreAt = 0;
 		final long cooldownMs = FakePlayersConfig.PHANTOM_PVP_SPOT_COOLDOWN_SECONDS * 1000L;
 		data.spotCooldownUntil = now + cooldownMs;
-		final boolean duel = !PhantomSpotRules.realFight(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_FIGHT_PERCENT) && PhantomPvpManager.duelsEnabled() && phantom.canDuel() && worst.canDuel() && !worst.isProcessingRequest();
-		if (duel && armDuel(data, worst, DUEL_APPROACH))
+		final boolean attackable = worst.isAutoAttackable(phantom);
+		// A clean white farmer can be warned and challenged, but never gains a forced PvP exception.
+		final boolean realFight = attackable && PhantomSpotRules.realFight(Rnd.get(100), FakePlayersConfig.PHANTOM_PVP_SPOT_FIGHT_PERCENT);
+		if (!realFight)
 		{
-			_duelTargetCooldownUntil.put(worst.getObjectId(), now + DUEL_TARGET_COOLDOWN_MS);
+			if (PhantomPvpManager.duelsEnabled() && phantom.canDuel() && worst.canDuel() && !phantom.isProcessingRequest() && !worst.isProcessingRequest() && armDuel(data, worst, DUEL_APPROACH))
+			{
+				_duelTargetCooldownUntil.put(worst.getObjectId(), now + DUEL_TARGET_COOLDOWN_MS);
+			}
+			// The selected duel is authoritative. An unavailable challenge never becomes ordinary PvP.
 			return;
 		}
 		_pvpVictimCooldownUntil.put(worst.getObjectId(), now + cooldownMs);
@@ -5541,7 +5842,7 @@ public class PhantomManager implements IXmlReader
 	 *         zone, not a clan or ally member, not newbie-protected, inside the initiate level band, not on the
 	 *         per-target dogpile cooldown, and legally attackable by the phantom.
 	 */
-	private Player flaggedReactTarget(Player phantom, long now, boolean redOnly)
+	private Player flaggedReactTarget(Player phantom, boolean aggressor, long now)
 	{
 		Player best = null;
 		double bestDistance = Double.MAX_VALUE;
@@ -5551,9 +5852,10 @@ public class PhantomManager implements IXmlReader
 			{
 				continue; // includes the phantom-versus-phantom gate: skip a phantom target when that is disabled
 			}
-			if (((p.getPvpFlag() == 0) && (p.getKarma() <= 0)) || (redOnly && (p.getKarma() <= 0)))
+			final boolean red = p.getKarma() > 0;
+			if (((p.getPvpFlag() == 0) && !red) || !PhantomPvpManager.mayReactToTarget(aggressor, FakePlayersConfig.PHANTOM_PVP_RED_REACT_ALL, red))
 			{
-				continue; // only already-flagged or red targets (only red ones for a phantom that is not an aggressor); a clean white player is Phase 4 (ganking), not this
+				continue; // only flagged or red targets, and only red for non-aggressors
 			}
 			if (sameClanOrAlly(phantom, p) || p.isNewbie() || !p.isAutoAttackable(phantom))
 			{
@@ -5573,7 +5875,7 @@ public class PhantomManager implements IXmlReader
 				_pvpVictimCooldownUntil.remove(p.getObjectId(), until); // stale entry; prune it
 			}
 			final double distance = phantom.calculateDistance2D(p);
-			if (distance < bestDistance)
+			if ((best == null) || PhantomPvpManager.preferReactTarget(red, distance, best.getKarma() > 0, bestDistance))
 			{
 				bestDistance = distance;
 				best = p;
@@ -5865,9 +6167,9 @@ public class PhantomManager implements IXmlReader
 	 * As above, but pinned to one class. {@code classId} is resolved for the actor's level like any named recruit
 	 * (a Titan below the third-class level comes as the Destroyer or earlier); 0 or less keeps the role's random class.
 	 */
-	public Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout, boolean cpPotions)
+	public synchronized Player spawnEncounterActor(Player victim, Location where, int level, PartyRole role, int enchant, PhantomEncounterRules.EncounterGroup group, String fixedName, int classId, int escapeChance, boolean escapeOnRout, boolean cpPotions)
 	{
-		if ((victim == null) || (where == null) || (group == null))
+		if (!PhantomPvpManager.pvpEnabled() || (victim == null) || (where == null) || (group == null))
 		{
 			return null;
 		}
@@ -5896,7 +6198,8 @@ public class PhantomManager implements IXmlReader
 		data.encounterGroup = group;
 		data.encounterVictimOid = victim.getObjectId();
 		data.encounterPhase = ENC_APPROACH;
-		data.encounterDeadline = now + (group.style().approachSeconds * 1000L);
+		data.encounterDeadline = 0;
+		data.encounterPreparing = true;
 		data.encounterLastMoveAt = now;
 		data.encounterLastX = victim.getX();
 		data.encounterLastY = victim.getY();
@@ -5911,6 +6214,28 @@ public class PhantomManager implements IXmlReader
 		}
 		data.encounterActor = true; // last: the pvp tick treats it as an encounter actor from here on
 		return actor;
+	}
+
+	// Runs on every disabled tick, including actors finishing a spawn during the config reload.
+	// Share the spawn lock so cleanup never tears down a partially configured actor.
+	private synchronized void removeDisabledEncounters()
+	{
+		for (PhantomData data : _phantoms.values())
+		{
+			if (!data.encounterActor && !PhantomEncounterRules.isEncounterActor(data.player.getObjectId()))
+			{
+				continue;
+			}
+			PhantomEncounterRules.clearHostile(data.player.getObjectId());
+			try
+			{
+				despawnRecruit(data.player);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(getClass().getSimpleName() + ": Failed to remove disabled encounter actor " + data.player.getObjectId() + ": " + e.getMessage());
+			}
+		}
 	}
 
 	/** Exactly {@link #ENC_POTION_COUNT} each of the best healing, CP and mana potions (the outfit's larger healing stack is trimmed). */
@@ -5964,6 +6289,7 @@ public class PhantomManager implements IXmlReader
 		phantom.getInventory().destroyItemByItemId(ItemProcessType.DESTROY, ENC_ESCAPE_SCROLL_ID, 1, phantom, null);
 		phantom.broadcastPacket(new MagicSkillUse(phantom, phantom, ENC_ESCAPE_SKILL_ID, 1, 0, 0));
 		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		stopEncounterCombat(phantom);
 		if (data.pvpTargetOid != 0)
 		{
 			endPvp(phantom, data, victim);
@@ -5987,19 +6313,24 @@ public class PhantomManager implements IXmlReader
 
 	/**
 	 * Before the fight: a summoner calls its servitor (and gives it the same buffs a spawned phantom gets, plus its
-	 * shields), then everyone casts its class self-buffs. One cast per tick, each skill tried once, for at most
-	 * {@link #ENC_PREP_MS} from the spawn.
+	 * shields), then everyone casts its class self-buffs. One new cast per tick, each skill tried once, for at most
+	 * {@link #ENC_PREP_MS} from the spawn. A cast already in progress can finish after that budget.
 	 * @return {@code true} while it is busy with this
 	 */
 	private boolean prepareEncounterActor(Player phantom, PhantomData data, long now)
 	{
-		if (phantom.isDead() || (now >= data.encounterPrepUntil))
+		if (phantom.isDead())
 		{
 			return false;
 		}
 		if (phantom.isCastingNow())
 		{
 			return true;
+		}
+		prepareEncounterPet(phantom, data);
+		if (now >= data.encounterPrepUntil)
+		{
+			return false;
 		}
 		if (!PhantomPartyManager.readyToCast(phantom))
 		{
@@ -6010,10 +6341,10 @@ public class PhantomManager implements IXmlReader
 			final Summon pet = phantom.getSummon();
 			if (pet == null)
 			{
-				final int summonId = PhantomServitorRules.pickSummon(id -> PhantomPartyManager.castable(phantom, phantom.getKnownSkill(id)));
+				PhantomPartyManager.stockServitorCrystals(phantom);
+				final int summonId = PhantomServitorRules.pickSummon(id -> PhantomPartyManager.canCastSupportSkill(phantom, phantom.getKnownSkill(id), phantom));
 				if ((summonId != 0) && data.encounterPrepDone.add(-summonId))
 				{
-					PhantomPartyManager.stockServitorCrystals(phantom);
 					phantom.setTarget(phantom);
 					phantom.doCast(phantom.getKnownSkill(summonId));
 					return true;
@@ -6021,15 +6352,10 @@ public class PhantomManager implements IXmlReader
 			}
 			else if (pet.isServitor() && !pet.isDead())
 			{
-				if (data.petBuffedOid != pet.getObjectId())
-				{
-					data.petBuffedOid = pet.getObjectId();
-					PhantomBuffs.applyFullBuffsToServitor(pet);
-				}
 				for (int buffId : PhantomServitorRules.SERVITOR_BUFFS)
 				{
 					final Skill buff = phantom.getKnownSkill(buffId);
-					if ((buff != null) && !pet.isAffectedBySkill(buffId) && PhantomPartyManager.castable(phantom, buff) && data.encounterPrepDone.add(buffId))
+					if ((buff != null) && !pet.isAffectedBySkill(buffId) && PhantomPartyManager.canCastSupportSkill(phantom, buff, pet) && data.encounterPrepDone.add(buffId))
 					{
 						phantom.setTarget(pet);
 						phantom.doCast(buff);
@@ -6041,7 +6367,7 @@ public class PhantomManager implements IXmlReader
 		for (int id : PhantomEncounterBuffs.forClass(phantom.getPlayerClass().getId()))
 		{
 			final Skill skill = phantom.getKnownSkill(id);
-			if ((skill != null) && !phantom.isAffectedBySkill(id) && PhantomPartyManager.castable(phantom, skill) && data.encounterPrepDone.add(id))
+			if ((skill != null) && !phantom.isAffectedBySkill(id) && PhantomPartyManager.canCastSupportSkill(phantom, skill, phantom) && data.encounterPrepDone.add(id))
 			{
 				phantom.setTarget(phantom);
 				phantom.doCast(skill);
@@ -6051,11 +6377,67 @@ public class PhantomManager implements IXmlReader
 		return false;
 	}
 
-	/** Sends a summoner's servitor at the fight's target, and now and then has it use one of its damage skills. */
-	private static void commandEncounterPet(Player phantom, PhantomData data, Creature target)
+	/** A summon finishing after the cast budget still receives its kit before combat. */
+	private static void prepareEncounterPet(Player phantom, PhantomData data)
 	{
 		final Summon pet = phantom.getSummon();
-		if ((pet == null) || !pet.isServitor() || pet.isDead() || target.isDead() || pet.isCastingNow())
+		if ((pet != null) && pet.isServitor() && !pet.isDead() && (data.encounterPetBuffedOid != pet.getObjectId()))
+		{
+			PhantomBuffs.applyFullBuffsToServitor(pet);
+			data.encounterPetBuffedOid = pet.getObjectId();
+		}
+	}
+
+	/** Encounter companions leave immediately when their owner's one fight ends. */
+	private static void stopEncounterCombat(Player phantom)
+	{
+		phantom.abortAttack();
+		phantom.abortCast();
+		final Summon pet = phantom.getSummon();
+		PhantomPartyManager.stopServitorCombat(phantom);
+		if (pet != null)
+		{
+			pet.unSummon(phantom);
+		}
+	}
+
+	/** Recheck the exact encounter pair and native owner target gate before forcing a pet skill. */
+	private static boolean encounterPetAttackAllowed(Player phantom, PhantomData data, Player target)
+	{
+		return (target != null) && !phantom.isDead() && !target.isDead() && data.encounterActor && FakePlayersConfig.PHANTOM_PVP_ENABLED //
+			&& (data.encounterPhase == ENC_FIGHT) && (data.encounterEndAt == 0) //
+			&& PhantomEncounterRules.isHostile(phantom.getObjectId(), target.getObjectId()) //
+			&& (phantom.getInstanceId() == 0) && (target.getInstanceId() == 0) //
+			&& !phantom.isInDuel() && !target.isInDuel() && !phantom.isInOlympiadMode() && !target.isInOlympiadMode() //
+			&& !phantom.isOnEvent() && !target.isOnEvent() && !target.inObserverMode() //
+			&& !phantom.isInsideZone(ZoneId.PEACE) && !phantom.isInsideZone(ZoneId.NO_PVP) //
+			&& !target.isInsideZone(ZoneId.PEACE) && !target.isInsideZone(ZoneId.NO_PVP) && target.isAutoAttackable(phantom);
+	}
+
+	/** Send the servitor at the fight's target and periodically try a native damage skill. */
+	private static void commandEncounterPet(Player phantom, PhantomData data, Player target)
+	{
+		final Summon pet = phantom.getSummon();
+		if (!encounterPetAttackAllowed(phantom, data, target))
+		{
+			PhantomPartyManager.stopServitorCombat(phantom);
+			if (pet != null)
+			{
+				pet.unSummon(phantom);
+			}
+			return;
+		}
+		commandPetAttack(phantom, data, target, true);
+	}
+
+	/**
+	 * Sends a summoner's servitor at an already authorized target (an encounter's player or a field hunter's mob), and
+	 * now and then has it use a utility or damage skill.
+	 */
+	private static void commandPetAttack(Player phantom, PhantomData data, Creature target, boolean forceUse)
+	{
+		final Summon pet = phantom.getSummon();
+		if ((pet == null) || !pet.isServitor() || pet.isDead() || pet.isCastingNow())
 		{
 			return;
 		}
@@ -6064,8 +6446,13 @@ public class PhantomManager implements IXmlReader
 			pet.doSummonAttack(target);
 		}
 		final long now = System.currentTimeMillis();
-		if ((now - data.petSkillAt) < ENC_PET_SKILL_GAP_MS)
+		if ((now - data.encounterPetSkillAt) < ENC_PET_SKILL_GAP_MS)
 		{
+			return;
+		}
+		if (PhantomPartyManager.tryServitorUtility(pet, target, forceUse))
+		{
+			data.encounterPetSkillAt = now;
 			return;
 		}
 		for (Skill skill : PetSkillData.getInstance().getKnownSkills(pet))
@@ -6073,9 +6460,9 @@ public class PhantomManager implements IXmlReader
 			if (!skill.isPassive() && skill.isDamage() && !pet.isSkillDisabled(skill) && (pet.getCurrentMp() >= skill.getMpConsume()))
 			{
 				pet.setTarget(target);
-				if (pet.useMagic(skill, false, false))
+				if (pet.useMagic(skill, forceUse, false))
 				{
-					data.petSkillAt = now;
+					data.encounterPetSkillAt = now;
 					return;
 				}
 			}
@@ -6362,6 +6749,7 @@ public class PhantomManager implements IXmlReader
 		if (data.teamHold)
 		{
 			phantom.setAutoPlaying(false); // held: no auto skills either
+			PhantomPartyManager.stopServitorCombat(phantom);
 			return;
 		}
 		Player target = resolvePvpTarget(data);
@@ -6513,6 +6901,20 @@ public class PhantomManager implements IXmlReader
 		}
 	}
 
+	/**
+	 * A team summoner's servitor fights only a current enemy of a released fighter. The encounter gate in
+	 * {@link #commandEncounterPet} does not apply here: event players are never encounter targets.
+	 */
+	private static void commandTeamPet(Player phantom, PhantomData data, Player target)
+	{
+		if (data.teamHold || (target == null) || !isTeamEnemy(phantom, target))
+		{
+			PhantomPartyManager.stopServitorCombat(phantom);
+			return;
+		}
+		commandPetAttack(phantom, data, target, true);
+	}
+
 	/** @return {@code true} if {@code other} is on the same event team as {@code phantom} (or is itself); a free-for-all has no teammates */
 	private static boolean sameTeam(Player phantom, Player other)
 	{
@@ -6639,7 +7041,6 @@ public class PhantomManager implements IXmlReader
 		{
 			if (now >= data.encounterEndAt)
 			{
-				data.encounterActor = false;
 				despawnRecruit(phantom);
 			}
 			return;
@@ -6648,6 +7049,7 @@ public class PhantomManager implements IXmlReader
 		if (phantom.isDead())
 		{
 			PhantomEncounterRules.clearHostile(phantom.getObjectId());
+			stopEncounterCombat(phantom);
 			if ((style.defeatLines.length > 0) && group.claimDefeatLine())
 			{
 				sayNearby(phantom, style.defeatLines); // the first to fall whines
@@ -6666,9 +7068,11 @@ public class PhantomManager implements IXmlReader
 			}
 			return;
 		}
-		final boolean gone = (victim == null) || !victim.isOnline() || victim.isInsideZone(ZoneId.PEACE) || (victim.getInstanceId() != 0) //
-			|| phantom.isInsideZone(ZoneId.PEACE) || (phantom.calculateDistance2D(victim) > ENC_LEASH);
-		if (gone || (now >= data.encounterDeadline))
+		final boolean gone = (victim == null) || !victim.isOnline() || victim.isInsideZone(ZoneId.PEACE) || victim.isInsideZone(ZoneId.NO_PVP) || (victim.getInstanceId() != 0) //
+			|| phantom.isInsideZone(ZoneId.PEACE) || phantom.isInsideZone(ZoneId.NO_PVP) || (phantom.getInstanceId() != 0) //
+			|| victim.isInDuel() || phantom.isInDuel() || victim.isInOlympiadMode() || phantom.isInOlympiadMode() //
+			|| victim.isOnEvent() || phantom.isOnEvent() || victim.inObserverMode() || (phantom.calculateDistance2D(victim) > ENC_LEASH);
+		if (gone || (!data.encounterPreparing && (now >= data.encounterDeadline)))
 		{
 			endEncounter(phantom, data, victim, now, 1500, false); // victim escaped or the clock ran out: it simply leaves
 			return;
@@ -6682,9 +7086,15 @@ public class PhantomManager implements IXmlReader
 		{
 			return; // it read its scroll and is gone: counted as down
 		}
-		if ((data.encounterPhase != ENC_FIGHT) && prepareEncounterActor(phantom, data, now))
+		prepareEncounterPet(phantom, data);
+		if (data.encounterPreparing)
 		{
-			return; // casting its buffs or summoning: it joins the fight when it is ready, even if the group has started
+			if (prepareEncounterActor(phantom, data, now))
+			{
+				return; // let an initial cast finish, even if the group's fight has started
+			}
+			data.encounterPreparing = false;
+			data.encounterDeadline = now + (style.approachSeconds * 1000L);
 		}
 		final double distance = phantom.calculateDistance2D(victim);
 		switch (data.encounterPhase)
@@ -6781,6 +7191,7 @@ public class PhantomManager implements IXmlReader
 	private void endEncounter(Player phantom, PhantomData data, Player victim, long now, long leaveMs, boolean won)
 	{
 		PhantomEncounterRules.clearHostile(phantom.getObjectId());
+		stopEncounterCombat(phantom);
 		if (data.pvpTargetOid != 0)
 		{
 			endPvp(phantom, data, victim);
@@ -6843,7 +7254,7 @@ public class PhantomManager implements IXmlReader
 			endRest(phantom);
 			data.resting = false;
 		}
-		data.claimedOid = 0; // release any monster it owned to the hunt pool
+		setClaimedMob(data, 0); // release any monster it owned to the hunt pool
 	}
 
 	/** Validates the current opponent (alive, in range, out of a peace zone, engagement not expired) then drives it, or disengages. */
@@ -6901,9 +7312,13 @@ public class PhantomManager implements IXmlReader
 	private void pvpStandCombat(Player phantom, PhantomData data, Player target)
 	{
 		phantom.setTarget(target);
-		if ((data.encounterActor || data.teamFighter) && phantom.getPlayerClass().isSummoner())
+		if (data.encounterActor && phantom.getPlayerClass().isSummoner())
 		{
 			commandEncounterPet(phantom, data, target); // a summoner's servitor fights beside it
+		}
+		else if (data.teamFighter && phantom.getPlayerClass().isSummoner())
+		{
+			commandTeamPet(phantom, data, target);
 		}
 		if (data.mage)
 		{
@@ -7613,7 +8028,7 @@ public class PhantomManager implements IXmlReader
 				{
 					final WorldObject claimed = World.getInstance().findObject(data.claimedOid);
 					final boolean killed = (claimed == null) || ((claimed instanceof Monster) && ((Monster) claimed).isDead());
-					data.claimedOid = 0;
+					setClaimedMob(data, 0);
 					if (killed)
 					{
 						beginHuntPause(phantom, data, now);
@@ -7632,10 +8047,11 @@ public class PhantomManager implements IXmlReader
 				{
 					noteKillSteal(data, monster, System.currentTimeMillis());
 					yieldTarget(phantom);
-					data.claimedOid = 0;
+					setClaimedMob(data, 0);
 					needsTarget.add(data);
 					continue;
 				}
+				observeSpotEngagement(data, monster, now);
 				// Retaliation: turn on a mob that is attacking this hunter while it IGNORES it - typically an add that
 				// jumped the hunter while it was running to a not-yet-engaged target. Only when the current focus is
 				// NOT itself already fighting the hunter: once the hunter is trading blows with a mob, a second mob
@@ -7652,7 +8068,7 @@ public class PhantomManager implements IXmlReader
 						yieldTarget(phantom); // drop the old focus (it was not yet claimed by us this tick)
 						final int attackerId = attacker.getObjectId();
 						owner.put(attackerId, phantom);
-						data.claimedOid = attackerId;
+						setClaimedMob(data, attackerId);
 						data.nextRetargetAt = now + RETARGET_COOLDOWN;
 						data.lastMobX = attacker.getX();
 						data.lastMobY = attacker.getY();
@@ -7673,7 +8089,7 @@ public class PhantomManager implements IXmlReader
 				if (cur == null)
 				{
 					owner.put(id, phantom);
-					data.claimedOid = id;
+					setClaimedMob(data, id);
 				}
 				else if (phantom.calculateDistance2D(monster) < cur.calculateDistance2D(monster))
 				{
@@ -7682,16 +8098,16 @@ public class PhantomManager implements IXmlReader
 					final PhantomData curData = _phantoms.get(cur.getObjectId());
 					if (curData != null)
 					{
-						curData.claimedOid = 0;
+						setClaimedMob(curData, 0);
 						needsTarget.add(curData);
 					}
 					owner.put(id, phantom);
-					data.claimedOid = id;
+					setClaimedMob(data, id);
 				}
 				else
 				{
 					yieldTarget(phantom);
-					data.claimedOid = 0;
+					setClaimedMob(data, 0);
 					needsTarget.add(data);
 				}
 				// A field fighter that owns this live focus drives its class playstyle from here (paced by the
@@ -7722,7 +8138,7 @@ public class PhantomManager implements IXmlReader
 				if (mob != null)
 				{
 					owner.put(mob.getObjectId(), phantom);
-					data.claimedOid = mob.getObjectId();
+					setClaimedMob(data, mob.getObjectId());
 					phantom.setTarget(mob);
 					// Fighters engage now; mages just take the target - the mage tick positions and AutoUse nukes.
 					if (!data.mage)
@@ -7940,7 +8356,7 @@ public class PhantomManager implements IXmlReader
 		data.disperseUntil = System.currentTimeMillis() + DISPERSE_DURATION;
 		data.resting = false;
 		data.huntPauseUntil = 0;
-		data.claimedOid = 0;
+		setClaimedMob(data, 0);
 		if (phantom.isSitting())
 		{
 			phantom.standUp();

@@ -2466,6 +2466,9 @@ public abstract class Creature extends WorldObject
 			setDead(true);
 		}
 		
+		// Living World: committed lethal damage must reach a module before its synchronous death recap.
+		ModuleDamage.beforeDeath(this);
+
 		if (EventDispatcher.getInstance().hasListener(EventType.ON_CREATURE_DEATH, this))
 		{
 			EventDispatcher.getInstance().notifyEvent(new OnCreatureDeath(killer, this), this);
@@ -6485,21 +6488,11 @@ public abstract class Creature extends WorldObject
 		{
 			amount = 0;
 		}
-		
-		reportDamageToModules(amount, attacker, skill, isDOT);
-		
-		_status.reduceHp(amount, attacker, awake, isDOT, false);
-	}
-	
-	/**
-	 * Modules (a damage meter, an event score) hear every hit that counts: capped at what the target has left, nothing for
-	 * a dead or invulnerable one. Every override of {@code reduceCurrentHp} must call this before it lowers HP.
-	 */
-	protected void reportDamageToModules(double amount, Creature attacker, Skill skill, boolean isDOT)
-	{
-		if ((amount > 0) && (attacker != null) && ModuleDamage.active() && !isDead() && (isDOT || !isInvul()))
+
+		// Living World: measure committed HP/CP changes; native status handling still owns all damage rules.
+		try (ModuleDamage.Scope ignored = ModuleDamage.captureDamage(attacker, this, skill, isDOT))
 		{
-			ModuleDamage.dealt(attacker, this, Math.min(amount, getCurrentHp() + (isPlayer() ? getCurrentCp() : 0)), skill, isDOT);
+			_status.reduceHp(amount, attacker, awake, isDOT, false);
 		}
 	}
 	

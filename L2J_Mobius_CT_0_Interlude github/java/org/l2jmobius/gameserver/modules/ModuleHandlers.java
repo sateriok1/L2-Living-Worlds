@@ -116,12 +116,22 @@ public class ModuleHandlers
 	}
 
 	/**
-	 * Registers a Community Board handler (a page the board can show). Its command prefixes must not collide with
-	 * a stock board command; the board matches commands by prefix.
+	 * Registers a Community Board handler (a page the board can show). The board matches commands by prefix, so a
+	 * command that starts with, or is the start of, a command already registered (stock or another module's) is
+	 * refused, and the module with it.
 	 * @param handler the handler to register
+	 * @throws IllegalStateException if one of the handler's commands clashes with a registered command
 	 */
 	public void registerBoard(IParseBoardHandler handler)
 	{
+		for (String command : handler.getCommandList())
+		{
+			final String clash = CommunityBoardHandler.getInstance().findPrefixClash(command);
+			if (clash != null)
+			{
+				throw new IllegalStateException("Community Board command '" + command + "' clashes with the registered command '" + clash + "'. Board commands are matched by prefix, so pick one that neither starts with nor is the start of another.");
+			}
+		}
 		CommunityBoardHandler.getInstance().registerHandler(handler);
 		_handles.record("community board " + Arrays.toString(handler.getCommandList()));
 	}

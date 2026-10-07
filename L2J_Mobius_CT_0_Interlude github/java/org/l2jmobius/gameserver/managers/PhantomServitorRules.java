@@ -22,6 +22,8 @@ package org.l2jmobius.gameserver.managers;
 
 import java.util.Locale;
 import java.util.function.IntPredicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Pure rules for the summoner lineages (Warlock/Arcana Lord, Elemental Summoner/Elemental Master, Phantom
@@ -30,6 +32,8 @@ import java.util.function.IntPredicate;
  */
 public final class PhantomServitorRules
 {
+	private static final Pattern REQUEST_TARGET = Pattern.compile("\\b(?:summon|port|tp)\\s+(\\w+)\\b", Pattern.CASE_INSENSITIVE);
+	private static final Pattern NEGATED_REQUEST = Pattern.compile("\\b(?:don't|dont|do\\s+not|never|stop|cancel|no)\\s+(?:(?:ever|even|please|again|trying\\s+to)\\s+)*(?:the\\s+)?(?:summon(?:ing)?|port(?:ing)?|tp)\\b", Pattern.CASE_INSENSITIVE);
 	/**
 	 * Servitor summon skills, strongest tier first, across the three lineages (a member knows only its own lineage's,
 	 * so one list serves all). Corpse-based Necromancer summons are left out: they need a corpse target.
@@ -120,7 +124,7 @@ public final class PhantomServitorRules
 	public static boolean isSummonRequest(String text)
 	{
 		final String t = text.toLowerCase(Locale.ROOT);
-		if (t.contains("cubic") || t.contains("servitor") || t.contains("summon your") || t.contains("resummon"))
+		if (isSummonCancellation(text) || t.contains("cubic") || t.contains("servitor") || t.contains("summon your") || t.contains("resummon"))
 		{
 			return false;
 		}
@@ -128,6 +132,28 @@ public final class PhantomServitorRules
 			|| t.matches(".*\\b(summon|port)\\s+\\w+\\s+(to you|over|here)\\b.*") //
 			|| t.matches(".*\\bsummon\\s+friend\\b.*") //
 			|| t.matches(".*\\bsummon\\s+\\w+\\s*$");
+	}
+
+	/** Negated orders cancel a queued player summon rather than creating one. */
+	public static boolean isSummonCancellation(String text)
+	{
+		return NEGATED_REQUEST.matcher(text).find();
+	}
+
+	/** Explicit target token; caller-oriented requests resolve to "me". Never use substring player-name matching. */
+	public static String summonTarget(String text)
+	{
+		final Matcher match = REQUEST_TARGET.matcher(text);
+		if (!match.find())
+		{
+			return "";
+		}
+		final String target = match.group(1);
+		return switch (target.toLowerCase(Locale.ROOT))
+		{
+			case "me", "us", "him", "her", "them", "pls", "plz", "please", "friend", "everyone" -> "me";
+			default -> target;
+		};
 	}
 
 	/** @return how many seconds remain of a reuse in milliseconds, rounded up (never negative). */

@@ -29,6 +29,20 @@ public final class PhantomEncounterBuffs
 		BY_CLASS.put(93, new int[] { 357, 356 }); // Adventurer: Focus Power, Focus Chance
 		BY_CLASS.put(101, new int[] { 355, 356, 410, 446 }); // Wind Rider: Focus Death, Focus Chance, Mortal Strike, Dodge
 		BY_CLASS.put(108, new int[] { 355, 357, 410, 447 }); // Ghost Hunter: Focus Death, Focus Power, Mortal Strike, Counterattack
+		// Encounter spawning resolves lower levels to their second class; learned-skill checks filter this list.
+		for (int[] lineage : new int[][] { { 2, 88 }, { 3, 89 }, { 5, 90 }, { 6, 91 }, { 8, 93 }, { 9, 92 }, { 20, 99 }, { 23, 101 }, { 24, 102 }, { 33, 106 }, { 36, 108 }, { 37, 109 }, { 46, 113 }, { 48, 114 } })
+		{
+			BY_CLASS.put(lineage[0], BY_CLASS.get(lineage[1]));
+		}
+		BY_CLASS.put(1, new int[] { 297, 287, 78, 130, 121 }); // Warrior, before its melee specialization
+		BY_CLASS.put(4, new int[] { 72, 82, 438, 439, 86 }); // Human Knight
+		BY_CLASS.put(7, new int[] { 99, 131, 303, 415, 416, 357, 356 }); // Rogue
+		BY_CLASS.put(19, BY_CLASS.get(99)); // Elven Knight
+		BY_CLASS.put(22, new int[] { 413, 131, 303, 415, 416, 355, 356, 410, 446 }); // Elven Scout
+		BY_CLASS.put(32, BY_CLASS.get(106)); // Palus Knight
+		BY_CLASS.put(35, new int[] { 414, 131, 303, 415, 355, 357, 410, 447 }); // Assassin
+		BY_CLASS.put(45, BY_CLASS.get(113)); // Orc Raider
+		BY_CLASS.put(47, BY_CLASS.get(114)); // Monk
 	}
 
 	private PhantomEncounterBuffs()

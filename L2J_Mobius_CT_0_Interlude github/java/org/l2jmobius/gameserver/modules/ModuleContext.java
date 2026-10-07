@@ -59,14 +59,14 @@ public interface ModuleContext
 	ModuleEncounters encounters();
 
 	/**
+	 * @return combat damage and instant healing notifications for this module
+	 */
+	ModuleDamage damage();
+
+	/**
 	 * @return the duel surface: duelists that stand at a spot, take duels and challenge players, and a result hook
 	 */
 	ModuleDuels duels();
-
-	/**
-	 * @return the damage surface: a hook for every hit that lowers HP, with who did it, to whom, and the skill
-	 */
-	ModuleDamage damage();
 
 	/**
 	 * @return the team surface: blue and red teams for events, with phantom fighters that hunt the other side
