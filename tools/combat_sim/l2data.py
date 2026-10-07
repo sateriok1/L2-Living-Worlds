@@ -10,7 +10,7 @@ DAMAGE_EFFECTS = {"PhysicalDamage", "MagicalDamage", "HpDrain", "EnergyDamage", 
 class SkillDef:
     """One skill at one level, with every table already resolved to a number."""
     __slots__ = ("id", "level", "name", "magic", "op", "power", "mp", "hit", "cool", "reuse", "range",
-                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff", "blow_chance", "self_blow", "dot", "charge_use", "charge_gain", "energy")
+                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff", "blow_chance", "self_blow", "dot", "charge_use", "charge_gain", "energy", "charge_req")
 
     def damage_kind(self):
         for e in self.effects:
@@ -111,6 +111,11 @@ def load_skills():
                             d.dot = (pw, iv, math.floor(dur / iv) * iv, val("activateRate", lv, 100.0) / 100.0, (sk.findtext("abnormalType") or "").strip())
                 d.charge_use = int(val("chargeConsume", lv, 0))      # Sonic/Force charges the skill consumes (Player.Charges condition)
                 d.charge_gain, d.energy = 0, False
+                d.charge_req = d.charge_use               # <player Charges="N"> condition: charges needed (Force Burst / Force Storm need 1 but consume none)
+                if cond is not None:
+                    for pl in cond.iter("player"):
+                        if pl.get("Charges") and pl.get("Charges").isdigit():
+                            d.charge_req = max(d.charge_req, int(pl.get("Charges")))
                 for eff in list(sk.findall("effects/effect")) + list(sk.findall("selfEffects/effect")):
                     if eff.get("name") == "FocusEnergy":       # +1 charge, up to the table's maximum
                         txt = (eff.findtext("charge") or "").strip()

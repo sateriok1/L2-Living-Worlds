@@ -199,7 +199,7 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
 
     def can(sid):
         s = skills[sid]
-        if s.charge_use and charges[0] < s.charge_use:
+        if max(s.charge_use, s.charge_req) and charges[0] < max(s.charge_use, s.charge_req):
             return False
         if s.charge_gain and charges[0] >= s.charge_gain:
             return False

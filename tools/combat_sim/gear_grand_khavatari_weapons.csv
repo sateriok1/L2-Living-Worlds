@@ -1,0 +1,12 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect,reuse_delay
+Grand Khavatari,NG,257,Viper Fang,,DUALFIST,2H,38.0,21.0,325.0,4.0,SS-NG,,,0
+Grand Khavatari,D,262,Scallop Jamadhr,,DUALFIST,2H,112.0,54.0,325.0,4.0,SS-D,,,0
+Grand Khavatari,C,266,Great Pata,,DUALFIST,2H,190.0,83.0,325.0,4.0,SS-C,,,0
+Grand Khavatari,B,268,Bellion Cestus,,DUALFIST,2H,236.0,99.0,325.0,4.0,SS-B,,,0
+Grand Khavatari,B,267,Arthro Nail,,DUALFIST,2H,213.0,91.0,325.0,4.0,SS-B,,,0
+Grand Khavatari,A,8685,Sobekk's Hurricane,,DUALFIST,2H,305.0,121.0,325.0,4.0,SS-A,,,0
+Grand Khavatari,A,8810,Sobekk's Hurricane,Haste,DUALFIST,2H,305.0,121.0,325.0,4.0,SS-A,3068:3,pAtkSpd x1.06,0
+Grand Khavatari,A,270,Dragon Grinder,,DUALFIST,2H,282.0,114.0,325.0,4.0,SS-A,,,0
+Grand Khavatari,A,5624,Dragon Grinder,Guidance,DUALFIST,2H,282.0,114.0,325.0,4.0,SS-A,3065:1,accCombat +5.41,0
+Grand Khavatari,S,6371,Demon Splinter,,DUALFIST,2H,342.0,132.0,325.0,4.0,SS-S,,,0
+Grand Khavatari,S,6602,Demon Splinter,Focus,DUALFIST,2H,342.0,132.0,325.0,4.0,SS-S,3565:1,critRate +80.6,0
