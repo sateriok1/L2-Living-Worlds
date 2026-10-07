@@ -38,6 +38,9 @@ import org.l2jmobius.gameserver.model.actor.enums.creature.Team;
  */
 public class ModuleTeams
 {
+	/** Players held by {@link #lock}, so {@link #leave} only undoes a lock this surface applied (FPC-245). */
+	private final java.util.Set<Integer> _locked = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
 	ModuleTeams()
 	{
 	}
@@ -95,6 +98,14 @@ public class ModuleTeams
 		{
 			player.setImmobilized(locked);
 			player.setInvul(locked);
+			if (locked)
+			{
+				_locked.add(player.getObjectId());
+			}
+			else
+			{
+				_locked.remove(player.getObjectId());
+			}
 		}
 	}
 
@@ -163,11 +174,16 @@ public class ModuleTeams
 		}
 	}
 
-	/** Takes a real player off their team. */
+	/** Takes a real player off their team, and frees them if {@link #lock} still holds them. */
 	public void leave(Player player)
 	{
 		if (player != null)
 		{
+			if (_locked.remove(player.getObjectId()))
+			{
+				player.setImmobilized(false);
+				player.setInvul(false);
+			}
 			player.setOnEvent(false);
 			player.setOnSoloEvent(false);
 			player.setTeam(Team.NONE);

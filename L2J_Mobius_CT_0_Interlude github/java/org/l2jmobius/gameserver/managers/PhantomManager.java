@@ -5242,6 +5242,7 @@ public class PhantomManager implements IXmlReader
 		if (!PhantomPvpManager.pvpEnabled())
 		{
 			removeDisabledEncounters();
+			removeDisabledTeamFighters(); // FPC-245: nothing drives them while PvP is off
 			// FPC-115: switched off (a config reload). Release every open engagement once, or the hunt and party ticks
 			// would keep deferring to phantoms nothing drives any more. Idle after that, as before.
 			if (_pvpWasEnabled)
@@ -6534,9 +6535,9 @@ public class PhantomManager implements IXmlReader
 	 * Like {@link #spawnTeamFighter(Team, Location, Location, int, PartyRole, int, String, int)}, but with {@code solo}
 	 * the fighter is on no team and fights every other solo event player (a free-for-all).
 	 */
-	public Player spawnTeamFighter(Team team, boolean solo, Location where, Location rally, int level, PartyRole role, int enchant, String fixedName, int classId)
+	public synchronized Player spawnTeamFighter(Team team, boolean solo, Location where, Location rally, int level, PartyRole role, int enchant, String fixedName, int classId)
 	{
-		if ((team == null) || (!solo && (team == Team.NONE)) || (where == null) || (role == null))
+		if (!PhantomPvpManager.pvpEnabled() || (team == null) || (!solo && (team == Team.NONE)) || (where == null) || (role == null))
 		{
 			return null;
 		}
@@ -6656,6 +6657,29 @@ public class PhantomManager implements IXmlReader
 			fighter.setOnSoloEvent(false);
 			fighter.setTeam(Team.NONE);
 			despawnRecruit(fighter);
+		}
+	}
+
+	/**
+	 * FPC-245: with Phantom PvP switched off (a config reload) the PvP tick no longer drives team fighters, so they are
+	 * taken off their teams and removed instead of standing frozen. Shares the spawn lock like the encounter cleanup.
+	 */
+	private synchronized void removeDisabledTeamFighters()
+	{
+		for (PhantomData data : _phantoms.values())
+		{
+			if (!data.teamFighter)
+			{
+				continue;
+			}
+			try
+			{
+				discardTeamFighter(data.player);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(getClass().getSimpleName() + ": Failed to remove team fighter " + data.player.getObjectId() + ": " + e.getMessage());
+			}
 		}
 	}
 
@@ -6850,7 +6874,7 @@ public class PhantomManager implements IXmlReader
 				continue; // the slow heal only when it is bad
 			}
 			final Skill skill = healer.getKnownSkill(id);
-			if ((skill != null) && PhantomPartyManager.castable(healer, skill))
+			if ((skill != null) && PhantomPartyManager.canCastSupportSkill(healer, skill, worst)) // FPC-244: native conditions too
 			{
 				healer.setTarget(worst);
 				healer.doCast(skill);
