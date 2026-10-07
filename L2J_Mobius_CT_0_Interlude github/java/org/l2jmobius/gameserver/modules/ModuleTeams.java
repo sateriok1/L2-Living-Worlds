@@ -38,8 +38,11 @@ import org.l2jmobius.gameserver.model.actor.enums.creature.Team;
  */
 public class ModuleTeams
 {
-	/** Players held by {@link #lock}, so {@link #leave} only undoes a lock this surface applied (FPC-245). */
-	private final java.util.Set<Integer> _locked = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	/**
+	 * Players held by {@link #lock}, with the immobilized and invulnerable state each had before, so unlocking restores
+	 * exactly that state instead of clearing it (FPC-245, FPC-253).
+	 */
+	private final java.util.Map<Integer, boolean[]> _locked = new java.util.concurrent.ConcurrentHashMap<>();
 
 	ModuleTeams()
 	{
@@ -94,18 +97,30 @@ public class ModuleTeams
 	/** Locks a real player in place and makes them untouchable (for a countdown), or frees them. */
 	public void lock(Player player, boolean locked)
 	{
-		if (player != null)
+		if (player == null)
 		{
-			player.setImmobilized(locked);
-			player.setInvul(locked);
-			if (locked)
-			{
-				_locked.add(player.getObjectId());
-			}
-			else
-			{
-				_locked.remove(player.getObjectId());
-			}
+			return;
+		}
+		if (locked)
+		{
+			_locked.putIfAbsent(player.getObjectId(), new boolean[] { player.isImmobilized(), player.isInvulRaw() });
+			player.setImmobilized(true);
+			player.setInvul(true);
+		}
+		else
+		{
+			unlock(player);
+		}
+	}
+
+	/** Restores what {@link #lock} changed; does nothing for a player it does not hold. */
+	private void unlock(Player player)
+	{
+		final boolean[] before = _locked.remove(player.getObjectId());
+		if (before != null)
+		{
+			player.setImmobilized(before[0]);
+			player.setInvul(before[1]);
 		}
 	}
 
@@ -116,42 +131,52 @@ public class ModuleTeams
 	}
 
 	/**
-	 * Puts these players in one party, the first as leader. Any party they were in is left first. A party holds nine at
-	 * most; extras are ignored.
+	 * Puts these players in one party, the first as leader. All of them must be on the same blue or red team (a
+	 * free-for-all has no parties); otherwise nothing changes. Only once the whole list is valid does each member leave
+	 * the party it was in (FPC-255). A party holds nine at most; extras are ignored.
+	 * @return {@code true} if the party was formed
 	 */
-	public void formParty(java.util.List<Player> members)
+	public boolean formParty(java.util.List<Player> members)
 	{
-		if ((members == null) || members.isEmpty())
+		if ((members == null) || (members.size() < 2))
 		{
-			return;
+			return false;
+		}
+		final java.util.List<Player> chosen = new java.util.ArrayList<>();
+		final Player leader = members.get(0);
+		for (Player p : members)
+		{
+			if (chosen.size() >= 9)
+			{
+				break;
+			}
+			if ((p == null) || chosen.contains(p) || !p.isOnEvent() || p.isOnSoloEvent() || (p.getTeam() == Team.NONE) || (leader == null) || (p.getTeam() != leader.getTeam()))
+			{
+				java.util.logging.Logger.getLogger("ModuleTeams").warning("ModuleTeams.formParty refused: every member must be a distinct player on the leader's event team.");
+				return false;
+			}
+			chosen.add(p);
 		}
 		try
 		{
-			final Player leader = members.get(0);
-			for (Player p : members)
+			for (Player p : chosen)
 			{
-				if ((p != null) && p.isInParty())
+				if (p.isInParty())
 				{
 					p.leaveParty();
 				}
 			}
-			if (members.size() < 2)
-			{
-				return;
-			}
 			leader.setParty(new org.l2jmobius.gameserver.model.groups.Party(leader, org.l2jmobius.gameserver.model.groups.PartyDistributionType.FINDERS_KEEPERS));
-			for (int i = 1; (i < members.size()) && (i < 9); i++)
+			for (int i = 1; i < chosen.size(); i++)
 			{
-				final Player p = members.get(i);
-				if ((p != null) && (p != leader))
-				{
-					p.joinParty(leader.getParty());
-				}
+				chosen.get(i).joinParty(leader.getParty());
 			}
+			return true;
 		}
 		catch (Exception e)
 		{
 			java.util.logging.Logger.getLogger("ModuleTeams").warning("ModuleTeams.formParty failed: " + e);
+			return false;
 		}
 	}
 
@@ -169,6 +194,7 @@ public class ModuleTeams
 	{
 		if (player != null)
 		{
+			player.setOnSoloEvent(false); // FPC-247: a stale solo flag would bypass the teammate protection
 			player.setTeam(blue ? Team.BLUE : Team.RED);
 			player.setOnEvent(true);
 		}
@@ -179,11 +205,7 @@ public class ModuleTeams
 	{
 		if (player != null)
 		{
-			if (_locked.remove(player.getObjectId()))
-			{
-				player.setImmobilized(false);
-				player.setInvul(false);
-			}
+			unlock(player);
 			player.setOnEvent(false);
 			player.setOnSoloEvent(false);
 			player.setTeam(Team.NONE);

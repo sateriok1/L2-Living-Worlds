@@ -8436,6 +8436,12 @@ public class Player extends Playable
 		// Check if the attacker is in an event
 		if (isOnEvent())
 		{
+			// Living World: a player (or summon) outside the event cannot attack an event player; monsters returned above.
+			final Player actingPlayer = attacker.asPlayer();
+			if ((actingPlayer != null) && !actingPlayer.isOnEvent())
+			{
+				return false;
+			}
 			return isOnSoloEvent() || (getTeam() != attacker.getTeam());
 		}
 		

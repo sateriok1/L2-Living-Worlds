@@ -3055,6 +3055,16 @@ public abstract class Creature extends WorldObject
 		return _isInvul || _isTeleporting || isAffected(EffectFlag.INVUL);
 	}
 	
+	/**
+	 * Living World: the invulnerability flag alone, without teleport or effect invulnerability, so a caller that sets it
+	 * temporarily can restore exactly what was there.
+	 * @return the value last given to {@link #setInvul(boolean)}
+	 */
+	public boolean isInvulRaw()
+	{
+		return _isInvul;
+	}
+	
 	public void setMortal(boolean value)
 	{
 		_isMortal = value;

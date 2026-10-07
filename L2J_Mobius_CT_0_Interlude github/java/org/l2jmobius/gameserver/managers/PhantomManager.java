@@ -5051,7 +5051,7 @@ public class PhantomManager implements IXmlReader
 	 * heals and recharges it, keeps its shields up, and sends it at the owner's target.
 	 * @return {@code true} if the summoner is busy with a cast this tick
 	 */
-	private boolean tendHunterServitor(Player phantom, PhantomData data, Monster focus)
+	private boolean tendHunterServitor(Player phantom, PhantomData data, Creature focus)
 	{
 		if (!phantom.getPlayerClass().isSummoner() || phantom.isDead())
 		{
@@ -5243,6 +5243,7 @@ public class PhantomManager implements IXmlReader
 		{
 			removeDisabledEncounters();
 			removeDisabledTeamFighters(); // FPC-245: nothing drives them while PvP is off
+			removeDisabledDuelists(); // FPC-254: nor arena duelists
 			// FPC-115: switched off (a config reload). Release every open engagement once, or the hunt and party ticks
 			// would keep deferring to phantoms nothing drives any more. Idle after that, as before.
 			if (_pvpWasEnabled)
@@ -5294,6 +5295,11 @@ public class PhantomManager implements IXmlReader
 				// An arena duelist does nothing on its own: it only plays out the duel it was sent to or asked into.
 				if (data.arenaDuelist)
 				{
+					if (!PhantomPvpManager.duelsEnabled() && !phantom.isInDuel())
+					{
+						despawnRecruit(phantom); // FPC-254: duels switched off while PvP stays on
+						continue;
+					}
 					if ((data.pvpTargetOid != 0) && !phantom.isDead())
 					{
 						continuePvp(phantom, data, now);
@@ -6683,6 +6689,26 @@ public class PhantomManager implements IXmlReader
 		}
 	}
 
+	/** FPC-254: arena duelists are removed while duels are off; one still in a duel goes once that duel is over. */
+	private synchronized void removeDisabledDuelists()
+	{
+		for (PhantomData data : _phantoms.values())
+		{
+			if (!data.arenaDuelist || data.player.isInDuel())
+			{
+				continue;
+			}
+			try
+			{
+				despawnRecruit(data.player);
+			}
+			catch (Exception e)
+			{
+				LOGGER.warning(getClass().getSimpleName() + ": Failed to remove arena duelist " + data.player.getObjectId() + ": " + e.getMessage());
+			}
+		}
+	}
+
 	/** @return {@code true} if {@code other} is a living member of a team that is not {@code phantom}'s */
 	private static boolean isTeamEnemy(Player phantom, Player other)
 	{
@@ -6770,10 +6796,21 @@ public class PhantomManager implements IXmlReader
 			return; // casting its buffs or summoning
 		}
 		drinkEncounterPotions(phantom, data);
+		// FPC-251: a summoner keeps its servitor up for the whole event, not only in the preparation window.
+		if (tendHunterServitor(phantom, data, null))
+		{
+			return; // calling, healing, recharging or buffing its servitor
+		}
 		if (data.teamHold)
 		{
 			phantom.setAutoPlaying(false); // held: no auto skills either
 			PhantomPartyManager.stopServitorCombat(phantom);
+			return;
+		}
+		// FPC-250: a healer looks after its team whether or not an enemy is in sight.
+		if (teamHeal(phantom))
+		{
+			phantom.setAutoPlaying(false);
 			return;
 		}
 		Player target = resolvePvpTarget(data);
@@ -6789,6 +6826,7 @@ public class PhantomManager implements IXmlReader
 		phantom.setAutoPlaying((target != null) && !isTeamHealer(phantom) && (phantom.calculateDistance2D(target) <= reach));
 		if (target == null)
 		{
+			PhantomPartyManager.stopServitorCombat(phantom); // FPC-252: no enemy, so the servitor stands down too
 			final Location rally = data.teamRally;
 			if ((rally != null) && !phantom.isMoving() && !phantom.isCastingNow() && (phantom.calculateDistance2D(rally) > TEAM_RALLY_RADIUS))
 			{
@@ -6796,10 +6834,6 @@ public class PhantomManager implements IXmlReader
 				phantom.getAI().setIntention(Intention.MOVE_TO, rally);
 			}
 			return;
-		}
-		if (teamHeal(phantom))
-		{
-			return; // a healer looks after its team before it fights
 		}
 		if (isTeamHealer(phantom))
 		{
@@ -6816,7 +6850,6 @@ public class PhantomManager implements IXmlReader
 		1217, // Greater Heal
 		1011 // Heal
 	};
-	private static final int TEAM_HEAL_RANGE = 800;
 
 	/** @return {@code true} if the phantom is a healer class that knows a single-target heal (a summoner that happens to know Heal is not one) */
 	private static boolean isTeamHealer(Player phantom)
@@ -6840,17 +6873,34 @@ public class PhantomManager implements IXmlReader
 	/** A healer on a team heals the most hurt teammate in range (itself included) below 90% HP, because PvP is fast. @return {@code true} if it cast or is casting */
 	private boolean teamHeal(Player healer)
 	{
-		if (healer.isCastingNow())
-		{
-			return true;
-		}
 		if (!isTeamHealer(healer))
 		{
 			return false;
 		}
+		if (healer.isCastingNow())
+		{
+			return true;
+		}
+		// FPC-248/249: the healer itself is a candidate (the visible-object scan never returns it), and only
+		// teammates within the heals' native cast range count; doCast does not enforce that range itself.
+		int scanRange = 0;
+		for (int id : TEAM_HEAL_SKILLS)
+		{
+			final Skill skill = healer.getKnownSkill(id);
+			if (skill != null)
+			{
+				scanRange = Math.max(scanRange, skill.getCastRange());
+			}
+		}
+		final List<Player> candidates = new ArrayList<>();
+		candidates.add(healer);
+		if (scanRange > 0)
+		{
+			candidates.addAll(World.getInstance().getVisibleObjectsInRange(healer, Player.class, scanRange));
+		}
 		Player worst = null;
 		double worstPercent = 100;
-		for (Player p : World.getInstance().getVisibleObjectsInRange(healer, Player.class, TEAM_HEAL_RANGE))
+		for (Player p : candidates)
 		{
 			if (!sameTeam(healer, p) || p.isDead())
 			{
@@ -6874,7 +6924,11 @@ public class PhantomManager implements IXmlReader
 				continue; // the slow heal only when it is bad
 			}
 			final Skill skill = healer.getKnownSkill(id);
-			if ((skill != null) && PhantomPartyManager.canCastSupportSkill(healer, skill, worst)) // FPC-244: native conditions too
+			if ((skill == null) || ((worst != healer) && (healer.calculateDistance3D(worst) > (skill.getCastRange() + healer.getTemplate().getCollisionRadius()))))
+			{
+				continue;
+			}
+			if (PhantomPartyManager.canCastSupportSkill(healer, skill, worst)) // FPC-244: native conditions too
 			{
 				healer.setTarget(worst);
 				healer.doCast(skill);
@@ -6954,9 +7008,9 @@ public class PhantomManager implements IXmlReader
 	// ---------------------------------------------------------------------
 
 	/** Makes a geared phantom that stays put, takes duels from anyone, and challenges only when {@link #challengeToDuel} says so. */
-	public Player spawnArenaDuelist(Location where, int level, PartyRole role, int enchant, String fixedName, int classId)
+	public synchronized Player spawnArenaDuelist(Location where, int level, PartyRole role, int enchant, String fixedName, int classId)
 	{
-		if ((where == null) || (role == null))
+		if (!PhantomPvpManager.duelsEnabled() || (where == null) || (role == null)) // FPC-254: none while duels are off
 		{
 			return null;
 		}
