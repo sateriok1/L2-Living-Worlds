@@ -1,0 +1,296 @@
+{
+ "Arcana Lord": {
+  "20": {
+   "none": [
+    130,
+    16,
+    "Mew the Cat"
+   ],
+   "party": [
+    148,
+    18,
+    "Mew the Cat"
+   ]
+  },
+  "30": {
+   "none": [
+    213,
+    56,
+    "Mew the Cat"
+   ],
+   "party": [
+    302,
+    63,
+    "Mew the Cat"
+   ]
+  },
+  "40": {
+   "none": [
+    381,
+    94,
+    "Kat the Cat"
+   ],
+   "party": [
+    605,
+    123,
+    "Kat the Cat"
+   ]
+  },
+  "50": {
+   "none": [
+    403,
+    67,
+    "Kai the Cat"
+   ],
+   "party": [
+    703,
+    110,
+    "Kai the Cat"
+   ]
+  },
+  "60": {
+   "none": [
+    447,
+    115,
+    "Kai the Cat"
+   ],
+   "party": [
+    865,
+    241,
+    "Kai the Cat"
+   ]
+  },
+  "70": {
+   "none": [
+    637,
+    161,
+    "Kai the Cat"
+   ],
+   "party": [
+    1188,
+    348,
+    "Kai the Cat"
+   ]
+  },
+  "76": {
+   "none": [
+    706,
+    179,
+    "Kai the Cat"
+   ],
+   "party": [
+    1796,
+    556,
+    "Kai the Cat"
+   ]
+  },
+  "80": {
+   "none": [
+    721,
+    179,
+    "Kai the Cat"
+   ],
+   "party": [
+    2534,
+    818,
+    "Kai the Cat"
+   ]
+  }
+ },
+ "Elemental Master": {
+  "20": {
+   "none": [
+    137,
+    16,
+    "Mirage the Unicorn"
+   ],
+   "party": [
+    158,
+    18,
+    "Mirage the Unicorn"
+   ]
+  },
+  "30": {
+   "none": [
+    228,
+    56,
+    "Mirage the Unicorn"
+   ],
+   "party": [
+    327,
+    63,
+    "Mirage the Unicorn"
+   ]
+  },
+  "40": {
+   "none": [
+    407,
+    94,
+    "Boxer the Unicorn"
+   ],
+   "party": [
+    640,
+    123,
+    "Boxer the Unicorn"
+   ]
+  },
+  "50": {
+   "none": [
+    407,
+    67,
+    "Merrow the Unicorn"
+   ],
+   "party": [
+    729,
+    110,
+    "Merrow the Unicorn"
+   ]
+  },
+  "60": {
+   "none": [
+    433,
+    115,
+    "Merrow the Unicorn"
+   ],
+   "party": [
+    846,
+    241,
+    "Merrow the Unicorn"
+   ]
+  },
+  "70": {
+   "none": [
+    594,
+    161,
+    "Merrow the Unicorn"
+   ],
+   "party": [
+    1154,
+    348,
+    "Merrow the Unicorn"
+   ]
+  },
+  "76": {
+   "none": [
+    698,
+    179,
+    "Merrow the Unicorn"
+   ],
+   "party": [
+    1679,
+    556,
+    "Merrow the Unicorn"
+   ]
+  },
+  "80": {
+   "none": [
+    715,
+    179,
+    "Merrow the Unicorn"
+   ],
+   "party": [
+    2325,
+    818,
+    "Merrow the Unicorn"
+   ]
+  }
+ },
+ "Spectral Master": {
+  "20": {
+   "none": [
+    115,
+    16,
+    "Silhouette"
+   ],
+   "party": [
+    131,
+    18,
+    "Silhouette"
+   ]
+  },
+  "30": {
+   "none": [
+    185,
+    56,
+    "Silhouette"
+   ],
+   "party": [
+    258,
+    63,
+    "Silhouette"
+   ]
+  },
+  "40": {
+   "none": [
+    314,
+    94,
+    "Shadow"
+   ],
+   "party": [
+    524,
+    123,
+    "Shadow"
+   ]
+  },
+  "50": {
+   "none": [
+    348,
+    67,
+    "Soulless"
+   ],
+   "party": [
+    617,
+    110,
+    "Soulless"
+   ]
+  },
+  "60": {
+   "none": [
+    424,
+    115,
+    "Soulless"
+   ],
+   "party": [
+    753,
+    241,
+    "Soulless"
+   ]
+  },
+  "70": {
+   "none": [
+    560,
+    161,
+    "Soulless"
+   ],
+   "party": [
+    1053,
+    348,
+    "Soulless"
+   ]
+  },
+  "76": {
+   "none": [
+    621,
+    179,
+    "Soulless"
+   ],
+   "party": [
+    1800,
+    556,
+    "Soulless"
+   ]
+  },
+  "80": {
+   "none": [
+    635,
+    179,
+    "Soulless"
+   ],
+   "party": [
+    2691,
+    818,
+    "Soulless"
+   ]
+  }
+ }
+}

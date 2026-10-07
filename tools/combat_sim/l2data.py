@@ -151,6 +151,7 @@ def load_classes():
         names[cid] = c.get("name")
         if c.get("parentClassId") is not None:
             parent[cid] = int(c.get("parentClassId"))
+    parent[104] = 28        # classList.xml lists Elemental Master under Elven Wizard, but its 2nd class is Elemental Summoner (the Java ClassId enum agrees)
     return names, parent
 
 
