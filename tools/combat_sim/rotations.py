@@ -123,6 +123,12 @@ def build_actor(st, w):
                    crit_pos=st["crit_pos"][POSITION or "front"], hp_max=st["hp_max"] if MODEL_HP else 0.0, hp_regen_3s=st["hp_regen_3s"])
 
 
+FAST_MAGE = os.environ.get('L2_FULL') is None      # L2_FULL=1 keeps the exhaustive caster search
+MAGE_ROWS = 6
+MAGE_SKILLS = 5          # more usable skills than this -> greedy selection
+GREEDY_MAX = 6
+
+
 def pareto(rows):
     """Drop combos that are no better on P.Atk, attack speed, auto crit, STR bonus and MP than another combo."""
     keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "crit_mul", "blow_mul", "crit_pos_now", "m_atk", "m_atk_spd", "m_crit") + (("mp_max", "mp_regen_3s") if MODEL_MP else ()) + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
@@ -156,11 +162,42 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
         for f in (foci or [None]):
             rows.append(((w, a, f), setup(level, cid, w, a, learned, bname, f)[0]))
     rows = pareto(rows)
+    skills_all = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
+    if IS_MAGE and FAST_MAGE and len(rows) > MAGE_ROWS:
+        # casters: rank gear by the damage of the single best spammed spell (infinite mana) and search only the top few rows
+        def solo(item):
+            (w, a, f), _st = item
+            _s, act, lat = setup(level, cid, w, a, learned, bname, f)
+            sk = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
+            cand = [i for i, x in sk.items() if C.usable(x, act)]
+            best = C.simulate(act, DUMMY, sk, C.Policy((), 0), 60000, later=lat)[0]
+            for i in cand:
+                best = max(best, C.simulate(act, DUMMY, sk, C.Policy((i,), 0), 60000, later=lat)[0])
+            return best
+        rows = sorted(rows, key=solo, reverse=True)[:MAGE_ROWS]
     out = []
     for (w, a, f), st in rows:
         st, actor, later = setup(level, cid, w, a, learned, bname, f)
         skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
         ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
+        if IS_MAGE and FAST_MAGE and len(ids) > MAGE_SKILLS:
+            # casters: build the rotation greedily (add the skill, at the position, that raises damage most), then search every order of just those skills
+            cur = []
+            cur_d = C.simulate(actor, DUMMY, skills, C.Policy((), 0), 60000, later=later)[0]
+            while len(cur) < GREEDY_MAX:
+                best_gain = None
+                for i in ids:
+                    if i in cur:
+                        continue
+                    for pos in range(len(cur) + 1):
+                        cand = tuple(cur[:pos] + [i] + cur[pos:])
+                        d = C.simulate(actor, DUMMY, skills, C.Policy(cand, 0), 60000, later=later)[0]
+                        if best_gain is None or d > best_gain[0]:
+                            best_gain = (d, cand)
+                if best_gain is None or best_gain[0] < cur_d * 1.002:
+                    break
+                cur_d, cur = best_gain[0], list(best_gain[1])
+            ids = cur
         if len(ids) > 7:
             # too many skills for a full permutation search: drop those that add under 0.3% over plain autos even on their own
             base = C.simulate(actor, DUMMY, skills, C.Policy((), 0), 60000, later=later)[0]
@@ -204,9 +241,24 @@ if __name__ == "__main__":
         levels = sorted(set(levels) | {l for l in range(2, 81) if pb[l - 1] != pb[l - 2]})
         print("party breakpoints added; levels:", levels, flush=True)
     result = {}
+    outp = os.path.join(here, rot_file(slug, bname))
+    merge_old = {}
+    if os.environ.get("L2_MERGE") and args[1:] and os.path.exists(outp):
+        merge_old = {int(k): v for k, v in json.load(open(outp)).items()}
+    part = os.path.join(here, rot_file(slug, bname) + ".partial")
+    if os.path.exists(part):
+        result = {int(k): v for k, v in json.load(open(part)).items()}
+        print("resumed levels:", sorted(result), flush=True)
     for lv in levels:
+        if lv in result:
+            continue
         result[lv] = solve_level(line, leaf, lv, weapons, armors, names, parent, trees, sk_all, bname)
         best = max(result[lv], key=lambda r: r["windows"][60]["dps"])
         print(f"L{lv}: {len(result[lv])} combos; best@60s {best['weapon']} + {best['armor']}: "
               f"{best['windows'][60]['dps']:.0f} dps, order {best['windows'][60]['order']}, mp used {best['windows'][60]['mp_used']:.0f}/{best['stats']['mp_max']:.0f}", flush=True)
+        json.dump(result, open(part, "w"))
+    if merge_old:
+        merge_old.update(result); result = dict(sorted(merge_old.items()))
     json.dump(result, open(os.path.join(here, rot_file(slug, bname)), "w"), indent=1)
+    if os.path.exists(part):
+        os.remove(part)
