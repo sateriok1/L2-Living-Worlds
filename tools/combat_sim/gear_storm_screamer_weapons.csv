@@ -1,0 +1,35 @@
+line,grade,item_id,weapon_name,variant,weapon_type,hands,p_atk,m_atk,p_atk_spd,crit,shot,special_skill,special_effect,reuse_delay
+Storm Screamer,NG,747,Wand of Adept,,BLUNT,1H,11.0,13.0,379.0,4.0,SPS-NG,,,0
+Storm Screamer,NG,177,Mage Staff,,BLUNT,2H,30.0,31.0,325.0,4.0,SPS-NG,,,0
+Storm Screamer,D,189,Staff of Life,,BLUNT,1H,74.0,72.0,379.0,4.0,SPS-D,,,0
+Storm Screamer,D,187,Atuba Hammer,,BLUNT,2H,90.0,79.0,325.0,4.0,SPS-D,,,0
+Storm Screamer,C,7891,Ecliptic Axe,,BLUNT,1H,125.0,111.0,379.0,4.0,SPS-C,,,0
+Storm Screamer,C,8139,Ecliptic Axe,M. Atk.,BLUNT,1H,125.0,111.0,379.0,4.0,SPS-C,3077:4,mAtk +112.26,0
+Storm Screamer,C,7710,Club of Nature,Acumen,BLUNT,1H,111.0,101.0,379.0,4.0,SPS-C,3047:1,mAtkSpd x1.15,0
+Storm Screamer,C,174,Nirvana Axe,,BLUNT,1H,111.0,101.0,379.0,4.0,SPS-C,,,0
+Storm Screamer,C,7707,Nirvana Axe,M. Atk.,BLUNT,1H,111.0,101.0,379.0,4.0,SPS-C,3077:3,mAtk +99.39,0
+Storm Screamer,C,7704,Stick of Eternity,Empower,BLUNT,1H,111.0,101.0,379.0,4.0,SPS-C,3076:3,mAtk +24.59,0
+Storm Screamer,C,204,Deadman's Staff,,BLUNT,2H,152.0,122.0,325.0,4.0,SPS-C,,,0
+Storm Screamer,C,203,Pa'agrian Axe,,BLUNT,2H,141.0,114.0,325.0,4.0,SPS-C,,,0
+Storm Screamer,C,7716,Inferno Staff,Acumen,BLUNT,2H,135.0,111.0,325.0,4.0,SPS-C,3047:1,mAtkSpd x1.15,0
+Storm Screamer,C,197,Paradia Staff,,BLUNT,2H,135.0,111.0,325.0,4.0,SPS-C,,,0
+Storm Screamer,B,7893,Kaim Vanul's Bones,,BLUNT,1H,155.0,132.0,379.0,4.0,SPS-B,,,0
+Storm Screamer,B,7892,Spell Breaker,,BLUNT,1H,140.0,122.0,379.0,4.0,SPS-B,,,0
+Storm Screamer,B,8141,Spell Breaker,Acumen,BLUNT,1H,140.0,122.0,379.0,4.0,SPS-B,3047:1,mAtkSpd x1.15,0
+Storm Screamer,B,210,Staff of Evil Spirits,,BLUNT,2H,189.0,145.0,325.0,4.0,SPS-B,,,0
+Storm Screamer,B,92,Sprite's Staff,,BLUNT,2H,170.0,134.0,325.0,4.0,SPS-B,,,0
+Storm Screamer,B,209,Divine Staff,,BLUNT,2H,189.0,132.0,325.0,4.0,SPS-B,,,0
+Storm Screamer,A,8687,Cabrio's Hand,,BLUNT,1H,202.0,161.0,379.0,4.0,SPS-A,,,0
+Storm Screamer,A,7895,Flaming Dragon Skull,,BLUNT,1H,186.0,152.0,379.0,4.0,SPS-A,,,0
+Storm Screamer,A,8150,Flaming Dragon Skull,Acumen,BLUNT,1H,186.0,152.0,379.0,4.0,SPS-A,3047:2,mAtkSpd x1.15,0
+Storm Screamer,A,8151,Flaming Dragon Skull,M. Atk.,BLUNT,1H,186.0,152.0,379.0,4.0,SPS-A,3073:2,mAtk +167.02,0
+Storm Screamer,A,213,Branch of the Mother Tree,,BLUNT,2H,226.0,167.0,325.0,4.0,SPS-A,,,0
+Storm Screamer,A,5607,Branch of the Mother Tree,Acumen,BLUNT,2H,226.0,167.0,325.0,4.0,SPS-A,3047:2,mAtkSpd x1.15,0
+Storm Screamer,A,8688,Daimon Crystal,,BLUNT,2H,245.0,161.0,325.0,4.0,SPS-A,,,0
+Storm Screamer,A,8819,Daimon Crystal,Acumen,BLUNT,2H,245.0,161.0,325.0,4.0,SPS-A,3047:3,mAtkSpd x1.15,0
+Storm Screamer,A,212,Dasparion's Staff,,BLUNT,2H,207.0,157.0,325.0,4.0,SPS-A,,,0
+Storm Screamer,A,5598,Dasparion's Staff,Acumen,BLUNT,2H,207.0,157.0,325.0,4.0,SPS-A,3047:2,mAtkSpd x1.15,0
+Storm Screamer,S,6579,Arcana Mace,,BLUNT,1H,225.0,175.0,379.0,4.0,SPS-S,,,0
+Storm Screamer,S,6608,Arcana Mace,Acumen,BLUNT,1H,225.0,175.0,379.0,4.0,SPS-S,3047:2,mAtkSpd x1.15,0
+Storm Screamer,S,6366,Imperial Staff,,BLUNT,2H,274.0,193.0,325.0,4.0,SPS-S,,,0
+Storm Screamer,S,6587,Imperial Staff,Empower,BLUNT,2H,274.0,193.0,325.0,4.0,SPS-S,3575:1,mAtk +60.09,0

@@ -165,6 +165,10 @@ def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
         sid, lv = (int(x) for x in sp.split(":"))
         entries += passive_entries(sid, lv, wt, hands)
     a = armor or {}
+    ent = a.get("entries", [])
+    if isinstance(ent, str):
+        ent = [(f, k, float(v)) for f, k, v in (x.split(":") for x in ent.split(";") if x)]
+    entries += ent        # armor-set effects other than pAtk / pAtkSpd (those come as p_atk_mul / p_atk_spd_mul): mAtk, mAtkSpd, mCritRate, maxMp, regMp ...
     strv = t["baseSTR"] + float(a.get("str", 0) or 0)
     dexv = t["baseDEX"] + float(a.get("dex", 0) or 0)
     str_b, dex_b = bonus("STR", strv), bonus("DEX", dexv)
@@ -188,10 +192,22 @@ def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
         if sid in (355, 357) and (lv is not None or sid in learned_skills):
             for p in crit_pos:
                 crit_pos[p] = max(crit_pos[p], crit_pos_mult(sid, p))    # Focus Death and Focus Power share an abnormal type: only one applies
+    # magic: mAtk = (template base + weapon mAtk) * INTbonus^2 * levelMod^2 * mul + add (FuncMAtkMod); mAtkSpd = template base * WITbonus * mul + add; mCrit per 1000 = mCritRate stat * 10
+    int_b = bonus("INT", t["baseINT"] + float(a.get("int", 0) or 0))
+    wit_b = bonus("WIT", t["baseWIT"] + float(a.get("wit", 0) or 0))
+    m, ad, _ = _apply(entries, "mAtk")
+    matk = (float(weapon.get("m_atk", 0) or 0)) * int_b ** 2 * lvl_mod ** 2 * m + ad
+    m, ad, _ = _apply(entries, "mAtkSpd")
+    matk_spd = min(t["baseMAtkSpd"] * wit_b * m + ad, 1999)
+    m, ad, _ = _apply(entries, "mCritRate")
+    mcrit = min((1 * m + ad) * 10, 200)
     reuse_mul = _apply(entries, "pReuse")[0]
+    mcrit_mul = _apply(entries, "mCritPower")[0]
+    mreuse_mul = _apply(entries, "mReuse")[0]
+    mmp_mul = _apply(entries, "magicalMpConsumeRate")[0]
     mp_mul = _apply(entries, "physicalMpConsumeRate")[0]
     tl = t["levels"][min(level, max(t["levels"]))]
-    men_b = bonus("MEN", t["baseMEN"])
+    men_b = bonus("MEN", t["baseMEN"] + float(a.get("men", 0) or 0))
     m, ad, _ = _apply(entries, "maxMp")
     mp_max = tl["mp"] * men_b * m + ad
     m, ad, _ = _apply(entries, "regMp")
@@ -204,7 +220,7 @@ def compute(class_id, level, weapon, armor, learned_skills, buffs=()):
     hp_regen = (tl["hpRegen"] * lvl_mod * con_b * 1.1) * m + ad
     return {"str": strv, "dex": dexv, "p_atk": patk, "p_atk_spd": spd, "crit_pct": crit / 10.0,
             "acc_bonus": acc_a + float(a.get("accuracy_add", 0) or 0),
-            "dex_bonus": dex_b, "blow_mul": blow_mul, "crit_pos": crit_pos, "crit_mul": crit_mul, "crit_add": crit_add, "reuse_mul": reuse_mul, "mp_mul": mp_mul, "str_bonus": str_b, "hp_max": hp_max, "hp_regen_3s": hp_regen, "mp_max": mp_max, "mp_regen_3s": mp_regen}
+            "m_atk": matk, "m_atk_spd": matk_spd, "m_crit": mcrit, "mcrit_mul": mcrit_mul, "mreuse_mul": mreuse_mul, "mmp_mul": mmp_mul, "int_bonus": int_b, "dex_bonus": dex_b, "blow_mul": blow_mul, "crit_pos": crit_pos, "crit_mul": crit_mul, "crit_add": crit_add, "reuse_mul": reuse_mul, "mp_mul": mp_mul, "str_bonus": str_b, "hp_max": hp_max, "hp_regen_3s": hp_regen, "mp_max": mp_max, "mp_regen_3s": mp_regen}
 
 
 def class_at(leaf_id, level, parent):

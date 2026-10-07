@@ -17,6 +17,7 @@ opt = json.load(open(os.path.join(here, R.rot_file(slug, bname))))
 names, parent = L.load_classes(); trees = L.load_trees(); sk_all = L.load_skills()
 leaf = [k for k, v in names.items() if v == line][0]
 W = S.read_csv(os.path.join(here, f"gear_{slug}_weapons.csv")); A = S.read_csv(os.path.join(here, f"gear_{slug}_armor.csv"))
+R.set_mage(any(str(x.get("shot", "")).startswith("SPS") for x in W))
 WS = (10, 30, 60, 120)
 print(f"[{line} / {bname}] table order {TABLE}")
 print("lvl  " + "  ".join(f"{m:>3}s tbl/opt  %" for m in WS) + "   missing-from-table (optimal order @60s)")

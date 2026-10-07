@@ -91,5 +91,23 @@ B.position = "behind"; B.prox = 1.2
 check("Backstab usable from behind", float(C.usable(bs, B)), 1.0)
 check("Mortal Blow dmg", C.skill_dmg(mb, B, D), 77 * (977 + 1000 * 1.458) / 400 * 1.2 * C.blow_chance(mb, B))
 check("Backstab dmg (20% crit)", C.skill_dmg(bs, B, D), 77 * (5479 + 1000) / 400 * 1.458 * 1.2 * (1 + 0.2) * C.blow_chance(bs, B))
+
+# Flat DoT (DamOverTime: power per second, one tick every ticks*666 ms, expiry after floor(duration/interval) ticks)
+bl = SK[(96, 6)]            # Bleed 6: power 102, ticks 5, 20 s, activateRate 100
+check("Bleed 6 power/s", bl.dot[0], 102.0)
+check("Bleed 6 tick interval", bl.dot[1], 3330.0)
+check("Bleed 6 duration (6 ticks)", bl.dot[2], 19980.0)
+Z = C.Actor(patk=0, patk_spd=400, matk=1, matk_spd=333, mp_max=1e9, mp_regen_3s=0, weapon="DAGGER", crit=0.0)
+tl = []
+C.simulate(Z, D, {96: bl}, C.Policy((96,)), 19000, timeline=tl)
+t_end, tot, _ = tl[-1]
+check("Bleed accrual = 102/s from cast end", tot, 102 * (t_end - C.cast_ms(bl, Z)) / 1000.0)
+
+# Magic (Formulas.calcMagicDam): 91 * sqrt(mAtk * shot) / mDef * power, crit x3, shot 4 for blessed spiritshots; cast time (hit+cool)/mAtkSpd*333 * 0.7 with spirit shots
+M = C.Actor(patk=1, patk_spd=300, matk=1000, matk_spd=500, mp_max=1e9, mp_regen_3s=0, weapon="BLUNT", mcrit=0.1, soulshot=False, spiritshot=2)
+af = SK[(1230, 1)] if (1230, 1) in SK else None
+ws = SK[(1177, 1)]            # Wind Strike 1
+check("Wind Strike dmg", C.skill_dmg(ws, M, D), 91 * math.sqrt(1000 * 4) / 300 * ws.power * (0.9 + 0.1 * 3))
+check("Wind Strike cast ms", C.cast_ms(ws, M), max((ws.hit + ws.cool) / 500 * 333 * 0.7, 550))
 print("FAILED: %s" % fails if fails else "all passed")
 sys.exit(1 if fails else 0)

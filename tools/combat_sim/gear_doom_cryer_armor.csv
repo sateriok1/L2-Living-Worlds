@@ -1,0 +1,17 @@
+line,grade,set_name,set_skill,str,dex,con,int,wit,men,p_atk_mul,p_atk_spd_mul,accuracy_add,entries,notes
+Doom Cryer,NG,Tunic of Devotion (Magic),3501:1,0,0,0,0,0,0,1.0,1.0,0.0,mul:mAtkSpd:1.15,MAGIC
+Doom Cryer,NG,none,,0,0,0,0,0,0,1,1,0,,
+Doom Cryer,D,Mithril Tunic (Magic),3507:1,0,0,0,-1,1,0,1.0,1.0,0.0,,MAGIC
+Doom Cryer,D,Tunic of Knowledge (Magic),3504:1,0,0,0,0,0,0,1.0,1.0,0.0,mul:mAtk:1.1025;mul:regMp:0.95,MAGIC
+Doom Cryer,C,Demon's Tunic (Magic),3513:1,0,0,0,4,-1,0,1.0,1.0,0.0,,MAGIC
+Doom Cryer,C,Divine Tunic (Magic),3517:1,0,0,0,-1,1,0,1.0,1.0,0.0,add:maxMp:170.62,MAGIC
+Doom Cryer,C,Karmian Tunic (Magic),3510:1,0,0,0,0,0,0,1.0,1.0,0.0,mul:mAtkSpd:1.15,MAGIC
+Doom Cryer,B,Avadon Robe (Magic),3523:1,0,0,0,0,0,0,1.0,1.0,0.0,mul:mAtkSpd:1.15,MAGIC
+Doom Cryer,B,Blue Wolf Tunic (Magic),3528:1,0,0,0,-2,3,-1,1.0,1.0,0.0,add:maxMp:206.0;mul:regMp:1.0524,MAGIC
+Doom Cryer,B,Tunic of Doom (Magic),3529:1,0,0,0,2,-3,1,1.0,1.0,0.0,mul:regMp:1.0526,MAGIC
+Doom Cryer,B,Tunic of Zubei (Magic),3522:1,0,0,0,0,0,0,1.0,1.0,0.0,mul:mAtk:1.1025;mul:regMp:0.95,MAGIC
+Doom Cryer,A,Dark Crystal Robe (Magic),3535:1,0,0,0,0,2,-2,1.0,1.0,0.0,mul:mAtkSpd:1.15,MAGIC
+Doom Cryer,A,Majestic Robe (Magic),3541:1,0,0,0,-1,0,1,1.0,1.0,0.0,add:maxMp:240.0;mul:mAtkSpd:1.15;mul:regMp:1.08,MAGIC
+Doom Cryer,A,Robe of Nightmare (Magic),3540:1,0,0,0,2,-2,0,1.0,1.0,0.0,mul:regMp:1.04;mul:mAtk:1.08,MAGIC
+Doom Cryer,A,Tallum Tunic (Magic),3534:1,0,0,0,-2,2,0,1.0,1.0,0.0,mul:mAtkSpd:1.15,MAGIC
+Doom Cryer,S,Major Arcana Robe (Magic),3556:1,0,0,0,1,1,-2,1.0,1.0,0.0,mul:mAtk:1.17,MAGIC

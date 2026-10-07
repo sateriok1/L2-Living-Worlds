@@ -42,6 +42,9 @@ class Actor:
     dex_bonus: float = 1.0      # DEX bonus: blow success = blowChance * dex_bonus * side * blow_mul
     blow_mul: float = 1.0       # blowRate multiplier from passives, weapon abilities and buffs (Assassination, Mighty Mortal, Mortal Strike)
     crit_pos: float = 1.0       # critDmgPos multiplier at this position (Focus Death / Focus Power); autos and skills crit for 2 * crit_mul * crit_pos
+    mcrit_mul: float = 1.0      # mCritPower multiplier on magic crit damage
+    mreuse_mul: float = 1.0     # mReuse multiplier: scales magic skill reuse
+    mmp_mul: float = 1.0        # magicalMpConsumeRate multiplier
     str_bonus: float = 1.0      # STR bonus: physical SKILL crit chance = skill.baseCritRate * 10 * str_bonus / 1000
 
 
@@ -52,7 +55,7 @@ class Dummy:
 
 
 def usable(skill, actor):
-    if skill.damage_kind() is None or skill.power <= 0:
+    if skill.dot is None and (skill.damage_kind() is None or skill.power <= 0):
         return False
     if skill.weapons and actor.weapon not in skill.weapons:
         return False
@@ -88,12 +91,14 @@ def blow_dmg(skill, actor, dummy, boost=1.0):
 
 def skill_dmg(skill, actor, dummy, boost=1.0):
     """Expected damage of one cast (crit-weighted)."""
+    if skill.dot is not None and skill.damage_kind() is None:
+        return 0.0                 # a pure DoT deals its damage over time (see simulate); Sting-type skills also hit directly, below
     if "blow" in skill.flags:
         return blow_dmg(skill, actor, dummy, boost)
     if skill.damage_kind() == "magic":
         shot = 4 if actor.spiritshot == 2 else 2 if actor.spiritshot == 1 else 1
         base = 91 * math.sqrt(actor.matk * shot) / dummy.mdef * skill.power
-        return base * (1 - actor.mcrit) + base * 3 * actor.mcrit
+        return base * (1 - actor.mcrit) + base * 3 * actor.mcrit_mul * actor.mcrit
     shot = 2 if actor.soulshot else 1
     base = 76 * (actor.patk * shot + skill.power) * actor.prox / dummy.pdef
     # physical skills roll crit from the skill's own baseCritRate and STR (Formulas.calcCrit), not weapon crit or Focus
@@ -125,7 +130,7 @@ def reuse_ms(skill, actor):
         return skill.reuse
     magic = skill.damage_kind() == "magic" or skill.magic
     spd = actor.matk_spd if magic else actor.patk_spd
-    return skill.reuse * (1.0 if magic else actor.reuse_mul) * 333.0 / spd
+    return skill.reuse * (actor.mreuse_mul if magic else actor.reuse_mul) * 333.0 / spd
 
 
 @dataclass
@@ -156,18 +161,29 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
     a_dmg, a_int, mp_per_ms, sd = derive()
     switched = later is None
     deb = [0.0, 0.0, 1.0, 1.0]       # until, probability active, pDef mult, mDef mult
+    dots = {}                        # abnormal type -> [end ms, expected damage per ms]; one slot per type, like the server's abnormal-type stacking
     boost = [0.0, 1.0]               # until, blowRate multiplier a blow gave itself (Critical Blow)
 
     def advance(dt):
-        nonlocal t, mp, hp
+        nonlocal t, mp, hp, total
+        for end, rate in dots.values():
+            if end > t:
+                total += rate * (min(t + dt, end) - t)
         t += dt
         mp = max(0.0, min(actor.mp_max, mp + mp_per_ms * dt))
         if actor.hp_max:
             hp = min(actor.hp_max, hp + hp_per_ms * dt)
 
+    def mpm(s):
+        return actor.mmp_mul if (s.damage_kind() == "magic" or s.magic) else actor.mp_mul
+
     def can(sid):
         s = skills[sid]
-        if mp - s.mp * actor.mp_mul < actor.mp_reserve:
+        if s.dot is not None:
+            cur = dots.get(s.dot[4])
+            if cur is not None and cur[0] > t + 1 and cur[1] >= s.dot[0] * s.dot[3] / 1000.0 - 1e-12:
+                return False            # an equal or stronger DoT of this type is still running: recasting would waste the cast
+        if mp - s.mp * mpm(s) < actor.mp_reserve:
             return False
         return not (actor.hp_max and s.hp_cost and (hp - s.hp_cost) < actor.hp_reserve * actor.hp_max)
 
@@ -210,8 +226,8 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
             sk = skills[chosen]
             if "blow" in sk.flags and t < boost[0]:
                 dmg = skill_dmg(sk, actor, dummy, boost[1])
-            mp -= sk.mp * actor.mp_mul
-            mp_used += sk.mp * actor.mp_mul
+            mp -= sk.mp * mpm(sk)
+            mp_used += sk.mp * mpm(sk)
             if actor.hp_max and sk.hp_cost:
                 hp -= sk.hp_cost
                 hp_used += sk.hp_cost
@@ -219,6 +235,9 @@ def simulate(actor, dummy, skills, policy, duration_ms, start_mp=None, timeline=
             casts[chosen] += 1
             advance(cms)
             total += dmg * uplift(sk.damage_kind() or "phys")     # the debuff lands after this hit, so it does not boost it
+            if sk.dot is not None:
+                pw, iv, dur, chance, typ = sk.dot
+                dots[typ] = [t + dur, pw * chance / 1000.0]          # expected value: lands with its activate rate; power is damage per second
             if sk.self_blow:
                 boost[:] = [t + sk.self_blow[1], sk.self_blow[0]]
             if sk.debuff:

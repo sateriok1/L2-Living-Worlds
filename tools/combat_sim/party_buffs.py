@@ -13,22 +13,25 @@ import l2data as L, stats_model as S
 
 BUFFER_LEAVES = [98, 100, 107, 115, 116, 105, 112]
 MAX_BUFFS, MAX_DANCES = 20, 12
+RELEVANT_MAGIC = {"mAtk", "mAtkSpd", "mCritRate", "mCritPower", "mReuse", "magicalMpConsumeRate", "maxMp", "regMp"}
+WEIGHT_MAGIC = {"mAtk": 3.0, "mAtkSpd": 3.0, "mCritRate": 1.5, "mCritPower": 1.0, "mReuse": 3.0, "magicalMpConsumeRate": 1.0, "maxMp": 0.3, "regMp": 0.3}
 RELEVANT = {"pAtk", "pAtkSpd", "critRate", "critDmg", "critDmgAdd", "pReuse", "physicalMpConsumeRate", "maxMp", "regMp"}
 WEIGHT = {"pAtk": 3.0, "pAtkSpd": 3.0, "critRate": 1.0, "critDmg": 1.0, "critDmgAdd": 0.1, "pReuse": 3.0, "physicalMpConsumeRate": 1.0, "maxMp": 0.3, "regMp": 0.3, "accCombat": 0.0}
 
 
-def _score(entries):
+def _score(entries, magic=False):
     s = 1.0
+    W = WEIGHT_MAGIC if magic else WEIGHT
     for f, stat, v in entries:
-        if stat in WEIGHT and WEIGHT[stat]:
+        if stat in W and W[stat]:
             if f == "mul":
-                s += WEIGHT[stat] * abs(v - 1.0) * 10 if stat != "pReuse" else WEIGHT[stat] * (1 - v) * 10
+                s += W[stat] * abs(v - 1.0) * 10 if stat not in ("pReuse", "mReuse") else W[stat] * (1 - v) * 10
             elif f == "add":
-                s += WEIGHT[stat] * 0.01 * abs(v)
+                s += W[stat] * 0.01 * abs(v)
     return s
 
 
-def party_buffs(level, weapon_type, hands, parent, trees):
+def party_buffs(level, weapon_type, hands, parent, trees, magic=False):
     """[(skill id, level)] of the buffs the full party gives a character at `level` wielding this weapon."""
     els = S._skill_elements()
     cand = {}      # abnormalType -> (abnormalLevel, score, sid, lv, is_dance)
@@ -42,7 +45,7 @@ def party_buffs(level, weapon_type, hands, parent, trees):
                 continue
             if (sk.findtext("targetType") or "").strip() not in ("ONE", "PARTY", "PARTY_NOTME", "PARTY_MEMBER", "PARTY_OTHER"):
                 continue
-            ents = [e for e in S.passive_entries(sid, lv, weapon_type, hands) if e[1] in RELEVANT]
+            ents = [e for e in S.passive_entries(sid, lv, weapon_type, hands) if e[1] in (RELEVANT_MAGIC if magic else RELEVANT)]
             if not ents:
                 continue
             tables = {t.get("name"): t.text.split() for t in sk.findall("table")}
@@ -53,7 +56,7 @@ def party_buffs(level, weapon_type, hands, parent, trees):
                 al = arr[min(lv, len(arr)) - 1] if arr else "0"
             al = int(float(al))
             key = at or f"id{sid}"
-            sc = _score(ents)
+            sc = _score(ents, magic)
             cur = cand.get(key)
             if cur is None or (al, sc) > (cur[0], cur[1]):
                 cand[key] = (al, sc, sid, lv, at.startswith(("DANCE", "SONG")))

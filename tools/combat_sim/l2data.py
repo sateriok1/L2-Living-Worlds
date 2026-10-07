@@ -1,5 +1,5 @@
 """Load L2J Mobius Interlude skill, class and skill-tree data (read-only) for the combat simulator."""
-import glob, os, re
+import glob, math, os, re
 import xml.etree.ElementTree as ET
 
 ROOT = os.environ.get("L2_PROJECT", "/home/claude/teravibes/l2-living-worlds/L2J_Mobius_CT_0_Interlude github")
@@ -10,7 +10,7 @@ DAMAGE_EFFECTS = {"PhysicalDamage", "MagicalDamage", "HpDrain", "EnergyDamage", 
 class SkillDef:
     """One skill at one level, with every table already resolved to a number."""
     __slots__ = ("id", "level", "name", "magic", "op", "power", "mp", "hit", "cool", "reuse", "range",
-                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff", "blow_chance", "self_blow")
+                 "target", "effects", "weapons", "static_reuse", "flags", "magic_level", "base_crit", "hp_cost", "debuff", "blow_chance", "self_blow", "dot")
 
     def damage_kind(self):
         for e in self.effects:
@@ -92,6 +92,21 @@ def load_skills():
                 d.magic_level = val("magicLevel", lv)
                 d.base_crit = val("baseCritRate", lv)
                 d.hp_cost = val("hpConsume", lv)
+                d.dot = None            # flat damage over time: (damage per second, tick interval ms, duration ms, land chance, abnormal type)
+                for eff in sk.findall("effects/effect"):
+                    if eff.get("name") == "DamOverTime" and op in ("A1", "A2"):
+                        ptxt = (eff.findtext("power") or "").strip()
+                        arr = tables.get(ptxt)
+                        try:
+                            pw = float(arr[min(lv - 1, len(arr) - 1)]) if arr else float(ptxt)
+                        except (ValueError, TypeError):
+                            continue
+                        ticks = int(eff.get("ticks", "0") or 0)
+                        dur = val("abnormalTime", lv, 0) * 1000.0
+                        if pw > 0 and ticks > 0 and dur > 0:
+                            # DamOverTime.onActionTime: damage per tick = power * ticks * EffectTickRatio(666) / 1000, one tick every ticks * 666 ms -> power per second
+                            iv = ticks * 666.0
+                            d.dot = (pw, iv, math.floor(dur / iv) * iv, val("activateRate", lv, 100.0) / 100.0, (sk.findtext("abnormalType") or "").strip())
                 d.blow_chance = val("blowChance", lv, 0.0)
                 d.self_blow = None      # (blowRate multiplier, duration ms) a blow gives itself, e.g. Critical Blow
                 for eff in sk.findall("selfEffects/effect"):

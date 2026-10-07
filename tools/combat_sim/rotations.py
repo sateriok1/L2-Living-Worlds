@@ -32,6 +32,15 @@ def max_len_for(n_skills):
     return k
 
 
+IS_MAGE = False       # set from the gear table (spirit-shot weapons): spawn / scheme / party buff kits then use the caster versions
+SPAWN_MAGE = [1204, 1085, 1059, 1303, 1078, 1397, 1040, 1047, 1259, 1035, 1036, 1045, 1048, 1062]   # PREBUFF_COMMON + PREBUFF_CASTER
+
+
+def set_mage(flag):
+    global IS_MAGE
+    IS_MAGE = bool(flag)
+
+
 SPAWN_BUFFS = [1204, 1068, 1086, 1077, 1242, 1240, 1268, 1087, 1040, 1243, 1044, 1259, 1035, 1036, 1045, 1048, 1062]   # PhantomBuffs.applyFullBuffs for a damage dealer, max level
 
 
@@ -62,11 +71,11 @@ def buff_set(name):
         return ()                      # 'party' is level- and weapon-dependent: setup() asks party_buffs for it
     els = S._skill_elements()
     if name == "spawn":
-        return tuple((i, int(els[i].get("levels"))) for i in SPAWN_BUFFS if i in els)
+        return tuple((i, int(els[i].get("levels"))) for i in (SPAWN_MAGE if IS_MAGE else SPAWN_BUFFS) if i in els)
     if name in ("fighterplus", "fighterplus_max"):
         import re
         t = open(os.path.join(L.DATA, "SchemeBufferSkills.xml")).read()
-        body = re.search(r'<category type="FIGHTER_GROUP">(.*?)</category>', t, re.S).group(1)
+        body = re.search(r'<category type="%s">(.*?)</category>' % ("MAGE_GROUP" if IS_MAGE else "FIGHTER_GROUP"), t, re.S).group(1)
         out = []
         for i, lv in re.findall(r'<buff id="(\d+)" level="(\d+)"', body):
             i, lv = int(i), int(lv)
@@ -89,7 +98,7 @@ def setup(level, cid, w, a, learned, bname, focus=None):
         global _PARENT, _TREES
         if _PARENT is None:
             _PARENT, _TREES = L.load_classes()[1], L.load_trees()
-        perm = tuple(party_buffs.party_buffs(level, w["weapon_type"], w["hands"], _PARENT, _TREES)) + perm
+        perm = tuple(party_buffs.party_buffs(level, w["weapon_type"], w["hands"], _PARENT, _TREES, magic=IS_MAGE)) + perm
     st = S.compute(cid, level, w, a, learned, perm + temp)
     st["crit_pos_now"] = st["crit_pos"][POSITION or "front"]
     drain = 0.8 * (level - 1) / 7.5 if ((split_name(bname)[2] or bname.endswith("_dagger")) and VICIOUS_ID in learned) else 0.0
@@ -104,7 +113,9 @@ def setup(level, cid, w, a, learned, bname, focus=None):
 
 
 def build_actor(st, w):
-    return C.Actor(patk=st["p_atk"], patk_spd=st["p_atk_spd"], matk=1, matk_spd=333, mp_max=st["mp_max"] if MODEL_MP else 1e12,
+    mage = str(w.get("shot", "")).startswith("SPS")         # spirit shots (blessed) for a caster's weapon, soulshots otherwise
+    return C.Actor(patk=st["p_atk"], patk_spd=st["p_atk_spd"], matk=st["m_atk"], matk_spd=st["m_atk_spd"], mcrit=st["m_crit"] / 1000.0,
+                   soulshot=not mage, spiritshot=2 if mage else 0, mreuse_mul=st["mreuse_mul"], mmp_mul=st["mmp_mul"], mcrit_mul=st["mcrit_mul"], mp_max=st["mp_max"] if MODEL_MP else 1e12,
                    mp_regen_3s=st["mp_regen_3s"] if MODEL_MP else 0.0, weapon=w["weapon_type"], crit=min(1.0, st["crit_pct"] / 100.0),
                    str_bonus=st["str_bonus"], crit_mul=st["crit_mul"], crit_add=st["crit_add"], reuse_mul=st["reuse_mul"],
                    mp_mul=st["mp_mul"], weapon_reuse=float(w.get("reuse_delay") or 0),
@@ -114,7 +125,7 @@ def build_actor(st, w):
 
 def pareto(rows):
     """Drop combos that are no better on P.Atk, attack speed, auto crit, STR bonus and MP than another combo."""
-    keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "crit_mul", "blow_mul", "crit_pos_now") + (("mp_max", "mp_regen_3s") if MODEL_MP else ()) + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
+    keys = ("p_atk", "p_atk_spd", "crit_pct", "str_bonus", "crit_mul", "blow_mul", "crit_pos_now", "m_atk", "m_atk_spd", "m_crit") + (("mp_max", "mp_regen_3s") if MODEL_MP else ()) + (("hp_max", "hp_regen_3s") if MODEL_HP else ())
     keep = []
     for i, a in enumerate(rows):
         dom = False
@@ -150,6 +161,10 @@ def solve_level(line, leaf_id, level, weapons, armors, names, parent, trees, sk_
         st, actor, later = setup(level, cid, w, a, learned, bname, f)
         skills = {sid: sk_all[(sid, lv)] for sid, lv in learned.items() if (sid, lv) in sk_all}
         ids = [sid for sid, s in skills.items() if C.usable(s, actor)]
+        if len(ids) > 7:
+            # too many skills for a full permutation search: drop those that add under 0.3% over plain autos even on their own
+            base = C.simulate(actor, DUMMY, skills, C.Policy((), 0), 60000, later=later)[0]
+            ids = [i for i in ids if C.simulate(actor, DUMMY, skills, C.Policy((i,), 0), 60000, later=later)[0] > base * 1.003]
         best = {ms: None for ms in WINDOWS}
         for k in range(0, max_len_for(len(ids)) + 1):
             for perm in itertools.permutations(ids, k):
@@ -179,12 +194,13 @@ if __name__ == "__main__":
     slug = line.lower().replace(" ", "_")
     weapons = S.read_csv(os.path.join(here, f"gear_{slug}_weapons.csv"))
     armors = S.read_csv(os.path.join(here, f"gear_{slug}_armor.csv"))
+    set_mage(any(str(x.get("shot", "")).startswith("SPS") for x in weapons))
     bps = json.load(open(os.path.join(here, "breakpoints.json")))[line]
     # skill breakpoints plus the levels where a new gear grade becomes wearable, plus the cap
     levels = [int(x) for x in args[1:]] or sorted({b["level"] for b in bps} | {S.WEAR_LEVEL[g] for g in S.GRADES if S.WEAR_LEVEL[g] > 1} | {80})
     if split_name(bname)[0] == "party" and not args[1:]:
         import party_buffs     # a party stage also needs the levels where the buffers' kits change (e.g. Haste at 44, Greater Might at 58)
-        pb = [tuple(party_buffs.party_buffs(l, "SWORD", "2H", parent, trees)) for l in range(1, 81)]
+        pb = [tuple(party_buffs.party_buffs(l, "BLUNT" if IS_MAGE else "SWORD", "2H", parent, trees, magic=IS_MAGE)) for l in range(1, 81)]
         levels = sorted(set(levels) | {l for l in range(2, 81) if pb[l - 1] != pb[l - 2]})
         print("party breakpoints added; levels:", levels, flush=True)
     result = {}

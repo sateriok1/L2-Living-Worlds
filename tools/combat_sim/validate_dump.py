@@ -40,7 +40,7 @@ for r in rows:
         continue
     st, sk, setv = items[int(r["weapon_id"])]
     hands = "2H" if setv.get("bodypart") == "lrhand" else "1H"
-    w = {"p_atk": st.get("pAtk", 0), "p_atk_spd": st.get("pAtkSpd", 300), "crit": st.get("critRate", 4),
+    w = {"m_atk": st.get("mAtk", 0), "p_atk": st.get("pAtk", 0), "p_atk_spd": st.get("pAtkSpd", 300), "crit": st.get("critRate", 4),
          "weapon_type": r["weapon_type"], "hands": hands, "special_skill": ""}
     if ALL:
         leaf = int(r["class_id"])
@@ -63,12 +63,15 @@ for r in rows:
             pm *= v
         if f == "mul" and s_ == "pAtkSpd":
             sm *= v
-    armor = {"p_atk_mul": pm, "p_atk_spd_mul": sm, "str": float(r["str"]) - t["baseSTR"], "dex": float(r["dex"]) - t["baseDEX"], "con": float(r["con"]) - t["baseCON"]}
+    armor = {"p_atk_mul": pm, "p_atk_spd_mul": sm, "str": float(r["str"]) - t["baseSTR"], "dex": float(r["dex"]) - t["baseDEX"], "con": float(r["con"]) - t["baseCON"],
+             "int": float(r["int"]) - t["baseINT"], "wit": float(r["wit"]) - t["baseWIT"],
+             "entries": [e for e in ents if e[1] not in ("pAtk", "pAtkSpd")]}
     m = S.compute(cid, lv, w, armor, ls)
     comp = {"p_atk": (m["p_atk"], float(r["p_atk"])), "p_atk_spd": (m["p_atk_spd"], float(r["p_atk_spd"])),
             "crit": (m["crit_pct"] * 10, float(r["crit"])), "max_hp": (m["hp_max"], float(r["max_hp"])),
             "max_mp": (m["mp_max"], float(r["max_mp"])), "hp_regen": (m["hp_regen_3s"], float(r["hp_regen"])),
-            "mp_regen": (m["mp_regen_3s"], float(r["mp_regen"]))}
+            "mp_regen": (m["mp_regen_3s"], float(r["mp_regen"])),
+            "m_atk": (m["m_atk"], float(r["m_atk"])), "m_atk_spd": (m["m_atk_spd"], float(r["m_atk_spd"])), "m_crit": (m["m_crit"], float(r["m_crit"]))}
     if not ALL:
         print(f"L{lv} {r['weapon']} ({r['weapon_grade']}) STR{r['str']} DEX{r['dex']} CON{r['con']} MEN{r['men']}")
     for k, (a, b) in comp.items():
