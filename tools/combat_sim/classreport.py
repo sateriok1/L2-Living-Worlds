@@ -88,12 +88,12 @@ def compare(line, tier, order, mx, pos=None):
     rows = {}
     mean = worst = None
     for ln in p.stdout.splitlines():
-        m = re.match(r"\s*(\d+)\s+(.*)", ln)
-        if m and "tbl/opt" not in ln and "%" in ln:
-            pct = re.findall(r"(\d+)%", ln)
-            nums = re.findall(r"(\d+)/(\d+)", ln)
-            if len(pct) >= 3:
-                rows[int(m.group(1))] = (int(nums[2][0]), int(nums[2][1]), int(pct[2]), ln.split("   ", 1)[-1][-1:] and ln.split("]  ")[-1] if False else ln)
+        m = re.match(r"\s*(\d+)\s{2}(.*?)\s{3}(\[.*)$", ln)
+        if m:
+            cells = re.findall(r"(\d+)/(\d+)\s+(\d+)%", m.group(2))
+            if len(cells) >= 3:
+                opt_s, _, tbl_s = m.group(3).partition(" vs table ")
+                rows[int(m.group(1))] = (int(cells[2][0]), int(cells[2][1]), int(cells[2][2]), opt_s.strip(), tbl_s.strip())
         if ln.startswith("mean ratio"):
             mm = re.findall(r"([\d.]+)%", ln); mean, worst = float(mm[0]), float(mm[1])
     return rows, mean, worst, p.stdout
@@ -177,8 +177,14 @@ def main():
             print(band_md(data) + "\n")
             rows, mean, worst, raw = compare(line, tier, order, mx, pos)
             if mean is not None:
-                lv_s = ", ".join(f"L{k}: {v[2]}%" for k, v in rows.items() if k in (40, 61, 80) or k == max(rows))
-                print(f"Current table vs optimum (60 s): mean {mean:.0f}% of optimum, worst {worst:.0f}%. Selected levels — {lv_s}.\n")
+                print(f"**Current bot skill order vs optimum (60 s window):** averages {mean:.0f}% of the optimum across all levels, worst level {worst:.0f}%. Bot table here: {', '.join(sname(i) + (f' (≤L{mx[i]})' if i in mx else '') for i in order)}.\n")
+                pick = [k for k in sorted(rows) if k in (40, 49, 58, 61, 70, 76, 78, 80)]
+                print("| Level | Bot order DPS | Optimum DPS | Bot % | Optimal order | What the bot actually fires |")
+                print("|---|---|---|---|---|---|")
+                for k in pick:
+                    t, o, pc, os_, ts = rows[k]
+                    print(f"| L{k} | {t} | {o} | {pc}% | {os_.strip('[]').replace(chr(39), '') or 'autos only'} | {ts.strip('[]').replace(chr(39), '') or 'autos only'} |")
+                print("*The bot column counts only the table's damage skills. Stuns, debuffs and other utility entries also take cast time in game, which this score does not charge, so the real bot is somewhat below these numbers.*\n")
             else:
                 print("*Current table could not be scored.*\n")
     print("### Findings\n")
