@@ -1,0 +1,73 @@
+hands,weapon_grade,robe_grade,staff_matk,robe_damage,robe,index
+2H,NG,NG,31.0,1.15,Tunic of Devotion,1.15
+2H,NG,D,31.0,1.103,Tunic of Knowledge,1.1
+2H,NG,C,31.0,1.15,Karmian Tunic,1.15
+2H,NG,B,31.0,1.15,Avadon Robe,1.15
+2H,NG,A,31.0,1.267,Dark Crystal Robe,1.27
+2H,NG,S,31.0,1.276,Major Arcana Robe,1.28
+2H,D,NG,79.0,1.15,Tunic of Devotion,2.93
+2H,D,D,79.0,1.103,Tunic of Knowledge,2.81
+2H,D,C,79.0,1.15,Karmian Tunic,2.93
+2H,D,B,79.0,1.15,Avadon Robe,2.93
+2H,D,A,79.0,1.267,Dark Crystal Robe,3.23
+2H,D,S,79.0,1.276,Major Arcana Robe,3.25
+2H,C,NG,122.0,1.15,Tunic of Devotion,4.53
+2H,C,D,122.0,1.103,Tunic of Knowledge,4.34
+2H,C,C,122.0,1.15,Karmian Tunic,4.53
+2H,C,B,122.0,1.15,Avadon Robe,4.53
+2H,C,A,122.0,1.267,Dark Crystal Robe,4.99
+2H,C,S,122.0,1.276,Major Arcana Robe,5.02
+2H,B,NG,145.0,1.15,Tunic of Devotion,5.38
+2H,B,D,145.0,1.103,Tunic of Knowledge,5.16
+2H,B,C,145.0,1.15,Karmian Tunic,5.38
+2H,B,B,145.0,1.15,Avadon Robe,5.38
+2H,B,A,145.0,1.267,Dark Crystal Robe,5.93
+2H,B,S,145.0,1.276,Major Arcana Robe,5.97
+2H,A,NG,167.0,1.15,Tunic of Devotion,6.2
+2H,A,D,167.0,1.103,Tunic of Knowledge,5.94
+2H,A,C,167.0,1.15,Karmian Tunic,6.2
+2H,A,B,167.0,1.15,Avadon Robe,6.2
+2H,A,A,167.0,1.267,Dark Crystal Robe,6.83
+2H,A,S,167.0,1.276,Major Arcana Robe,6.87
+2H,S,NG,193.0,1.15,Tunic of Devotion,7.16
+2H,S,D,193.0,1.103,Tunic of Knowledge,6.87
+2H,S,C,193.0,1.15,Karmian Tunic,7.16
+2H,S,B,193.0,1.15,Avadon Robe,7.16
+2H,S,A,193.0,1.267,Dark Crystal Robe,7.89
+2H,S,S,193.0,1.276,Major Arcana Robe,7.94
+1H,NG,NG,13.0,1.15,Tunic of Devotion,0.48
+1H,NG,D,13.0,1.103,Tunic of Knowledge,0.46
+1H,NG,C,13.0,1.15,Karmian Tunic,0.48
+1H,NG,B,13.0,1.15,Avadon Robe,0.48
+1H,NG,A,13.0,1.267,Dark Crystal Robe,0.53
+1H,NG,S,13.0,1.276,Major Arcana Robe,0.54
+1H,D,NG,72.0,1.15,Tunic of Devotion,2.67
+1H,D,D,72.0,1.103,Tunic of Knowledge,2.56
+1H,D,C,72.0,1.15,Karmian Tunic,2.67
+1H,D,B,72.0,1.15,Avadon Robe,2.67
+1H,D,A,72.0,1.267,Dark Crystal Robe,2.94
+1H,D,S,72.0,1.276,Major Arcana Robe,2.96
+1H,C,NG,111.0,1.15,Tunic of Devotion,4.12
+1H,C,D,111.0,1.103,Tunic of Knowledge,3.95
+1H,C,C,111.0,1.15,Karmian Tunic,4.12
+1H,C,B,111.0,1.15,Avadon Robe,4.12
+1H,C,A,111.0,1.267,Dark Crystal Robe,4.54
+1H,C,S,111.0,1.276,Major Arcana Robe,4.57
+1H,B,NG,132.0,1.15,Tunic of Devotion,4.9
+1H,B,D,132.0,1.103,Tunic of Knowledge,4.7
+1H,B,C,132.0,1.15,Karmian Tunic,4.9
+1H,B,B,132.0,1.15,Avadon Robe,4.9
+1H,B,A,132.0,1.267,Dark Crystal Robe,5.39
+1H,B,S,132.0,1.276,Major Arcana Robe,5.43
+1H,A,NG,161.0,1.15,Tunic of Devotion,5.97
+1H,A,D,161.0,1.103,Tunic of Knowledge,5.73
+1H,A,C,161.0,1.15,Karmian Tunic,5.97
+1H,A,B,161.0,1.15,Avadon Robe,5.97
+1H,A,A,161.0,1.267,Dark Crystal Robe,6.58
+1H,A,S,161.0,1.276,Major Arcana Robe,6.63
+1H,S,NG,175.0,1.15,Tunic of Devotion,6.49
+1H,S,D,175.0,1.103,Tunic of Knowledge,6.23
+1H,S,C,175.0,1.15,Karmian Tunic,6.49
+1H,S,B,175.0,1.15,Avadon Robe,6.49
+1H,S,A,175.0,1.267,Dark Crystal Robe,7.15
+1H,S,S,175.0,1.276,Major Arcana Robe,7.2

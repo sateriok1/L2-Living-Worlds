@@ -1,0 +1,85 @@
+weapon_type,hands,grade,rank,id,name,mAtk,pAtk,src,detail
+BLUNT,1H,NG,1,747,Wand of Adept,13.0,11.0,quest/shop,quest: SpiritOfMirrors
+BLUNT,1H,NG,2,7,Apprentice's Rod,8.0,6.0,drop/shop,"drop: Elder Wolf L5, Giant Toad L5"
+BLUNT,1H,D,1,189,Staff of Life,72.0,74.0,craft/drop/exchange/shop,"drop: Breka Warlock Pastu L34, Guilotine, Warden of the Execution Grounds L35, Nakondas L40 +5"
+BLUNT,1H,D,2,7890,Priest Mace,63.0,63.0,craft/exchange/shop,
+BLUNT,1H,D,3,182,Doom Hammer,43.0,41.0,drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,1H,D,4,180,Mace of Judgment,43.0,41.0,craft/drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,1H,D,5,181,Mace of Miracle,43.0,41.0,drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,1H,D,6,179,Mace of Prayer,43.0,41.0,drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,1H,C,1,7891,Ecliptic Axe,111.0,125.0,craft/exchange/shop,
+BLUNT,1H,C,2,201,Club of Nature,101.0,111.0,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Orfen L50 +6"
+BLUNT,1H,C,3,202,Mace of Underworld,101.0,111.0,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Purgatory Invader Elite Soldier L50 +5"
+BLUNT,1H,C,4,174,Nirvana Axe,101.0,111.0,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Core L50 +6"
+BLUNT,1H,C,5,196,Stick of Eternity,101.0,111.0,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Purgatory Invader Elite Soldier L50 +5"
+BLUNT,1H,C,6,193,Stick of Faith,81.0,85.0,craft/drop/exchange/shop,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2"
+BLUNT,1H,B,1,7893,Kaim Vanul's Bones,132.0,155.0,craft/drop/exchange/shop,"drop: Ice Fairy Sirra L60, Alpen Kookaburra L65"
+BLUNT,1H,B,2,7892,Spell Breaker,122.0,140.0,craft/drop/exchange/shop,"drop: Dark Shaman Varangka L53, Ice Tarantula L57, Frost Tarantula L58"
+BLUNT,1H,A,1,8687,Cabrio's Hand,161.0,202.0,craft/exchange/shop,
+BLUNT,1H,A,2,7895,Flaming Dragon Skull,152.0,186.0,craft/drop/exchange/shop,"drop: Grazing Buffalo L79, Tepra Scarab L79, Ashuras L80 +7"
+BLUNT,1H,A,3,7894,Spiritual Eye,143.0,170.0,craft/drop/exchange/shop,"drop: Alpen Cougar L69, Splinter Stakato Drone L69, Dark Omen Invader Food L70 +15"
+BLUNT,1H,S,1,6579,Arcana Mace,175.0,225.0,craft/drop/exchange/shop,"drop: Baium L75, Death Lord Shax L75, Antharas L79 +8"
+BLUNT,2H,NG,1,177,Mage Staff,31.0,30.0,drop/exchange/shop,"drop: Dre Vanul Scout L21, Kasha Imp Turen L22, Raging Spartoi L22 +1"
+BLUNT,2H,NG,2,176,Apprentice's Staff,24.0,23.0,drop/exchange/shop,"drop: Langk Lizardman Scout L16, Stone Guardian L16, Akaste Bone Warlord L17 +5"
+BLUNT,2H,NG,3,9,Cedar Staff,18.0,16.0,craft/drop/exchange/shop,"drop: Kaboo Orc Fighter Lieutenant L11, Dungeon Skeleton L12, Dryad L13 +5"
+BLUNT,2H,NG,4,744,Staff of Sentinel,15.0,13.0,quest/shop,quest: SeaOfSporesFever
+BLUNT,2H,NG,5,754,Red Sunset Staff,14.0,13.0,quest/shop,quest: SkirmishWithOrcs
+BLUNT,2H,NG,6,2373,Eldritch Staff,13.0,13.0,shop,
+BLUNT,2H,NG,7,8,Willow Staff,13.0,11.0,craft/drop/exchange/shop,"drop: Garum Werewolf L9, Relic Werewolf L9, Goblin Brigand Lieutenant L10 +1"
+BLUNT,2H,D,1,187,Atuba Hammer,79.0,90.0,craft/drop/exchange/shop,"drop: Breka Warlock Pastu L34, Guilotine, Warden of the Execution Grounds L35, Nakondas L40 +4"
+BLUNT,2H,D,2,190,Atuba Mace,79.0,90.0,craft/drop/exchange/shop,"drop: Breka Warlock Pastu L34, Guilotine, Warden of the Execution Grounds L35, Nakondas L40 +4"
+BLUNT,2H,D,3,188,Ghost Staff,79.0,90.0,craft/drop/exchange/quest/shop,"drop: Breka Warlock Pastu L34, Guilotine, Warden of the Execution Grounds L35, Nakondas L40 +5; quest: UnderTheShadowOfTheIvoryTower"
+BLUNT,2H,D,4,90,Goat Head Staff,69.0,77.0,craft/drop/exchange/shop,"drop: Apepi L30, Cave Ant Soldier L38, Ogre L38 +5"
+BLUNT,2H,D,5,186,Staff of Magic,57.0,62.0,drop/exchange/shop,"drop: Ikuntai L25, Partisan Leader Talakin L28, Rowin Undine L33 +4"
+BLUNT,2H,D,6,184,Conjuror's Staff,47.0,50.0,craft/drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,2H,D,7,183,Mystic Staff,47.0,50.0,drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,2H,D,8,185,Staff of Mana,47.0,50.0,drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,2H,D,9,178,Bone Staff,39.0,39.0,drop/exchange/shop,"drop: Zombie Lord Farakelsus L20, Dead Pit Skeleton Archer L25, Poison Araneid L25 +2"
+BLUNT,2H,C,1,204,Deadman's Staff,122.0,152.0,craft/drop/exchange/shop,"drop: Anakazel L48, Purgatory Invader Shaman L53, Grave Guard L54 +4"
+BLUNT,2H,C,2,206,Demon's Staff,122.0,152.0,craft/drop/exchange/shop,"drop: Anakazel L48, Purgatory Invader Shaman L53, Grave Guard L54 +4"
+BLUNT,2H,C,3,205,Ghoul's Staff,122.0,152.0,craft/drop/exchange/shop,"drop: Anakazel L48, Purgatory Invader Shaman L53, Grave Guard L54 +4"
+BLUNT,2H,C,4,203,Pa'agrian Axe,114.0,141.0,craft/drop/exchange/shop,"drop: Anakazel L48, Purgatory Invader Shaman L53, Grave Guard L54 +3"
+BLUNT,2H,C,5,198,Inferno Staff,111.0,135.0,craft/exchange/shop,
+BLUNT,2H,C,6,199,Pa'agrian Hammer,111.0,135.0,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Orfen L50 +6"
+BLUNT,2H,C,7,197,Paradia Staff,111.0,135.0,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Purgatory Invader Elite Soldier L50 +5"
+BLUNT,2H,C,8,200,Sage's Staff,111.0,135.0,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Core L50 +6"
+BLUNT,2H,C,9,195,Cursed Staff,100.0,119.0,craft/drop/exchange/shop,"drop: Satyr L48, Soldier of Darkness L49, Vanor Silenos Shaman L49"
+BLUNT,2H,C,10,192,Crystal Staff,89.0,103.0,craft/drop/exchange/shop,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2"
+BLUNT,2H,C,11,194,Heavy Doom Axe,89.0,103.0,craft/drop/exchange/shop,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2"
+BLUNT,2H,C,12,191,Heavy Doom Hammer,89.0,103.0,craft/drop/exchange/quest/shop,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2; quest: 1000YearsTheEndOfLamentation"
+BLUNT,2H,B,1,210,Staff of Evil Spirits,145.0,189.0,craft/drop/exchange/shop,"drop: Soulless Wild Boar L59, Ice Fairy Sirra L60, Page of Pilgrim L62 +9"
+BLUNT,2H,B,2,92,Sprite's Staff,134.0,170.0,craft/drop/exchange/shop,"drop: Carnage Lord Gato L50, Grave Robber Kim L52, Dark Shaman Varangka L53 +11"
+BLUNT,2H,B,3,209,Divine Staff,132.0,189.0,shop,
+BLUNT,2H,B,4,211,Staff of Nobility,132.0,189.0,exchange/shop,
+BLUNT,2H,B,5,207,Staff of Phantom,122.0,170.0,shop,
+BLUNT,2H,B,6,208,Staff of Seal,122.0,170.0,shop,
+BLUNT,2H,A,1,213,Branch of the Mother Tree,167.0,226.0,craft/drop/exchange/shop,"drop: Fafurion's Herald Lokness L70, Immortal Savior Mardil L71, Icicle Emperor Bumbalump L74 +15"
+BLUNT,2H,A,2,8688,Daimon Crystal,161.0,245.0,craft/exchange/shop,
+BLUNT,2H,A,3,212,Dasparion's Staff,157.0,207.0,craft/drop/exchange/shop,"drop: Ancient Weird Drake L60, Ghost of the Well Lidia L60, Kernon's Faithful Servant Kelone L67 +27"
+BLUNT,2H,A,4,4903,Dasparion's Staff,143.0,207.0,shop,
+BLUNT,2H,S,1,6366,Imperial Staff,193.0,274.0,craft/drop/exchange/shop,"drop: Baium L75, Death Lord Shax L75, Antharas L79 +8"
+BLUNT,2H,S,2,214,The Staff,162.0,245.0,shop,
+DAGGER,1H,D,1,240,Conjurer's Knife,52.0,45.0,exchange/shop,
+DAGGER,1H,D,2,238,Dagger of Mana,52.0,45.0,drop/exchange/shop,"drop: Mammon Collector Talos L25, Bandit Assassin L35, Tyrant L35 +1"
+DAGGER,1H,D,3,239,Mystic Knife,52.0,45.0,drop/exchange/shop,"drop: Mammon Collector Talos L25, Bandit Assassin L35, Tyrant L35 +1"
+DAGGER,1H,D,4,241,Shilen Knife,52.0,45.0,craft/drop/exchange/shop,"drop: Mammon Collector Talos L25, Bandit Assassin L35, Tyrant L35 +1"
+DAGGER,1H,C,1,242,Soulfire Dirk,91.0,86.0,craft/drop/exchange/shop,"drop: Crazy Mechanic Golem L43, Death Flyer L47, Vanor Silenos Scout L47 +3"
+DAGGER,1H,B,1,243,Hell Knife,122.0,122.0,craft/drop/exchange/shop,"drop: Zaken's Chief Mate Tillion L50, Magus Kenishee L53, Harit Hero Tamash L55 +10"
+SWORD,1H,D,1,7886,Sword of Magic Fog,63.0,63.0,craft/exchange/shop,
+SWORD,1H,D,2,83,Sword of Magic,45.0,43.0,drop/exchange/shop,"drop: Zombie Lord Crowl L25, Tirak L28, Hatu Brown Bear L34 +7"
+SWORD,1H,D,3,143,Sword of Mystic,45.0,43.0,exchange/shop,
+SWORD,1H,D,4,144,Sword of Occult,45.0,43.0,drop/exchange/shop,"drop: Zombie Lord Crowl L25, Tirak L28, Hatu Brown Bear L34 +7"
+SWORD,1H,D,5,7885,Priest Sword,35.0,32.0,craft/exchange/shop,
+SWORD,1H,C,1,7888,Ecliptic Sword,111.0,125.0,craft/drop/exchange/shop,drop: Deadly Ginzu Golem V L53
+SWORD,1H,C,2,84,Homunkulus's Sword,101.0,111.0,craft/drop/exchange/shop,"drop: Rotten Tree Repiro L44, Iron Giant Totem L45, Core L50 +6"
+SWORD,1H,C,3,145,Sword of Whispering Death,101.0,111.0,craft/drop/exchange/shop,"drop: Rotten Tree Repiro L44, Iron Giant Totem L45, Dark Lord L50 +6"
+SWORD,1H,C,4,7887,Mysterious Sword,81.0,85.0,craft/exchange/shop,
+SWORD,1H,B,1,7889,Wizard's Tear,132.0,155.0,craft/drop/exchange/shop,"drop: Wisdom of Splendor L62, Forbidden Path Invader Disciple L63, Pilgrim of Splendor L63 +10"
+SWORD,1H,B,2,146,Ghoulbane,122.0,140.0,exchange/shop,
+SWORD,1H,B,3,148,Sword of Valhalla,122.0,140.0,craft/drop/exchange/shop,"drop: Messenger of Fairy Queen Berun L50, Captain of Red Flag Shaka L52, Gigantic Chaos Golem L52 +18"
+SWORD,1H,A,1,8686,Themis' Tongue,161.0,202.0,craft/exchange/shop,
+SWORD,1H,A,2,151,Sword of Miracles,152.0,186.0,craft/drop/exchange/shop,"drop: Roaring Skylancer L70, Eilhalder von Hellmann L71, Krokian Padisha Sobekk L74 +17"
+SWORD,1H,A,3,150,Elemental Sword,143.0,170.0,craft/drop/exchange/shop,"drop: Abyss Brukunt L59, Demon Kurikups L59, Roaring Lord Kastor L62 +22"
+SWORD,1H,A,4,85,Phantom Sword,143.0,170.0,shop,
+SWORD,1H,A,5,149,Sword of Life,143.0,170.0,shop,
+SWORD,1H,A,6,147,Tear of Darkness,143.0,170.0,shop,
