@@ -1,334 +1,334 @@
-weapon_type,hands,grade,rank,id,name,pAtk,spd,crit,index,src
-BLUNT,1H,NG,1,155,Flanged Mace,31.0,379.0,4.0,12.22,drop/multisell/quest/shop
-BLUNT,1H,NG,2,87,Iron Hammer,31.0,379.0,4.0,12.22,drop/quest/recipe/shop
-BLUNT,1H,NG,3,2501,Bone Club,24.0,379.0,4.0,9.46,drop/shop
-BLUNT,1H,NG,4,154,Dwarven Mace,17.0,379.0,4.0,6.7,drop/multisell/quest/shop
-BLUNT,1H,NG,5,1511,Silversmith Hammer,13.0,379.0,4.0,5.12,quest/shop
-BLUNT,1H,NG,6,153,Sigil,12.0,379.0,4.0,4.73,multisell/quest/shop
-BLUNT,1H,NG,7,5,Mace,11.0,379.0,4.0,4.34,drop/multisell/quest/shop
-BLUNT,1H,NG,8,152,Heavy Chisel,10.0,379.0,4.0,3.94,drop/multisell/quest/shop
-BLUNT,1H,NG,9,4,Club,8.0,379.0,4.0,3.15,drop/quest/shop
-BLUNT,1H,D,1,159,Bonebreaker,92.0,379.0,4.0,36.26,drop/multisell/quest/recipe/shop
-BLUNT,1H,D,2,172,Heavy Bone Club,79.0,379.0,4.0,31.14,drop/multisell/recipe/shop
-BLUNT,1H,D,3,88,Morning Star,79.0,379.0,4.0,31.14,drop/multisell/quest/recipe/shop
-BLUNT,1H,D,4,169,Skull Breaker,79.0,379.0,4.0,31.14,drop/multisell/quest/recipe/shop
-BLUNT,1H,D,5,158,Tarbar,79.0,379.0,4.0,31.14,drop/multisell/quest/recipe/shop
-BLUNT,1H,D,6,157,Spiked Club,64.0,379.0,4.0,25.23,drop/multisell/quest/recipe/shop
-BLUNT,1H,D,7,86,Tomahawk,51.0,379.0,4.0,20.1,drop/multisell/quest/shop
-BLUNT,1H,D,8,156,Hand Axe,40.0,379.0,4.0,15.77,drop/multisell/quest/shop
-BLUNT,1H,D,9,166,Heavy Mace,40.0,379.0,4.0,15.77,multisell/quest/shop
-BLUNT,1H,D,10,167,Scalpel,40.0,379.0,4.0,15.77,drop/multisell/quest/shop
-BLUNT,1H,D,11,168,Work Hammer,40.0,379.0,4.0,15.77,multisell/quest/shop
-BLUNT,1H,C,1,2503,Yaksa Mace,156.0,379.0,4.0,61.49,drop/multisell/recipe/shop
-BLUNT,1H,C,2,162,War Axe,139.0,379.0,4.0,54.79,drop/multisell/quest/recipe/shop
-BLUNT,1H,C,3,2502,Dwarven War Hammer,122.0,379.0,4.0,48.09,drop/multisell/recipe/shop
-BLUNT,1H,C,4,160,Battle Axe,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe/shop
-BLUNT,1H,C,5,89,Big Hammer,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe
-BLUNT,1H,C,6,161,Silver Axe,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe/shop
-BLUNT,1H,C,7,173,Skull Graver,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe/shop
-BLUNT,1H,B,1,175,Art of Battle Axe,194.0,379.0,4.0,76.47,drop/multisell/quest/recipe/shop
-BLUNT,1H,B,2,171,Deadman's Glory,194.0,379.0,4.0,76.47,drop/multisell/quest/recipe/shop
-BLUNT,1H,B,3,91,Heavy War Axe,175.0,379.0,4.0,68.98,drop/multisell/quest/recipe/shop
-BLUNT,1H,A,1,8680,Barakiel's Axe,251.0,379.0,4.0,98.93,multisell/recipe/shop
-BLUNT,1H,A,2,164,Elysian,232.0,379.0,4.0,91.45,drop/multisell/quest/recipe/shop
-BLUNT,1H,A,3,2504,Meteor Shower,213.0,379.0,4.0,83.96,drop/multisell/recipe/shop
-BLUNT,1H,S,1,6365,Basalt Battlehammer,281.0,379.0,4.0,110.76,drop/multisell/recipe/shop
-BLUNT,1H,S,2,165,Yablonski's Hammer,251.0,379.0,4.0,98.93,quest/shop
-BLUNT,2H,D,1,7896,Titan Hammer,96.0,325.0,4.0,32.45,multisell/recipe/shop
-BLUNT,2H,C,1,7897,Dwarven Hammer,190.0,325.0,4.0,64.22,multisell/recipe/shop
-BLUNT,2H,C,2,7898,Karik Horn,169.0,325.0,4.0,57.12,multisell/recipe/shop
-BLUNT,2H,B,1,7901,Star Buster,236.0,325.0,4.0,79.77,drop/multisell/quest/recipe/shop
-BLUNT,2H,B,2,7900,Ice Storm Hammer,213.0,325.0,4.0,71.99,drop/multisell/recipe/shop
-BLUNT,2H,A,1,8681,Behemoth's Tuning Fork,305.0,325.0,4.0,103.09,multisell/recipe/shop
-BLUNT,2H,A,2,7902,Doom Crusher,282.0,325.0,4.0,95.32,drop/multisell/recipe/shop
-BLUNT,2H,A,3,7899,Destroyer Hammer,259.0,325.0,4.0,87.54,drop/multisell/recipe/shop
-BLUNT,2H,S,1,6369,Dragon Hunter Axe,342.0,325.0,4.0,115.6,drop/multisell/recipe/shop
-BOW,2H,NG,1,273,Composite Bow,64.0,293.0,12.0,21.0,drop/multisell/quest/recipe/shop
-BOW,2H,NG,2,272,Forest Bow,49.0,293.0,12.0,16.08,drop/multisell/quest/recipe/shop
-BOW,2H,NG,3,271,Hunting Bow,34.0,293.0,12.0,11.16,drop/multisell/quest/shop
-BOW,2H,NG,4,14,Bow,23.0,293.0,12.0,7.55,drop/multisell/quest/recipe/shop
-BOW,2H,NG,5,13,Short Bow,16.0,293.0,12.0,5.25,drop/quest/shop
-BOW,2H,D,1,280,Light Crossbow,191.0,293.0,12.0,62.68,drop/multisell/quest/recipe/shop
-BOW,2H,D,2,279,Reinforced Long Bow,179.0,227.0,12.0,45.51,drop/multisell/recipe/shop
-BOW,2H,D,3,278,Gastraphetes,132.0,293.0,12.0,43.32,drop/multisell/recipe/shop
-BOW,2H,D,4,277,Dark Elven Bow,105.0,293.0,12.0,34.46,multisell/quest/shop
-BOW,2H,D,5,276,Elven Bow,105.0,293.0,12.0,34.46,drop/multisell/quest/recipe/shop
-BOW,2H,D,6,275,Long Bow,114.0,227.0,12.0,28.98,drop/multisell/quest/shop
-BOW,2H,D,7,274,Reinforced Bow,82.0,293.0,12.0,26.91,drop/multisell/quest/shop
-BOW,2H,C,1,286,Eminence Bow,323.0,293.0,12.0,106.0,drop/multisell/recipe/shop
-BOW,2H,C,2,285,Noble Elven Bow,252.0,293.0,12.0,82.7,drop/multisell/recipe/shop
-BOW,2H,C,3,283,Akat Long Bow,316.0,227.0,12.0,80.34,drop/multisell/recipe/shop
-BOW,2H,C,4,281,Crystallized Ice Bow,220.0,293.0,12.0,72.2,drop/multisell/recipe/shop
-BOW,2H,C,5,282,Elemental Bow,277.0,227.0,12.0,70.42,drop/multisell/recipe/shop
-BOW,2H,B,1,287,Bow of Peril,400.0,293.0,12.0,131.26,drop/multisell/quest/recipe/shop
-BOW,2H,B,2,284,Dark Elven Long Bow,397.0,227.0,12.0,100.93,drop/multisell/recipe/shop
-BOW,2H,A,1,8684,Shyeed's Bow,570.0,227.0,12.0,144.92,multisell/recipe/shop
-BOW,2H,A,2,288,Carnage Bow,440.0,293.0,12.0,144.39,drop/multisell/quest/recipe/shop
-BOW,2H,A,3,289,Soul Bow,528.0,227.0,12.0,134.24,drop/multisell/recipe/shop
-BOW,2H,S,1,7575,Draconic Bow,581.0,293.0,12.0,190.66,drop/multisell/recipe/shop
-BOW,2H,S,2,6368,Shining Bow,581.0,293.0,12.0,190.66,recipe/shop
-BOW,2H,S,3,290,The Bow,519.0,293.0,12.0,170.32,quest/shop
-DAGGER,1H,NG,1,219,Sword Breaker,27.0,433.0,12.0,13.09,drop/multisell/quest/recipe/shop
-DAGGER,1H,NG,2,217,Shining Knife,21.0,433.0,12.0,10.18,drop/quest/shop
-DAGGER,1H,NG,3,218,Throwing Knife,21.0,433.0,12.0,10.18,drop/multisell/quest/shop
-DAGGER,1H,NG,4,946,Skeleton Dagger,16.0,433.0,12.0,7.76,shop
-DAGGER,1H,NG,5,216,Dirk,15.0,433.0,12.0,7.27,drop/multisell/quest/recipe/shop
-DAGGER,1H,NG,6,2372,Dagger of Adept,11.0,433.0,12.0,5.33,shop
-DAGGER,1H,NG,7,989,Eldritch Dagger,11.0,433.0,12.0,5.33,quest/shop
-DAGGER,1H,NG,8,2374,Red Sunset Dagger,11.0,433.0,12.0,5.33,shop
-DAGGER,1H,NG,9,215,Doom Dagger,10.0,433.0,12.0,4.85,drop/multisell/quest/shop
-DAGGER,1H,NG,10,12,Knife,10.0,433.0,12.0,4.85,drop/quest/shop
-DAGGER,1H,NG,11,11,Bone Dagger,7.0,433.0,12.0,3.39,drop/quest/shop
-DAGGER,1H,D,1,225,Mithril Dagger,80.0,433.0,12.0,38.8,drop/multisell/quest/recipe/shop
-DAGGER,1H,D,2,224,Maingauche,69.0,433.0,12.0,33.46,drop/multisell/quest/recipe/shop
-DAGGER,1H,D,3,1660,Cursed Maingauche,62.0,433.0,12.0,30.07,drop/multisell/recipe/shop
-DAGGER,1H,D,4,223,Kukuri,56.0,433.0,12.0,27.16,drop/multisell/quest/shop
-DAGGER,1H,D,5,222,Poniard Dagger,45.0,433.0,12.0,21.82,drop/multisell/quest/shop
-DAGGER,1H,D,6,221,Assassin Knife,35.0,433.0,12.0,16.97,multisell/quest/recipe/shop
-DAGGER,1H,D,7,220,Crafted Dagger,35.0,433.0,12.0,16.97,drop/multisell/quest/shop
-DAGGER,1H,D,8,2507,Lizardspear,5.0,433.0,12.0,2.42,shop
-DAGGER,1H,D,9,1471,Silenos Blowgun,5.0,433.0,12.0,2.42,shop
-DAGGER,1H,C,1,228,Crystal Dagger,136.0,433.0,12.0,65.95,drop/multisell/quest/recipe/shop
-DAGGER,1H,C,2,233,Dark Screamer,122.0,433.0,12.0,59.17,drop/multisell/quest/recipe/shop
-DAGGER,1H,C,3,231,Grace Dagger,122.0,433.0,12.0,59.17,drop/multisell/quest/recipe/shop
-DAGGER,1H,C,4,227,Stiletto,107.0,433.0,12.0,51.89,drop/multisell/quest/recipe/shop
-DAGGER,1H,C,5,226,Cursed Dagger,94.0,433.0,12.0,45.59,drop/multisell/quest/recipe/shop
-DAGGER,1H,C,6,232,Dark Elven Dagger,94.0,433.0,12.0,45.59,drop/multisell/quest/recipe/shop
-DAGGER,1H,C,7,230,Wolverine Needle,94.0,433.0,12.0,45.59,multisell/quest/recipe/shop
-DAGGER,1H,B,1,234,Demon's Dagger,170.0,433.0,12.0,82.44,drop/multisell/quest/recipe/shop
-DAGGER,1H,B,2,229,Kris,153.0,433.0,12.0,74.2,drop/multisell/quest/recipe/shop
-DAGGER,1H,A,1,8682,Naga Storm,220.0,433.0,12.0,106.69,multisell/quest/recipe/shop
-DAGGER,1H,A,2,236,Soul Separator,203.0,433.0,12.0,98.45,drop/multisell/recipe/shop
-DAGGER,1H,A,3,235,Bloody Orchid,186.0,433.0,12.0,90.2,drop/multisell/quest/recipe/shop
-DAGGER,1H,S,1,6367,Angel Slayer,246.0,433.0,12.0,119.3,drop/multisell/recipe/shop
-DAGGER,1H,S,2,237,Dragon's Tooth,220.0,433.0,12.0,106.69,shop
-DUAL,2H,D,1,2542,Artisan's Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,2,2543,Artisan's Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,3,2529,Bastard Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,4,2530,Bastard Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,5,2547,Knight's Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,6,2548,Knight's Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,7,2536,Spinebone Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,8,2537,Spinebone Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
-DUAL,2H,D,9,2540,Artisan's Sword*Artisan's Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,10,2541,Artisan's Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,11,2527,Bastard Sword*Artisan's Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,12,2525,Bastard Sword*Bastard Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,13,2528,Bastard Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,14,2526,Bastard Sword*Spinebone Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,15,2546,Knight's Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,16,2521,Saber*Crimson Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,17,2522,Saber*Elven Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,18,2534,Spinebone Sword*Artisan's Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,19,2535,Spinebone Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,20,2533,Spinebone Sword*Spinebone Sword,96.0,325.0,8.0,33.7,multisell/shop
-DUAL,2H,D,21,2519,Saber*Artisan's Sword,83.0,325.0,8.0,29.13,multisell/shop
-DUAL,2H,D,22,2517,Saber*Bastard Sword,83.0,325.0,8.0,29.13,multisell/shop
-DUAL,2H,D,23,2520,Saber*Knight's Sword,83.0,325.0,8.0,29.13,multisell/shop
-DUAL,2H,D,24,2518,Saber*Spinebone Sword,83.0,325.0,8.0,29.13,multisell/shop
-DUAL,2H,D,25,2516,Saber*Saber,73.0,325.0,8.0,25.62,multisell/shop
-DUAL,2H,C,1,2582,Katana*Katana,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,2,2584,Katana*Raid Sword,190.0,325.0,8.0,66.69,multisell/quest/shop
-DUAL,2H,C,3,2583,Katana*Spirit Sword,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,4,2599,Raid Sword*Raid Sword,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,5,2573,Shamshir*Katana,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,6,2575,Shamshir*Raid Sword,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,7,2572,Shamshir*Shamshir,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,8,2574,Shamshir*Spirit Sword,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,9,2592,Spirit Sword*Raid Sword,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,10,2591,Spirit Sword*Spirit Sword,190.0,325.0,8.0,66.69,multisell/shop
-DUAL,2H,C,11,2563,Stormbringer*Katana,183.0,325.0,8.0,64.23,multisell/shop
-DUAL,2H,C,12,2565,Stormbringer*Raid Sword,183.0,325.0,8.0,64.23,multisell/shop
-DUAL,2H,C,13,2562,Stormbringer*Shamshir,183.0,325.0,8.0,64.23,multisell/shop
-DUAL,2H,C,14,2564,Stormbringer*Spirit Sword,183.0,325.0,8.0,64.23,multisell/shop
-DUAL,2H,C,15,2561,Stormbringer*Stormbringer,175.0,325.0,8.0,61.43,multisell/shop
-DUAL,2H,C,16,2560,Elven Long Sword*Elven Long Sword,162.0,325.0,8.0,56.86,multisell/shop
-DUAL,2H,C,17,2559,Sword of Revolution*Elven Long Sword,155.0,325.0,8.0,54.41,multisell/shop
-DUAL,2H,C,18,2554,Crimson Sword*Elven Long Sword,148.0,325.0,8.0,51.95,multisell/shop
-DUAL,2H,C,19,2557,Elven Sword*Elven Long Sword,148.0,325.0,8.0,51.95,multisell/shop
-DUAL,2H,C,20,2558,Sword of Revolution*Sword of Revolution,148.0,325.0,8.0,51.95,multisell/shop
-DUAL,2H,C,21,2545,Artisan's Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
-DUAL,2H,C,22,2532,Bastard Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
-DUAL,2H,C,23,2553,Crimson Sword*Sword of Revolution,136.0,325.0,8.0,47.74,multisell/shop
-DUAL,2H,C,24,2556,Elven Sword*Sword of Revolution,136.0,325.0,8.0,47.74,multisell/shop
-DUAL,2H,C,25,2550,Knight's Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
-DUAL,2H,C,26,2539,Spinebone Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
-DUAL,2H,C,27,2524,Saber*Elven Long Sword,130.0,325.0,8.0,45.63,multisell/shop
-DUAL,2H,C,28,2544,Artisan's Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
-DUAL,2H,C,29,2531,Bastard Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
-DUAL,2H,C,30,2549,Knight's Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
-DUAL,2H,C,31,2538,Spinebone Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
-DUAL,2H,C,32,2551,Crimson Sword*Crimson Sword,118.0,325.0,8.0,41.42,multisell/shop
-DUAL,2H,C,33,2552,Crimson Sword*Elven Sword,118.0,325.0,8.0,41.42,multisell/shop
-DUAL,2H,C,34,2555,Elven Sword*Elven Sword,118.0,325.0,8.0,41.42,multisell/shop
-DUAL,2H,C,35,2523,Saber*Sword of Revolution,118.0,325.0,8.0,41.42,multisell/shop
-DUAL,2H,B,1,2626,Samurai Long Sword*Samurai Long Sword,236.0,325.0,8.0,82.84,multisell/quest/shop
-DUAL,2H,B,2,2611,Caliburs*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
-DUAL,2H,B,3,2620,Sword of Delusion*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
-DUAL,2H,B,4,2616,Sword of Limit*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
-DUAL,2H,B,5,2623,Sword of Nightmare*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
-DUAL,2H,B,6,2625,Tsurugi*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
-DUAL,2H,B,7,2590,Katana*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
-DUAL,2H,B,8,2605,Raid Sword*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
-DUAL,2H,B,9,2581,Shamshir*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
-DUAL,2H,B,10,2598,Spirit Sword*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
-DUAL,2H,B,11,2606,Caliburs*Caliburs,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,12,2608,Caliburs*Sword of Delusion,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,13,2607,Caliburs*Sword of Limit,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,14,2609,Caliburs*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,15,2610,Caliburs*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,16,2571,Stormbringer*Samurai Long sword,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,17,2617,Sword of Delusion*Sword of Delusion,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,18,2618,Sword of Delusion*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,19,2619,Sword of Delusion*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,20,2613,Sword of Limit*Sword of Delusion,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,21,2612,Sword of Limit*Sword of Limit,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,22,2614,Sword of Limit*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,23,2615,Sword of Limit*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,24,2621,Sword of Nightmare*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,25,2622,Sword of Nightmare*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,26,2624,Tsurugi*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
-DUAL,2H,B,27,2585,Katana*Caliburs,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,28,2587,Katana*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,29,2586,Katana*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,30,2588,Katana*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,31,2589,Katana*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,32,2600,Raid Sword*Caliburs,204.0,325.0,8.0,71.6,multisell/quest/shop
-DUAL,2H,B,33,2602,Raid Sword*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,34,2601,Raid Sword*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,35,2603,Raid Sword*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,36,2604,Raid Sword*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,37,2576,Shamshir*Caliburs,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,38,2578,Shamshir*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,39,2577,Shamshir*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,40,2579,Shamshir*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,41,2580,Shamshir*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,42,2593,Spirit Sword*Caliburs,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,43,2595,Spirit Sword*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,44,2594,Spirit Sword*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,45,2596,Spirit Sword*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,46,2597,Spirit Sword*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
-DUAL,2H,B,47,2566,Stormbringer*Caliburs,197.0,325.0,8.0,69.15,multisell/shop
-DUAL,2H,B,48,2568,Stormbringer*Sword of Delusion,197.0,325.0,8.0,69.15,multisell/shop
-DUAL,2H,B,49,2567,Stormbringer*Sword of Limit,197.0,325.0,8.0,69.15,multisell/shop
-DUAL,2H,B,50,2569,Stormbringer*Sword of Nightmare,197.0,325.0,8.0,69.15,multisell/shop
-DUAL,2H,B,51,2570,Stormbringer*Tsurugi,197.0,325.0,8.0,69.15,multisell/shop
-DUAL,2H,A,1,8938,Damascus * Tallum Blade,305.0,325.0,8.0,107.06,multisell
-DUAL,2H,A,2,5706,Damascus*Damascus,282.0,325.0,8.0,98.98,multisell/shop
-DUAL,2H,A,3,5705,Keshanberk*Damascus,275.0,325.0,8.0,96.53,multisell/shop
-DUAL,2H,A,4,5233,Keshanberk*Keshanberk,259.0,325.0,8.0,90.91,multisell/shop
-DUAL,2H,S,1,6580,Tallum Blade*Dark Legion's Edge,342.0,325.0,8.0,120.04,drop/multisell/shop
-DUALFIST,2H,NG,1,257,Viper Fang,38.0,325.0,4.0,12.84,drop/multisell/quest/shop
-DUALFIST,2H,NG,2,256,Cestus,29.0,325.0,4.0,9.8,drop/multisell/shop
-DUALFIST,2H,NG,3,255,Fox Claw Gloves,21.0,325.0,4.0,7.1,drop/multisell/quest/shop
-DUALFIST,2H,NG,4,2371,Fist of Butcher,16.0,325.0,4.0,5.41,drop/shop
-DUALFIST,2H,NG,5,254,Iron Gloves,13.0,325.0,4.0,4.39,drop/multisell/shop
-DUALFIST,2H,NG,6,253,Spiked Gloves,10.0,325.0,4.0,3.38,drop/shop
-DUALFIST,2H,D,1,262,Scallop Jamadhr,112.0,325.0,4.0,37.86,drop/multisell/quest/recipe/shop
-DUALFIST,2H,D,2,261,Bich'Hwa,96.0,325.0,4.0,32.45,drop/multisell/quest/recipe/shop
-DUALFIST,2H,D,3,260,Triple-Edged Jamadhr,78.0,325.0,4.0,26.36,drop/multisell/quest/shop
-DUALFIST,2H,D,4,259,Single-Edged Jamadhr,62.0,325.0,4.0,20.96,drop/multisell/quest/shop
-DUALFIST,2H,D,5,258,Bagh-Nakh,49.0,325.0,4.0,16.56,drop/quest/shop
-DUALFIST,2H,C,1,266,Great Pata,190.0,325.0,4.0,64.22,drop/multisell/quest/recipe/shop
-DUALFIST,2H,C,2,265,Fisted Blade,169.0,325.0,4.0,57.12,drop/multisell/quest/recipe/shop
-DUALFIST,2H,C,3,4233,Knuckle Duster,148.0,325.0,4.0,50.02,drop/multisell/recipe/shop
-DUALFIST,2H,C,4,263,Chakram,130.0,325.0,4.0,43.94,drop/multisell/quest/recipe/shop
-DUALFIST,2H,B,1,268,Bellion Cestus,236.0,325.0,4.0,79.77,drop/multisell/quest/recipe/shop
-DUALFIST,2H,B,2,267,Arthro Nail,213.0,325.0,4.0,71.99,drop/multisell/quest/recipe/shop
-DUALFIST,2H,B,3,264,Pata,204.0,325.0,4.0,68.95,multisell/quest/recipe/shop
-DUALFIST,2H,A,1,8685,Sobekk's Hurricane,305.0,325.0,4.0,103.09,multisell/recipe/shop
-DUALFIST,2H,A,2,270,Dragon Grinder,282.0,325.0,4.0,95.32,drop/multisell/quest/recipe/shop
-DUALFIST,2H,A,3,269,Blood Tornado,259.0,325.0,4.0,87.54,drop/multisell/recipe/shop
-DUALFIST,2H,S,1,6371,Demon Splinter,342.0,325.0,4.0,115.6,drop/multisell/recipe/shop
-POLE,2H,NG,1,16,Great Spear,31.0,325.0,8.0,10.88,drop/multisell/quest/shop
-POLE,2H,NG,2,15,Short Spear,24.0,325.0,8.0,8.42,drop/quest/recipe/shop
-POLE,2H,D,1,297,Glaive,92.0,325.0,8.0,32.29,drop/multisell/quest/recipe/shop
-POLE,2H,D,2,294,War Pick,79.0,325.0,8.0,27.73,drop/multisell/quest/recipe/shop
-POLE,2H,D,3,93,Winged Spear,79.0,325.0,8.0,27.73,drop/multisell/quest/recipe/shop
-POLE,2H,D,4,296,Dwarven Pike,64.0,325.0,8.0,22.46,drop/multisell/quest/shop
-POLE,2H,D,5,293,War Hammer,64.0,325.0,8.0,22.46,drop/multisell/quest/shop
-POLE,2H,D,6,295,Dwarven Trident,51.0,325.0,8.0,17.9,multisell/quest/recipe/shop
-POLE,2H,D,7,292,Pike,51.0,325.0,8.0,17.9,drop/multisell/quest/shop
-POLE,2H,D,8,1472,Dreadbane,50.0,325.0,8.0,17.55,shop
-POLE,2H,D,9,1376,Guard Spear,50.0,325.0,8.0,17.55,shop
-POLE,2H,D,10,291,Trident,40.0,325.0,8.0,14.04,drop/multisell/quest/recipe/shop
-POLE,2H,C,1,299,Orcish Poleaxe,156.0,325.0,8.0,54.76,drop/multisell/quest/recipe/shop
-POLE,2H,C,2,301,Scorpion,144.0,325.0,8.0,50.54,drop/multisell/recipe/shop
-POLE,2H,C,3,303,Widow Maker,144.0,325.0,8.0,50.54,drop/multisell/quest/recipe/shop
-POLE,2H,C,4,95,Poleaxe,139.0,325.0,8.0,48.79,multisell/quest/recipe/shop
-POLE,2H,C,5,94,Bec de Corbin,122.0,325.0,8.0,42.82,drop/multisell/recipe/shop
-POLE,2H,C,6,302,Body Slasher,107.0,325.0,8.0,37.56,drop/multisell/recipe/shop
-POLE,2H,C,7,298,Orcish Glaive,107.0,325.0,8.0,37.56,drop/multisell/quest/recipe/shop
-POLE,2H,C,8,96,Scythe,107.0,325.0,8.0,37.56,drop/multisell/quest/recipe/shop
-POLE,2H,B,1,97,Lance,194.0,325.0,8.0,68.09,drop/multisell/quest/recipe/shop
-POLE,2H,B,2,300,Great Axe,175.0,325.0,8.0,61.43,drop/multisell/quest/recipe/shop
-POLE,2H,A,1,8683,Tiphon's Spear,251.0,325.0,8.0,88.1,multisell/recipe/shop
-POLE,2H,A,2,305,Tallum Glaive,232.0,325.0,8.0,81.43,drop/multisell/recipe/shop
-POLE,2H,A,3,304,Orcish Halberd,219.0,325.0,8.0,76.87,shop
-POLE,2H,A,4,98,Halberd,213.0,325.0,8.0,74.76,drop/multisell/quest/recipe/shop
-POLE,2H,S,1,6370,Saint Spear,281.0,325.0,8.0,98.63,drop/multisell/recipe/shop
-POLE,2H,S,2,306,Dragon Claw Axe,251.0,325.0,8.0,88.1,quest/shop
-SWORD,1H,NG,1,68,Falchion,31.0,379.0,8.0,12.69,drop/multisell/quest/shop
-SWORD,1H,NG,2,2,Long Sword,24.0,379.0,8.0,9.82,drop/multisell/quest/shop
-SWORD,1H,NG,3,120,Sword of Reflection,24.0,379.0,8.0,9.82,drop/quest/recipe/shop
-SWORD,1H,NG,4,121,Sword of Watershadow,24.0,379.0,8.0,9.82,drop/shop
-SWORD,1H,NG,5,66,Gladius,17.0,379.0,8.0,6.96,drop/multisell/quest/shop
-SWORD,1H,NG,6,122,Handmade Sword,17.0,379.0,8.0,6.96,shop
-SWORD,1H,NG,7,67,Orcish Sword,17.0,379.0,8.0,6.96,quest/shop
-SWORD,1H,NG,8,975,Blood Saber,14.0,379.0,8.0,5.73,quest/shop
-SWORD,1H,NG,9,743,Sword of Sentinel,14.0,379.0,8.0,5.73,quest/shop
-SWORD,1H,NG,10,1510,Butcher's Sword,13.0,379.0,8.0,5.32,quest/shop
-SWORD,1H,NG,11,738,Sword of Solidarity,12.0,379.0,8.0,4.91,quest/shop
-SWORD,1H,NG,12,3,Broadsword,11.0,379.0,8.0,4.5,drop/multisell/quest/recipe/shop
-SWORD,1H,NG,13,4027,Bouquet,8.0,379.0,8.0,3.27,shop
-SWORD,1H,NG,14,1,Short Sword,8.0,379.0,8.0,3.27,drop/quest/shop
-SWORD,1H,D,1,2499,Elven Long Sword,92.0,379.0,8.0,37.66,drop/multisell/recipe/shop
-SWORD,1H,D,2,129,Sword of Revolution,79.0,379.0,8.0,32.34,drop/multisell/recipe/shop
-SWORD,1H,D,3,127,Crimson Sword,64.0,379.0,8.0,26.2,drop/multisell/quest/shop
-SWORD,1H,D,4,130,Elven Sword,64.0,379.0,8.0,26.2,drop/multisell/quest/shop
-SWORD,1H,D,5,126,Artisan's Sword,51.0,379.0,8.0,20.88,drop/multisell/quest/shop
-SWORD,1H,D,6,69,Bastard Sword,51.0,379.0,8.0,20.88,drop/multisell/quest/shop
-SWORD,1H,D,7,128,Knight's Sword,51.0,379.0,8.0,20.88,drop/multisell/shop
-SWORD,1H,D,8,125,Spinebone Sword,51.0,379.0,8.0,20.88,drop/multisell/quest/recipe/shop
-SWORD,1H,D,9,123,Saber,40.0,379.0,8.0,16.37,drop/multisell/quest/recipe/shop
-SWORD,1H,C,1,135,Samurai Longsword,156.0,379.0,8.0,63.85,drop/multisell/quest/recipe/shop
-SWORD,1H,C,2,75,Caliburs,139.0,379.0,8.0,56.9,drop/multisell/quest/recipe/shop
-SWORD,1H,C,3,76,Sword of Delusion,139.0,379.0,8.0,56.9,drop/multisell/quest/recipe/shop
-SWORD,1H,C,4,132,Sword of Limit,139.0,379.0,8.0,56.9,multisell/recipe/shop
-SWORD,1H,C,5,134,Sword of Nightmare,139.0,379.0,8.0,56.9,drop/multisell/recipe/shop
-SWORD,1H,C,6,77,Tsurugi,139.0,379.0,8.0,56.9,drop/multisell/quest/recipe/shop
-SWORD,1H,C,7,74,Katana,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
-SWORD,1H,C,8,133,Raid Sword,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
-SWORD,1H,C,9,73,Shamshir,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
-SWORD,1H,C,10,131,Spirit Sword,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
-SWORD,1H,C,11,72,Stormbringer,107.0,379.0,8.0,43.8,drop/multisell/quest/recipe/shop
-SWORD,1H,B,1,79,Sword of Damascus,194.0,379.0,8.0,79.41,drop/multisell/quest/recipe/shop
-SWORD,1H,B,2,136,Blade of Serenity,175.0,379.0,8.0,71.63,multisell/shop
-SWORD,1H,B,3,139,Dusk Sword,175.0,379.0,8.0,71.63,multisell/shop
-SWORD,1H,B,4,140,Eminence Sword,175.0,379.0,8.0,71.63,multisell/quest/shop
-SWORD,1H,B,5,141,Hazard Sword,175.0,379.0,8.0,71.63,multisell/shop
-SWORD,1H,B,6,142,Keshanberk,175.0,379.0,8.0,71.63,drop/multisell/recipe/shop
-SWORD,1H,B,7,137,Mist Sword,175.0,379.0,8.0,71.63,multisell/shop
-SWORD,1H,B,8,138,Sword of Desert,175.0,379.0,8.0,71.63,multisell/shop
-SWORD,1H,A,1,8678,Sirra's Blade,251.0,379.0,8.0,102.74,multisell/recipe/shop
-SWORD,1H,A,2,2500,Dark Legion's Edge,232.0,379.0,8.0,94.96,drop/multisell/quest/recipe/shop
-SWORD,1H,A,3,80,Tallum Blade,213.0,379.0,8.0,87.19,drop/multisell/quest/recipe/shop
-SWORD,1H,S,1,6364,Forgotten Blade,281.0,379.0,8.0,115.02,drop/multisell/recipe/shop
-SWORD,2H,NG,1,5284,Zweihander,38.0,325.0,8.0,13.34,drop/multisell/shop
-SWORD,2H,NG,2,1333,Brandish,21.0,325.0,8.0,7.37,drop/multisell/recipe/shop
-SWORD,2H,NG,3,981,Red Sunset Sword,16.0,325.0,8.0,5.62,quest/shop
-SWORD,2H,D,1,70,Claymore,112.0,325.0,8.0,39.31,drop/multisell/quest/recipe/shop
-SWORD,2H,D,2,7881,Titan Sword,96.0,325.0,8.0,33.7,multisell/recipe/shop
-SWORD,2H,D,3,124,Two-Handed Sword,78.0,325.0,8.0,27.38,drop/quest/recipe/shop
-SWORD,2H,D,4,5285,Heavy Sword,49.0,325.0,8.0,17.2,drop/multisell/recipe/shop
-SWORD,2H,D,5,7880,Steel Sword,49.0,325.0,8.0,17.2,multisell/recipe/shop
-SWORD,2H,C,1,5286,Berserker Blade,190.0,325.0,8.0,66.69,drop/multisell/recipe/shop
-SWORD,2H,C,2,7882,Pa'agrian Sword,169.0,325.0,8.0,59.32,multisell/recipe/shop
-SWORD,2H,C,3,71,Flamberge,130.0,325.0,8.0,45.63,drop/multisell/quest/recipe/shop
-SWORD,2H,B,1,7883,Guardian Sword,236.0,325.0,8.0,82.84,drop/multisell/quest/recipe/shop
-SWORD,2H,B,2,78,Great Sword,213.0,325.0,8.0,74.76,drop/multisell/recipe/shop
-SWORD,2H,A,1,8679,Sword of Ipos,305.0,325.0,8.0,107.06,multisell/recipe/shop
-SWORD,2H,A,2,81,Dragon Slayer,282.0,325.0,8.0,98.98,drop/multisell/quest/recipe/shop
-SWORD,2H,A,3,7884,Infernal Master,259.0,325.0,8.0,90.91,drop/multisell/recipe/shop
-SWORD,2H,S,1,6372,Heaven's Divider,342.0,325.0,8.0,120.04,drop/multisell/recipe/shop
-SWORD,2H,S,2,6605,Heavens Divider,342.0,325.0,8.0,120.04,multisell/shop
+weapon_type,hands,grade,rank,id,name,pAtk,mAtk,spd,crit,index,src,detail
+BLUNT,1H,NG,1,155,Flanged Mace,31.0,21.0,379.0,4.0,12.22,drop/exchange/shop,"drop: Dre Vanul Scout L21, Kasha Imp Turen L22, Raging Spartoi L22 +1"
+BLUNT,1H,NG,2,87,Iron Hammer,31.0,21.0,379.0,4.0,12.22,craft/drop/shop,"drop: Dre Vanul Scout L21, Kasha Imp Turen L22, Raging Spartoi L22 +1"
+BLUNT,1H,NG,3,2501,Bone Club,24.0,17.0,379.0,4.0,9.46,drop/shop,"drop: Langk Lizardman Scout L16, Stone Guardian L16, Akaste Bone Warlord L17 +5"
+BLUNT,1H,NG,4,154,Dwarven Mace,17.0,12.0,379.0,4.0,6.7,drop/exchange/shop,"drop: Kaboo Orc Fighter Lieutenant L11, Dungeon Skeleton L12, Dryad L13 +5"
+BLUNT,1H,NG,5,1511,Silversmith Hammer,13.0,10.0,379.0,4.0,5.12,quest/shop,quest: JumbleTumbleDiamondFuss
+BLUNT,1H,NG,6,153,Sigil,12.0,9.0,379.0,4.0,4.73,exchange/shop,
+BLUNT,1H,NG,7,5,Mace,11.0,9.0,379.0,4.0,4.34,drop/exchange/shop,"drop: Garum Werewolf L9, Relic Werewolf L9, Goblin Brigand Lieutenant L10 +1"
+BLUNT,1H,NG,8,152,Heavy Chisel,10.0,8.0,379.0,4.0,3.94,drop/exchange/shop,"drop: Garum Werewolf L9, Relic Werewolf L9, Goblin Brigand Lieutenant L10 +1"
+BLUNT,1H,NG,9,4,Club,8.0,6.0,379.0,4.0,3.15,drop/quest/shop,"drop: Elder Wolf L5, Giant Toad L5; quest: LongLiveThePaagrioLord"
+BLUNT,1H,D,1,159,Bonebreaker,92.0,54.0,379.0,4.0,36.26,craft/drop/exchange/shop,"drop: Breka Warlock Pastu L34, Guilotine, Warden of the Execution Grounds L35, Nakondas L40 +5"
+BLUNT,1H,D,2,172,Heavy Bone Club,79.0,47.0,379.0,4.0,31.14,craft/drop/exchange/shop,"drop: Apepi L30, Cave Ant Soldier L38, Ogre L38 +5"
+BLUNT,1H,D,3,88,Morning Star,79.0,47.0,379.0,4.0,31.14,craft/drop/exchange/shop,"drop: Apepi L30, Cave Ant Soldier L38, Ogre L38 +5"
+BLUNT,1H,D,4,169,Skull Breaker,79.0,47.0,379.0,4.0,31.14,craft/drop/exchange/shop,"drop: Apepi L30, Cave Ant Soldier L38, Ogre L38 +5"
+BLUNT,1H,D,5,158,Tarbar,79.0,47.0,379.0,4.0,31.14,craft/drop/exchange/shop,"drop: Apepi L30, Cave Ant Soldier L38, Ogre L38 +5"
+BLUNT,1H,D,6,157,Spiked Club,64.0,39.0,379.0,4.0,25.23,craft/drop/exchange/shop,"drop: Ikuntai L25, Partisan Leader Talakin L28, Rowin Undine L33 +4"
+BLUNT,1H,D,7,86,Tomahawk,51.0,32.0,379.0,4.0,20.1,drop/exchange/shop,"drop: Tracker Leader Sharuk L23, Marsh Stakato L29, Ol Mahum Captain L30 +3"
+BLUNT,1H,D,8,156,Hand Axe,40.0,26.0,379.0,4.0,15.77,drop/exchange/shop,"drop: Zombie Lord Farakelsus L20, Dead Pit Skeleton Archer L25, Poison Araneid L25 +2"
+BLUNT,1H,D,9,166,Heavy Mace,40.0,26.0,379.0,4.0,15.77,exchange/shop,
+BLUNT,1H,D,10,167,Scalpel,40.0,26.0,379.0,4.0,15.77,drop/exchange/shop,"drop: Zombie Lord Farakelsus L20, Dead Pit Skeleton Archer L25, Poison Araneid L25 +2"
+BLUNT,1H,D,11,168,Work Hammer,40.0,26.0,379.0,4.0,15.77,exchange/shop,
+BLUNT,1H,C,1,2503,Yaksa Mace,156.0,83.0,379.0,4.0,61.49,craft/drop/exchange/shop,"drop: Anakazel L48, Purgatory Invader Shaman L53, Grave Guard L54 +4"
+BLUNT,1H,C,2,162,War Axe,139.0,76.0,379.0,4.0,54.79,craft/drop/exchange/shop,"drop: Dread Avenger Kraven L44, Archon Suscepter L45, Core L50 +7"
+BLUNT,1H,C,3,2502,Dwarven War Hammer,122.0,68.0,379.0,4.0,48.09,craft/drop/exchange/shop,"drop: Satyr L48, Soldier of Darkness L49, Vanor Silenos Shaman L49"
+BLUNT,1H,C,4,160,Battle Axe,107.0,61.0,379.0,4.0,42.18,craft/drop/exchange/shop,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2"
+BLUNT,1H,C,5,89,Big Hammer,107.0,61.0,379.0,4.0,42.18,craft/drop/exchange,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2"
+BLUNT,1H,C,6,161,Silver Axe,107.0,61.0,379.0,4.0,42.18,craft/drop/exchange/shop,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2"
+BLUNT,1H,C,7,173,Skull Graver,107.0,61.0,379.0,4.0,42.18,craft/drop/exchange/shop,"drop: Water Spirit Lian L40, Wizard of Storm Teruk L40, Timak Orc Shaman L44 +2"
+BLUNT,1H,B,1,175,Art of Battle Axe,194.0,99.0,379.0,4.0,76.47,craft/drop/exchange/shop,"drop: Soulless Wild Boar L59, Ice Fairy Sirra L60, Page of Pilgrim L62 +9"
+BLUNT,1H,B,2,171,Deadman's Glory,194.0,99.0,379.0,4.0,76.47,craft/drop/exchange/shop,"drop: Soulless Wild Boar L59, Ice Fairy Sirra L60, Page of Pilgrim L62 +9"
+BLUNT,1H,B,3,91,Heavy War Axe,175.0,91.0,379.0,4.0,68.98,craft/drop/exchange/shop,"drop: Carnage Lord Gato L50, Grave Robber Kim L52, Dark Shaman Varangka L53 +11"
+BLUNT,1H,A,1,8680,Barakiel's Axe,251.0,121.0,379.0,4.0,98.93,craft/exchange/shop,
+BLUNT,1H,A,2,164,Elysian,232.0,114.0,379.0,4.0,91.45,craft/drop/exchange/shop,"drop: Fafurion's Herald Lokness L70, Immortal Savior Mardil L71, Icicle Emperor Bumbalump L74 +15"
+BLUNT,1H,A,3,2504,Meteor Shower,213.0,107.0,379.0,4.0,83.96,craft/drop/exchange/shop,"drop: Ancient Weird Drake L60, Ghost of the Well Lidia L60, Kernon's Faithful Servant Kelone L67 +27"
+BLUNT,1H,S,1,6365,Basalt Battlehammer,281.0,132.0,379.0,4.0,110.76,craft/drop/exchange/shop,"drop: Baium L75, Death Lord Shax L75, Antharas L79 +8"
+BLUNT,1H,S,2,165,Yablonski's Hammer,251.0,121.0,379.0,4.0,98.93,shop,
+BLUNT,2H,D,1,7896,Titan Hammer,96.0,47.0,325.0,4.0,32.45,craft/exchange/shop,
+BLUNT,2H,C,1,7897,Dwarven Hammer,190.0,83.0,325.0,4.0,64.22,craft/exchange/shop,
+BLUNT,2H,C,2,7898,Karik Horn,169.0,76.0,325.0,4.0,57.12,craft/exchange/shop,
+BLUNT,2H,B,1,7901,Star Buster,236.0,99.0,325.0,4.0,79.77,craft/drop/exchange/shop,"drop: Ice Fairy Sirra L60, Alpen Kookaburra L65"
+BLUNT,2H,B,2,7900,Ice Storm Hammer,213.0,91.0,325.0,4.0,71.99,craft/drop/exchange/shop,"drop: Dark Shaman Varangka L53, Ice Tarantula L57, Frost Tarantula L58"
+BLUNT,2H,A,1,8681,Behemoth's Tuning Fork,305.0,121.0,325.0,4.0,103.09,craft/exchange/shop,
+BLUNT,2H,A,2,7902,Doom Crusher,282.0,114.0,325.0,4.0,95.32,craft/drop/exchange/shop,"drop: Grazing Buffalo L79, Tepra Scarab L79, Ashuras L80 +8"
+BLUNT,2H,A,3,7899,Destroyer Hammer,259.0,107.0,325.0,4.0,87.54,craft/drop/exchange/shop,"drop: Alpen Cougar L69, Splinter Stakato Drone L69, Dark Omen Invader Food L70 +13"
+BLUNT,2H,S,1,6369,Dragon Hunter Axe,342.0,132.0,325.0,4.0,115.6,craft/drop/exchange/shop,"drop: Baium L75, Death Lord Shax L75, Antharas L79 +8"
+BOW,2H,NG,1,273,Composite Bow,64.0,21.0,293.0,12.0,21.0,craft/drop/exchange/shop,"drop: Ruin Imp Elder L21, Akaste Succubus Tilfo L22, Maille Lizardman Scout L22 +3"
+BOW,2H,NG,2,272,Forest Bow,49.0,17.0,293.0,12.0,16.08,craft/drop/exchange/shop,"drop: Ore Bat L17, Skeleton Longbowman L19, Dre Vanul Tracker L20 +1"
+BOW,2H,NG,3,271,Hunting Bow,34.0,12.0,293.0,12.0,11.16,drop/exchange/shop,"drop: Skeleton Hunter L12, Dungeon Skeleton Archer L13, Grave Keeper L13 +8"
+BOW,2H,NG,4,14,Bow,23.0,9.0,293.0,12.0,7.55,craft/drop/exchange/shop,"drop: Balor Orc Archer L8, Kaboo Orc Archer L8, Orc Archer L8 +2"
+BOW,2H,NG,5,13,Short Bow,16.0,6.0,293.0,12.0,5.25,drop/shop,"drop: Longtail Keltir L2, Elder Brown Keltir L3, Wolf L4"
+BOW,2H,D,1,280,Light Crossbow,191.0,54.0,293.0,12.0,62.68,craft/drop/exchange/shop,"drop: Cronos's Servitor Mumu L34, Tasaba Patriarch Hellena L35, Evil Spirit Tempest L36 +4"
+BOW,2H,D,2,279,Reinforced Long Bow,179.0,51.0,227.0,12.0,45.51,craft/drop/exchange/shop,"drop: Elf Renoa L29, Captain of Queen's Royal Guards L32, Grave Monk L37 +3"
+BOW,2H,D,3,278,Gastraphetes,132.0,39.0,293.0,12.0,43.32,craft/drop/exchange/shop,"drop: Betrayer of Urutu Freki L25, Otherworldly Invader Archer L33, Cave Ant Larva L36 +1"
+BOW,2H,D,4,277,Dark Elven Bow,105.0,32.0,293.0,12.0,34.46,exchange/shop,
+BOW,2H,D,5,276,Elven Bow,105.0,32.0,293.0,12.0,34.46,craft/drop/exchange/shop,"drop: Serpent Demon Bifrons L21, Unrequited Kael L24, Roxide Cohort L29 +5"
+BOW,2H,D,6,275,Long Bow,114.0,35.0,227.0,12.0,28.98,drop/exchange/shop,"drop: Serpent Demon Bifrons L21, Unrequited Kael L24, Roxide Cohort L29 +5"
+BOW,2H,D,7,274,Reinforced Bow,82.0,26.0,293.0,12.0,26.91,drop/exchange/shop,"drop: Grave Robber Scout L27, Turek Orc Archer L27, Underground Kobold Warrior L27 +2"
+BOW,2H,C,1,286,Eminence Bow,323.0,83.0,293.0,12.0,106.0,craft/drop/exchange/shop,"drop: Katu Van Leader Atui L49, Purgatory Invader Archer L53, Harit Lizardman Matriarch L55 +5"
+BOW,2H,C,2,285,Noble Elven Bow,252.0,68.0,293.0,12.0,82.7,craft/drop/exchange/shop,"drop: Retreat Spider Cletu L42, Cave Servant Archer L47, Fiend Archer L48 +2"
+BOW,2H,C,3,283,Akat Long Bow,316.0,84.0,227.0,12.0,80.34,craft/drop/exchange/shop,"drop: Thief Kelbar L44, Evil Spirit Cyrion L45, Core L50 +5"
+BOW,2H,C,4,281,Crystallized Ice Bow,220.0,61.0,293.0,12.0,72.2,craft/drop/exchange/shop,"drop: Rayito the Looter L37, Leto Chief Talkin L40, Catacomb Liviona L44 +8"
+BOW,2H,C,5,282,Elemental Bow,277.0,75.0,227.0,12.0,70.42,craft/drop/exchange/shop,"drop: Retreat Spider Cletu L42, Cave Servant Archer L47, Fiend Archer L48 +2"
+BOW,2H,B,1,287,Bow of Peril,400.0,99.0,293.0,12.0,131.26,craft/drop/exchange/shop,"drop: Carnamakos L50, Captain of the Ice Queen's Royal Guard L59, Giant Marpanak L60 +9"
+BOW,2H,B,2,284,Dark Elven Long Bow,397.0,100.0,227.0,12.0,100.93,craft/drop/exchange/shop,"drop: Lilith's Witch Marilion L50, Atraiban L53, Black Lily L55 +5"
+BOW,2H,A,1,8684,Shyeed's Bow,570.0,133.0,227.0,12.0,144.92,craft/exchange/shop,
+BOW,2H,A,2,288,Carnage Bow,440.0,107.0,293.0,12.0,144.39,craft/drop/exchange/shop,"drop: Eva's Guardian Millenu L58, Enmity Ghost Ramdal L65, Alpen Grendel L68 +23"
+BOW,2H,A,3,289,Soul Bow,528.0,125.0,227.0,12.0,134.24,craft/drop/exchange/shop,"drop: Bloody Priest Rudelto L69, Beast Lord Behemoth L70, Vanor Chief Kandra L72 +17"
+BOW,2H,S,1,7575,Draconic Bow,581.0,132.0,293.0,12.0,190.66,craft/drop/exchange/shop,"drop: Baium L75, Storm Winged Naga L75, Last Lesser Giant Glaki L78 +7"
+BOW,2H,S,2,6368,Shining Bow,581.0,132.0,293.0,12.0,190.66,craft/shop,
+BOW,2H,S,3,290,The Bow,519.0,121.0,293.0,12.0,170.32,shop,
+DAGGER,1H,NG,1,219,Sword Breaker,27.0,21.0,433.0,12.0,13.09,craft/drop/exchange/shop,"drop: Lesser Succubus Turen L21, Wandering Eye L21, Monster Eye Searcher L22 +1"
+DAGGER,1H,NG,2,217,Shining Knife,21.0,17.0,433.0,12.0,10.18,drop/shop,"drop: Kuruka Ratman L16, Red Scavenger Spider L16, Wererat L16 +8"
+DAGGER,1H,NG,3,218,Throwing Knife,21.0,17.0,433.0,12.0,10.18,drop/exchange/shop,"drop: Kuruka Ratman L16, Red Scavenger Spider L16, Wererat L16 +8"
+DAGGER,1H,NG,4,946,Skeleton Dagger,16.0,13.0,433.0,12.0,7.76,shop,
+DAGGER,1H,NG,5,216,Dirk,15.0,12.0,433.0,12.0,7.27,craft/drop/exchange/shop,"drop: Goblin Tomb Raider Leader L12, Goblin Lord L13, Goblin Brigand Leader L14 +3"
+DAGGER,1H,NG,6,2372,Dagger of Adept,11.0,10.0,433.0,12.0,5.33,shop,
+DAGGER,1H,NG,7,989,Eldritch Dagger,11.0,10.0,433.0,12.0,5.33,quest/shop,quest: ForgottenTruth
+DAGGER,1H,NG,8,2374,Red Sunset Dagger,11.0,10.0,433.0,12.0,5.33,shop,
+DAGGER,1H,NG,9,215,Doom Dagger,10.0,9.0,433.0,12.0,4.85,drop/exchange/shop,"drop: Kasha Timber Wolf L6, Goblin Brigand L8, Goblin Lookout L8"
+DAGGER,1H,NG,10,12,Knife,10.0,9.0,433.0,12.0,4.85,drop/shop,"drop: Kasha Timber Wolf L6, Goblin Brigand L8, Goblin Lookout L8"
+DAGGER,1H,NG,11,11,Bone Dagger,7.0,6.0,433.0,12.0,3.39,drop/shop,drop: Elpy L1
+DAGGER,1H,D,1,225,Mithril Dagger,80.0,54.0,433.0,12.0,38.8,craft/drop/exchange/shop,"drop: Revenant of Sir Calibus L34, Soul Collector Acheron L35, Queen Ant L40 +2"
+DAGGER,1H,D,2,224,Maingauche,69.0,47.0,433.0,12.0,33.46,craft/drop/exchange/shop,"drop: Boss Akata L30, Turek Mercenary Captain L30, Skyla L32 +3"
+DAGGER,1H,D,3,1660,Cursed Maingauche,62.0,42.0,433.0,12.0,30.07,craft/drop/exchange/shop,"drop: Boss Akata L30, Turek Mercenary Captain L30, Skyla L32 +3"
+DAGGER,1H,D,4,223,Kukuri,56.0,39.0,433.0,12.0,27.16,drop/exchange/shop,"drop: Mammon Collector Talos L25, Bandit Assassin L35, Tyrant L35 +1"
+DAGGER,1H,D,5,222,Poniard Dagger,45.0,32.0,433.0,12.0,21.82,drop/exchange/shop,"drop: Sukar Wererat Chief L21, Langk Matriarch Rashkos L24, Fire Archer L29 +1"
+DAGGER,1H,D,6,221,Assassin Knife,35.0,26.0,433.0,12.0,16.97,craft/exchange/shop,
+DAGGER,1H,D,7,220,Crafted Dagger,35.0,26.0,433.0,12.0,16.97,drop/exchange/shop,"drop: Baar Dre Vanul Destroyer L25, Langk Lizardman Leader L25, Ol Mahum Guerilla L26 +6"
+DAGGER,1H,D,8,2507,Lizardspear,5.0,5.0,433.0,12.0,2.42,shop,
+DAGGER,1H,D,9,1471,Silenos Blowgun,5.0,5.0,433.0,12.0,2.42,shop,
+DAGGER,1H,C,1,228,Crystal Dagger,136.0,83.0,433.0,12.0,65.95,craft/drop/exchange/shop,"drop: Karte L49, Ol Mahum Transcender L53, Roving Soul L53 +2"
+DAGGER,1H,C,2,233,Dark Screamer,122.0,76.0,433.0,12.0,59.17,craft/drop/exchange/shop,"drop: Biconne of Blue Sky L45, Fafurion's Henchman Istary L45, Core L50 +6"
+DAGGER,1H,C,3,231,Grace Dagger,122.0,76.0,433.0,12.0,59.17,craft/drop/exchange/shop,"drop: Biconne of Blue Sky L45, Fafurion's Henchman Istary L45, Decayed Ancient Knight L50 +6"
+DAGGER,1H,C,4,227,Stiletto,107.0,68.0,433.0,12.0,51.89,craft/drop/exchange/shop,"drop: Crazy Mechanic Golem L43, Death Flyer L47, Vanor Silenos Scout L47 +3"
+DAGGER,1H,C,5,226,Cursed Dagger,94.0,61.0,433.0,12.0,45.59,craft/drop/exchange/shop,"drop: Lizardmen Leader Hellion L38, Shaman King Selu L40, Decayed Ancient Pikeman L46 +1"
+DAGGER,1H,C,6,232,Dark Elven Dagger,94.0,61.0,433.0,12.0,45.59,craft/drop/exchange/shop,"drop: Lizardmen Leader Hellion L38, Shaman King Selu L40, Decayed Ancient Pikeman L46 +1"
+DAGGER,1H,C,7,230,Wolverine Needle,94.0,61.0,433.0,12.0,45.59,craft/exchange/shop,
+DAGGER,1H,B,1,234,Demon's Dagger,170.0,99.0,433.0,12.0,82.44,craft/drop/exchange/shop,"drop: Guardian of the Statue of Giant Karum L60, Fairy Queen Timiniel L61, Disciple of Pilgrim L62 +4"
+DAGGER,1H,B,2,229,Kris,153.0,91.0,433.0,12.0,74.2,craft/drop/exchange/shop,"drop: Zaken's Chief Mate Tillion L50, Magus Kenishee L53, Harit Hero Tamash L55 +10"
+DAGGER,1H,A,1,8682,Naga Storm,220.0,121.0,433.0,12.0,106.69,craft/exchange/shop,
+DAGGER,1H,A,2,236,Soul Separator,203.0,114.0,433.0,12.0,98.45,craft/drop/exchange/shop,"drop: Spirit of Andras, the Betrayer L69, Anakim's Nemesis Zakaron L70, Doom Blade Tanatos L72 +16"
+DAGGER,1H,A,3,235,Bloody Orchid,186.0,107.0,433.0,12.0,90.2,craft/drop/exchange/shop,"drop: Rahha L65, Shilen's Priest Hisilrome L65, Bone Slayer L68 +28"
+DAGGER,1H,S,1,6367,Angel Slayer,246.0,132.0,433.0,12.0,119.3,craft/drop/exchange/shop,"drop: Baium L75, Last Lesser Giant Olkuth L75, Daimon the White-Eyed L78 +8"
+DAGGER,1H,S,2,237,Dragon's Tooth,220.0,121.0,433.0,12.0,106.69,shop,
+DUAL,2H,D,1,2542,Artisan's Sword*Crimson Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,2,2543,Artisan's Sword*Elven Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,3,2529,Bastard Sword*Crimson Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,4,2530,Bastard Sword*Elven Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,5,2547,Knight's Sword*Crimson Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,6,2548,Knight's Sword*Elven Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,7,2536,Spinebone Sword*Crimson Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,8,2537,Spinebone Sword*Elven Sword,107.0,51.0,325.0,8.0,37.56,exchange/shop,
+DUAL,2H,D,9,2540,Artisan's Sword*Artisan's Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,10,2541,Artisan's Sword*Knight's Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,11,2527,Bastard Sword*Artisan's Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,12,2525,Bastard Sword*Bastard Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,13,2528,Bastard Sword*Knight's Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,14,2526,Bastard Sword*Spinebone Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,15,2546,Knight's Sword*Knight's Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,16,2521,Saber*Crimson Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,17,2522,Saber*Elven Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,18,2534,Spinebone Sword*Artisan's Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,19,2535,Spinebone Sword*Knight's Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,20,2533,Spinebone Sword*Spinebone Sword,96.0,47.0,325.0,8.0,33.7,exchange/shop,
+DUAL,2H,D,21,2519,Saber*Artisan's Sword,83.0,41.0,325.0,8.0,29.13,exchange/shop,
+DUAL,2H,D,22,2517,Saber*Bastard Sword,83.0,41.0,325.0,8.0,29.13,exchange/shop,
+DUAL,2H,D,23,2520,Saber*Knight's Sword,83.0,41.0,325.0,8.0,29.13,exchange/shop,
+DUAL,2H,D,24,2518,Saber*Spinebone Sword,83.0,41.0,325.0,8.0,29.13,exchange/shop,
+DUAL,2H,D,25,2516,Saber*Saber,73.0,37.0,325.0,8.0,25.62,exchange/shop,
+DUAL,2H,C,1,2582,Katana*Katana,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,2,2584,Katana*Raid Sword,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,3,2583,Katana*Spirit Sword,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,4,2599,Raid Sword*Raid Sword,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,5,2573,Shamshir*Katana,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,6,2575,Shamshir*Raid Sword,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,7,2572,Shamshir*Shamshir,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,8,2574,Shamshir*Spirit Sword,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,9,2592,Spirit Sword*Raid Sword,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,10,2591,Spirit Sword*Spirit Sword,190.0,83.0,325.0,8.0,66.69,exchange/shop,
+DUAL,2H,C,11,2563,Stormbringer*Katana,183.0,81.0,325.0,8.0,64.23,exchange/shop,
+DUAL,2H,C,12,2565,Stormbringer*Raid Sword,183.0,81.0,325.0,8.0,64.23,exchange/shop,
+DUAL,2H,C,13,2562,Stormbringer*Shamshir,183.0,81.0,325.0,8.0,64.23,exchange/shop,
+DUAL,2H,C,14,2564,Stormbringer*Spirit Sword,183.0,81.0,325.0,8.0,64.23,exchange/shop,
+DUAL,2H,C,15,2561,Stormbringer*Stormbringer,175.0,78.0,325.0,8.0,61.43,exchange/shop,
+DUAL,2H,C,16,2560,Elven Long Sword*Elven Long Sword,162.0,73.0,325.0,8.0,56.86,exchange/shop,
+DUAL,2H,C,17,2559,Sword of Revolution*Elven Long Sword,155.0,70.0,325.0,8.0,54.41,exchange/shop,
+DUAL,2H,C,18,2554,Crimson Sword*Elven Long Sword,148.0,68.0,325.0,8.0,51.95,exchange/shop,
+DUAL,2H,C,19,2557,Elven Sword*Elven Long Sword,148.0,68.0,325.0,8.0,51.95,exchange/shop,
+DUAL,2H,C,20,2558,Sword of Revolution*Sword of Revolution,148.0,68.0,325.0,8.0,51.95,exchange/shop,
+DUAL,2H,C,21,2545,Artisan's Sword*Elven Long Sword,136.0,63.0,325.0,8.0,47.74,exchange/shop,
+DUAL,2H,C,22,2532,Bastard Sword*Elven Long Sword,136.0,63.0,325.0,8.0,47.74,exchange/shop,
+DUAL,2H,C,23,2553,Crimson Sword*Sword of Revolution,136.0,63.0,325.0,8.0,47.74,exchange/shop,
+DUAL,2H,C,24,2556,Elven Sword*Sword of Revolution,136.0,63.0,325.0,8.0,47.74,exchange/shop,
+DUAL,2H,C,25,2550,Knight's Sword*Elven Long Sword,136.0,63.0,325.0,8.0,47.74,exchange/shop,
+DUAL,2H,C,26,2539,Spinebone Sword*Elven Long Sword,136.0,63.0,325.0,8.0,47.74,exchange/shop,
+DUAL,2H,C,27,2524,Saber*Elven Long Sword,130.0,61.0,325.0,8.0,45.63,exchange/shop,
+DUAL,2H,C,28,2544,Artisan's Sword*Sword of Revolution,124.0,58.0,325.0,8.0,43.52,exchange/shop,
+DUAL,2H,C,29,2531,Bastard Sword*Sword of Revolution,124.0,58.0,325.0,8.0,43.52,exchange/shop,
+DUAL,2H,C,30,2549,Knight's Sword*Sword of Revolution,124.0,58.0,325.0,8.0,43.52,exchange/shop,
+DUAL,2H,C,31,2538,Spinebone Sword*Sword of Revolution,124.0,58.0,325.0,8.0,43.52,exchange/shop,
+DUAL,2H,C,32,2551,Crimson Sword*Crimson Sword,118.0,56.0,325.0,8.0,41.42,exchange/shop,
+DUAL,2H,C,33,2552,Crimson Sword*Elven Sword,118.0,56.0,325.0,8.0,41.42,exchange/shop,
+DUAL,2H,C,34,2555,Elven Sword*Elven Sword,118.0,56.0,325.0,8.0,41.42,exchange/shop,
+DUAL,2H,C,35,2523,Saber*Sword of Revolution,118.0,56.0,325.0,8.0,41.42,exchange/shop,
+DUAL,2H,B,1,2626,Samurai Long Sword*Samurai Long Sword,236.0,99.0,325.0,8.0,82.84,exchange/shop,
+DUAL,2H,B,2,2611,Caliburs*Samurai Long Sword,228.0,97.0,325.0,8.0,80.03,exchange/shop,
+DUAL,2H,B,3,2620,Sword of Delusion*Samurai Long Sword,228.0,97.0,325.0,8.0,80.03,exchange/shop,
+DUAL,2H,B,4,2616,Sword of Limit*Samurai Long Sword,228.0,97.0,325.0,8.0,80.03,exchange/shop,
+DUAL,2H,B,5,2623,Sword of Nightmare*Samurai Long Sword,228.0,97.0,325.0,8.0,80.03,exchange/shop,
+DUAL,2H,B,6,2625,Tsurugi*Samurai Long Sword,228.0,97.0,325.0,8.0,80.03,exchange/shop,
+DUAL,2H,B,7,2590,Katana*Samurai Long Sword,220.0,94.0,325.0,8.0,77.22,exchange/shop,
+DUAL,2H,B,8,2605,Raid Sword*Samurai Long Sword,220.0,94.0,325.0,8.0,77.22,exchange/shop,
+DUAL,2H,B,9,2581,Shamshir*Samurai Long Sword,220.0,94.0,325.0,8.0,77.22,exchange/shop,
+DUAL,2H,B,10,2598,Spirit Sword*Samurai Long Sword,220.0,94.0,325.0,8.0,77.22,exchange/shop,
+DUAL,2H,B,11,2606,Caliburs*Caliburs,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,12,2608,Caliburs*Sword of Delusion,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,13,2607,Caliburs*Sword of Limit,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,14,2609,Caliburs*Sword of Nightmare,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,15,2610,Caliburs*Tsurugi,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,16,2571,Stormbringer*Samurai Long sword,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,17,2617,Sword of Delusion*Sword of Delusion,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,18,2618,Sword of Delusion*Sword of Nightmare,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,19,2619,Sword of Delusion*Tsurugi,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,20,2613,Sword of Limit*Sword of Delusion,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,21,2612,Sword of Limit*Sword of Limit,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,22,2614,Sword of Limit*Sword of Nightmare,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,23,2615,Sword of Limit*Tsurugi,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,24,2621,Sword of Nightmare*Sword of Nightmare,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,25,2622,Sword of Nightmare*Tsurugi,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,26,2624,Tsurugi*Tsurugi,213.0,91.0,325.0,8.0,74.76,exchange/shop,
+DUAL,2H,B,27,2585,Katana*Caliburs,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,28,2587,Katana*Sword of Delusion,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,29,2586,Katana*Sword of Limit,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,30,2588,Katana*Sword of Nightmare,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,31,2589,Katana*Tsurugi,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,32,2600,Raid Sword*Caliburs,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,33,2602,Raid Sword*Sword of Delusion,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,34,2601,Raid Sword*Sword of Limit,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,35,2603,Raid Sword*Sword of Nightmare,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,36,2604,Raid Sword*Tsurugi,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,37,2576,Shamshir*Caliburs,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,38,2578,Shamshir*Sword of Delusion,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,39,2577,Shamshir*Sword of Limit,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,40,2579,Shamshir*Sword of Nightmare,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,41,2580,Shamshir*Tsurugi,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,42,2593,Spirit Sword*Caliburs,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,43,2595,Spirit Sword*Sword of Delusion,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,44,2594,Spirit Sword*Sword of Limit,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,45,2596,Spirit Sword*Sword of Nightmare,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,46,2597,Spirit Sword*Tsurugi,204.0,89.0,325.0,8.0,71.6,exchange/shop,
+DUAL,2H,B,47,2566,Stormbringer*Caliburs,197.0,86.0,325.0,8.0,69.15,exchange/shop,
+DUAL,2H,B,48,2568,Stormbringer*Sword of Delusion,197.0,86.0,325.0,8.0,69.15,exchange/shop,
+DUAL,2H,B,49,2567,Stormbringer*Sword of Limit,197.0,86.0,325.0,8.0,69.15,exchange/shop,
+DUAL,2H,B,50,2569,Stormbringer*Sword of Nightmare,197.0,86.0,325.0,8.0,69.15,exchange/shop,
+DUAL,2H,B,51,2570,Stormbringer*Tsurugi,197.0,86.0,325.0,8.0,69.15,exchange/shop,
+DUAL,2H,A,1,8938,Damascus * Tallum Blade,305.0,121.0,325.0,8.0,107.06,exchange,
+DUAL,2H,A,2,5706,Damascus*Damascus,282.0,114.0,325.0,8.0,98.98,exchange/shop,
+DUAL,2H,A,3,5705,Keshanberk*Damascus,275.0,112.0,325.0,8.0,96.53,exchange/shop,
+DUAL,2H,A,4,5233,Keshanberk*Keshanberk,259.0,107.0,325.0,8.0,90.91,exchange/shop,
+DUAL,2H,S,1,6580,Tallum Blade*Dark Legion's Edge,342.0,132.0,325.0,8.0,120.04,drop/exchange/shop,"drop: Baium L75, Antharas L79, Antharas L85 +2"
+DUALFIST,2H,NG,1,257,Viper Fang,38.0,21.0,325.0,4.0,12.84,drop/exchange/shop,"drop: Giant Poison Bee L21, Baranka's Guard L22, Kasha Dire Wolf L23 +2"
+DUALFIST,2H,NG,2,256,Cestus,29.0,17.0,325.0,4.0,9.8,drop/exchange/shop,"drop: Cave Blade Spider L17, Kuruka Ratman Hunter L17, Ol Mahum Novice L17 +3"
+DUALFIST,2H,NG,3,255,Fox Claw Gloves,21.0,12.0,325.0,4.0,7.1,drop/exchange/shop,"drop: Baraq Orc Warrior Leader L11, Slave Skeleton L12, Werewolf Chieftain L12 +4"
+DUALFIST,2H,NG,4,2371,Fist of Butcher,16.0,10.0,325.0,4.0,5.41,drop/shop,"drop: Baraq Orc Warrior Leader L11, Slave Skeleton L12, Werewolf Chieftain L12 +4"
+DUALFIST,2H,NG,5,254,Iron Gloves,13.0,9.0,325.0,4.0,4.39,drop/exchange/shop,"drop: Maraku Werewolf L9, Werewolf L9, Evil Eye Watcher L10"
+DUALFIST,2H,NG,6,253,Spiked Gloves,10.0,6.0,325.0,4.0,3.38,drop/shop,"drop: Elder Longtail Keltir L3, Kasha Wolf L4"
+DUALFIST,2H,D,1,262,Scallop Jamadhr,112.0,54.0,325.0,4.0,37.86,craft/drop/exchange/shop,"drop: Stakato Queen Zyrnna L34, Flame Lord Shadar L35, Sebek L36 +5"
+DUALFIST,2H,D,2,261,Bich'Hwa,96.0,47.0,325.0,4.0,32.45,craft/drop/exchange/shop,"drop: Giant Wasteland Basilisk L30, Alligator L40, Hatu Windsus L40 +1"
+DUALFIST,2H,D,3,260,Triple-Edged Jamadhr,78.0,39.0,325.0,4.0,26.36,drop/exchange/shop,"drop: Soul Scavenger L25, Anakazel L28, Turak Bugbear Warrior L33 +4"
+DUALFIST,2H,D,4,259,Single-Edged Jamadhr,62.0,32.0,325.0,4.0,20.96,drop/exchange/shop,"drop: Kuroboros' Priest L23, Neer Ghoul Berserker L29, Lakin Salamander L30 +3"
+DUALFIST,2H,D,5,258,Bagh-Nakh,49.0,26.0,325.0,4.0,16.56,drop/shop,"drop: Madness Beast L20, Dead Pit Spartoi L26, Grim Grizzly L26 +1"
+DUALFIST,2H,C,1,266,Great Pata,190.0,83.0,325.0,4.0,64.22,craft/drop/exchange/shop,"drop: Orfen's Handmaiden L48, Oel Mahum L53, Pobby's Maid L53 +2"
+DUALFIST,2H,C,2,265,Fisted Blade,169.0,76.0,325.0,4.0,57.12,craft/drop/exchange/shop,"drop: Flamestone Golem L44, Timak Orc Gosmos L45, Core L50 +4"
+DUALFIST,2H,C,3,4233,Knuckle Duster,148.0,68.0,325.0,4.0,50.02,craft/drop/exchange/shop,"drop: Tanor Silenos Shaman L48, Theeder Piker L48"
+DUALFIST,2H,C,4,263,Chakram,130.0,61.0,325.0,4.0,43.94,craft/drop/exchange/shop,"drop: Gwindorr L40, Icarus Sample 1 L40, Enchanted Gargoyle L44 +4"
+DUALFIST,2H,B,1,268,Bellion Cestus,236.0,99.0,325.0,4.0,79.77,craft/drop/exchange/shop,"drop: Refugee Hopeful Leo L56, The 3rd Underwater Guardian L60, Forbidden Path Invader Warrior L63 +7"
+DUALFIST,2H,B,2,267,Arthro Nail,213.0,91.0,325.0,4.0,71.99,craft/drop/exchange/shop,"drop: Cursed Clara L50, Fafurion's Envoy Pingolpin L52, Beleth's Seer Sephia L55 +3"
+DUALFIST,2H,B,3,264,Pata,204.0,89.0,325.0,4.0,68.95,craft/exchange/shop,
+DUALFIST,2H,A,1,8685,Sobekk's Hurricane,305.0,121.0,325.0,4.0,103.09,craft/exchange/shop,
+DUALFIST,2H,A,2,270,Dragon Grinder,282.0,114.0,325.0,4.0,95.32,craft/drop/exchange/shop,"drop: Anakazel L68, Palibati Queen Themis L70, Water Dragon Seer Sheshark L72 +13"
+DUALFIST,2H,A,3,269,Blood Tornado,259.0,107.0,325.0,4.0,87.54,craft/drop/exchange/shop,"drop: Gorgolos L64, Gargoyle Lord Tiphon L65, Raider of Pastureland L68 +26"
+DUALFIST,2H,S,1,6371,Demon Splinter,342.0,132.0,325.0,4.0,115.6,craft/drop/exchange/shop,"drop: Baium L75, Kernon L75, Ocean Flame Ashakiel L76 +8"
+POLE,2H,NG,1,16,Great Spear,31.0,21.0,325.0,8.0,10.88,drop/exchange/shop,"drop: Baranka's Escort L21, Dre Vanul Beholder L21, Ghost Guardian L21 +4"
+POLE,2H,NG,2,15,Short Spear,24.0,17.0,325.0,8.0,8.42,craft/drop/shop,"drop: Dark Horror L16, Ruin Zombie Leader L16, Skeleton Infantryman L16 +4"
+POLE,2H,D,1,297,Glaive,92.0,54.0,325.0,8.0,32.29,craft/drop/exchange/shop,"drop: Nurka's Messenger L33, Chertuba of Great Soul L35, Red Eye Captain Trakia L35 +3"
+POLE,2H,D,2,294,War Pick,79.0,47.0,325.0,8.0,27.73,craft/drop/exchange/shop,"drop: Agent of Beres, Meana L30, Nos L40"
+POLE,2H,D,3,93,Winged Spear,79.0,47.0,325.0,8.0,27.73,craft/drop/exchange/shop,"drop: Agent of Beres, Meana L30, Nos L40"
+POLE,2H,D,4,296,Dwarven Pike,64.0,39.0,325.0,8.0,22.46,drop/exchange/shop,"drop: Princess Molrang L25, Patriarch Kuroboros L26, Marsh Stakato Drone L35 +2"
+POLE,2H,D,5,293,War Hammer,64.0,39.0,325.0,8.0,22.46,drop/exchange/shop,"drop: Princess Molrang L25, Patriarch Kuroboros L26, Marsh Stakato Drone L35 +2"
+POLE,2H,D,6,295,Dwarven Trident,51.0,32.0,325.0,8.0,17.9,craft/exchange/shop,
+POLE,2H,D,7,292,Pike,51.0,32.0,325.0,8.0,17.9,drop/exchange/shop,"drop: Kaysha Herald of Icarus L21, Grave Robber Guard L29, Greedy Geist L30 +3"
+POLE,2H,D,8,1472,Dreadbane,50.0,26.0,325.0,8.0,17.55,shop,
+POLE,2H,D,9,1376,Guard Spear,50.0,26.0,325.0,8.0,17.55,shop,
+POLE,2H,D,10,291,Trident,40.0,26.0,325.0,8.0,14.04,craft/drop/exchange/shop,"drop: Ol Mahum General L26, Talakin Raider L27, Giggling Wind L28 +1"
+POLE,2H,C,1,299,Orcish Poleaxe,156.0,83.0,325.0,8.0,54.76,craft/drop/exchange/shop,"drop: Necrosentinel Royal Guard L47, Farcran L53, Purgatory Invader Warrior L53 +8"
+POLE,2H,C,2,301,Scorpion,144.0,78.0,325.0,8.0,50.54,craft/drop/exchange/shop,"drop: Necrosentinel Royal Guard L47, Core L50, Farcran L53 +8"
+POLE,2H,C,3,303,Widow Maker,144.0,78.0,325.0,8.0,50.54,craft/drop/exchange/shop,"drop: Necrosentinel Royal Guard L47, Orfen L50, Farcran L53 +8"
+POLE,2H,C,4,95,Poleaxe,139.0,76.0,325.0,8.0,48.79,craft/exchange/shop,
+POLE,2H,C,5,94,Bec de Corbin,122.0,68.0,325.0,8.0,42.82,craft/drop/exchange/shop,"drop: Valley Treant L47, Dark Knight L48, Tarlk Bugbear High Warrior L49"
+POLE,2H,C,6,302,Body Slasher,107.0,61.0,325.0,8.0,37.56,craft/drop/exchange/shop,"drop: Premo Prime L38, Nellis' Vengeful Spirit L39, Fafurion's Page Sika L40 +7"
+POLE,2H,C,7,298,Orcish Glaive,107.0,61.0,325.0,8.0,37.56,craft/drop/exchange/shop,"drop: Premo Prime L38, Nellis' Vengeful Spirit L39, Fafurion's Page Sika L40 +7"
+POLE,2H,C,8,96,Scythe,107.0,61.0,325.0,8.0,37.56,craft/drop/exchange/shop,"drop: Premo Prime L38, Nellis' Vengeful Spirit L39, Fafurion's Page Sika L40 +7"
+POLE,2H,B,1,97,Lance,194.0,99.0,325.0,8.0,68.09,craft/drop/exchange/shop,"drop: Timak Seer Ragoth L57, Lord Ishka L60, Forbidden Path Invader Warrior L63 +5"
+POLE,2H,B,2,300,Great Axe,175.0,91.0,325.0,8.0,61.43,craft/drop/exchange/shop,"drop: Ghost of Peasant Leader L50, Deadman Ereve L51, Furious Thieles L55 +5"
+POLE,2H,A,1,8683,Tiphon's Spear,251.0,121.0,325.0,8.0,88.1,craft/exchange/shop,
+POLE,2H,A,2,305,Tallum Glaive,232.0,114.0,325.0,8.0,81.43,craft/drop/exchange/shop,"drop: Korim L70, Meanas Anor L70, Antharas Priest Cloe L74 +16"
+POLE,2H,A,3,304,Orcish Halberd,219.0,109.0,325.0,8.0,76.87,shop,
+POLE,2H,A,4,98,Halberd,213.0,107.0,325.0,8.0,74.76,craft/drop/exchange/shop,"drop: Hekaton Prime L65, Last Titan Utenus L66, Bone Animator L68 +11"
+POLE,2H,S,1,6370,Saint Spear,281.0,132.0,325.0,8.0,98.63,craft/drop/exchange/shop,"drop: Baium L75, Bloody Empress Decarbia L75, Anakazel L78 +8"
+POLE,2H,S,2,306,Dragon Claw Axe,251.0,121.0,325.0,8.0,88.1,shop,
+SWORD,1H,NG,1,68,Falchion,31.0,21.0,379.0,8.0,12.69,drop/exchange/shop,"drop: Dre Vanul Slayer L22, Langk Lizardman Lieutenant L22, Underground Kobold L24"
+SWORD,1H,NG,2,2,Long Sword,24.0,17.0,379.0,8.0,9.82,drop/exchange/shop,"drop: Kasha Fang Spider L16, Felim Lizardman Warrior L17, Grizzly Bear L17 +6"
+SWORD,1H,NG,3,120,Sword of Reflection,24.0,17.0,379.0,8.0,9.82,craft/drop/shop,"drop: Kasha Fang Spider L16, Felim Lizardman Warrior L17, Grizzly Bear L17 +6"
+SWORD,1H,NG,4,121,Sword of Watershadow,24.0,17.0,379.0,8.0,9.82,drop/shop,"drop: Kasha Fang Spider L16, Felim Lizardman Warrior L17, Grizzly Bear L17 +6"
+SWORD,1H,NG,5,66,Gladius,17.0,12.0,379.0,8.0,6.96,drop/exchange/shop,"drop: Akaste Bone Soldier L12, Balor Orc Fighter Leader L12, Kaboo Orc Fighter Leader L12 +5"
+SWORD,1H,NG,6,122,Handmade Sword,17.0,12.0,379.0,8.0,6.96,shop,
+SWORD,1H,NG,7,67,Orcish Sword,17.0,12.0,379.0,8.0,6.96,shop,
+SWORD,1H,NG,8,975,Blood Saber,14.0,11.0,379.0,8.0,5.73,quest/shop,quest: SpiritOfCraftsman
+SWORD,1H,NG,9,743,Sword of Sentinel,14.0,11.0,379.0,8.0,5.73,quest/shop,quest: SeaOfSporesFever
+SWORD,1H,NG,10,1510,Butcher's Sword,13.0,10.0,379.0,8.0,5.32,quest/shop,quest: MercilessPunishment
+SWORD,1H,NG,11,738,Sword of Solidarity,12.0,9.0,379.0,8.0,4.91,quest/shop,quest: SwordOfSolidarity
+SWORD,1H,NG,12,3,Broadsword,11.0,9.0,379.0,8.0,4.5,craft/drop/exchange/shop,"drop: Black Timber Wolf L6, Utuku Orc Grunt L7, Balor Orc Fighter L10 +3"
+SWORD,1H,NG,13,4027,Bouquet,8.0,6.0,379.0,8.0,3.27,shop,
+SWORD,1H,NG,14,1,Short Sword,8.0,6.0,379.0,8.0,3.27,drop/shop,"drop: Elder Prairie Keltir L3, Black Wolf L4, Gray Wolf L4"
+SWORD,1H,D,1,2499,Elven Long Sword,92.0,54.0,379.0,8.0,37.66,craft/drop/exchange/shop,"drop: Corsair Captain Kylon L33, Eye of Beleth L35, Sejarr's Servitor L35 +7"
+SWORD,1H,D,2,129,Sword of Revolution,79.0,47.0,379.0,8.0,32.34,craft/drop/exchange/shop,"drop: Ragraman L30, Cave Ant L37, Catacomb Stakato Soldier L38 +4"
+SWORD,1H,D,3,127,Crimson Sword,64.0,39.0,379.0,8.0,26.2,drop/exchange/shop,"drop: Zombie Lord Crowl L25, Tirak L28, Hatu Brown Bear L34 +7"
+SWORD,1H,D,4,130,Elven Sword,64.0,39.0,379.0,8.0,26.2,drop/exchange/shop,"drop: Zombie Lord Crowl L25, Tirak L28, Hatu Brown Bear L34 +6"
+SWORD,1H,D,5,126,Artisan's Sword,51.0,32.0,379.0,8.0,20.88,drop/exchange/shop,"drop: Greyclaw Kutus L23, Bandit Sweeper L30, Barrow Sentinel L30 +3"
+SWORD,1H,D,6,69,Bastard Sword,51.0,32.0,379.0,8.0,20.88,drop/exchange/shop,"drop: Greyclaw Kutus L23, Bandit Sweeper L30, Barrow Sentinel L30 +3"
+SWORD,1H,D,7,128,Knight's Sword,51.0,32.0,379.0,8.0,20.88,drop/exchange/shop,"drop: Greyclaw Kutus L23, Bandit Sweeper L30, Barrow Sentinel L30 +3"
+SWORD,1H,D,8,125,Spinebone Sword,51.0,32.0,379.0,8.0,20.88,craft/drop/exchange/shop,"drop: Greyclaw Kutus L23, Bandit Sweeper L30, Barrow Sentinel L30 +3"
+SWORD,1H,D,9,123,Saber,40.0,26.0,379.0,8.0,16.37,craft/drop/exchange/shop,"drop: Discarded Guardian L20, Vault Guardian L25, Gray Ant L26 +3"
+SWORD,1H,C,1,135,Samurai Longsword,156.0,83.0,379.0,8.0,63.85,craft/drop/exchange/quest/shop,"drop: King Tarlk L48, Crimson Doll Blader L53, Purgatory Invader Warrior L53 +5; quest: WarehouseKeepersPastime"
+SWORD,1H,C,2,75,Caliburs,139.0,76.0,379.0,8.0,56.9,craft/drop/exchange/shop,"drop: Rotten Tree Repiro L44, Iron Giant Totem L45, Core L50 +8"
+SWORD,1H,C,3,76,Sword of Delusion,139.0,76.0,379.0,8.0,56.9,craft/drop/exchange/shop,"drop: Rotten Tree Repiro L44, Iron Giant Totem L45, Dark Lord L50 +7"
+SWORD,1H,C,4,132,Sword of Limit,139.0,76.0,379.0,8.0,56.9,craft/exchange/shop,
+SWORD,1H,C,5,134,Sword of Nightmare,139.0,76.0,379.0,8.0,56.9,craft/drop/exchange/shop,"drop: Rotten Tree Repiro L44, Iron Giant Totem L45, Dark Lord L50 +6"
+SWORD,1H,C,6,77,Tsurugi,139.0,76.0,379.0,8.0,56.9,craft/drop/exchange/shop,"drop: Rotten Tree Repiro L44, Iron Giant Totem L45, Dark Lord L50 +7"
+SWORD,1H,C,7,74,Katana,122.0,68.0,379.0,8.0,49.94,craft/drop/exchange/shop,"drop: Hatar Ratman Boss L48, Tarlk Bugbear Warrior L48, Cave Servant Captain L49"
+SWORD,1H,C,8,133,Raid Sword,122.0,68.0,379.0,8.0,49.94,craft/drop/exchange/quest/shop,"drop: Hatar Ratman Boss L48, Tarlk Bugbear Warrior L48, Cave Servant Captain L49; quest: 1000YearsTheEndOfLamentation"
+SWORD,1H,C,9,73,Shamshir,122.0,68.0,379.0,8.0,49.94,craft/drop/exchange/shop,"drop: Hatar Ratman Boss L48, Tarlk Bugbear Warrior L48, Cave Servant Captain L49"
+SWORD,1H,C,10,131,Spirit Sword,122.0,68.0,379.0,8.0,49.94,craft/drop/exchange/shop,"drop: Hatar Ratman Boss L48, Tarlk Bugbear Warrior L48, Cave Servant Captain L49"
+SWORD,1H,C,11,72,Stormbringer,107.0,61.0,379.0,8.0,43.8,craft/drop/exchange/shop,"drop: Leader of Cat Gang L39, Road Scavenger Leader L40, Rotting Golem L44 +3"
+SWORD,1H,B,1,79,Sword of Damascus,194.0,99.0,379.0,8.0,79.41,craft/drop/exchange/shop,"drop: Anakazel L58, Wisdom of Splendor L62, Forbidden Path Invader Disciple L63 +12"
+SWORD,1H,B,2,136,Blade of Serenity,175.0,91.0,379.0,8.0,71.63,exchange/shop,
+SWORD,1H,B,3,139,Dusk Sword,175.0,91.0,379.0,8.0,71.63,exchange/shop,
+SWORD,1H,B,4,140,Eminence Sword,175.0,91.0,379.0,8.0,71.63,exchange/shop,
+SWORD,1H,B,5,141,Hazard Sword,175.0,91.0,379.0,8.0,71.63,exchange/shop,
+SWORD,1H,B,6,142,Keshanberk,175.0,91.0,379.0,8.0,71.63,craft/drop/exchange/shop,"drop: Messenger of Fairy Queen Berun L50, Captain of Red Flag Shaka L52, Gigantic Chaos Golem L52 +18"
+SWORD,1H,B,7,137,Mist Sword,175.0,91.0,379.0,8.0,71.63,exchange/shop,
+SWORD,1H,B,8,138,Sword of Desert,175.0,91.0,379.0,8.0,71.63,exchange/shop,
+SWORD,1H,A,1,8678,Sirra's Blade,251.0,121.0,379.0,8.0,102.74,craft/exchange/shop,
+SWORD,1H,A,2,2500,Dark Legion's Edge,232.0,114.0,379.0,8.0,94.96,craft/drop/exchange/shop,"drop: Roaring Skylancer L70, Eilhalder von Hellmann L71, Krokian Padisha Sobekk L74 +16"
+SWORD,1H,A,3,80,Tallum Blade,213.0,107.0,379.0,8.0,87.19,craft/drop/exchange/shop,"drop: Abyss Brukunt L59, Demon Kurikups L59, Roaring Lord Kastor L62 +22"
+SWORD,1H,S,1,6364,Forgotten Blade,281.0,132.0,379.0,8.0,115.02,craft/drop/exchange/shop,"drop: Baium L75, Benom L75, Death Lord Ipos L75 +8"
+SWORD,2H,NG,1,5284,Zweihander,38.0,21.0,325.0,8.0,13.34,drop/exchange/shop,"drop: Dre Vanul Slayer L22, Langk Lizardman Lieutenant L22, Underground Kobold L24"
+SWORD,2H,NG,2,1333,Brandish,21.0,12.0,325.0,8.0,7.37,craft/drop/exchange/shop,"drop: Akaste Bone Soldier L12, Balor Orc Fighter Leader L12, Kaboo Orc Fighter Leader L12 +5"
+SWORD,2H,NG,3,981,Red Sunset Sword,16.0,10.0,325.0,8.0,5.62,quest/shop,quest: SkirmishWithOrcs
+SWORD,2H,D,1,70,Claymore,112.0,54.0,325.0,8.0,39.31,craft/drop/exchange/shop,"drop: Corsair Captain Kylon L33, Eye of Beleth L35, Sejarr's Servitor L35 +7"
+SWORD,2H,D,2,7881,Titan Sword,96.0,47.0,325.0,8.0,33.7,craft/exchange/shop,
+SWORD,2H,D,3,124,Two-Handed Sword,78.0,39.0,325.0,8.0,27.38,craft/drop/shop,"drop: Zombie Lord Crowl L25, Tirak L28, Hatu Brown Bear L34 +7"
+SWORD,2H,D,4,5285,Heavy Sword,49.0,26.0,325.0,8.0,17.2,craft/drop/exchange/shop,"drop: Discarded Guardian L20, Vault Guardian L25, Gray Ant L26 +2"
+SWORD,2H,D,5,7880,Steel Sword,49.0,26.0,325.0,8.0,17.2,craft/exchange/shop,
+SWORD,2H,C,1,5286,Berserker Blade,190.0,83.0,325.0,8.0,66.69,craft/drop/exchange/shop,"drop: King Tarlk L48, Crimson Doll Blader L53, Deadly Ginzu Golem V L53 +6"
+SWORD,2H,C,2,7882,Pa'agrian Sword,169.0,76.0,325.0,8.0,59.32,craft/exchange/shop,
+SWORD,2H,C,3,71,Flamberge,130.0,61.0,325.0,8.0,45.63,craft/drop/exchange/shop,"drop: Leader of Cat Gang L39, Road Scavenger Leader L40, Rotting Golem L44 +3"
+SWORD,2H,B,1,7883,Guardian Sword,236.0,99.0,325.0,8.0,82.84,craft/drop/exchange/shop,"drop: Wisdom of Splendor L62, Forbidden Path Invader Disciple L63, Pilgrim of Splendor L63 +9"
+SWORD,2H,B,2,78,Great Sword,213.0,91.0,325.0,8.0,74.76,craft/drop/exchange/shop,"drop: Messenger of Fairy Queen Berun L50, Captain of Red Flag Shaka L52, Gigantic Chaos Golem L52 +18"
+SWORD,2H,A,1,8679,Sword of Ipos,305.0,121.0,325.0,8.0,107.06,craft/exchange/shop,
+SWORD,2H,A,2,81,Dragon Slayer,282.0,114.0,325.0,8.0,98.98,craft/drop/exchange/shop,"drop: Roaring Skylancer L70, Eilhalder von Hellmann L71, Krokian Padisha Sobekk L74 +16"
+SWORD,2H,A,3,7884,Infernal Master,259.0,107.0,325.0,8.0,90.91,craft/drop/exchange/shop,"drop: Antelope L68, Canyon Antelope L68, Bandersnatch L69 +11"
+SWORD,2H,S,1,6372,Heaven's Divider,342.0,132.0,325.0,8.0,120.04,craft/drop/exchange/shop,"drop: Baium L75, Benom L75, Death Lord Ipos L75 +8"
+SWORD,2H,S,2,6605,Heavens Divider,342.0,132.0,325.0,8.0,120.04,exchange/shop,

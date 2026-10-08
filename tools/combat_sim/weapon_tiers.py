@@ -9,6 +9,8 @@ D = L.DATA
 GR = {"NONE": "NG"}
 ORDER = ["NG", "D", "C", "B", "A", "S"]
 sources = collections.defaultdict(set)
+droppers = collections.defaultdict(set)
+quests = collections.defaultdict(set)
 
 for p in glob.glob(os.path.join(D, "stats/npcs/*.xml")):          # custom/ is a subfolder and is not read
     for npc in ET.parse(p).getroot().iter("npc"):
@@ -16,6 +18,7 @@ for p in glob.glob(os.path.join(D, "stats/npcs/*.xml")):          # custom/ is a
             for el in npc.iter(tag):
                 for it in el.iter("item"):
                     sources[int(it.get("id"))].add("drop" if tag == "dropLists" else "spoil")
+                    droppers[int(it.get("id"))].add((int(npc.get("level", 0) or 0), npc.get("name")))
 for rec in ET.parse(os.path.join(D, "Recipes.xml")).getroot().iter("item"):
     for pr in rec.iter("production"):
         sources[int(pr.get("id"))].add("recipe")
@@ -26,11 +29,17 @@ for p in glob.glob(os.path.join(D, "multisell/*.xml")):
     if os.path.basename(p) in ("DelevelManager.xml", "NoblesseMaster.xml", "SchemeBuffer.xml"): continue
     for it in ET.parse(p).getroot().iter("production"):
         sources[int(it.get("id"))].add("multisell")
-quest_text = {}
+quest_text = {}      # quest -> item ids it hands out (giveItems / rewardItems with a number or a named constant)
 for p in glob.glob(os.path.join(D, "scripts/quests/**/*.java"), recursive=True):
     t = open(p, encoding="utf-8", errors="ignore").read()
-    if "giveItems" in t or "rewardItems" in t:
-        quest_text[p] = set(int(n) for n in re.findall(r"\b\d{2,5}\b", t))
+    consts = {n: int(v) for n, v in re.findall(r"(?:int|Integer)\s+(\w+)\s*=\s*(\d{2,5})\s*;", t)}
+    ids = set()
+    for arg in re.findall(r"(?:giveItems|rewardItems|giveItemsAndRandom)\s*\(\s*(?:\w+\s*,\s*)?(\w+)", t):
+        v = int(arg) if arg.isdigit() else consts.get(arg)
+        if v: ids.add(v)
+    if ids:
+        quest_text[p] = ids
+        for n in ids: quests[n].add(re.sub(r"^Q\d+_", "", os.path.basename(p)[:-5]))
 quest_ids = set().union(*quest_text.values())
 
 rows = []
@@ -50,7 +59,7 @@ for path in glob.glob(os.path.join(D, "stats/items/*.xml")):
         src = set(sources.get(iid, ()))
         if iid in quest_ids: src.add("quest")
         rows.append(dict(id=iid, name=name, base=name.split(" - ")[0], wtype=wt, hands="2H" if s.get("bodypart") == "lrhand" else "1H",
-                         grade=GR.get(s.get("crystal_type", "NONE"), s.get("crystal_type", "NONE")), pAtk=st.get("pAtk", 0), spd=st.get("pAtkSpd", 0),
+                         grade=GR.get(s.get("crystal_type", "NONE"), s.get("crystal_type", "NONE")), pAtk=st.get("pAtk", 0), mAtk=st.get("mAtk", 0), ids=[iid], spd=st.get("pAtkSpd", 0),
                          crit=st.get("critRate", 0), acc=st.get("accCombat", 0), sa=" - " in name, src=src, notrade=s.get("is_tradable") == "false"))
 
 # fold special-ability variants into their base weapon: keep the plain one, else the strongest
@@ -62,7 +71,16 @@ for k, g in fam.items():
     if not src or (all(r["notrade"] for r in g) and not (src & {"drop", "recipe"})): continue                                  # nothing in the game gives it out
     plain = [r for r in g if not r["sa"]] or g
     r = dict(max(plain, key=lambda x: x["pAtk"]))
-    r["src"] = "/".join(sorted(src)); r["name"] = r["base"]; rows.append(r)
+    ids = [x["id"] for x in g]
+    lab = {"recipe": "craft", "multisell": "exchange"}
+    r["src"] = "/".join(sorted({lab.get(x, x) for x in src}))
+    dr = sorted({d for i in ids for d in droppers.get(i, ())})
+    qs = sorted({q for i in ids for q in quests.get(i, ())})
+    det = []
+    if dr: det.append("drop: " + ", ".join(f"{n} L{l}" for l, n in dr[:3]) + (f" +{len(dr)-3}" if len(dr) > 3 else ""))
+    if qs: det.append("quest: " + ", ".join(qs[:2]) + (f" +{len(qs)-2}" if len(qs) > 2 else ""))
+    r["detail"] = "; ".join(det)
+    r["name"] = r["base"]; rows.append(r)
 for r in rows:    # auto-attack damage index: hits per second x damage x crit; the pAtk column ranks skill damage
     r["index"] = round(r["pAtk"] * r["spd"] * (1 + r["crit"] / 100) / 1000, 2)
 groups = collections.defaultdict(list)
@@ -73,10 +91,10 @@ md = ["# Weapon tiers (non-magic, obtainable, base weapons only)\n",
       "Ranked best to worst within each type, hands and grade by auto-attack index = pAtk x atk speed x (1 + crit%) / 1000; ties broken by pAtk.\n"]
 for key in sorted(groups, key=lambda k: (k[0], k[1], ORDER.index(k[2]))):
     g = sorted(groups[key], key=lambda r: (-r["index"], -r["pAtk"], r["name"]))
-    md.append(f"\n## {key[0]} {key[1]} {key[2]}\n\n| # | Weapon | id | pAtk | speed | crit | index | source |\n|---|---|---|---|---|---|---|---|")
+    md.append(f"\n## {key[0]} {key[1]} {key[2]}\n\n| # | Weapon | id | P.Atk | M.Atk | speed | crit | index | source | details |\n|---|---|---|---|---|---|---|---|---|---|")
     for i, r in enumerate(g, 1):
-        md.append(f"| {i} | {r['name']} | {r['id']} | {r['pAtk']:g} | {r['spd']:g} | {r['crit']:g} | {r['index']} | {r['src']} |")
-        out.append(dict(weapon_type=key[0], hands=key[1], grade=key[2], rank=i, **{k: r[k] for k in ("id", "name", "pAtk", "spd", "crit", "index", "src")}))
+        md.append(f"| {i} | {r['name']} | {r['id']} | {r['pAtk']:g} | {r['mAtk']:g} | {r['spd']:g} | {r['crit']:g} | {r['index']} | {r['src']} | {r['detail']} |")
+        out.append(dict(weapon_type=key[0], hands=key[1], grade=key[2], rank=i, **{k: r[k] for k in ("id", "name", "pAtk", "mAtk", "spd", "crit", "index", "src", "detail")}))
 with open("weapon_tiers.csv", "w", newline="") as f:
     w = csv.DictWriter(f, fieldnames=list(out[0])); w.writeheader(); w.writerows(out)
 open("weapon_tiers.md", "w").write("\n".join(md) + "\n")
