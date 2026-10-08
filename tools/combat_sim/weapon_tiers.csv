@@ -1,0 +1,334 @@
+weapon_type,hands,grade,rank,id,name,pAtk,spd,crit,index,src
+BLUNT,1H,NG,1,155,Flanged Mace,31.0,379.0,4.0,12.22,drop/multisell/quest/shop
+BLUNT,1H,NG,2,87,Iron Hammer,31.0,379.0,4.0,12.22,drop/quest/recipe/shop
+BLUNT,1H,NG,3,2501,Bone Club,24.0,379.0,4.0,9.46,drop/shop
+BLUNT,1H,NG,4,154,Dwarven Mace,17.0,379.0,4.0,6.7,drop/multisell/quest/shop
+BLUNT,1H,NG,5,1511,Silversmith Hammer,13.0,379.0,4.0,5.12,quest/shop
+BLUNT,1H,NG,6,153,Sigil,12.0,379.0,4.0,4.73,multisell/quest/shop
+BLUNT,1H,NG,7,5,Mace,11.0,379.0,4.0,4.34,drop/multisell/quest/shop
+BLUNT,1H,NG,8,152,Heavy Chisel,10.0,379.0,4.0,3.94,drop/multisell/quest/shop
+BLUNT,1H,NG,9,4,Club,8.0,379.0,4.0,3.15,drop/quest/shop
+BLUNT,1H,D,1,159,Bonebreaker,92.0,379.0,4.0,36.26,drop/multisell/quest/recipe/shop
+BLUNT,1H,D,2,172,Heavy Bone Club,79.0,379.0,4.0,31.14,drop/multisell/recipe/shop
+BLUNT,1H,D,3,88,Morning Star,79.0,379.0,4.0,31.14,drop/multisell/quest/recipe/shop
+BLUNT,1H,D,4,169,Skull Breaker,79.0,379.0,4.0,31.14,drop/multisell/quest/recipe/shop
+BLUNT,1H,D,5,158,Tarbar,79.0,379.0,4.0,31.14,drop/multisell/quest/recipe/shop
+BLUNT,1H,D,6,157,Spiked Club,64.0,379.0,4.0,25.23,drop/multisell/quest/recipe/shop
+BLUNT,1H,D,7,86,Tomahawk,51.0,379.0,4.0,20.1,drop/multisell/quest/shop
+BLUNT,1H,D,8,156,Hand Axe,40.0,379.0,4.0,15.77,drop/multisell/quest/shop
+BLUNT,1H,D,9,166,Heavy Mace,40.0,379.0,4.0,15.77,multisell/quest/shop
+BLUNT,1H,D,10,167,Scalpel,40.0,379.0,4.0,15.77,drop/multisell/quest/shop
+BLUNT,1H,D,11,168,Work Hammer,40.0,379.0,4.0,15.77,multisell/quest/shop
+BLUNT,1H,C,1,2503,Yaksa Mace,156.0,379.0,4.0,61.49,drop/multisell/recipe/shop
+BLUNT,1H,C,2,162,War Axe,139.0,379.0,4.0,54.79,drop/multisell/quest/recipe/shop
+BLUNT,1H,C,3,2502,Dwarven War Hammer,122.0,379.0,4.0,48.09,drop/multisell/recipe/shop
+BLUNT,1H,C,4,160,Battle Axe,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe/shop
+BLUNT,1H,C,5,89,Big Hammer,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe
+BLUNT,1H,C,6,161,Silver Axe,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe/shop
+BLUNT,1H,C,7,173,Skull Graver,107.0,379.0,4.0,42.18,drop/multisell/quest/recipe/shop
+BLUNT,1H,B,1,175,Art of Battle Axe,194.0,379.0,4.0,76.47,drop/multisell/quest/recipe/shop
+BLUNT,1H,B,2,171,Deadman's Glory,194.0,379.0,4.0,76.47,drop/multisell/quest/recipe/shop
+BLUNT,1H,B,3,91,Heavy War Axe,175.0,379.0,4.0,68.98,drop/multisell/quest/recipe/shop
+BLUNT,1H,A,1,8680,Barakiel's Axe,251.0,379.0,4.0,98.93,multisell/recipe/shop
+BLUNT,1H,A,2,164,Elysian,232.0,379.0,4.0,91.45,drop/multisell/quest/recipe/shop
+BLUNT,1H,A,3,2504,Meteor Shower,213.0,379.0,4.0,83.96,drop/multisell/recipe/shop
+BLUNT,1H,S,1,6365,Basalt Battlehammer,281.0,379.0,4.0,110.76,drop/multisell/recipe/shop
+BLUNT,1H,S,2,165,Yablonski's Hammer,251.0,379.0,4.0,98.93,quest/shop
+BLUNT,2H,D,1,7896,Titan Hammer,96.0,325.0,4.0,32.45,multisell/recipe/shop
+BLUNT,2H,C,1,7897,Dwarven Hammer,190.0,325.0,4.0,64.22,multisell/recipe/shop
+BLUNT,2H,C,2,7898,Karik Horn,169.0,325.0,4.0,57.12,multisell/recipe/shop
+BLUNT,2H,B,1,7901,Star Buster,236.0,325.0,4.0,79.77,drop/multisell/quest/recipe/shop
+BLUNT,2H,B,2,7900,Ice Storm Hammer,213.0,325.0,4.0,71.99,drop/multisell/recipe/shop
+BLUNT,2H,A,1,8681,Behemoth's Tuning Fork,305.0,325.0,4.0,103.09,multisell/recipe/shop
+BLUNT,2H,A,2,7902,Doom Crusher,282.0,325.0,4.0,95.32,drop/multisell/recipe/shop
+BLUNT,2H,A,3,7899,Destroyer Hammer,259.0,325.0,4.0,87.54,drop/multisell/recipe/shop
+BLUNT,2H,S,1,6369,Dragon Hunter Axe,342.0,325.0,4.0,115.6,drop/multisell/recipe/shop
+BOW,2H,NG,1,273,Composite Bow,64.0,293.0,12.0,21.0,drop/multisell/quest/recipe/shop
+BOW,2H,NG,2,272,Forest Bow,49.0,293.0,12.0,16.08,drop/multisell/quest/recipe/shop
+BOW,2H,NG,3,271,Hunting Bow,34.0,293.0,12.0,11.16,drop/multisell/quest/shop
+BOW,2H,NG,4,14,Bow,23.0,293.0,12.0,7.55,drop/multisell/quest/recipe/shop
+BOW,2H,NG,5,13,Short Bow,16.0,293.0,12.0,5.25,drop/quest/shop
+BOW,2H,D,1,280,Light Crossbow,191.0,293.0,12.0,62.68,drop/multisell/quest/recipe/shop
+BOW,2H,D,2,279,Reinforced Long Bow,179.0,227.0,12.0,45.51,drop/multisell/recipe/shop
+BOW,2H,D,3,278,Gastraphetes,132.0,293.0,12.0,43.32,drop/multisell/recipe/shop
+BOW,2H,D,4,277,Dark Elven Bow,105.0,293.0,12.0,34.46,multisell/quest/shop
+BOW,2H,D,5,276,Elven Bow,105.0,293.0,12.0,34.46,drop/multisell/quest/recipe/shop
+BOW,2H,D,6,275,Long Bow,114.0,227.0,12.0,28.98,drop/multisell/quest/shop
+BOW,2H,D,7,274,Reinforced Bow,82.0,293.0,12.0,26.91,drop/multisell/quest/shop
+BOW,2H,C,1,286,Eminence Bow,323.0,293.0,12.0,106.0,drop/multisell/recipe/shop
+BOW,2H,C,2,285,Noble Elven Bow,252.0,293.0,12.0,82.7,drop/multisell/recipe/shop
+BOW,2H,C,3,283,Akat Long Bow,316.0,227.0,12.0,80.34,drop/multisell/recipe/shop
+BOW,2H,C,4,281,Crystallized Ice Bow,220.0,293.0,12.0,72.2,drop/multisell/recipe/shop
+BOW,2H,C,5,282,Elemental Bow,277.0,227.0,12.0,70.42,drop/multisell/recipe/shop
+BOW,2H,B,1,287,Bow of Peril,400.0,293.0,12.0,131.26,drop/multisell/quest/recipe/shop
+BOW,2H,B,2,284,Dark Elven Long Bow,397.0,227.0,12.0,100.93,drop/multisell/recipe/shop
+BOW,2H,A,1,8684,Shyeed's Bow,570.0,227.0,12.0,144.92,multisell/recipe/shop
+BOW,2H,A,2,288,Carnage Bow,440.0,293.0,12.0,144.39,drop/multisell/quest/recipe/shop
+BOW,2H,A,3,289,Soul Bow,528.0,227.0,12.0,134.24,drop/multisell/recipe/shop
+BOW,2H,S,1,7575,Draconic Bow,581.0,293.0,12.0,190.66,drop/multisell/recipe/shop
+BOW,2H,S,2,6368,Shining Bow,581.0,293.0,12.0,190.66,recipe/shop
+BOW,2H,S,3,290,The Bow,519.0,293.0,12.0,170.32,quest/shop
+DAGGER,1H,NG,1,219,Sword Breaker,27.0,433.0,12.0,13.09,drop/multisell/quest/recipe/shop
+DAGGER,1H,NG,2,217,Shining Knife,21.0,433.0,12.0,10.18,drop/quest/shop
+DAGGER,1H,NG,3,218,Throwing Knife,21.0,433.0,12.0,10.18,drop/multisell/quest/shop
+DAGGER,1H,NG,4,946,Skeleton Dagger,16.0,433.0,12.0,7.76,shop
+DAGGER,1H,NG,5,216,Dirk,15.0,433.0,12.0,7.27,drop/multisell/quest/recipe/shop
+DAGGER,1H,NG,6,2372,Dagger of Adept,11.0,433.0,12.0,5.33,shop
+DAGGER,1H,NG,7,989,Eldritch Dagger,11.0,433.0,12.0,5.33,quest/shop
+DAGGER,1H,NG,8,2374,Red Sunset Dagger,11.0,433.0,12.0,5.33,shop
+DAGGER,1H,NG,9,215,Doom Dagger,10.0,433.0,12.0,4.85,drop/multisell/quest/shop
+DAGGER,1H,NG,10,12,Knife,10.0,433.0,12.0,4.85,drop/quest/shop
+DAGGER,1H,NG,11,11,Bone Dagger,7.0,433.0,12.0,3.39,drop/quest/shop
+DAGGER,1H,D,1,225,Mithril Dagger,80.0,433.0,12.0,38.8,drop/multisell/quest/recipe/shop
+DAGGER,1H,D,2,224,Maingauche,69.0,433.0,12.0,33.46,drop/multisell/quest/recipe/shop
+DAGGER,1H,D,3,1660,Cursed Maingauche,62.0,433.0,12.0,30.07,drop/multisell/recipe/shop
+DAGGER,1H,D,4,223,Kukuri,56.0,433.0,12.0,27.16,drop/multisell/quest/shop
+DAGGER,1H,D,5,222,Poniard Dagger,45.0,433.0,12.0,21.82,drop/multisell/quest/shop
+DAGGER,1H,D,6,221,Assassin Knife,35.0,433.0,12.0,16.97,multisell/quest/recipe/shop
+DAGGER,1H,D,7,220,Crafted Dagger,35.0,433.0,12.0,16.97,drop/multisell/quest/shop
+DAGGER,1H,D,8,2507,Lizardspear,5.0,433.0,12.0,2.42,shop
+DAGGER,1H,D,9,1471,Silenos Blowgun,5.0,433.0,12.0,2.42,shop
+DAGGER,1H,C,1,228,Crystal Dagger,136.0,433.0,12.0,65.95,drop/multisell/quest/recipe/shop
+DAGGER,1H,C,2,233,Dark Screamer,122.0,433.0,12.0,59.17,drop/multisell/quest/recipe/shop
+DAGGER,1H,C,3,231,Grace Dagger,122.0,433.0,12.0,59.17,drop/multisell/quest/recipe/shop
+DAGGER,1H,C,4,227,Stiletto,107.0,433.0,12.0,51.89,drop/multisell/quest/recipe/shop
+DAGGER,1H,C,5,226,Cursed Dagger,94.0,433.0,12.0,45.59,drop/multisell/quest/recipe/shop
+DAGGER,1H,C,6,232,Dark Elven Dagger,94.0,433.0,12.0,45.59,drop/multisell/quest/recipe/shop
+DAGGER,1H,C,7,230,Wolverine Needle,94.0,433.0,12.0,45.59,multisell/quest/recipe/shop
+DAGGER,1H,B,1,234,Demon's Dagger,170.0,433.0,12.0,82.44,drop/multisell/quest/recipe/shop
+DAGGER,1H,B,2,229,Kris,153.0,433.0,12.0,74.2,drop/multisell/quest/recipe/shop
+DAGGER,1H,A,1,8682,Naga Storm,220.0,433.0,12.0,106.69,multisell/quest/recipe/shop
+DAGGER,1H,A,2,236,Soul Separator,203.0,433.0,12.0,98.45,drop/multisell/recipe/shop
+DAGGER,1H,A,3,235,Bloody Orchid,186.0,433.0,12.0,90.2,drop/multisell/quest/recipe/shop
+DAGGER,1H,S,1,6367,Angel Slayer,246.0,433.0,12.0,119.3,drop/multisell/recipe/shop
+DAGGER,1H,S,2,237,Dragon's Tooth,220.0,433.0,12.0,106.69,shop
+DUAL,2H,D,1,2542,Artisan's Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,2,2543,Artisan's Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,3,2529,Bastard Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,4,2530,Bastard Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,5,2547,Knight's Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,6,2548,Knight's Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,7,2536,Spinebone Sword*Crimson Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,8,2537,Spinebone Sword*Elven Sword,107.0,325.0,8.0,37.56,multisell/shop
+DUAL,2H,D,9,2540,Artisan's Sword*Artisan's Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,10,2541,Artisan's Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,11,2527,Bastard Sword*Artisan's Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,12,2525,Bastard Sword*Bastard Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,13,2528,Bastard Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,14,2526,Bastard Sword*Spinebone Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,15,2546,Knight's Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,16,2521,Saber*Crimson Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,17,2522,Saber*Elven Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,18,2534,Spinebone Sword*Artisan's Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,19,2535,Spinebone Sword*Knight's Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,20,2533,Spinebone Sword*Spinebone Sword,96.0,325.0,8.0,33.7,multisell/shop
+DUAL,2H,D,21,2519,Saber*Artisan's Sword,83.0,325.0,8.0,29.13,multisell/shop
+DUAL,2H,D,22,2517,Saber*Bastard Sword,83.0,325.0,8.0,29.13,multisell/shop
+DUAL,2H,D,23,2520,Saber*Knight's Sword,83.0,325.0,8.0,29.13,multisell/shop
+DUAL,2H,D,24,2518,Saber*Spinebone Sword,83.0,325.0,8.0,29.13,multisell/shop
+DUAL,2H,D,25,2516,Saber*Saber,73.0,325.0,8.0,25.62,multisell/shop
+DUAL,2H,C,1,2582,Katana*Katana,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,2,2584,Katana*Raid Sword,190.0,325.0,8.0,66.69,multisell/quest/shop
+DUAL,2H,C,3,2583,Katana*Spirit Sword,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,4,2599,Raid Sword*Raid Sword,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,5,2573,Shamshir*Katana,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,6,2575,Shamshir*Raid Sword,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,7,2572,Shamshir*Shamshir,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,8,2574,Shamshir*Spirit Sword,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,9,2592,Spirit Sword*Raid Sword,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,10,2591,Spirit Sword*Spirit Sword,190.0,325.0,8.0,66.69,multisell/shop
+DUAL,2H,C,11,2563,Stormbringer*Katana,183.0,325.0,8.0,64.23,multisell/shop
+DUAL,2H,C,12,2565,Stormbringer*Raid Sword,183.0,325.0,8.0,64.23,multisell/shop
+DUAL,2H,C,13,2562,Stormbringer*Shamshir,183.0,325.0,8.0,64.23,multisell/shop
+DUAL,2H,C,14,2564,Stormbringer*Spirit Sword,183.0,325.0,8.0,64.23,multisell/shop
+DUAL,2H,C,15,2561,Stormbringer*Stormbringer,175.0,325.0,8.0,61.43,multisell/shop
+DUAL,2H,C,16,2560,Elven Long Sword*Elven Long Sword,162.0,325.0,8.0,56.86,multisell/shop
+DUAL,2H,C,17,2559,Sword of Revolution*Elven Long Sword,155.0,325.0,8.0,54.41,multisell/shop
+DUAL,2H,C,18,2554,Crimson Sword*Elven Long Sword,148.0,325.0,8.0,51.95,multisell/shop
+DUAL,2H,C,19,2557,Elven Sword*Elven Long Sword,148.0,325.0,8.0,51.95,multisell/shop
+DUAL,2H,C,20,2558,Sword of Revolution*Sword of Revolution,148.0,325.0,8.0,51.95,multisell/shop
+DUAL,2H,C,21,2545,Artisan's Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
+DUAL,2H,C,22,2532,Bastard Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
+DUAL,2H,C,23,2553,Crimson Sword*Sword of Revolution,136.0,325.0,8.0,47.74,multisell/shop
+DUAL,2H,C,24,2556,Elven Sword*Sword of Revolution,136.0,325.0,8.0,47.74,multisell/shop
+DUAL,2H,C,25,2550,Knight's Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
+DUAL,2H,C,26,2539,Spinebone Sword*Elven Long Sword,136.0,325.0,8.0,47.74,multisell/shop
+DUAL,2H,C,27,2524,Saber*Elven Long Sword,130.0,325.0,8.0,45.63,multisell/shop
+DUAL,2H,C,28,2544,Artisan's Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
+DUAL,2H,C,29,2531,Bastard Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
+DUAL,2H,C,30,2549,Knight's Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
+DUAL,2H,C,31,2538,Spinebone Sword*Sword of Revolution,124.0,325.0,8.0,43.52,multisell/shop
+DUAL,2H,C,32,2551,Crimson Sword*Crimson Sword,118.0,325.0,8.0,41.42,multisell/shop
+DUAL,2H,C,33,2552,Crimson Sword*Elven Sword,118.0,325.0,8.0,41.42,multisell/shop
+DUAL,2H,C,34,2555,Elven Sword*Elven Sword,118.0,325.0,8.0,41.42,multisell/shop
+DUAL,2H,C,35,2523,Saber*Sword of Revolution,118.0,325.0,8.0,41.42,multisell/shop
+DUAL,2H,B,1,2626,Samurai Long Sword*Samurai Long Sword,236.0,325.0,8.0,82.84,multisell/quest/shop
+DUAL,2H,B,2,2611,Caliburs*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
+DUAL,2H,B,3,2620,Sword of Delusion*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
+DUAL,2H,B,4,2616,Sword of Limit*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
+DUAL,2H,B,5,2623,Sword of Nightmare*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
+DUAL,2H,B,6,2625,Tsurugi*Samurai Long Sword,228.0,325.0,8.0,80.03,multisell/shop
+DUAL,2H,B,7,2590,Katana*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
+DUAL,2H,B,8,2605,Raid Sword*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
+DUAL,2H,B,9,2581,Shamshir*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
+DUAL,2H,B,10,2598,Spirit Sword*Samurai Long Sword,220.0,325.0,8.0,77.22,multisell/shop
+DUAL,2H,B,11,2606,Caliburs*Caliburs,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,12,2608,Caliburs*Sword of Delusion,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,13,2607,Caliburs*Sword of Limit,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,14,2609,Caliburs*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,15,2610,Caliburs*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,16,2571,Stormbringer*Samurai Long sword,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,17,2617,Sword of Delusion*Sword of Delusion,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,18,2618,Sword of Delusion*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,19,2619,Sword of Delusion*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,20,2613,Sword of Limit*Sword of Delusion,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,21,2612,Sword of Limit*Sword of Limit,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,22,2614,Sword of Limit*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,23,2615,Sword of Limit*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,24,2621,Sword of Nightmare*Sword of Nightmare,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,25,2622,Sword of Nightmare*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,26,2624,Tsurugi*Tsurugi,213.0,325.0,8.0,74.76,multisell/shop
+DUAL,2H,B,27,2585,Katana*Caliburs,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,28,2587,Katana*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,29,2586,Katana*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,30,2588,Katana*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,31,2589,Katana*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,32,2600,Raid Sword*Caliburs,204.0,325.0,8.0,71.6,multisell/quest/shop
+DUAL,2H,B,33,2602,Raid Sword*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,34,2601,Raid Sword*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,35,2603,Raid Sword*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,36,2604,Raid Sword*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,37,2576,Shamshir*Caliburs,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,38,2578,Shamshir*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,39,2577,Shamshir*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,40,2579,Shamshir*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,41,2580,Shamshir*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,42,2593,Spirit Sword*Caliburs,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,43,2595,Spirit Sword*Sword of Delusion,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,44,2594,Spirit Sword*Sword of Limit,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,45,2596,Spirit Sword*Sword of Nightmare,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,46,2597,Spirit Sword*Tsurugi,204.0,325.0,8.0,71.6,multisell/shop
+DUAL,2H,B,47,2566,Stormbringer*Caliburs,197.0,325.0,8.0,69.15,multisell/shop
+DUAL,2H,B,48,2568,Stormbringer*Sword of Delusion,197.0,325.0,8.0,69.15,multisell/shop
+DUAL,2H,B,49,2567,Stormbringer*Sword of Limit,197.0,325.0,8.0,69.15,multisell/shop
+DUAL,2H,B,50,2569,Stormbringer*Sword of Nightmare,197.0,325.0,8.0,69.15,multisell/shop
+DUAL,2H,B,51,2570,Stormbringer*Tsurugi,197.0,325.0,8.0,69.15,multisell/shop
+DUAL,2H,A,1,8938,Damascus * Tallum Blade,305.0,325.0,8.0,107.06,multisell
+DUAL,2H,A,2,5706,Damascus*Damascus,282.0,325.0,8.0,98.98,multisell/shop
+DUAL,2H,A,3,5705,Keshanberk*Damascus,275.0,325.0,8.0,96.53,multisell/shop
+DUAL,2H,A,4,5233,Keshanberk*Keshanberk,259.0,325.0,8.0,90.91,multisell/shop
+DUAL,2H,S,1,6580,Tallum Blade*Dark Legion's Edge,342.0,325.0,8.0,120.04,drop/multisell/shop
+DUALFIST,2H,NG,1,257,Viper Fang,38.0,325.0,4.0,12.84,drop/multisell/quest/shop
+DUALFIST,2H,NG,2,256,Cestus,29.0,325.0,4.0,9.8,drop/multisell/shop
+DUALFIST,2H,NG,3,255,Fox Claw Gloves,21.0,325.0,4.0,7.1,drop/multisell/quest/shop
+DUALFIST,2H,NG,4,2371,Fist of Butcher,16.0,325.0,4.0,5.41,drop/shop
+DUALFIST,2H,NG,5,254,Iron Gloves,13.0,325.0,4.0,4.39,drop/multisell/shop
+DUALFIST,2H,NG,6,253,Spiked Gloves,10.0,325.0,4.0,3.38,drop/shop
+DUALFIST,2H,D,1,262,Scallop Jamadhr,112.0,325.0,4.0,37.86,drop/multisell/quest/recipe/shop
+DUALFIST,2H,D,2,261,Bich'Hwa,96.0,325.0,4.0,32.45,drop/multisell/quest/recipe/shop
+DUALFIST,2H,D,3,260,Triple-Edged Jamadhr,78.0,325.0,4.0,26.36,drop/multisell/quest/shop
+DUALFIST,2H,D,4,259,Single-Edged Jamadhr,62.0,325.0,4.0,20.96,drop/multisell/quest/shop
+DUALFIST,2H,D,5,258,Bagh-Nakh,49.0,325.0,4.0,16.56,drop/quest/shop
+DUALFIST,2H,C,1,266,Great Pata,190.0,325.0,4.0,64.22,drop/multisell/quest/recipe/shop
+DUALFIST,2H,C,2,265,Fisted Blade,169.0,325.0,4.0,57.12,drop/multisell/quest/recipe/shop
+DUALFIST,2H,C,3,4233,Knuckle Duster,148.0,325.0,4.0,50.02,drop/multisell/recipe/shop
+DUALFIST,2H,C,4,263,Chakram,130.0,325.0,4.0,43.94,drop/multisell/quest/recipe/shop
+DUALFIST,2H,B,1,268,Bellion Cestus,236.0,325.0,4.0,79.77,drop/multisell/quest/recipe/shop
+DUALFIST,2H,B,2,267,Arthro Nail,213.0,325.0,4.0,71.99,drop/multisell/quest/recipe/shop
+DUALFIST,2H,B,3,264,Pata,204.0,325.0,4.0,68.95,multisell/quest/recipe/shop
+DUALFIST,2H,A,1,8685,Sobekk's Hurricane,305.0,325.0,4.0,103.09,multisell/recipe/shop
+DUALFIST,2H,A,2,270,Dragon Grinder,282.0,325.0,4.0,95.32,drop/multisell/quest/recipe/shop
+DUALFIST,2H,A,3,269,Blood Tornado,259.0,325.0,4.0,87.54,drop/multisell/recipe/shop
+DUALFIST,2H,S,1,6371,Demon Splinter,342.0,325.0,4.0,115.6,drop/multisell/recipe/shop
+POLE,2H,NG,1,16,Great Spear,31.0,325.0,8.0,10.88,drop/multisell/quest/shop
+POLE,2H,NG,2,15,Short Spear,24.0,325.0,8.0,8.42,drop/quest/recipe/shop
+POLE,2H,D,1,297,Glaive,92.0,325.0,8.0,32.29,drop/multisell/quest/recipe/shop
+POLE,2H,D,2,294,War Pick,79.0,325.0,8.0,27.73,drop/multisell/quest/recipe/shop
+POLE,2H,D,3,93,Winged Spear,79.0,325.0,8.0,27.73,drop/multisell/quest/recipe/shop
+POLE,2H,D,4,296,Dwarven Pike,64.0,325.0,8.0,22.46,drop/multisell/quest/shop
+POLE,2H,D,5,293,War Hammer,64.0,325.0,8.0,22.46,drop/multisell/quest/shop
+POLE,2H,D,6,295,Dwarven Trident,51.0,325.0,8.0,17.9,multisell/quest/recipe/shop
+POLE,2H,D,7,292,Pike,51.0,325.0,8.0,17.9,drop/multisell/quest/shop
+POLE,2H,D,8,1472,Dreadbane,50.0,325.0,8.0,17.55,shop
+POLE,2H,D,9,1376,Guard Spear,50.0,325.0,8.0,17.55,shop
+POLE,2H,D,10,291,Trident,40.0,325.0,8.0,14.04,drop/multisell/quest/recipe/shop
+POLE,2H,C,1,299,Orcish Poleaxe,156.0,325.0,8.0,54.76,drop/multisell/quest/recipe/shop
+POLE,2H,C,2,301,Scorpion,144.0,325.0,8.0,50.54,drop/multisell/recipe/shop
+POLE,2H,C,3,303,Widow Maker,144.0,325.0,8.0,50.54,drop/multisell/quest/recipe/shop
+POLE,2H,C,4,95,Poleaxe,139.0,325.0,8.0,48.79,multisell/quest/recipe/shop
+POLE,2H,C,5,94,Bec de Corbin,122.0,325.0,8.0,42.82,drop/multisell/recipe/shop
+POLE,2H,C,6,302,Body Slasher,107.0,325.0,8.0,37.56,drop/multisell/recipe/shop
+POLE,2H,C,7,298,Orcish Glaive,107.0,325.0,8.0,37.56,drop/multisell/quest/recipe/shop
+POLE,2H,C,8,96,Scythe,107.0,325.0,8.0,37.56,drop/multisell/quest/recipe/shop
+POLE,2H,B,1,97,Lance,194.0,325.0,8.0,68.09,drop/multisell/quest/recipe/shop
+POLE,2H,B,2,300,Great Axe,175.0,325.0,8.0,61.43,drop/multisell/quest/recipe/shop
+POLE,2H,A,1,8683,Tiphon's Spear,251.0,325.0,8.0,88.1,multisell/recipe/shop
+POLE,2H,A,2,305,Tallum Glaive,232.0,325.0,8.0,81.43,drop/multisell/recipe/shop
+POLE,2H,A,3,304,Orcish Halberd,219.0,325.0,8.0,76.87,shop
+POLE,2H,A,4,98,Halberd,213.0,325.0,8.0,74.76,drop/multisell/quest/recipe/shop
+POLE,2H,S,1,6370,Saint Spear,281.0,325.0,8.0,98.63,drop/multisell/recipe/shop
+POLE,2H,S,2,306,Dragon Claw Axe,251.0,325.0,8.0,88.1,quest/shop
+SWORD,1H,NG,1,68,Falchion,31.0,379.0,8.0,12.69,drop/multisell/quest/shop
+SWORD,1H,NG,2,2,Long Sword,24.0,379.0,8.0,9.82,drop/multisell/quest/shop
+SWORD,1H,NG,3,120,Sword of Reflection,24.0,379.0,8.0,9.82,drop/quest/recipe/shop
+SWORD,1H,NG,4,121,Sword of Watershadow,24.0,379.0,8.0,9.82,drop/shop
+SWORD,1H,NG,5,66,Gladius,17.0,379.0,8.0,6.96,drop/multisell/quest/shop
+SWORD,1H,NG,6,122,Handmade Sword,17.0,379.0,8.0,6.96,shop
+SWORD,1H,NG,7,67,Orcish Sword,17.0,379.0,8.0,6.96,quest/shop
+SWORD,1H,NG,8,975,Blood Saber,14.0,379.0,8.0,5.73,quest/shop
+SWORD,1H,NG,9,743,Sword of Sentinel,14.0,379.0,8.0,5.73,quest/shop
+SWORD,1H,NG,10,1510,Butcher's Sword,13.0,379.0,8.0,5.32,quest/shop
+SWORD,1H,NG,11,738,Sword of Solidarity,12.0,379.0,8.0,4.91,quest/shop
+SWORD,1H,NG,12,3,Broadsword,11.0,379.0,8.0,4.5,drop/multisell/quest/recipe/shop
+SWORD,1H,NG,13,4027,Bouquet,8.0,379.0,8.0,3.27,shop
+SWORD,1H,NG,14,1,Short Sword,8.0,379.0,8.0,3.27,drop/quest/shop
+SWORD,1H,D,1,2499,Elven Long Sword,92.0,379.0,8.0,37.66,drop/multisell/recipe/shop
+SWORD,1H,D,2,129,Sword of Revolution,79.0,379.0,8.0,32.34,drop/multisell/recipe/shop
+SWORD,1H,D,3,127,Crimson Sword,64.0,379.0,8.0,26.2,drop/multisell/quest/shop
+SWORD,1H,D,4,130,Elven Sword,64.0,379.0,8.0,26.2,drop/multisell/quest/shop
+SWORD,1H,D,5,126,Artisan's Sword,51.0,379.0,8.0,20.88,drop/multisell/quest/shop
+SWORD,1H,D,6,69,Bastard Sword,51.0,379.0,8.0,20.88,drop/multisell/quest/shop
+SWORD,1H,D,7,128,Knight's Sword,51.0,379.0,8.0,20.88,drop/multisell/shop
+SWORD,1H,D,8,125,Spinebone Sword,51.0,379.0,8.0,20.88,drop/multisell/quest/recipe/shop
+SWORD,1H,D,9,123,Saber,40.0,379.0,8.0,16.37,drop/multisell/quest/recipe/shop
+SWORD,1H,C,1,135,Samurai Longsword,156.0,379.0,8.0,63.85,drop/multisell/quest/recipe/shop
+SWORD,1H,C,2,75,Caliburs,139.0,379.0,8.0,56.9,drop/multisell/quest/recipe/shop
+SWORD,1H,C,3,76,Sword of Delusion,139.0,379.0,8.0,56.9,drop/multisell/quest/recipe/shop
+SWORD,1H,C,4,132,Sword of Limit,139.0,379.0,8.0,56.9,multisell/recipe/shop
+SWORD,1H,C,5,134,Sword of Nightmare,139.0,379.0,8.0,56.9,drop/multisell/recipe/shop
+SWORD,1H,C,6,77,Tsurugi,139.0,379.0,8.0,56.9,drop/multisell/quest/recipe/shop
+SWORD,1H,C,7,74,Katana,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
+SWORD,1H,C,8,133,Raid Sword,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
+SWORD,1H,C,9,73,Shamshir,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
+SWORD,1H,C,10,131,Spirit Sword,122.0,379.0,8.0,49.94,drop/multisell/quest/recipe/shop
+SWORD,1H,C,11,72,Stormbringer,107.0,379.0,8.0,43.8,drop/multisell/quest/recipe/shop
+SWORD,1H,B,1,79,Sword of Damascus,194.0,379.0,8.0,79.41,drop/multisell/quest/recipe/shop
+SWORD,1H,B,2,136,Blade of Serenity,175.0,379.0,8.0,71.63,multisell/shop
+SWORD,1H,B,3,139,Dusk Sword,175.0,379.0,8.0,71.63,multisell/shop
+SWORD,1H,B,4,140,Eminence Sword,175.0,379.0,8.0,71.63,multisell/quest/shop
+SWORD,1H,B,5,141,Hazard Sword,175.0,379.0,8.0,71.63,multisell/shop
+SWORD,1H,B,6,142,Keshanberk,175.0,379.0,8.0,71.63,drop/multisell/recipe/shop
+SWORD,1H,B,7,137,Mist Sword,175.0,379.0,8.0,71.63,multisell/shop
+SWORD,1H,B,8,138,Sword of Desert,175.0,379.0,8.0,71.63,multisell/shop
+SWORD,1H,A,1,8678,Sirra's Blade,251.0,379.0,8.0,102.74,multisell/recipe/shop
+SWORD,1H,A,2,2500,Dark Legion's Edge,232.0,379.0,8.0,94.96,drop/multisell/quest/recipe/shop
+SWORD,1H,A,3,80,Tallum Blade,213.0,379.0,8.0,87.19,drop/multisell/quest/recipe/shop
+SWORD,1H,S,1,6364,Forgotten Blade,281.0,379.0,8.0,115.02,drop/multisell/recipe/shop
+SWORD,2H,NG,1,5284,Zweihander,38.0,325.0,8.0,13.34,drop/multisell/shop
+SWORD,2H,NG,2,1333,Brandish,21.0,325.0,8.0,7.37,drop/multisell/recipe/shop
+SWORD,2H,NG,3,981,Red Sunset Sword,16.0,325.0,8.0,5.62,quest/shop
+SWORD,2H,D,1,70,Claymore,112.0,325.0,8.0,39.31,drop/multisell/quest/recipe/shop
+SWORD,2H,D,2,7881,Titan Sword,96.0,325.0,8.0,33.7,multisell/recipe/shop
+SWORD,2H,D,3,124,Two-Handed Sword,78.0,325.0,8.0,27.38,drop/quest/recipe/shop
+SWORD,2H,D,4,5285,Heavy Sword,49.0,325.0,8.0,17.2,drop/multisell/recipe/shop
+SWORD,2H,D,5,7880,Steel Sword,49.0,325.0,8.0,17.2,multisell/recipe/shop
+SWORD,2H,C,1,5286,Berserker Blade,190.0,325.0,8.0,66.69,drop/multisell/recipe/shop
+SWORD,2H,C,2,7882,Pa'agrian Sword,169.0,325.0,8.0,59.32,multisell/recipe/shop
+SWORD,2H,C,3,71,Flamberge,130.0,325.0,8.0,45.63,drop/multisell/quest/recipe/shop
+SWORD,2H,B,1,7883,Guardian Sword,236.0,325.0,8.0,82.84,drop/multisell/quest/recipe/shop
+SWORD,2H,B,2,78,Great Sword,213.0,325.0,8.0,74.76,drop/multisell/recipe/shop
+SWORD,2H,A,1,8679,Sword of Ipos,305.0,325.0,8.0,107.06,multisell/recipe/shop
+SWORD,2H,A,2,81,Dragon Slayer,282.0,325.0,8.0,98.98,drop/multisell/quest/recipe/shop
+SWORD,2H,A,3,7884,Infernal Master,259.0,325.0,8.0,90.91,drop/multisell/recipe/shop
+SWORD,2H,S,1,6372,Heaven's Divider,342.0,325.0,8.0,120.04,drop/multisell/recipe/shop
+SWORD,2H,S,2,6605,Heavens Divider,342.0,325.0,8.0,120.04,multisell/shop
