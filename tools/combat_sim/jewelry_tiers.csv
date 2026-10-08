@@ -1,0 +1,122 @@
+slot,grade,rank,id,name,mDef,maxMp,source,detail
+Necklace,NG,1,909,Blue Diamond Necklace,28.0,0,craft/drop/exchange/shop,"drop: Mandragora Sprout L21, Zombie Warrior L22, Bloody Bee L23 +4"
+Necklace,NG,2,908,Necklace of Wisdom,25.0,0,craft/drop/exchange/shop,"drop: Cave Fang Spider L16, Pincher L16, Ratman Spy L16 +10"
+Necklace,NG,3,907,Necklace of Anguish,21.0,0,craft/drop/exchange/shop,"drop: Blood Fungus L12, Stone Giant L13, Crasher L14 +3"
+Necklace,NG,4,1507,Necklace of Valor,21.0,0,shop,
+Necklace,NG,5,906,Necklace of Knowledge,18.0,0,drop/exchange/quest/shop,"drop: Kasha Timber Wolf L6, Evil Eye L10, Monster Eye L10 +2; quest: LettersOfLove, MinersFavor"
+Necklace,NG,6,1506,Necklace of Courage,15.0,0,shop,
+Necklace,NG,7,118,Necklace of Magic,15.0,0,drop/shop,"drop: Goblin L5, Goblin Grave Robber L5, Goblin Raider L5 +1"
+Necklace,D,1,914,Necklace of Darkness,48.0,0,craft/drop/shop,"drop: Vuku Grand Seer Gharmash L33, Revenant of Sir Calibus L34, Tasaba Patriarch Hellena L35 +6"
+Necklace,D,2,913,Elven Necklace,45.0,0,craft/drop/shop,"drop: Agent of Beres, Meana L30, Road Scavenger L37, Hatu Crimson Bear L38 +2"
+Necklace,D,3,912,Near Forest Necklace,40.0,0,drop/shop,"drop: Ikuntai L25, Tirak L28, Breka Orc Warrior L33 +7"
+Necklace,D,4,911,Enchanted Necklace,36.0,0,craft/drop/shop,"drop: Serpent Demon Bifrons L21, Kuroboros' Priest L23, Ant Larva L29 +8"
+Necklace,D,5,910,Necklace of Devotion,32.0,0,craft/drop/shop,"drop: Mandragora Blossom L25, Monster Eye Watcher L25, Turek Orc Sentinel L25 +5"
+Necklace,C,1,919,Blessed Necklace,64.0,0,shop,
+Necklace,C,2,119,Necklace of Seal,64.0,0,craft/drop/shop,"drop: Katu Van Leader Atui L49, Purgatory Invader Magus L53, Massive Maze Bandersnatch L54 +5"
+Necklace,C,3,917,Necklace of Mermaid,60.0,0,craft/drop/exchange/quest/shop,"drop: Timak Orc Chief Ranger L44, Evil Spirit Cyrion L45, Fafurion's Henchman Istary L45 +8; quest: UnderTheShadowOfTheIvoryTower, WarehouseKeepersPastime"
+Necklace,C,4,916,Necklace of Protection,56.0,0,craft/drop/exchange/quest/shop,"drop: Nightmare Lord L47, Spore Zombie L47, Dragon Bearer Chief L49 +3; quest: ChestCaughtWithABaitOfFire"
+Necklace,C,5,915,Aquastone Necklace,52.0,0,craft/drop/exchange/shop,"drop: Road Scavenger Leader L40, Wizard of Storm Teruk L40, Lakin L44 +3"
+Necklace,B,1,929,Elemental Necklace,72.0,0,shop,
+Necklace,B,2,926,Necklace of Black Ore,72.0,0,craft/drop/shop,"drop: Soulless Wild Boar L59, Bathin's Wizard L62, Ursus L62 +15"
+Necklace,B,3,932,Necklace of Holy Spirit,72.0,0,shop,
+Necklace,B,4,928,Otherworldly Necklace,72.0,0,shop,
+Necklace,B,5,923,Paradia Necklace,72.0,0,shop,
+Necklace,B,6,922,Sage's Necklace,72.0,0,craft/shop,
+Necklace,B,7,918,Adamantite Necklace,68.0,0,craft/drop/shop,"drop: Cursed Clara L50, Grave Robber Kim L52, Enchanted Forest Watcher Ruell L55 +6"
+Necklace,B,8,935,Necklace of Aid,68.0,0,shop,
+Necklace,B,9,936,Necklace of Blessing,68.0,0,quest/shop,quest: HidingBehindTheTruth
+Necklace,B,10,931,Necklace of Grace,68.0,0,quest/shop,quest: TheWishingPotion
+Necklace,B,11,921,Necklace of Mana,68.0,0,shop,
+Necklace,B,12,925,Necklace of Solar Eclipse,68.0,0,shop,
+Necklace,B,13,927,Necklace of Summoning,68.0,0,shop,
+Necklace,A,1,8191,Necklace of Frintezza,95.0,42.0,drop/shop,drop: Scarlet van Halisha L85
+Necklace,A,2,924,Majestic Necklace,85.0,33.0,exchange/shop,
+Necklace,A,3,933,Phoenix Necklace,80.0,26.0,exchange/shop,
+Necklace,A,4,934,Cerberus Necklace,80.0,0,shop,
+Necklace,A,5,930,Necklace of Phantom,80.0,0,shop,
+Necklace,A,6,6326,Sealed Majestic Necklace,80.0,0,craft/drop/exchange/shop,"drop: Spirit of Andras, the Betrayer L69, Beast Lord Behemoth L70, Water Dragon Seer Sheshark L72 +18"
+Necklace,A,7,6323,Sealed Phoenix Necklace,76.0,0,craft/drop/shop,"drop: Roaring Lord Kastor L62, Hekaton Prime L65, Demon's Agent Falston L66 +17"
+Necklace,S,1,6657,Necklace of Valakas,95.0,42.0,drop/shop,drop: Valakas L85
+Necklace,S,2,920,Tateossian Necklace,95.0,42.0,exchange/shop,
+Necklace,S,3,6726,Sealed Tateossian Necklace,91.0,0,craft/drop/shop,"drop: Death Lord Ipos L75, Flamestone Giant L76, Anakazel L78 +7"
+Earring,NG,1,846,Coral Earring,21.0,0,drop/exchange/shop,"drop: Dre Vanul Scout L21, Mandragora Sprout L21, Zombie Warrior L22 +5"
+Earring,NG,2,845,Cat's Eye Earring,19.0,0,drop/exchange/shop,"drop: Cave Fang Spider L16, Pincher L16, Corpse Candle L17 +9"
+Earring,NG,3,114,Earring of Strength,16.0,0,drop/shop,"drop: Blood Fungus L12, Stone Giant L13, Crasher L14 +4"
+Earring,NG,4,115,Earring of Wisdom,16.0,0,drop/exchange/shop,"drop: Blood Fungus L12, Stone Giant L13, Crasher L14 +4"
+Earring,NG,5,113,Mystic's Earring,13.0,0,drop/exchange/quest/shop,"drop: Orc Archer L8, Evil Eye L10, Monster Eye L10 +2; quest: SacrificeToTheSea, WhatWomenWant"
+Earring,NG,6,112,Apprentice's Earring,11.0,0,drop/shop,"drop: Goblin L5, Goblin Grave Robber L5, Goblin Raider L5 +1"
+Earring,D,1,851,Omen Beast's Eye Earring,36.0,0,craft/drop/shop,"drop: Vuku Grand Seer Gharmash L33, Revenant of Sir Calibus L34, Tasaba Patriarch Hellena L35 +6"
+Earring,D,2,850,Elven Earring,34.0,0,craft/drop/shop,"drop: Agent of Beres, Meana L30, Road Scavenger L37, Hatu Crimson Bear L38 +2"
+Earring,D,3,849,Tiger's Eye Earring,30.0,0,craft/drop/shop,"drop: Ikuntai L25, Tirak L28, Breka Orc Warrior L33 +7"
+Earring,D,4,848,Enchanted Earring,27.0,0,drop/shop,"drop: Serpent Demon Bifrons L21, Kuroboros' Priest L23, Ant Larva L29 +9"
+Earring,D,5,847,Red Crescent Earring,24.0,0,drop/shop,"drop: Mandragora Blossom L25, Monster Eye Watcher L25, Turek Orc Sentinel L25 +6"
+Earring,C,1,857,Blessed Earring,48.0,0,shop,
+Earring,C,2,855,Nassen's Earring,48.0,0,craft/drop/exchange/shop,"drop: Katu Van Leader Atui L49, Purgatory Invader Magus L53, Massive Maze Bandersnatch L54 +5"
+Earring,C,3,854,Earring of Seal,45.0,0,craft/drop/exchange/quest/shop,"drop: Timak Orc Chief Ranger L44, Evil Spirit Cyrion L45, Fafurion's Henchman Istary L45 +8; quest: PavelsLastResearch"
+Earring,C,4,853,Earring of Protection,42.0,0,craft/drop/shop,"drop: Nightmare Lord L47, Spore Zombie L47, Dragon Bearer Chief L49 +3"
+Earring,C,5,852,Moonstone Earring,39.0,0,craft/drop/exchange/quest/shop,"drop: Road Scavenger Leader L40, Wizard of Storm Teruk L40, Lakin L44 +3; quest: WarehouseKeepersPastime"
+Earring,B,1,864,Earring of Black Ore,54.0,0,craft/drop/shop,"drop: Soulless Wild Boar L59, Bathin's Wizard L62, Ursus L62 +15"
+Earring,B,2,870,Earring of Holy Spirit,54.0,0,shop,
+Earring,B,3,867,Elemental Earring,54.0,0,shop,
+Earring,B,4,866,Otherworldly Earring,54.0,0,shop,
+Earring,B,5,861,Paradia Earring,54.0,0,shop,
+Earring,B,6,860,Sage's Earring,54.0,0,shop,
+Earring,B,7,856,Adamantite Earring,51.0,0,craft/drop/shop,"drop: Cursed Clara L50, Grave Robber Kim L52, Enchanted Forest Watcher Ruell L55 +6"
+Earring,B,8,873,Earring of Aid,51.0,0,shop,
+Earring,B,9,874,Earring of Blessing,51.0,0,quest/shop,quest: HidingBehindTheTruth
+Earring,B,10,869,Earring of Grace,51.0,0,shop,
+Earring,B,11,859,Earring of Mana,51.0,0,shop,
+Earring,B,12,863,Earring of Solar Eclipse,51.0,0,shop,
+Earring,B,13,865,Earring of Summoning,51.0,0,shop,
+Earring,A,1,6661,Earring of Orfen,71.0,31.0,drop/shop,drop: Orfen L50
+Earring,A,2,862,Majestic Earring,63.0,25.0,exchange/shop,
+Earring,A,3,871,Phoenix Earring,60.0,20.0,exchange/shop,
+Earring,A,4,872,Cerberus Earring,60.0,0,shop,
+Earring,A,5,868,Earring of Phantom,60.0,0,shop,
+Earring,A,6,6327,Sealed Majestic Earring,60.0,0,craft/drop/exchange/shop,"drop: Spirit of Andras, the Betrayer L69, Beast Lord Behemoth L70, Water Dragon Seer Sheshark L72 +21"
+Earring,A,7,6324,Sealed Phoenix Earring,57.0,0,craft/drop/shop,"drop: Roaring Lord Kastor L62, Hekaton Prime L65, Demon's Agent Falston L66 +17"
+Earring,S,1,6656,Earring of Antharas,71.0,31.0,drop/shop,"drop: Antharas L79, Antharas L85"
+Earring,S,2,6659,Earring of Zaken,71.0,31.0,drop/shop,drop: Zaken L60
+Earring,S,3,858,Tateossian Earring,71.0,31.0,exchange/shop,
+Earring,S,4,6724,Sealed Tateossian Earring,68.0,0,craft/drop/shop,"drop: Death Lord Ipos L75, Anakazel L78, Antharas L79 +6"
+Ring,NG,1,878,Blue Coral Ring,14.0,0,drop/exchange/shop,"drop: Mandragora Sprout L21, Zombie Warrior L22, Bloody Bee L23 +4"
+Ring,NG,2,877,Ring of Wisdom,12.0,0,drop/exchange/shop,"drop: Cave Fang Spider L16, Pincher L16, Corpse Candle L17 +8"
+Ring,NG,3,876,Ring of Anguish,11.0,0,drop/exchange/shop,"drop: Blood Fungus L12, Stone Giant L13, Crasher L14 +4"
+Ring,NG,4,1509,Ring of Firefly,11.0,0,quest/shop,quest: DreamingOfTheSkies
+Ring,NG,5,1508,Ring of Raccoon,11.0,0,quest/shop,quest: CovertBusiness
+Ring,NG,6,875,Ring of Knowledge,9.0,0,drop/exchange/quest/shop,"drop: Evil Eye L10, Monster Eye L10, Monster Eye Tracker L10 +1; quest: DeliverGoods"
+Ring,NG,7,116,Magic Ring,7.0,0,drop/shop,"drop: Goblin L5, Goblin Grave Robber L5, Goblin Raider L5 +1"
+Ring,D,1,882,Mithril Ring,24.0,0,craft/drop/shop,"drop: Vuku Grand Seer Gharmash L33, Revenant of Sir Calibus L34, Tasaba Patriarch Hellena L35 +6"
+Ring,D,2,881,Elven Ring,22.0,0,craft/drop/quest/shop,"drop: Agent of Beres, Meana L30, Road Scavenger L37, Hatu Crimson Bear L38 +2; quest: ChestCaughtWithABaitOfIcyAir"
+Ring,D,3,880,Black Pearl Ring,20.0,0,drop/quest/shop,"drop: Ikuntai L25, Tirak L28, Breka Orc Warrior L33 +7; quest: ChestCaughtWithABaitOfWind"
+Ring,D,4,879,Enchanted Ring,18.0,0,drop/shop,"drop: Serpent Demon Bifrons L21, Kuroboros' Priest L23, Ant Larva L29 +8"
+Ring,D,5,890,Ring of Devotion,16.0,0,drop/shop,"drop: Mandragora Blossom L25, Monster Eye Watcher L25, Turek Orc Sentinel L25 +5"
+Ring,C,1,888,Blessed Ring,32.0,0,shop,
+Ring,C,2,886,Ring of Seal,32.0,0,craft/drop/exchange/shop,"drop: Katu Van Leader Atui L49, Purgatory Invader Magus L53, Massive Maze Bandersnatch L54 +5"
+Ring,C,3,885,Ring of Ages,30.0,0,craft/drop/exchange/quest/shop,"drop: Timak Orc Chief Ranger L44, Evil Spirit Cyrion L45, Fafurion's Henchman Istary L45 +8; quest: 1000YearsTheEndOfLamentation, UnderTheShadowOfTheIvoryTower"
+Ring,C,4,884,Ring of Protection,28.0,0,craft/drop/shop,"drop: Nightmare Lord L47, Spore Zombie L47, Dragon Bearer Chief L49 +3"
+Ring,C,5,883,Aquastone Ring,26.0,0,craft/drop/exchange/quest/shop,"drop: Road Scavenger Leader L40, Wizard of Storm Teruk L40, Lakin L44 +3; quest: WarehouseKeepersPastime"
+Ring,B,1,6660,Ring of Queen Ant,48.0,21.0,drop/shop,drop: Queen Ant L40
+Ring,B,2,898,Elemental Ring,36.0,0,shop,
+Ring,B,3,897,Otherworldly Ring,36.0,0,shop,
+Ring,B,4,892,Paradia Ring,36.0,0,shop,
+Ring,B,5,895,Ring of Black Ore,36.0,0,craft/drop/shop,"drop: Soulless Wild Boar L59, Bathin's Wizard L62, Ursus L62 +15"
+Ring,B,6,901,Ring of Holy Spirit,36.0,0,shop,
+Ring,B,7,891,Sage's Ring,36.0,0,craft/shop,
+Ring,B,8,887,Adamantite Ring,34.0,0,craft/drop/shop,"drop: Cursed Clara L50, Grave Robber Kim L52, Enchanted Forest Watcher Ruell L55 +6"
+Ring,B,9,904,Ring of Aid,34.0,0,shop,
+Ring,B,10,905,Ring of Blessing,34.0,0,quest/shop,quest: HidingBehindTheTruth
+Ring,B,11,900,Ring of Grace,34.0,0,shop,
+Ring,B,12,117,Ring of Mana,34.0,0,shop,
+Ring,B,13,894,Ring of Solar Eclipse,34.0,0,shop,
+Ring,B,14,896,Ring of Summoning,34.0,0,shop,
+Ring,A,1,6662,Ring of Core,48.0,21.0,drop/shop,drop: Core L50
+Ring,A,2,893,Majestic Ring,42.0,17.0,exchange/shop,
+Ring,A,3,902,Phoenix Ring,40.0,13.0,exchange/shop,
+Ring,A,4,903,Cerberus Ring,40.0,0,shop,
+Ring,A,5,899,Ring of Phantom,40.0,0,shop,
+Ring,A,6,6328,Sealed Majestic Ring,40.0,0,craft/drop/exchange/shop,"drop: Spirit of Andras, the Betrayer L69, Beast Lord Behemoth L70, Water Dragon Seer Sheshark L72 +20"
+Ring,A,7,6325,Sealed Phoenix Ring,38.0,0,craft/drop/shop,"drop: Roaring Lord Kastor L62, Hekaton Prime L65, Demon's Agent Falston L66 +17"
+Ring,S,1,6658,Ring of Baium,48.0,21.0,drop/shop,drop: Baium L75
+Ring,S,2,889,Tateossian Ring,48.0,21.0,exchange/shop,
+Ring,S,3,6725,Sealed Tateossian Ring,46.0,0,craft/drop/shop,"drop: Death Lord Ipos L75, Flamestone Giant L76, Anakazel L78 +7"
