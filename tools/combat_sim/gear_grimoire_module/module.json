@@ -1,0 +1,10 @@
+{
+  "id": "gear-grimoire",
+  "name": "Gear Grimoire",
+  "version": "1.0.0",
+  "apiVersion": "1",
+  "entrypoint": "modules.geargrimoire.GearGrimoireModule",
+  "description": "A gear book on the Community Board. Browse armor sets, weapons and jewelry by grade, type and role, ranked by our tier lists, and see for every piece where it comes from: shop, exchange (with the ingredients and where those come from), craft, drops and quests. Search by name, or type .gg <name>.",
+  "author": "sateriok",
+  "priority": 100
+}
