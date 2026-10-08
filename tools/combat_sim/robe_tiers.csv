@@ -1,0 +1,43 @@
+role,grade,rank,set,damage,cast_speed,max_mp,mana_idx,bonuses,pieces,stable
+Damage casters and summoners,NG,1,Tunic of Devotion,1.15,1.15,109.0,109,mAtkSpd x1.15,"Tunic of Devotion, Stockings of Devotion, Leather Helmet",stable
+Damage casters and summoners,NG,2,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,NG,1,Tunic of Devotion,1.15,1.15,109.0,109,mAtkSpd x1.15,"Tunic of Devotion, Stockings of Devotion, Leather Helmet",stable
+Healers,NG,2,(no set bonus),1.0,1.0,0,0,-,-,stable
+Damage casters and summoners,D,1,Tunic of Knowledge,1.103,1.0,239.0,227,"mAtk x1.1025, regMp x0.95","Tunic of Knowledge, Stockings of Knowledge, Gloves of Knowledge",stable
+Damage casters and summoners,D,2,Mithril Tunic,1.012,1.051,274.0,274,"INT -1, WIT +1","Mithril Tunic, Mithril Stockings, Mithril Gloves",stable
+Damage casters and summoners,D,3,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,D,1,Mithril Tunic,1.012,1.051,274.0,274,"INT -1, WIT +1","Mithril Tunic, Mithril Stockings, Mithril Gloves",stable
+Healers,D,2,Tunic of Knowledge,1.103,1.0,239.0,227,"mAtk x1.1025, regMp x0.95","Tunic of Knowledge, Stockings of Knowledge, Gloves of Knowledge",stable
+Healers,D,3,(no set bonus),1.0,1.0,0,0,-,-,stable
+Damage casters and summoners,C,1,Karmian Tunic,1.15,1.15,366.0,366,mAtkSpd x1.15,"Karmian Tunic, Karmian Stockings, Karmian Gloves",stable
+Damage casters and summoners,C,2,Demon's Tunic,1.115,0.954,461.0,461,"INT +4, WIT -1","Demon's Tunic, Demon's Stockings, Demon's Gloves",stable
+Damage casters and summoners,C,3,Divine Tunic,1.012,1.051,680.62,681,"maxMp +170.62, INT -1, WIT +1","Divine Tunic, Divine Stockings, Divine Gloves",stable
+Damage casters and summoners,C,4,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,C,1,Karmian Tunic,1.15,1.15,366.0,366,mAtkSpd x1.15,"Karmian Tunic, Karmian Stockings, Karmian Gloves",stable
+Healers,C,2,Divine Tunic,1.012,1.051,680.62,681,"maxMp +170.62, INT -1, WIT +1","Divine Tunic, Divine Stockings, Divine Gloves",stable
+Healers,C,3,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,C,4,Demon's Tunic,1.115,0.954,461.0,461,"INT +4, WIT -1","Demon's Tunic, Demon's Stockings, Demon's Gloves",stable
+Damage casters and summoners,B,1,Avadon Robe,1.15,1.15,561.0,561,mAtkSpd x1.15,"Avadon Robe, Avadon Circlet, Avadon Gloves - Robe, Avadon Boots - Robe",stable
+Damage casters and summoners,B,2,Tunic of Zubei,1.103,1.0,561.0,533,"mAtk x1.1025, regMp x0.95","Tunic of Zubei, Stockings of Zubei, Zubei's Helmet, Zubei's Gauntlets - Robe, Zubei's Boots - Robe",stable
+Damage casters and summoners,B,3,Blue Wolf Tunic,1.058,1.157,819.0,856,"maxMp +206, regMp x1.0524, INT -2, WIT +3, MEN -1","Blue Wolf Tunic, Blue Wolf Stockings, Blue Wolf Helmet, Blue Wolf Gloves - Robe, Blue Wolf Boots - Robe",stable
+Damage casters and summoners,B,4,(no set bonus),1.0,1.0,0,0,-,-,stable
+Damage casters and summoners,B,5,Tunic of Doom,0.929,0.863,613.0,650,"regMp x1.0526, INT +2, WIT -3, MEN +1","Tunic of Doom, Stockings of Doom, Doom Helmet, Doom Gloves - Robe, Doom Boots - Robe",stable
+Healers,B,1,Blue Wolf Tunic,1.058,1.157,819.0,856,"maxMp +206, regMp x1.0524, INT -2, WIT +3, MEN -1","Blue Wolf Tunic, Blue Wolf Stockings, Blue Wolf Helmet, Blue Wolf Gloves - Robe, Blue Wolf Boots - Robe",stable
+Healers,B,2,Avadon Robe,1.15,1.15,561.0,561,mAtkSpd x1.15,"Avadon Robe, Avadon Circlet, Avadon Gloves - Robe, Avadon Boots - Robe",stable
+Healers,B,3,Tunic of Zubei,1.103,1.0,561.0,533,"mAtk x1.1025, regMp x0.95","Tunic of Zubei, Stockings of Zubei, Zubei's Helmet, Zubei's Gauntlets - Robe, Zubei's Boots - Robe",stable
+Healers,B,4,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,B,5,Tunic of Doom,0.929,0.863,613.0,650,"regMp x1.0526, INT +2, WIT -3, MEN +1","Tunic of Doom, Stockings of Doom, Doom Helmet, Doom Gloves - Robe, Doom Boots - Robe",stable
+Damage casters and summoners,A,1,Dark Crystal Robe,1.267,1.267,665.0,652,"mAtkSpd x1.15, WIT +2, MEN -2","Dark Crystal Robe, Dark Crystal Helmet, Dark Crystal Gloves - Robe, Dark Crystal Boots - Robe",stable
+Damage casters and summoners,A,2,Tallum Tunic,1.159,1.267,665.0,665,"mAtkSpd x1.15, INT -2, WIT +2","Tallum Tunic, Tallum Stockings, Tallum Helm, Tallum Gloves - Robe, Tallum Boots - Robe",stable
+Damage casters and summoners,A,3,Majestic Robe,1.107,1.15,958.0,1042,"maxMp +240, mAtkSpd x1.15, regMp x1.08, INT -1, MEN +1","Majestic Robe, Majestic Circlet, Majestic Gauntlets - Robe, Majestic Boots - Robe",stable
+Damage casters and summoners,A,4,Robe of Nightmare,1.055,0.907,718.0,747,"regMp x1.04, mAtk x1.08, INT +2, WIT -2","Robe of Nightmare, Helm of Nightmare, Gauntlets of Nightmare - Robe, Boots of Nightmare - Robe",stable
+Damage casters and summoners,A,5,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,A,1,Tallum Tunic,1.159,1.267,665.0,665,"mAtkSpd x1.15, INT -2, WIT +2","Tallum Tunic, Tallum Stockings, Tallum Helm, Tallum Gloves - Robe, Tallum Boots - Robe",stable
+Healers,A,2,Dark Crystal Robe,1.267,1.267,665.0,652,"mAtkSpd x1.15, WIT +2, MEN -2","Dark Crystal Robe, Dark Crystal Helmet, Dark Crystal Gloves - Robe, Dark Crystal Boots - Robe",stable
+Healers,A,3,Majestic Robe,1.107,1.15,958.0,1042,"maxMp +240, mAtkSpd x1.15, regMp x1.08, INT -1, MEN +1","Majestic Robe, Majestic Circlet, Majestic Gauntlets - Robe, Majestic Boots - Robe",stable
+Healers,A,4,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,A,5,Robe of Nightmare,1.055,0.907,718.0,747,"regMp x1.04, mAtk x1.08, INT +2, WIT -2","Robe of Nightmare, Helm of Nightmare, Gauntlets of Nightmare - Robe, Boots of Nightmare - Robe",stable
+Damage casters and summoners,S,1,Major Arcana Robe,1.276,1.051,866.0,849,"mAtk x1.17, INT +1, WIT +1, MEN -2","Major Arcana Robe, Major Arcana Circlet, Major Arcana Gloves, Major Arcana Boots",stable
+Damage casters and summoners,S,2,(no set bonus),1.0,1.0,0,0,-,-,stable
+Healers,S,1,Major Arcana Robe,1.276,1.051,866.0,849,"mAtk x1.17, INT +1, WIT +1, MEN -2","Major Arcana Robe, Major Arcana Circlet, Major Arcana Gloves, Major Arcana Boots",stable
+Healers,S,2,(no set bonus),1.0,1.0,0,0,-,-,stable

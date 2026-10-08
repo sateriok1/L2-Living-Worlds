@@ -1,0 +1,90 @@
+list,grade,rank,set,damage,pdef,hp,survivability,bonuses,pieces,stable
+"Light armor, damage (dagger)",NG,1,Wooden Breastplate,1.0,179,541,2.419,"pDef x1.022, maxHp +41","Wooden Breastplate, Wooden Gaiters, Wooden Helmet",stable
+"Light armor, damage (dagger)",D,1,Manticore Skin Shirt,1.0,232,1500,2.9,-,"Manticore Skin Shirt, Manticore Skin Gaiters, Manticore Skin Boots",stable
+"Light armor, damage (dagger)",D,2,Reinforced Leather Shirt,1.0,223,1500,2.788,-,"Reinforced Leather Shirt, Reinforced Leather Gaiters, Reinforced Leather Boots",stable
+"Light armor, damage (dagger)",C,1,Plated Leather,1.154,265,2917,3.22,"STR +4, CON -1","Plated Leather, Plated Leather Gaiters, Plated Leather Boots",stable
+"Light armor, damage (dagger)",C,2,Theca Leather Armor,1.0,304,3000,3.803,pDef x1.0526,"Theca Leather Armor, Theca Leather Gaiters, Theca Leather Boots",stable
+"Light armor, damage (dagger)",C,3,Drake Leather Armor,1.0,298,3000,3.725,mDef x1.0526,"Drake Leather Armor, Drake Leather Boots",stable
+"Light armor, damage (dagger)",C,4,Mithril Shirt,1.0,258,3000,3.225,-,"Mithril Shirt, Reinforced Mithril Gaiters, Reinforced Mithril Boots",stable
+"Light armor, damage (dagger)",B,1,Leather Armor of Doom,1.027,436,4250,5.147,"pAtk x1.027, STR -1, DEX +3, CON -2","Leather Armor of Doom, Doom Helmet, Doom Gloves - Light Armor, Doom Boots - Light Armor",stable
+"Light armor, damage (dagger)",B,2,Blue Wolf Leather Armor,1.0,459,4500,5.737,"pDef x1.0526, INT -2, WIT -1, MEN +3","Blue Wolf Leather Armor, Blue Wolf Helmet, Blue Wolf Gloves - Light Armor, Blue Wolf Boots - Light Armor",stable
+"Light armor, damage (dagger)",B,3,Avadon Leather Armor,1.0,415,4500,5.188,mDef x1.0525,"Avadon Leather Armor, Avadon Circlet, Avadon Gloves - Light Armor, Avadon Boots - Light Armor",stable
+"Light armor, damage (dagger)",B,4,Zubei's Leather Shirt,1.0,414,4500,5.175,-,"Zubei's Leather Shirt, Zubei's Leather Gaiters, Zubei's Helmet, Zubei's Gauntlets - Light Armor, Zubei's Boots - Light Armor",stable
+"Light armor, damage (dagger)",A,1,Dark Crystal Leather Armor,1.119,449,5833,5.457,"pAtkSpd x1.04, pAtk x1.04, STR +1, CON -1","Dark Crystal Leather Armor, Dark Crystal Leggings, Dark Crystal Helmet, Dark Crystal Gloves - Light Armor, Dark Crystal Boots - Light Armor",stable
+"Light armor, damage (dagger)",A,2,Leather Armor of Nightmare,1.009,471,5833,5.724,"mDef x1.04, DEX +1, CON -1","Leather Armor of Nightmare, Helm of Nightmare, Gauntlets of Nightmare - Light Armor, Boots of Nightmare - Light Armor",stable
+"Light armor, damage (dagger)",A,3,Majestic Leather Armor,1.009,471,5833,5.724,"DEX +1, CON -1","Majestic Leather Armor, Majestic Circlet, Majestic Gauntlets - Light Armor, Majestic Boots - Light Armor",stable
+"Light armor, damage (dagger)",A,4,Tallum Leather Armor,1.0,450,6000,5.625,"WIT -2, MEN +2","Tallum Leather Armor, Tallum Helm, Tallum Gloves - Light Armor, Tallum Boots - Light Armor",stable
+"Light armor, damage (dagger)",S,1,Draconic Leather Armor,1.129,522,8028,6.163,"pAtkSpd x1.04, pAtk x1.04, STR +1, DEX +1, CON -2","Draconic Leather Armor, Draconic Leather Helmet, Draconic Leather Gloves, Draconic Leather Boots",stable
+"Light armor, damage (bow)",NG,1,Wooden Breastplate,1.0,179,541,2.419,"pDef x1.022, maxHp +41","Wooden Breastplate, Wooden Gaiters, Wooden Helmet",stable
+"Light armor, damage (bow)",D,1,Manticore Skin Shirt,1.0,232,1500,2.9,-,"Manticore Skin Shirt, Manticore Skin Gaiters, Manticore Skin Boots",stable
+"Light armor, damage (bow)",D,2,Reinforced Leather Shirt,1.0,223,1500,2.788,-,"Reinforced Leather Shirt, Reinforced Leather Gaiters, Reinforced Leather Boots",stable
+"Light armor, damage (bow)",C,1,Plated Leather,1.154,265,2917,3.22,"STR +4, CON -1","Plated Leather, Plated Leather Gaiters, Plated Leather Boots",stable
+"Light armor, damage (bow)",C,2,Theca Leather Armor,1.0,304,3000,3.803,pDef x1.0526,"Theca Leather Armor, Theca Leather Gaiters, Theca Leather Boots",stable
+"Light armor, damage (bow)",C,3,Drake Leather Armor,1.0,298,3000,3.725,mDef x1.0526,"Drake Leather Armor, Drake Leather Boots",stable
+"Light armor, damage (bow)",C,4,Mithril Shirt,1.0,258,3000,3.225,-,"Mithril Shirt, Reinforced Mithril Gaiters, Reinforced Mithril Boots",stable
+"Light armor, damage (bow)",B,1,Leather Armor of Doom,1.027,436,4250,5.147,"pAtk x1.027, STR -1, DEX +3, CON -2","Leather Armor of Doom, Doom Helmet, Doom Gloves - Light Armor, Doom Boots - Light Armor",stable
+"Light armor, damage (bow)",B,2,Blue Wolf Leather Armor,1.0,459,4500,5.737,"pDef x1.0526, INT -2, WIT -1, MEN +3","Blue Wolf Leather Armor, Blue Wolf Helmet, Blue Wolf Gloves - Light Armor, Blue Wolf Boots - Light Armor",stable
+"Light armor, damage (bow)",B,3,Avadon Leather Armor,1.0,415,4500,5.188,mDef x1.0525,"Avadon Leather Armor, Avadon Circlet, Avadon Gloves - Light Armor, Avadon Boots - Light Armor",stable
+"Light armor, damage (bow)",B,4,Zubei's Leather Shirt,1.0,414,4500,5.175,-,"Zubei's Leather Shirt, Zubei's Leather Gaiters, Zubei's Helmet, Zubei's Gauntlets - Light Armor, Zubei's Boots - Light Armor",stable
+"Light armor, damage (bow)",A,1,Dark Crystal Leather Armor,1.119,449,5833,5.457,"pAtkSpd x1.04, pAtk x1.04, STR +1, CON -1","Dark Crystal Leather Armor, Dark Crystal Leggings, Dark Crystal Helmet, Dark Crystal Gloves - Light Armor, Dark Crystal Boots - Light Armor",stable
+"Light armor, damage (bow)",A,2,Majestic Leather Armor,1.09,471,5833,5.724,"pAtk x1.08, DEX +1, CON -1","Majestic Leather Armor, Majestic Circlet, Majestic Gauntlets - Light Armor, Majestic Boots - Light Armor",stable
+"Light armor, damage (bow)",A,3,Leather Armor of Nightmare,1.009,471,5833,5.724,"mDef x1.04, DEX +1, CON -1","Leather Armor of Nightmare, Helm of Nightmare, Gauntlets of Nightmare - Light Armor, Boots of Nightmare - Light Armor",stable
+"Light armor, damage (bow)",A,4,Tallum Leather Armor,1.0,450,6000,5.625,"WIT -2, MEN +2","Tallum Leather Armor, Tallum Helm, Tallum Gloves - Light Armor, Tallum Boots - Light Armor",stable
+"Light armor, damage (bow)",S,1,Draconic Leather Armor,1.129,522,8028,6.163,"pAtkSpd x1.04, pAtk x1.04, STR +1, DEX +1, CON -2","Draconic Leather Armor, Draconic Leather Helmet, Draconic Leather Gloves, Draconic Leather Boots",stable
+"Heavy armor, damage",D,1,Brigandine Tunic,1.0,302,1653,4.166,"pDef x1.05, maxHp +153","Brigandine Tunic, Brigandine Gaiters, Brigandine Helmet, Brigandine Shield",stable
+"Heavy armor, damage",D,2,Mithril Breastplate,1.0,273,1500,3.413,-,"Mithril Breastplate, Mithril Gaiters, Helmet, Hoplon",stable
+"Heavy armor, damage",C,1,Full Plate Armor,1.0,377,3270,5.136,maxHp +269.65,"Full Plate Armor, Full Plate Helmet, Full Plate Shield",stable
+"Heavy armor, damage",C,2,Composite Armor,1.0,358,3000,4.475,-,"Composite Armor, Composite Helmet, Composite Shield",stable
+"Heavy armor, damage",C,3,Chain Mail Shirt,1.0,322,3000,4.025,-,"Chain Mail Shirt, Chain Gaiters, Chain Hood, Chain Shield",stable
+"Heavy armor, damage",B,1,Blue Wolf Breastplate,1.092,504,4375,6.125,"runSpd +7, STR +3, DEX -2, CON -1","Blue Wolf Breastplate, Blue Wolf Gaiters, Blue Wolf Helmet, Blue Wolf Gloves - Heavy Armor, Blue Wolf Boots - Heavy Armor",stable
+"Heavy armor, damage",B,2,Zubei's Breastplate,1.0,504,4794,6.715,"pDef x1.0526, maxHp +294.49","Zubei's Breastplate, Zubei's Gaiters, Zubei's Helmet, Zubei's Gauntlets - Heavy Armor, Zubei's Boots - Heavy Armor",stable
+"Heavy armor, damage",B,3,Avadon Breastplate,1.0,479,4794,6.379,maxHp +294.49,"Avadon Breastplate, Avadon Gaiters, Avadon Circlet, Avadon Gloves - Heavy Armor, Avadon Boots - Heavy Armor, Avadon Shield",stable
+"Heavy armor, damage",B,4,Doom Plate Armor,0.902,504,5289,7.404,"maxHp +320, STR -3, CON +3","Doom Plate Armor, Doom Helmet, Doom Gloves - Heavy Armor, Doom Boots - Heavy Armor, Doom Shield",stable
+"Heavy armor, damage",A,1,Tallum Plate Armor,1.163,519,5667,6.127,"pAtkSpd x1.08, STR +2, CON -2","Tallum Plate Armor, Tallum Helm, Tallum Gloves - Heavy Armor, Tallum Boots - Heavy Armor",stable
+"Heavy armor, damage",A,2,Majestic Plate Armor,1.12,544,5667,6.422,"pAtk x1.04, accCombat +3.1, STR +2, CON -2","Majestic Plate Armor, Majestic Circlet, Majestic Gauntlets - Heavy Armor, Majestic Boots - Heavy Armor",stable
+"Heavy armor, damage",A,3,Armor of Nightmare,1.021,544,6375,7.225,"pAtk x1.04, DEX -2, CON +2","Armor of Nightmare, Helm of Nightmare, Gauntlets of Nightmare - Heavy Armor, Boots of Nightmare - Heavy Armor, Shield of Nightmare",stable
+"Heavy armor, damage",A,4,Dark Crystal Breastplate,0.93,519,6375,6.893,"STR -2, CON +2","Dark Crystal Breastplate, Dark Crystal Gaiters, Dark Crystal Helmet, Dark Crystal Gloves - Heavy Armor, Dark Crystal Boots - Heavy Armor, Dark Crystal Shield",stable
+"Heavy armor, damage",S,1,Imperial Crusader Breastplate,1.058,654,8945,8.609,"pDef x1.08, maxHp +445, STR +2, DEX -2","Imperial Crusader Breastplate, Imperial Crusader Gaiters, Imperial Crusader Helmet, Imperial Crusader Gauntlets, Imperial Crusader Boots, Imperial Crusader Shield",stable
+"Heavy armor, tank (survivability, set shield included)",D,1,Brigandine Tunic,1.0,464,1673,6.47,"pDef x1.05, maxHp +153, maxHp +20","Brigandine Tunic, Brigandine Gaiters, Brigandine Helmet, Brigandine Shield",stable
+"Heavy armor, tank (survivability, set shield included)",D,2,Mithril Breastplate,1.0,427,1626,5.786,maxHp +126.13,"Mithril Breastplate, Mithril Gaiters, Helmet, Hoplon",stable
+"Heavy armor, tank (survivability, set shield included)",C,1,Full Plate Armor,1.0,580,3270,7.902,maxHp +269.65,"Full Plate Armor, Full Plate Helmet, Full Plate Shield",stable
+"Heavy armor, tank (survivability, set shield included)",C,2,Composite Armor,1.0,561,3000,7.013,mDef x1.0526,"Composite Armor, Composite Helmet, Composite Shield",stable
+"Heavy armor, tank (survivability, set shield included)",C,3,Chain Mail Shirt,1.0,525,3198,6.996,maxHp +198.21,"Chain Mail Shirt, Chain Gaiters, Chain Hood, Chain Shield",stable
+"Heavy armor, tank (survivability, set shield included)",B,1,Doom Plate Armor,0.902,734,5289,10.783,"maxHp +320, STR -3, CON +3","Doom Plate Armor, Doom Helmet, Doom Gloves - Heavy Armor, Doom Boots - Heavy Armor, Doom Shield",stable
+"Heavy armor, tank (survivability, set shield included)",B,2,Zubei's Breastplate,1.0,746,4794,9.939,"pDef x1.0526, maxHp +294.49","Zubei's Breastplate, Zubei's Gaiters, Zubei's Helmet, Zubei's Gauntlets - Heavy Armor, Zubei's Boots - Heavy Armor",stable
+"Heavy armor, tank (survivability, set shield included)",B,3,Avadon Breastplate,1.0,709,4794,9.442,maxHp +294.49,"Avadon Breastplate, Avadon Gaiters, Avadon Circlet, Avadon Gloves - Heavy Armor, Avadon Boots - Heavy Armor, Avadon Shield",stable
+"Heavy armor, tank (survivability, set shield included)",B,4,Blue Wolf Breastplate,1.092,734,4375,8.92,"runSpd +7, STR +3, DEX -2, CON -1","Blue Wolf Breastplate, Blue Wolf Gaiters, Blue Wolf Helmet, Blue Wolf Gloves - Heavy Armor, Blue Wolf Boots - Heavy Armor",stable
+"Heavy armor, tank (survivability, set shield included)",A,1,Armor of Nightmare,1.021,800,6375,10.625,"pAtk x1.04, DEX -2, CON +2","Armor of Nightmare, Helm of Nightmare, Gauntlets of Nightmare - Heavy Armor, Boots of Nightmare - Heavy Armor, Shield of Nightmare",stable
+"Heavy armor, tank (survivability, set shield included)",A,2,Dark Crystal Breastplate,0.93,775,6375,10.293,"STR -2, CON +2","Dark Crystal Breastplate, Dark Crystal Gaiters, Dark Crystal Helmet, Dark Crystal Gloves - Heavy Armor, Dark Crystal Boots - Heavy Armor, Dark Crystal Shield",stable
+"Heavy armor, tank (survivability, set shield included)",A,3,Majestic Plate Armor,1.12,800,5667,9.444,"pAtk x1.04, accCombat +3.1, STR +2, CON -2","Majestic Plate Armor, Majestic Circlet, Majestic Gauntlets - Heavy Armor, Majestic Boots - Heavy Armor",stable
+"Heavy armor, tank (survivability, set shield included)",A,4,Tallum Plate Armor,1.163,775,5667,9.149,"pAtkSpd x1.08, STR +2, CON -2","Tallum Plate Armor, Tallum Helm, Tallum Gloves - Heavy Armor, Tallum Boots - Heavy Armor",stable
+"Heavy armor, tank (survivability, set shield included)",S,1,Imperial Crusader Breastplate,1.058,968,8945,12.729,"pDef x1.08, maxHp +445, STR +2, DEX -2","Imperial Crusader Breastplate, Imperial Crusader Gaiters, Imperial Crusader Helmet, Imperial Crusader Gauntlets, Imperial Crusader Boots, Imperial Crusader Shield",stable
+Shields,NG,1,Bone Shield,,90.0,,,"block rate 20, evasion -8",Bone Shield,
+Shields,NG,2,Round Shield,,79.0,,,"block rate 20, evasion -8",Round Shield,
+Shields,NG,3,Skeleton Buckler,,69.0,,,"block rate 20, evasion -8",Skeleton Buckler,
+Shields,NG,4,Buckler,,67.0,,,"block rate 20, evasion -8",Buckler,
+Shields,NG,5,Small Shield,,56.0,,,"block rate 20, evasion -8",Small Shield,
+Shields,NG,6,Leather Shield,,47.0,,,"block rate 20, evasion -8",Leather Shield,
+Shields,D,1,Plate Shield,,154.0,,,"block rate 20, evasion -8",Plate Shield,
+Shields,D,2,Square Shield,,154.0,,,"block rate 20, evasion -8",Square Shield,
+Shields,D,3,Brigandine Shield,,142.0,,,"block rate 20, evasion -8",Brigandine Shield,
+Shields,D,4,Kite Shield,,142.0,,,"block rate 20, evasion -8",Kite Shield,
+Shields,D,5,Hoplon,,128.0,,,"block rate 20, evasion -8",Hoplon,
+Shields,D,6,Aspis,,114.0,,,"block rate 20, evasion -8",Aspis,
+Shields,D,7,Bronze Shield,,101.0,,,"block rate 20, evasion -8",Bronze Shield,
+Shields,C,1,Full Plate Shield,,203.0,,,"block rate 20, evasion -8",Full Plate Shield,
+Shields,C,2,Composite Shield,,190.0,,,"block rate 20, evasion -8",Composite Shield,
+Shields,C,3,Tower Shield,,190.0,,,"block rate 20, evasion -8",Tower Shield,
+Shields,C,4,Knight's Shield,,178.0,,,"block rate 20, evasion -8",Knight's Shield,
+Shields,C,5,Dwarven Chain Shield,,174.0,,,"block rate 20, evasion -8",Dwarven Chain Shield,
+Shields,C,6,Chain Shield,,166.0,,,"block rate 20, evasion -8",Chain Shield,
+Shields,C,7,Eldarake,,166.0,,,"block rate 20, evasion -8",Eldarake,
+Shields,B,1,Doom Shield,,230.0,,,"block rate 20, evasion -8",Doom Shield,
+Shields,B,2,Avadon Shield,,216.0,,,"block rate 20, evasion -8",Avadon Shield,
+Shields,B,3,Zubei's Shield,,216.0,,,"block rate 20, evasion -8",Zubei's Shield,
+Shields,A,1,Sealed Shield of Nightmare,,256.0,,,"block rate 20, evasion -8",Sealed Shield of Nightmare,
+Shields,A,2,Shield of Nightmare,,256.0,,,"block rate 20, evasion -8",Shield of Nightmare,
+Shields,A,3,Dark Crystal Shield,,243.0,,,"block rate 20, evasion -8",Dark Crystal Shield,
+Shields,A,4,Sealed Dark Crystal Shield,,243.0,,,"block rate 20, evasion -8",Sealed Dark Crystal Shield,
+Shields,S,1,Imperial Crusader Shield,,290.0,,,"block rate 20, evasion -8",Imperial Crusader Shield,
+Shields,S,2,Sealed Imperial Crusader Shield,,276.0,,,"block rate 20, evasion -8",Sealed Imperial Crusader Shield,
