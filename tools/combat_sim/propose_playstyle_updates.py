@@ -13,7 +13,7 @@ import l2data as L
 XML = sys.argv[1]
 NAMES = {280: "Burning Fist", 281: "Soul Breaker"}
 NOT_DAMAGE = {129, 348}   # Poison (a pure DoT the sim over-values for archers), Spoil Crush (economic, manager-owned)
-SKIP = {90, 91, 99, 106, 107, 96, 104, 111, 97, 98, 105, 112, 115, 116, 100}
+SKIP = {97, 98, 105, 112, 115, 116, 100}   # support lines (the party manager plays them) and Sword Muse (no sim data)
 names, parent = L.load_classes(); trees = L.load_trees()
 by_name = {v.lower(): k for k, v in names.items()}
 root = ET.parse(XML).getroot()
