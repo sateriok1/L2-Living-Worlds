@@ -1,5 +1,5 @@
 #CURVE	name	NG	D	C	B	A	S   (+0 gear, best of each grade; see tools/combat_sim/curves.md)
-#ZONE	name	minLevel	maxLevel	mobLevelAvg	hp	pDef	mDef	pAtk	mAtk   (spawn-weighted averages; see zone_monsters.md)
+#ZONE	name	minLevel	maxLevel	mobLevelAvg	hp	pDef	mDef	pAtk	mAtk	respawnPerMin	spots	aggressivePct   (spawn-weighted averages; see zone_monsters.md)
 CURVE	patk_melee	38	112	190	236	305	342
 CURVE	patk_bow	64	191	323	400	570	581
 CURVE	matk_mage	31	79	122	145	167	193
@@ -10,72 +10,72 @@ CURVE	pdef_robe	91	134	191.6	293	328.3	363
 CURVE	mdef_heavy	98	168	224	276	333	333
 CURVE	mdef_light	98	168	224	276	346.3	346.3
 CURVE	mdef_robe	98	168	224	276	333	333
-ZONE	Dark Elf Village newbie grounds	1	10	3.4	64	48.8	32.5	10.8	7.4
-ZONE	Dwarven Village newbie grounds	1	10	4.3	76	50.5	33.6	11.9	8.1
-ZONE	Elven Village newbie grounds	1	10	5.6	94	53.0	35.3	13.4	9.2
-ZONE	Orc Village newbie grounds	1	10	4.2	73	50.2	33.4	11.6	7.9
-ZONE	Talking Island newbie grounds	1	10	3.9	72	49.8	33.2	11.5	7.8
-ZONE	Obelisk of Victory	6	12	8.1	129	57.8	38.5	16.5	11.3
-ZONE	Elven Fortress	10	14	10.8	177	63.6	42.3	20.7	14.2
-ZONE	Elven Forest	10	15	12.4	205	67.3	44.9	23.9	16.3
-ZONE	Talking Island, Western Territory (Northern Area)	11	15	13.7	226	70.3	46.8	26.6	18.2
-ZONE	The Immortal Plateau	11	15	13.1	216	68.9	45.9	25.3	17.3
-ZONE	Singing Waterfall	11	16	13.7	227	70.5	46.9	26.9	18.4
-ZONE	Swampland	12	16	13.5	223	70.0	46.6	26.3	17.9
-ZONE	Western Mining Zone (Central Shore)	12	16	14.5	240	72.4	48.2	28.6	19.6
-ZONE	Abandoned Coal Mines	12	17	14.4	238	72.2	48.1	28.7	19.6
-ZONE	Frozen Waterfall	13	17	15.0	248	73.6	49.0	29.8	20.3
-ZONE	Fellmere Harvesting Grounds	14	18	15.7	261	75.5	50.2	31.7	21.6
-ZONE	Spider Nest	17	20	17.5	292	80.0	53.3	36.4	24.8
-ZONE	Eastern Mining Zone (Northeastern Shore)	17	21	19.6	335	85.8	57.1	43.2	29.5
-ZONE	Windmill Hill	17	21	17.3	289	79.6	53.0	36.0	24.6
-ZONE	Ruins of Agony	17	22	19.5	333	85.6	57.0	42.9	29.3
-ZONE	Abandoned Camp	17	23	20.1	348	87.4	59.0	45.6	31.1
-ZONE	Ruins of Despair	18	23	20.2	349	87.6	58.3	45.4	31.0
-ZONE	Langk Lizardman Dwellings	19	24	20.9	365	89.7	59.7	48.3	33.0
-ZONE	The Immortal Plateau, Southern Region	19	24	21.7	383	92.0	61.3	51.4	35.1
-ZONE	Mithril Mines	20	25	21.8	384	92.1	61.4	51.3	35.1
-ZONE	Windawood Manor	21	25	22.7	403	94.6	63.0	54.5	37.2
-ZONE	Plains of Dion	23	27	25.1	464	102.2	68.1	65.5	44.7
-ZONE	Orc Barracks	24	30	27.0	517	108.4	72.2	75.5	51.5
-ZONE	Forgotten Temple	26	30	27.7	535	110.6	73.6	78.8	53.8
-ZONE	Fortress of Resistance	26	31	28.4	558	113.2	75.4	83.4	57.0
-ZONE	Windy Hill	27	31	28.5	559	113.4	75.5	83.7	57.1
-ZONE	Crypts of Disgrace	28	33	30.1	608	118.9	87.0	93.7	64.0
-ZONE	The Ant Nest	28	35	31.7	661	124.6	83.0	105.0	71.7
-ZONE	Breka's Stronghold	29	35	31.8	665	125.1	83.3	105.6	72.1
-ZONE	Plunderous Plains	30	36	33.1	708	129.7	94.9	115.1	78.6
-ZONE	Bee Hive	35	39	36.9	844	144.1	95.9	146.3	99.9
-ZONE	Field of Whispers	35	39	36.4	823	142.0	94.5	141.3	96.5
-ZONE	Plains of the Lizardmen	35	40	37.1	853	145.0	96.6	148.6	101.5
-ZONE	Cruma Tower	35	45	42.0	2058	215.3	131.9	210.9	128.1
-ZONE	Field of Silence	36	40	37.1	850	144.7	96.4	147.8	100.9
-ZONE	Alligator Island	39	43	40.5	988	158.7	105.6	181.8	124.2
-ZONE	Sea of Spores	40	44	41.2	1016	161.5	107.5	189.3	129.3
-ZONE	Ivory Tower	41	46	42.3	1067	166.4	111.7	202.9	138.5
-ZONE	Devil's Isle	43	48	44.7	1172	176.7	117.6	232.0	158.4
-ZONE	Den of Evil	44	50	46.3	1244	183.5	134.3	252.7	172.6
-ZONE	Tanor Canyon	46	51	48.0	1325	191.2	127.3	276.5	188.8
-ZONE	Enchanted Valley, Southern Region	47	52	48.3	1341	192.7	128.3	281.2	192.0
-ZONE	Pavel Ruins	48	52	49.4	1394	197.7	144.7	297.4	203.1
-ZONE	Outlaw Forest	50	56	52.9	1568	213.9	156.5	353.0	241.1
-ZONE	Forest of Mirrors	50	60	58.6	1863	241.2	160.6	458.4	313.1
-ZONE	Hardin's Private Academy	52	56	54.1	1627	219.4	148.1	372.8	254.6
-ZONE	Forsaken Plains	54	59	55.9	1717	227.7	151.6	403.9	275.8
-ZONE	Silent Valley	55	61	57.1	1780	233.5	155.5	426.0	290.9
-ZONE	Seal of Shilen	55	63	58.1	1837	238.8	158.1	448.7	306.4
-ZONE	Skyshadow Meadow	56	61	58.4	1849	239.9	159.7	450.6	307.7
-ZONE	Fields of Massacre	58	70	62.0	2034	257.2	171.9	522.6	356.9
-ZONE	Valley of Saints	60	64	61.0	1987	252.7	168.2	501.9	342.7
-ZONE	Forest of the Dead	62	68	65.9	2238	276.1	183.7	601.7	410.9
-ZONE	Tower of Insolence	64	73	68.4	2359	287.9	191.7	654.4	446.9
-ZONE	Swamp of Screams	66	70	67.8	2336	285.4	208.8	642.1	438.4
-ZONE	Wall of Argos	67	71	68.4	2368	288.5	192.1	655.7	447.7
-ZONE	Blazing Swamp	70	75	72.6	2566	308.0	205.1	743.7	507.9
-ZONE	Hot Springs	72	76	74.2	2642	315.7	210.2	778.5	531.6
-ZONE	Ketra Orc Outpost	72	80	80.0	3035	366.7	252.4	979.2	693.3
-ZONE	Varka Silenos Stronghold	76	80	77.7	2901	329.9	241.4	869.3	593.6
-ZONE	Monastery of Silence	78	80	80.0	2989	357.3	261.5	947.7	665.1
+ZONE	Dark Elf Village newbie grounds	1	10	3.4	64	48.8	32.5	10.8	7.4	228.0	6	0
+ZONE	Dwarven Village newbie grounds	1	10	4.3	76	50.5	33.6	11.9	8.1	198.5	8	0
+ZONE	Elven Village newbie grounds	1	10	5.6	94	53.0	35.3	13.4	9.2	1240.0	8	0
+ZONE	Orc Village newbie grounds	1	10	4.2	73	50.2	33.4	11.6	7.9	559.7	8	0
+ZONE	Talking Island newbie grounds	1	10	3.9	72	49.8	33.2	11.5	7.8	526.7	8	0
+ZONE	Obelisk of Victory	6	12	8.1	129	57.8	38.5	16.5	11.3	197.2	8	0
+ZONE	Elven Fortress	10	14	10.8	177	63.6	42.3	20.7	14.2	14.4	8	0
+ZONE	Elven Forest	10	15	12.4	205	67.3	44.9	23.9	16.3	244.3	8	0
+ZONE	Talking Island, Western Territory (Northern Area)	11	15	13.7	226	70.3	46.8	26.6	18.2	78.0	3	0
+ZONE	The Immortal Plateau	11	15	13.1	216	68.9	45.9	25.3	17.3	31.8	1	0
+ZONE	Singing Waterfall	11	16	13.7	227	70.5	46.9	26.9	18.4	57.0	2	0
+ZONE	Swampland	12	16	13.5	223	70.0	46.6	26.3	17.9	213.8	8	0
+ZONE	Western Mining Zone (Central Shore)	12	16	14.5	240	72.4	48.2	28.6	19.6	87.0	6	0
+ZONE	Abandoned Coal Mines	12	17	14.4	238	72.2	48.1	28.7	19.6	93.5	8	0
+ZONE	Frozen Waterfall	13	17	15.0	248	73.6	49.0	29.8	20.3	74.6	2	0
+ZONE	Fellmere Harvesting Grounds	14	18	15.7	261	75.5	50.2	31.7	21.6	112.6	8	0
+ZONE	Spider Nest	17	20	17.5	292	80.0	53.3	36.4	24.8	219.0	8	0
+ZONE	Eastern Mining Zone (Northeastern Shore)	17	21	19.6	335	85.8	57.1	43.2	29.5	117.0	5	0
+ZONE	Windmill Hill	17	21	17.3	289	79.6	53.0	36.0	24.6	151.9	8	0
+ZONE	Ruins of Agony	17	22	19.5	333	85.6	57.0	42.9	29.3	26.9	8	0
+ZONE	Abandoned Camp	17	23	20.1	348	87.4	59.0	45.6	31.1	116.4	8	0
+ZONE	Ruins of Despair	18	23	20.2	349	87.6	58.3	45.4	31.0	77.0	8	0
+ZONE	Langk Lizardman Dwellings	19	24	20.9	365	89.7	59.7	48.3	33.0	150.0	8	0
+ZONE	The Immortal Plateau, Southern Region	19	24	21.7	383	92.0	61.3	51.4	35.1	120.0	4	0
+ZONE	Mithril Mines	20	25	21.8	384	92.1	61.4	51.3	35.1	157.5	8	0
+ZONE	Windawood Manor	21	25	22.7	403	94.6	63.0	54.5	37.2	87.0	8	0
+ZONE	Plains of Dion	23	27	25.1	464	102.2	68.1	65.5	44.7	118.7	2	0
+ZONE	Orc Barracks	24	30	27.0	517	108.4	72.2	75.5	51.5	71.0	8	0
+ZONE	Forgotten Temple	26	30	27.7	535	110.6	73.6	78.8	53.8	18.9	8	0
+ZONE	Fortress of Resistance	26	31	28.4	558	113.2	75.4	83.4	57.0	116.8	8	0
+ZONE	Windy Hill	27	31	28.5	559	113.4	75.5	83.7	57.1	143.1	8	0
+ZONE	Crypts of Disgrace	28	33	30.1	608	118.9	87.0	93.7	64.0	36.0	8	0
+ZONE	The Ant Nest	28	35	31.7	661	124.6	83.0	105.0	71.7	148.1	8	0
+ZONE	Breka's Stronghold	29	35	31.8	665	125.1	83.3	105.6	72.1	58.0	4	0
+ZONE	Plunderous Plains	30	36	33.1	708	129.7	94.9	115.1	78.6	30.0	8	0
+ZONE	Bee Hive	35	39	36.9	844	144.1	95.9	146.3	99.9	99.4	3	0
+ZONE	Field of Whispers	35	39	36.4	823	142.0	94.5	141.3	96.5	56.0	2	0
+ZONE	Plains of the Lizardmen	35	40	37.1	853	145.0	96.6	148.6	101.5	81.6	5	0
+ZONE	Cruma Tower	35	45	42.0	2058	215.3	131.9	210.9	128.1	181.1	8	0
+ZONE	Field of Silence	36	40	37.1	850	144.7	96.4	147.8	100.9	187.2	6	0
+ZONE	Alligator Island	39	43	40.5	988	158.7	105.6	181.8	124.2	53.2	3	0
+ZONE	Sea of Spores	40	44	41.2	1016	161.5	107.5	189.3	129.3	73.3	5	0
+ZONE	Ivory Tower	41	46	42.3	1067	166.4	111.7	202.9	138.5	207.0	8	0
+ZONE	Devil's Isle	43	48	44.7	1172	176.7	117.6	232.0	158.4	139.2	8	0
+ZONE	Den of Evil	44	50	46.3	1244	183.5	134.3	252.7	172.6	49.0	8	0
+ZONE	Tanor Canyon	46	51	48.0	1325	191.2	127.3	276.5	188.8	30.7	2	0
+ZONE	Enchanted Valley, Southern Region	47	52	48.3	1341	192.7	128.3	281.2	192.0	9.0	2	0
+ZONE	Pavel Ruins	48	52	49.4	1394	197.7	144.7	297.4	203.1	49.0	8	0
+ZONE	Outlaw Forest	50	56	52.9	1568	213.9	156.5	353.0	241.1	94.1	8	0
+ZONE	Forest of Mirrors	50	60	58.6	1863	241.2	160.6	458.4	313.1	50.0	8	0
+ZONE	Hardin's Private Academy	52	56	54.1	1627	219.4	148.1	372.8	254.6	32.8	6	0
+ZONE	Forsaken Plains	54	59	55.9	1717	227.7	151.6	403.9	275.8	75.6	8	0
+ZONE	Silent Valley	55	61	57.1	1780	233.5	155.5	426.0	290.9	73.5	8	0
+ZONE	Seal of Shilen	55	63	58.1	1837	238.8	158.1	448.7	306.4	227.9	8	0
+ZONE	Skyshadow Meadow	56	61	58.4	1849	239.9	159.7	450.6	307.7	47.3	4	0
+ZONE	Fields of Massacre	58	70	62.0	2034	257.2	171.9	522.6	356.9	99.9	8	0
+ZONE	Valley of Saints	60	64	61.0	1987	252.7	168.2	501.9	342.7	33.8	5	0
+ZONE	Forest of the Dead	62	68	65.9	2238	276.1	183.7	601.7	410.9	324.9	8	0
+ZONE	Tower of Insolence	64	73	68.4	2359	287.9	191.7	654.4	446.9	88.2	8	0
+ZONE	Swamp of Screams	66	70	67.8	2336	285.4	208.8	642.1	438.4	87.1	8	0
+ZONE	Wall of Argos	67	71	68.4	2368	288.5	192.1	655.7	447.7	9.8	3	0
+ZONE	Blazing Swamp	70	75	72.6	2566	308.0	205.1	743.7	507.9	71.3	7	0
+ZONE	Hot Springs	72	76	74.2	2642	315.7	210.2	778.5	531.6	30.0	5	0
+ZONE	Ketra Orc Outpost	72	80	80.0	3035	366.7	252.4	979.2	693.3	19.2	1	0
+ZONE	Varka Silenos Stronghold	76	80	77.7	2901	329.9	241.4	869.3	593.6	72.9	8	0
+ZONE	Monastery of Silence	78	80	80.0	2989	357.3	261.5	947.7	665.1	15.0	7	0
 #BUFF	role	level	damageMult	pDefMult	mDefMult   (full buffer party; see tools/combat_sim/build_buff_factors.py)
 BUFF	tank	1	1.0000	1.0000	1.0000
 BUFF	tank	2	1.0000	1.0000	1.0000
