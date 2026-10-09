@@ -21,20 +21,24 @@ CURVES = [
 seen = set()
 with open(out, "w", encoding="utf-8", newline="") as f:
     f.write("#CURVE\tname\tNG\tD\tC\tB\tA\tS   (+0 gear, best of each grade; see tools/combat_sim/curves.md)\n")
-    f.write("#ZONE\tname\tminLevel\tmaxLevel\tmobLevelAvg\thp\tpDef\tmDef\tpAtk\tmAtk\trespawnPerMin\tspots\taggressivePct\texpPerKill   (spawn-weighted averages; see zone_monsters.md)\n")
+    f.write("#ZONE\tname\tminLevel\tmaxLevel\tmobLevelAvg\thp\tpDef\tmDef\tpAtk\tmAtk\trespawnPerMin\tspots\taggressivePct\texpPerKill\taccuracy   (spawn-weighted averages; see zone_monsters.md)\n")
     for n, v in CURVES:
         f.write("CURVE\t%s\t%s\n" % (n, "\t".join("%g" % x for x in v)))
     for r in csv.DictReader(open(os.path.join(HERE, "zone_monsters.csv"), encoding="utf-8")):
         if r["zone"] in seen or not r["hp"]:
             continue
         seen.add(r["zone"])
-        f.write("ZONE\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (r["zone"], r["min_level"], r["max_level"], r["mob_level_avg"], r["hp"], r["p_def"], r["m_def"], r["p_atk"], r["m_atk"], r["respawn_per_min"], r["spots"], r["aggressive_pct"], r["exp"]))
+        f.write("ZONE\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (r["zone"], r["min_level"], r["max_level"], r["mob_level_avg"], r["hp"], r["p_def"], r["m_def"], r["p_atk"], r["m_atk"], r["respawn_per_min"], r["spots"], r["aggressive_pct"], r["exp"], r["accuracy"]))
     bf = os.path.join(HERE, "buff_factors.tsv")
     if os.path.exists(bf):                                  # full-buffer-party multipliers by role and level (buffed leveling option)
         f.write("#BUFF\trole\tlevel\tdamageMult\tpDefMult\tmDefMult   (full buffer party; see tools/combat_sim/build_buff_factors.py)\n")
         for line in open(bf, encoding="utf-8"):
             if line.startswith("BUFF"):
                 f.write(line)
+    for extra in ("rest_rows.tsv",):                        # rest estimate per zone, role and level (kills factor from sitting)
+        ep = os.path.join(HERE, extra)
+        if os.path.exists(ep):
+            f.write(open(ep, encoding="utf-8").read())
     rr = os.path.join(HERE, "rotation_rows.tsv")
     if os.path.exists(rr):                                  # sim best rotations per line and level (real time-to-kill option)
         f.write(open(rr, encoding="utf-8").read())

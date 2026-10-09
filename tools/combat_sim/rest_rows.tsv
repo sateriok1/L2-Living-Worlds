@@ -1,0 +1,845 @@
+#REST	zone	role	level	cycleSeconds	hpDeficitPerKill	hpSitRegenPerSecond	mpSitSeconds   (see tools/combat_sim/build_rest_table.py)
+REST	Dark Elf Village newbie grounds	tank	1	2.931	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	melee	1	2.823	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	bow	1	3.361	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	mage	1	3.641	1.72	0.882	0.000
+REST	Dark Elf Village newbie grounds	tank	4	2.931	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	melee	4	2.823	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	bow	4	3.361	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	mage	4	3.641	1.72	0.882	0.000
+REST	Dark Elf Village newbie grounds	tank	7	2.931	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	melee	7	2.823	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	bow	7	3.361	0.00	1.634	0.000
+REST	Dark Elf Village newbie grounds	mage	7	2.993	0.00	1.082	0.272
+REST	Dark Elf Village newbie grounds	tank	10	2.905	0.00	1.916	0.000
+REST	Dark Elf Village newbie grounds	melee	10	2.804	0.00	1.916	0.000
+REST	Dark Elf Village newbie grounds	bow	10	3.201	0.00	1.916	0.000
+REST	Dark Elf Village newbie grounds	mage	10	2.993	0.00	1.082	0.272
+REST	Dwarven Village newbie grounds	tank	1	3.030	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	melee	1	2.897	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	bow	1	3.558	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	mage	1	3.901	2.99	0.882	0.411
+REST	Dwarven Village newbie grounds	tank	4	3.030	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	melee	4	2.897	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	bow	4	3.558	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	mage	4	3.901	2.99	0.882	0.411
+REST	Dwarven Village newbie grounds	tank	7	3.030	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	melee	7	2.897	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	bow	7	3.558	0.00	1.634	0.000
+REST	Dwarven Village newbie grounds	mage	7	3.105	0.00	1.082	0.752
+REST	Dwarven Village newbie grounds	tank	10	2.997	0.00	1.916	0.000
+REST	Dwarven Village newbie grounds	melee	10	2.873	0.00	1.916	0.000
+REST	Dwarven Village newbie grounds	bow	10	3.362	0.00	1.916	0.000
+REST	Dwarven Village newbie grounds	mage	10	3.105	0.00	1.082	0.752
+REST	Elven Village newbie grounds	tank	1	3.188	0.00	1.634	0.000
+REST	Elven Village newbie grounds	melee	1	3.016	0.00	1.634	0.000
+REST	Elven Village newbie grounds	bow	1	3.873	0.12	1.634	0.000
+REST	Elven Village newbie grounds	mage	1	4.320	5.27	0.882	1.083
+REST	Elven Village newbie grounds	tank	4	3.188	0.00	1.634	0.000
+REST	Elven Village newbie grounds	melee	4	3.016	0.00	1.634	0.000
+REST	Elven Village newbie grounds	bow	4	3.873	0.12	1.634	0.000
+REST	Elven Village newbie grounds	mage	4	4.320	5.27	0.882	1.083
+REST	Elven Village newbie grounds	tank	7	3.188	0.00	1.634	0.000
+REST	Elven Village newbie grounds	melee	7	3.016	0.00	1.634	0.000
+REST	Elven Village newbie grounds	bow	7	3.873	0.12	1.634	0.000
+REST	Elven Village newbie grounds	mage	7	3.286	0.88	1.082	1.526
+REST	Elven Village newbie grounds	tank	10	3.146	0.00	1.916	0.000
+REST	Elven Village newbie grounds	melee	10	2.984	0.00	1.916	0.000
+REST	Elven Village newbie grounds	bow	10	3.619	0.00	1.916	0.000
+REST	Elven Village newbie grounds	mage	10	3.286	0.88	1.082	1.526
+REST	Orc Village newbie grounds	tank	1	3.006	0.00	1.634	0.000
+REST	Orc Village newbie grounds	melee	1	2.880	0.00	1.634	0.000
+REST	Orc Village newbie grounds	bow	1	3.510	0.00	1.634	0.000
+REST	Orc Village newbie grounds	mage	1	3.837	2.65	0.882	0.309
+REST	Orc Village newbie grounds	tank	4	3.006	0.00	1.634	0.000
+REST	Orc Village newbie grounds	melee	4	2.880	0.00	1.634	0.000
+REST	Orc Village newbie grounds	bow	4	3.510	0.00	1.634	0.000
+REST	Orc Village newbie grounds	mage	4	3.837	2.65	0.882	0.309
+REST	Orc Village newbie grounds	tank	7	3.006	0.00	1.634	0.000
+REST	Orc Village newbie grounds	melee	7	2.880	0.00	1.634	0.000
+REST	Orc Village newbie grounds	bow	7	3.510	0.00	1.634	0.000
+REST	Orc Village newbie grounds	mage	7	3.078	0.00	1.082	0.635
+REST	Orc Village newbie grounds	tank	10	2.975	0.00	1.916	0.000
+REST	Orc Village newbie grounds	melee	10	2.856	0.00	1.916	0.000
+REST	Orc Village newbie grounds	bow	10	3.323	0.00	1.916	0.000
+REST	Orc Village newbie grounds	mage	10	3.078	0.00	1.082	0.635
+REST	Talking Island newbie grounds	tank	1	2.995	0.00	1.634	0.000
+REST	Talking Island newbie grounds	melee	1	2.871	0.00	1.634	0.000
+REST	Talking Island newbie grounds	bow	1	3.488	0.00	1.634	0.000
+REST	Talking Island newbie grounds	mage	1	3.811	2.52	0.882	0.267
+REST	Talking Island newbie grounds	tank	4	2.995	0.00	1.634	0.000
+REST	Talking Island newbie grounds	melee	4	2.871	0.00	1.634	0.000
+REST	Talking Island newbie grounds	bow	4	3.488	0.00	1.634	0.000
+REST	Talking Island newbie grounds	mage	4	3.811	2.52	0.882	0.267
+REST	Talking Island newbie grounds	tank	7	2.995	0.00	1.634	0.000
+REST	Talking Island newbie grounds	melee	7	2.871	0.00	1.634	0.000
+REST	Talking Island newbie grounds	bow	7	3.488	0.00	1.634	0.000
+REST	Talking Island newbie grounds	mage	7	3.067	0.00	1.082	0.587
+REST	Talking Island newbie grounds	tank	10	2.965	0.00	1.916	0.000
+REST	Talking Island newbie grounds	melee	10	2.849	0.00	1.916	0.000
+REST	Talking Island newbie grounds	bow	10	3.305	0.00	1.916	0.000
+REST	Talking Island newbie grounds	mage	10	3.067	0.00	1.082	0.587
+REST	Obelisk of Victory	tank	6	3.530	0.00	1.634	0.000
+REST	Obelisk of Victory	melee	6	3.272	0.87	1.634	0.000
+REST	Obelisk of Victory	bow	6	4.555	3.31	1.634	0.000
+REST	Obelisk of Victory	mage	6	5.224	11.49	0.882	2.531
+REST	Obelisk of Victory	tank	9	3.530	0.00	1.634	0.000
+REST	Obelisk of Victory	melee	9	3.272	0.87	1.634	0.000
+REST	Obelisk of Victory	bow	9	4.555	3.31	1.634	0.000
+REST	Obelisk of Victory	mage	9	3.677	3.51	1.082	3.195
+REST	Obelisk of Victory	tank	12	3.466	0.00	1.916	0.000
+REST	Obelisk of Victory	melee	12	3.225	0.00	1.916	0.000
+REST	Obelisk of Victory	bow	12	4.174	1.27	1.916	0.000
+REST	Obelisk of Victory	mage	12	3.677	3.51	1.082	3.195
+REST	Elven Fortress	tank	10	3.959	0.00	1.916	0.000
+REST	Elven Fortress	melee	10	3.594	3.47	1.916	0.000
+REST	Elven Fortress	bow	10	5.028	6.46	1.916	0.000
+REST	Elven Fortress	mage	10	4.274	8.76	1.082	5.746
+REST	Elven Fortress	tank	13	3.959	0.00	1.916	0.000
+REST	Elven Fortress	melee	13	3.594	3.47	1.916	0.000
+REST	Elven Fortress	bow	13	5.028	6.46	1.916	0.000
+REST	Elven Fortress	mage	13	4.274	8.76	1.082	5.746
+REST	Elven Fortress	tank	14	3.959	0.00	1.916	0.000
+REST	Elven Fortress	melee	14	3.594	3.47	1.916	0.000
+REST	Elven Fortress	bow	14	5.028	6.46	1.916	0.000
+REST	Elven Fortress	mage	14	3.422	2.77	1.413	4.344
+REST	Elven Forest	tank	10	4.288	1.54	1.916	0.000
+REST	Elven Forest	melee	10	3.841	6.66	1.916	0.000
+REST	Elven Forest	bow	10	5.598	11.27	1.916	0.000
+REST	Elven Forest	mage	10	4.681	13.53	1.082	7.485
+REST	Elven Forest	tank	13	4.288	1.54	1.916	0.000
+REST	Elven Forest	melee	13	3.841	6.66	1.916	0.000
+REST	Elven Forest	bow	13	5.598	11.27	1.916	0.000
+REST	Elven Forest	mage	13	4.681	13.53	1.082	7.485
+REST	Elven Forest	tank	15	4.185	0.00	2.383	0.000
+REST	Elven Forest	melee	15	3.763	4.79	2.383	0.000
+REST	Elven Forest	bow	15	5.218	7.67	2.383	0.000
+REST	Elven Forest	mage	15	3.633	5.20	1.413	5.762
+REST	Talking Island, Western Territory (Northern Area)	tank	11	4.559	3.29	1.916	0.000
+REST	Talking Island, Western Territory (Northern Area)	melee	11	4.044	9.78	1.916	0.000
+REST	Talking Island, Western Territory (Northern Area)	bow	11	6.068	16.00	1.916	0.000
+REST	Talking Island, Western Territory (Northern Area)	mage	11	5.007	18.09	1.082	8.874
+REST	Talking Island, Western Territory (Northern Area)	tank	14	4.559	3.29	1.916	0.000
+REST	Talking Island, Western Territory (Northern Area)	melee	14	4.044	9.78	1.916	0.000
+REST	Talking Island, Western Territory (Northern Area)	bow	14	6.068	16.00	1.916	0.000
+REST	Talking Island, Western Territory (Northern Area)	mage	14	3.802	7.52	1.413	6.894
+REST	Talking Island, Western Territory (Northern Area)	tank	15	4.440	1.38	2.383	0.000
+REST	Talking Island, Western Territory (Northern Area)	melee	15	3.955	7.65	2.383	0.000
+REST	Talking Island, Western Territory (Northern Area)	bow	15	5.630	11.68	2.383	0.000
+REST	Talking Island, Western Territory (Northern Area)	mage	15	3.802	7.52	1.413	6.894
+REST	The Immortal Plateau	tank	11	4.429	2.42	1.916	0.000
+REST	The Immortal Plateau	melee	11	3.947	8.23	1.916	0.000
+REST	The Immortal Plateau	bow	11	5.842	13.64	1.916	0.000
+REST	The Immortal Plateau	mage	11	4.850	15.82	1.082	8.204
+REST	The Immortal Plateau	tank	14	4.429	2.42	1.916	0.000
+REST	The Immortal Plateau	melee	14	3.947	8.23	1.916	0.000
+REST	The Immortal Plateau	bow	14	5.842	13.64	1.916	0.000
+REST	The Immortal Plateau	mage	14	3.721	6.36	1.413	6.347
+REST	The Immortal Plateau	tank	15	4.317	0.60	2.383	0.000
+REST	The Immortal Plateau	melee	15	3.863	6.23	2.383	0.000
+REST	The Immortal Plateau	bow	15	5.432	9.68	2.383	0.000
+REST	The Immortal Plateau	mage	15	3.721	6.36	1.413	6.347
+REST	Singing Waterfall	tank	11	4.574	3.45	1.916	0.000
+REST	Singing Waterfall	melee	11	4.056	10.05	1.916	0.000
+REST	Singing Waterfall	bow	11	6.094	16.42	1.916	0.000
+REST	Singing Waterfall	mage	11	5.023	18.47	1.082	8.945
+REST	Singing Waterfall	tank	14	4.574	3.45	1.916	0.000
+REST	Singing Waterfall	melee	14	4.056	10.05	1.916	0.000
+REST	Singing Waterfall	bow	14	6.094	16.42	1.916	0.000
+REST	Singing Waterfall	mage	14	3.811	7.72	1.413	6.951
+REST	Singing Waterfall	tank	16	4.454	1.53	2.383	0.000
+REST	Singing Waterfall	melee	16	3.966	7.91	2.383	0.000
+REST	Singing Waterfall	bow	16	5.653	12.04	2.383	0.000
+REST	Singing Waterfall	mage	16	3.811	7.72	1.413	6.951
+REST	Swampland	tank	12	4.523	3.07	1.916	0.000
+REST	Swampland	melee	12	4.017	9.37	1.916	0.000
+REST	Swampland	bow	12	6.005	15.39	1.916	0.000
+REST	Swampland	mage	12	4.963	17.49	1.082	8.687
+REST	Swampland	tank	15	4.406	1.18	2.383	0.000
+REST	Swampland	melee	15	3.930	7.28	2.383	0.000
+REST	Swampland	bow	15	5.576	11.16	2.383	0.000
+REST	Swampland	mage	15	3.780	7.22	1.413	6.741
+REST	Swampland	tank	16	4.406	1.18	2.383	0.000
+REST	Swampland	melee	16	3.930	7.28	2.383	0.000
+REST	Swampland	bow	16	5.576	11.16	2.383	0.000
+REST	Swampland	mage	16	3.780	7.22	1.413	6.741
+REST	Western Mining Zone (Central Shore)	tank	12	4.752	4.73	1.916	0.000
+REST	Western Mining Zone (Central Shore)	melee	12	4.189	12.29	1.916	0.000
+REST	Western Mining Zone (Central Shore)	bow	12	6.402	19.84	1.916	0.000
+REST	Western Mining Zone (Central Shore)	mage	12	5.242	21.78	1.082	9.878
+REST	Western Mining Zone (Central Shore)	tank	15	4.622	2.67	2.383	0.000
+REST	Western Mining Zone (Central Shore)	melee	15	4.091	9.98	2.383	0.000
+REST	Western Mining Zone (Central Shore)	bow	15	5.924	14.95	2.383	0.000
+REST	Western Mining Zone (Central Shore)	mage	15	3.924	9.41	1.413	7.712
+REST	Western Mining Zone (Central Shore)	tank	16	4.622	2.67	2.383	0.000
+REST	Western Mining Zone (Central Shore)	melee	16	4.091	9.98	2.383	0.000
+REST	Western Mining Zone (Central Shore)	bow	16	5.924	14.95	2.383	0.000
+REST	Western Mining Zone (Central Shore)	mage	16	3.924	9.41	1.413	7.712
+REST	Abandoned Coal Mines	tank	12	4.727	4.68	1.916	0.000
+REST	Abandoned Coal Mines	melee	12	4.170	12.18	1.916	0.000
+REST	Abandoned Coal Mines	bow	12	6.359	19.68	1.916	0.000
+REST	Abandoned Coal Mines	mage	12	5.213	21.63	1.082	9.756
+REST	Abandoned Coal Mines	tank	15	4.598	2.63	2.383	0.000
+REST	Abandoned Coal Mines	melee	15	4.074	9.88	2.383	0.000
+REST	Abandoned Coal Mines	bow	15	5.886	14.83	2.383	0.000
+REST	Abandoned Coal Mines	mage	15	3.910	9.33	1.413	7.613
+REST	Abandoned Coal Mines	tank	17	4.598	2.63	2.383	0.000
+REST	Abandoned Coal Mines	melee	17	4.074	9.88	2.383	0.000
+REST	Abandoned Coal Mines	bow	17	5.886	14.83	2.383	0.000
+REST	Abandoned Coal Mines	mage	17	3.910	9.33	1.413	7.613
+REST	Frozen Waterfall	tank	13	4.866	5.65	1.916	0.000
+REST	Frozen Waterfall	melee	13	4.274	13.89	1.916	0.000
+REST	Frozen Waterfall	bow	13	6.599	22.29	1.916	0.000
+REST	Frozen Waterfall	mage	13	5.380	24.13	1.082	10.469
+REST	Frozen Waterfall	tank	16	4.729	3.50	2.383	0.000
+REST	Frozen Waterfall	melee	16	4.172	11.46	2.383	0.000
+REST	Frozen Waterfall	bow	16	6.096	17.04	2.383	0.000
+REST	Frozen Waterfall	mage	16	3.996	10.61	1.413	8.194
+REST	Frozen Waterfall	tank	17	4.729	3.50	2.383	0.000
+REST	Frozen Waterfall	melee	17	4.172	11.46	2.383	0.000
+REST	Frozen Waterfall	bow	17	6.096	17.04	2.383	0.000
+REST	Frozen Waterfall	mage	17	3.996	10.61	1.413	8.194
+REST	Fellmere Harvesting Grounds	tank	14	5.054	7.24	1.916	0.000
+REST	Fellmere Harvesting Grounds	melee	14	4.415	16.65	1.916	0.000
+REST	Fellmere Harvesting Grounds	bow	14	6.925	26.52	1.916	0.000
+REST	Fellmere Harvesting Grounds	mage	14	4.113	12.66	1.413	8.978
+REST	Fellmere Harvesting Grounds	tank	17	4.906	4.94	2.383	0.000
+REST	Fellmere Harvesting Grounds	melee	17	4.305	14.01	2.383	0.000
+REST	Fellmere Harvesting Grounds	bow	17	6.383	20.66	2.383	0.000
+REST	Fellmere Harvesting Grounds	mage	17	4.113	12.66	1.413	8.978
+REST	Fellmere Harvesting Grounds	tank	18	4.906	4.94	2.383	0.000
+REST	Fellmere Harvesting Grounds	melee	18	4.305	14.01	2.383	0.000
+REST	Fellmere Harvesting Grounds	bow	18	6.383	20.66	2.383	0.000
+REST	Fellmere Harvesting Grounds	mage	18	4.113	12.66	1.413	8.978
+REST	Spider Nest	tank	17	5.352	9.04	2.383	0.000
+REST	Spider Nest	melee	17	4.639	21.20	2.383	0.000
+REST	Spider Nest	bow	17	7.103	30.89	2.383	0.000
+REST	Spider Nest	mage	17	4.416	18.50	1.413	11.009
+REST	Spider Nest	tank	20	3.749	0.00	2.928	0.000
+REST	Spider Nest	melee	20	3.762	0.00	2.928	0.000
+REST	Spider Nest	bow	20	4.238	1.72	2.928	0.000
+REST	Spider Nest	mage	20	3.000	0.09	1.816	2.756
+REST	Eastern Mining Zone (Northeastern Shore)	tank	17	6.010	16.35	2.383	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	melee	17	5.132	33.83	2.383	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	bow	17	8.163	48.96	2.383	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	mage	17	4.855	28.63	1.413	13.950
+REST	Eastern Mining Zone (Northeastern Shore)	tank	20	4.037	0.00	2.928	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	melee	20	4.052	0.00	2.928	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	bow	20	4.638	5.84	2.928	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	mage	20	3.114	1.81	1.816	3.807
+REST	Eastern Mining Zone (Northeastern Shore)	tank	21	4.037	0.00	2.928	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	melee	21	4.052	0.00	2.928	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	bow	21	4.638	5.84	2.928	0.000
+REST	Eastern Mining Zone (Northeastern Shore)	mage	21	3.114	1.81	1.816	3.807
+REST	Windmill Hill	tank	17	5.309	8.63	2.383	0.000
+REST	Windmill Hill	melee	17	4.607	20.49	2.383	0.000
+REST	Windmill Hill	bow	17	7.033	29.88	2.383	0.000
+REST	Windmill Hill	mage	17	4.386	17.92	1.413	10.805
+REST	Windmill Hill	tank	20	3.730	0.00	2.928	0.000
+REST	Windmill Hill	melee	20	3.742	0.00	2.928	0.000
+REST	Windmill Hill	bow	20	4.211	1.50	2.928	0.000
+REST	Windmill Hill	mage	20	2.992	0.00	1.816	2.683
+REST	Windmill Hill	tank	21	3.730	0.00	2.928	0.000
+REST	Windmill Hill	melee	21	3.742	0.00	2.928	0.000
+REST	Windmill Hill	bow	21	4.211	1.50	2.928	0.000
+REST	Windmill Hill	mage	21	2.992	0.00	1.816	2.683
+REST	Ruins of Agony	tank	17	5.981	15.99	2.383	0.000
+REST	Ruins of Agony	melee	17	5.110	33.22	2.383	0.000
+REST	Ruins of Agony	bow	17	8.116	48.09	2.383	0.000
+REST	Ruins of Agony	mage	17	4.837	28.16	1.413	13.828
+REST	Ruins of Agony	tank	20	4.024	0.00	2.928	0.000
+REST	Ruins of Agony	melee	20	4.039	0.00	2.928	0.000
+REST	Ruins of Agony	bow	20	4.621	5.64	2.928	0.000
+REST	Ruins of Agony	mage	20	3.109	1.73	1.816	3.763
+REST	Ruins of Agony	tank	22	4.024	0.00	2.928	0.000
+REST	Ruins of Agony	melee	22	4.039	0.00	2.928	0.000
+REST	Ruins of Agony	bow	22	4.621	5.64	2.928	0.000
+REST	Ruins of Agony	mage	22	3.109	1.73	1.816	3.763
+REST	Abandoned Camp	tank	17	6.214	19.13	2.383	0.000
+REST	Abandoned Camp	melee	17	5.285	38.56	2.383	0.000
+REST	Abandoned Camp	bow	17	8.493	55.78	2.383	0.000
+REST	Abandoned Camp	mage	17	5.028	32.93	1.413	15.108
+REST	Abandoned Camp	tank	20	4.126	0.00	2.928	0.000
+REST	Abandoned Camp	melee	20	4.143	0.57	2.928	0.000
+REST	Abandoned Camp	bow	20	4.763	7.42	2.928	0.000
+REST	Abandoned Camp	mage	20	3.159	2.55	1.816	4.221
+REST	Abandoned Camp	tank	23	4.126	0.00	2.928	0.000
+REST	Abandoned Camp	melee	23	4.143	0.57	2.928	0.000
+REST	Abandoned Camp	bow	23	4.763	7.42	2.928	0.000
+REST	Abandoned Camp	mage	23	3.159	2.55	1.816	4.221
+REST	Ruins of Despair	tank	18	6.233	19.12	2.383	0.000
+REST	Ruins of Despair	melee	18	5.300	38.58	2.383	0.000
+REST	Ruins of Despair	bow	18	8.524	55.78	2.383	0.000
+REST	Ruins of Despair	mage	18	5.005	32.44	1.413	14.955
+REST	Ruins of Despair	tank	21	4.135	0.00	2.928	0.000
+REST	Ruins of Despair	melee	21	4.151	0.55	2.928	0.000
+REST	Ruins of Despair	bow	21	4.774	7.41	2.928	0.000
+REST	Ruins of Despair	mage	21	3.153	2.46	1.816	4.166
+REST	Ruins of Despair	tank	23	4.135	0.00	2.928	0.000
+REST	Ruins of Despair	melee	23	4.151	0.55	2.928	0.000
+REST	Ruins of Despair	bow	23	4.774	7.41	2.928	0.000
+REST	Ruins of Despair	mage	23	3.153	2.46	1.816	4.166
+REST	Langk Lizardman Dwellings	tank	19	6.498	22.84	2.383	0.000
+REST	Langk Lizardman Dwellings	melee	19	5.498	44.89	2.383	0.000
+REST	Langk Lizardman Dwellings	bow	19	8.951	64.88	2.383	0.000
+REST	Langk Lizardman Dwellings	mage	19	5.183	37.50	1.413	16.147
+REST	Langk Lizardman Dwellings	tank	22	4.251	0.00	2.928	0.000
+REST	Langk Lizardman Dwellings	melee	22	4.268	1.62	2.928	0.000
+REST	Langk Lizardman Dwellings	bow	22	4.936	9.53	2.928	0.000
+REST	Langk Lizardman Dwellings	mage	22	3.200	3.33	1.816	4.592
+REST	Langk Lizardman Dwellings	tank	24	4.176	0.00	3.392	0.000
+REST	Langk Lizardman Dwellings	melee	24	4.171	0.00	3.892	0.000
+REST	Langk Lizardman Dwellings	bow	24	4.599	5.90	3.392	0.000
+REST	Langk Lizardman Dwellings	mage	24	3.200	3.33	1.816	4.592
+REST	The Immortal Plateau, Southern Region	tank	19	6.802	27.28	2.383	0.000
+REST	The Immortal Plateau, Southern Region	melee	19	5.727	52.41	2.383	0.000
+REST	The Immortal Plateau, Southern Region	bow	19	9.443	75.72	2.383	0.000
+REST	The Immortal Plateau, Southern Region	mage	19	5.391	43.57	1.413	17.539
+REST	The Immortal Plateau, Southern Region	tank	22	4.384	0.00	2.928	0.000
+REST	The Immortal Plateau, Southern Region	melee	22	4.403	2.90	2.928	0.000
+REST	The Immortal Plateau, Southern Region	bow	22	5.121	12.05	2.928	0.000
+REST	The Immortal Plateau, Southern Region	mage	22	3.254	4.37	1.816	5.089
+REST	The Immortal Plateau, Southern Region	tank	24	4.304	0.00	3.392	0.000
+REST	The Immortal Plateau, Southern Region	melee	24	4.299	0.00	3.892	0.000
+REST	The Immortal Plateau, Southern Region	bow	24	4.759	8.02	3.392	0.000
+REST	The Immortal Plateau, Southern Region	mage	24	3.254	4.37	1.816	5.089
+REST	Mithril Mines	tank	20	4.391	0.00	2.928	0.000
+REST	Mithril Mines	melee	20	4.410	2.91	2.928	0.000
+REST	Mithril Mines	bow	20	5.131	12.07	2.928	0.000
+REST	Mithril Mines	mage	20	3.257	4.39	1.816	5.119
+REST	Mithril Mines	tank	23	4.391	0.00	2.928	0.000
+REST	Mithril Mines	melee	23	4.410	2.91	2.928	0.000
+REST	Mithril Mines	bow	23	5.131	12.07	2.928	0.000
+REST	Mithril Mines	mage	23	3.257	4.39	1.816	5.119
+REST	Mithril Mines	tank	25	4.311	0.00	3.392	0.000
+REST	Mithril Mines	melee	25	4.305	0.00	3.892	0.000
+REST	Mithril Mines	bow	25	4.767	8.04	3.392	0.000
+REST	Mithril Mines	mage	25	2.957	0.54	2.179	1.663
+REST	Windawood Manor	tank	21	4.539	0.00	2.928	0.000
+REST	Windawood Manor	melee	21	4.559	4.38	2.928	0.000
+REST	Windawood Manor	bow	21	5.336	14.98	2.928	0.000
+REST	Windawood Manor	mage	21	3.315	5.57	1.816	5.653
+REST	Windawood Manor	tank	24	4.452	0.00	3.392	0.000
+REST	Windawood Manor	melee	24	4.446	0.70	3.892	0.000
+REST	Windawood Manor	bow	24	4.944	10.49	3.392	0.000
+REST	Windawood Manor	mage	24	3.315	5.57	1.816	5.653
+REST	Windawood Manor	tank	25	4.452	0.00	3.392	0.000
+REST	Windawood Manor	melee	25	4.446	0.70	3.892	0.000
+REST	Windawood Manor	bow	25	4.944	10.49	3.392	0.000
+REST	Windawood Manor	mage	25	2.992	1.25	2.179	1.932
+REST	Plains of Dion	tank	23	5.036	1.69	2.928	0.000
+REST	Plains of Dion	melee	23	5.061	10.32	2.928	0.000
+REST	Plains of Dion	bow	23	6.028	26.59	2.928	0.000
+REST	Plains of Dion	mage	23	3.514	10.25	1.816	7.484
+REST	Plains of Dion	tank	26	4.928	0.00	3.392	0.000
+REST	Plains of Dion	melee	26	4.921	5.98	3.892	0.000
+REST	Plains of Dion	bow	26	5.540	20.28	3.392	0.000
+REST	Plains of Dion	mage	26	3.113	4.04	2.179	2.853
+REST	Plains of Dion	tank	27	4.928	0.00	3.392	0.000
+REST	Plains of Dion	melee	27	4.921	5.98	3.892	0.000
+REST	Plains of Dion	bow	27	5.540	20.28	3.392	0.000
+REST	Plains of Dion	mage	27	3.113	4.04	2.179	2.853
+REST	Orc Barracks	tank	24	5.370	2.95	3.392	0.000
+REST	Orc Barracks	melee	24	5.361	11.97	3.892	0.000
+REST	Orc Barracks	bow	24	6.093	31.25	3.392	0.000
+REST	Orc Barracks	mage	24	3.698	15.40	1.816	9.173
+REST	Orc Barracks	tank	27	5.370	2.95	3.392	0.000
+REST	Orc Barracks	melee	27	5.361	11.97	3.892	0.000
+REST	Orc Barracks	bow	27	6.093	31.25	3.392	0.000
+REST	Orc Barracks	mage	27	3.224	7.13	2.179	3.703
+REST	Orc Barracks	tank	30	5.244	0.66	3.882	0.000
+REST	Orc Barracks	melee	30	5.205	9.07	4.382	0.000
+REST	Orc Barracks	bow	30	5.567	23.76	3.882	0.000
+REST	Orc Barracks	mage	30	3.075	3.97	2.566	3.114
+REST	Forgotten Temple	tank	26	5.530	4.21	3.392	0.000
+REST	Forgotten Temple	melee	26	5.520	14.30	3.892	0.000
+REST	Forgotten Temple	bow	26	6.293	35.48	3.392	0.000
+REST	Forgotten Temple	mage	26	3.263	8.30	2.179	4.006
+REST	Forgotten Temple	tank	29	5.397	1.81	3.882	0.000
+REST	Forgotten Temple	melee	29	5.356	11.21	4.382	0.000
+REST	Forgotten Temple	bow	29	5.738	27.31	3.882	0.000
+REST	Forgotten Temple	mage	29	3.263	8.30	2.179	4.006
+REST	Forgotten Temple	tank	30	5.397	1.81	3.882	0.000
+REST	Forgotten Temple	melee	30	5.356	11.21	4.382	0.000
+REST	Forgotten Temple	bow	30	5.738	27.31	3.882	0.000
+REST	Forgotten Temple	mage	30	3.107	4.90	2.566	3.385
+REST	Fortress of Resistance	tank	26	5.734	6.03	3.392	0.000
+REST	Fortress of Resistance	melee	26	5.724	17.62	3.892	0.000
+REST	Fortress of Resistance	bow	26	6.549	41.48	3.392	0.000
+REST	Fortress of Resistance	mage	26	3.316	9.99	2.179	4.406
+REST	Fortress of Resistance	tank	29	5.593	3.49	3.882	0.000
+REST	Fortress of Resistance	melee	29	5.549	14.28	4.382	0.000
+REST	Fortress of Resistance	bow	29	5.956	32.35	3.882	0.000
+REST	Fortress of Resistance	mage	29	3.316	9.99	2.179	4.406
+REST	Fortress of Resistance	tank	31	5.593	3.49	3.882	0.000
+REST	Fortress of Resistance	melee	31	5.549	14.28	4.382	0.000
+REST	Fortress of Resistance	bow	31	5.956	32.35	3.882	0.000
+REST	Fortress of Resistance	mage	31	3.148	6.22	2.566	3.743
+REST	Windy Hill	tank	27	5.746	6.15	3.392	0.000
+REST	Windy Hill	melee	27	5.736	17.83	3.892	0.000
+REST	Windy Hill	bow	27	6.564	41.86	3.392	0.000
+REST	Windy Hill	mage	27	3.318	10.09	2.179	4.426
+REST	Windy Hill	tank	30	5.604	3.60	3.882	0.000
+REST	Windy Hill	melee	30	5.560	14.48	4.382	0.000
+REST	Windy Hill	bow	30	5.969	32.67	3.882	0.000
+REST	Windy Hill	mage	30	3.150	6.30	2.566	3.760
+REST	Windy Hill	tank	31	5.604	3.60	3.882	0.000
+REST	Windy Hill	melee	31	5.560	14.48	4.382	0.000
+REST	Windy Hill	bow	31	5.969	32.67	3.882	0.000
+REST	Windy Hill	mage	31	3.150	6.30	2.566	3.760
+REST	Crypts of Disgrace	tank	28	6.040	7.76	3.882	0.000
+REST	Crypts of Disgrace	melee	28	5.989	22.04	4.382	0.000
+REST	Crypts of Disgrace	bow	28	6.456	45.03	3.882	0.000
+REST	Crypts of Disgrace	mage	28	3.525	15.96	2.179	6.012
+REST	Crypts of Disgrace	tank	31	6.040	7.76	3.882	0.000
+REST	Crypts of Disgrace	melee	31	5.989	22.04	4.382	0.000
+REST	Crypts of Disgrace	bow	31	6.456	45.03	3.882	0.000
+REST	Crypts of Disgrace	mage	31	3.315	10.92	2.566	5.177
+REST	Crypts of Disgrace	tank	33	5.879	4.87	4.397	0.000
+REST	Crypts of Disgrace	melee	33	5.784	17.13	5.124	0.000
+REST	Crypts of Disgrace	bow	33	5.889	35.33	4.397	0.000
+REST	Crypts of Disgrace	mage	33	3.315	10.92	2.566	5.177
+REST	The Ant Nest	tank	28	6.533	13.27	3.882	0.000
+REST	The Ant Nest	melee	28	6.475	31.91	4.382	0.000
+REST	The Ant Nest	bow	28	7.007	61.00	3.882	0.000
+REST	The Ant Nest	mage	28	3.564	19.40	2.179	6.303
+REST	The Ant Nest	tank	31	6.533	13.27	3.882	0.000
+REST	The Ant Nest	melee	31	6.475	31.91	4.382	0.000
+REST	The Ant Nest	bow	31	7.007	61.00	3.882	0.000
+REST	The Ant Nest	mage	31	3.345	13.65	2.566	5.438
+REST	The Ant Nest	tank	34	6.350	9.94	4.397	0.000
+REST	The Ant Nest	melee	34	6.242	26.16	5.124	0.000
+REST	The Ant Nest	bow	34	6.361	48.84	4.397	0.000
+REST	The Ant Nest	mage	34	3.345	13.65	2.566	5.438
+REST	The Ant Nest	tank	35	6.350	9.94	4.397	0.000
+REST	The Ant Nest	melee	35	6.242	26.16	5.124	0.000
+REST	The Ant Nest	bow	35	6.361	48.84	4.397	0.000
+REST	The Ant Nest	mage	35	3.177	7.87	3.477	3.240
+REST	Breka's Stronghold	tank	29	6.573	13.65	3.882	0.000
+REST	Breka's Stronghold	melee	29	6.516	32.61	4.382	0.000
+REST	Breka's Stronghold	bow	29	7.052	62.15	3.882	0.000
+REST	Breka's Stronghold	mage	29	3.574	19.77	2.179	6.382
+REST	Breka's Stronghold	tank	32	6.388	10.30	4.397	0.000
+REST	Breka's Stronghold	melee	32	6.280	26.81	5.124	0.000
+REST	Breka's Stronghold	bow	32	6.400	49.82	4.397	0.000
+REST	Breka's Stronghold	mage	32	3.353	13.94	2.566	5.508
+REST	Breka's Stronghold	tank	35	6.388	10.30	4.397	0.000
+REST	Breka's Stronghold	melee	35	6.280	26.81	5.124	0.000
+REST	Breka's Stronghold	bow	35	6.400	49.82	4.397	0.000
+REST	Breka's Stronghold	mage	35	3.183	8.10	3.477	3.289
+REST	Plunderous Plains	tank	30	6.996	19.03	3.882	0.000
+REST	Plunderous Plains	melee	30	6.932	42.15	4.382	0.000
+REST	Plunderous Plains	bow	30	7.525	77.51	3.882	0.000
+REST	Plunderous Plains	mage	30	3.535	20.12	2.566	7.071
+REST	Plunderous Plains	tank	33	6.792	15.27	4.397	0.000
+REST	Plunderous Plains	melee	33	6.672	35.57	5.124	0.000
+REST	Plunderous Plains	bow	33	6.805	62.82	4.397	0.000
+REST	Plunderous Plains	mage	33	3.535	20.12	2.566	7.071
+REST	Plunderous Plains	tank	36	6.594	11.58	4.938	0.000
+REST	Plunderous Plains	melee	36	6.350	29.58	5.665	0.000
+REST	Plunderous Plains	bow	36	6.241	51.07	4.938	0.000
+REST	Plunderous Plains	mage	36	3.329	12.95	3.477	4.380
+REST	Bee Hive	tank	35	8.185	36.19	4.397	0.000
+REST	Bee Hive	melee	35	8.026	71.93	5.124	0.000
+REST	Bee Hive	bow	35	8.202	116.25	4.397	0.000
+REST	Bee Hive	mage	35	3.499	23.91	3.477	5.651
+REST	Bee Hive	tank	38	7.922	31.01	4.938	0.000
+REST	Bee Hive	melee	38	7.599	62.64	5.665	0.000
+REST	Bee Hive	bow	38	7.455	97.02	4.938	0.000
+REST	Bee Hive	mage	38	3.499	23.91	3.477	5.651
+REST	Bee Hive	tank	39	7.922	31.01	4.938	0.000
+REST	Bee Hive	melee	39	7.599	62.64	5.665	0.000
+REST	Bee Hive	bow	39	7.455	97.02	4.938	0.000
+REST	Bee Hive	mage	39	3.499	23.91	3.477	5.651
+REST	Field of Whispers	tank	35	7.962	32.41	4.397	0.000
+REST	Field of Whispers	melee	35	7.809	65.40	5.124	0.000
+REST	Field of Whispers	bow	35	7.979	106.70	4.397	0.000
+REST	Field of Whispers	mage	35	3.460	21.64	3.477	5.359
+REST	Field of Whispers	tank	38	7.710	27.48	4.938	0.000
+REST	Field of Whispers	melee	38	7.400	56.69	5.665	0.000
+REST	Field of Whispers	bow	38	7.262	88.80	4.938	0.000
+REST	Field of Whispers	mage	38	3.460	21.64	3.477	5.359
+REST	Field of Whispers	tank	39	7.710	27.48	4.938	0.000
+REST	Field of Whispers	melee	39	7.400	56.69	5.665	0.000
+REST	Field of Whispers	bow	39	7.262	88.80	4.938	0.000
+REST	Field of Whispers	mage	39	3.460	21.64	3.477	5.359
+REST	Plains of the Lizardmen	tank	35	8.281	37.94	4.397	0.000
+REST	Plains of the Lizardmen	melee	35	8.119	74.94	5.124	0.000
+REST	Plains of the Lizardmen	bow	35	8.299	120.64	4.397	0.000
+REST	Plains of the Lizardmen	mage	35	3.517	24.98	3.477	5.786
+REST	Plains of the Lizardmen	tank	38	8.014	32.64	4.938	0.000
+REST	Plains of the Lizardmen	melee	38	7.686	65.39	5.665	0.000
+REST	Plains of the Lizardmen	bow	38	7.539	100.80	4.938	0.000
+REST	Plains of the Lizardmen	mage	38	3.517	24.98	3.477	5.786
+REST	Plains of the Lizardmen	tank	40	5.616	4.20	5.503	0.000
+REST	Plains of the Lizardmen	melee	40	4.941	12.45	6.102	0.000
+REST	Plains of the Lizardmen	bow	40	5.035	26.56	5.329	0.000
+REST	Plains of the Lizardmen	mage	40	3.028	3.63	3.913	4.454
+REST	Cruma Tower	tank	35	23.527	257.84	4.397	0.000
+REST	Cruma Tower	melee	35	22.524	448.69	5.124	0.000
+REST	Cruma Tower	bow	35	23.058	667.31	4.397	0.000
+REST	Cruma Tower	mage	35	5.849	143.79	3.477	23.269
+REST	Cruma Tower	tank	38	22.532	236.33	4.938	0.000
+REST	Cruma Tower	melee	38	21.321	412.71	5.665	0.000
+REST	Cruma Tower	bow	38	20.666	580.55	4.938	0.000
+REST	Cruma Tower	mage	38	5.849	143.79	3.477	23.269
+REST	Cruma Tower	tank	41	13.662	81.42	5.503	0.000
+REST	Cruma Tower	melee	41	11.243	125.37	6.102	0.000
+REST	Cruma Tower	bow	41	11.545	189.01	5.329	0.000
+REST	Cruma Tower	mage	41	4.238	45.44	3.913	18.879
+REST	Cruma Tower	tank	44	13.297	74.13	5.944	0.000
+REST	Cruma Tower	melee	44	10.861	116.00	6.529	0.000
+REST	Cruma Tower	bow	44	11.016	173.93	5.756	0.000
+REST	Cruma Tower	mage	44	4.071	38.62	4.507	14.405
+REST	Cruma Tower	tank	45	13.297	74.13	5.944	0.000
+REST	Cruma Tower	melee	45	10.861	116.00	6.529	0.000
+REST	Cruma Tower	bow	45	11.016	173.93	5.756	0.000
+REST	Cruma Tower	mage	45	4.071	38.62	4.507	14.405
+REST	Field of Silence	tank	36	7.983	32.08	4.938	0.000
+REST	Field of Silence	melee	36	7.657	64.44	5.665	0.000
+REST	Field of Silence	bow	36	7.511	99.50	4.938	0.000
+REST	Field of Silence	mage	36	3.511	24.62	3.477	5.744
+REST	Field of Silence	tank	39	7.983	32.08	4.938	0.000
+REST	Field of Silence	melee	39	7.657	64.44	5.665	0.000
+REST	Field of Silence	bow	39	7.511	99.50	4.938	0.000
+REST	Field of Silence	mage	39	3.511	24.62	3.477	5.744
+REST	Field of Silence	tank	40	5.598	3.97	5.503	0.000
+REST	Field of Silence	melee	40	4.927	12.13	6.102	0.000
+REST	Field of Silence	bow	40	5.021	26.11	5.329	0.000
+REST	Field of Silence	mage	40	3.025	3.51	3.913	4.419
+REST	Alligator Island	tank	39	9.490	61.27	4.938	0.000
+REST	Alligator Island	melee	39	9.074	113.23	5.665	0.000
+REST	Alligator Island	bow	39	8.889	166.49	4.938	0.000
+REST	Alligator Island	mage	39	3.787	42.93	3.477	7.815
+REST	Alligator Island	tank	42	6.450	15.63	5.503	0.000
+REST	Alligator Island	melee	42	5.594	28.56	6.102	0.000
+REST	Alligator Island	bow	42	5.714	49.38	5.329	0.000
+REST	Alligator Island	mage	42	3.168	9.99	3.913	6.128
+REST	Alligator Island	tank	43	6.321	12.74	5.944	0.000
+REST	Alligator Island	melee	43	5.459	25.11	6.529	0.000
+REST	Alligator Island	bow	43	5.513	43.97	5.756	0.000
+REST	Alligator Island	mage	43	3.168	9.99	3.913	6.128
+REST	Sea of Spores	tank	40	6.633	18.62	5.503	0.000
+REST	Sea of Spores	melee	40	5.738	32.72	6.102	0.000
+REST	Sea of Spores	bow	40	5.863	55.22	5.329	0.000
+REST	Sea of Spores	mage	40	3.199	11.62	3.913	6.501
+REST	Sea of Spores	tank	43	6.498	15.58	5.944	0.000
+REST	Sea of Spores	melee	43	5.596	29.05	6.529	0.000
+REST	Sea of Spores	bow	43	5.654	49.40	5.756	0.000
+REST	Sea of Spores	mage	43	3.199	11.62	3.913	6.501
+REST	Sea of Spores	tank	44	6.498	15.58	5.944	0.000
+REST	Sea of Spores	melee	44	5.596	29.05	6.529	0.000
+REST	Sea of Spores	bow	44	5.654	49.40	5.756	0.000
+REST	Sea of Spores	mage	44	3.132	8.45	4.507	4.700
+REST	Ivory Tower	tank	41	6.973	24.50	5.503	0.000
+REST	Ivory Tower	melee	41	6.003	40.86	6.102	0.000
+REST	Ivory Tower	bow	41	6.139	66.63	5.329	0.000
+REST	Ivory Tower	mage	41	3.263	14.97	3.913	7.261
+REST	Ivory Tower	tank	44	6.826	21.17	5.944	0.000
+REST	Ivory Tower	melee	44	5.850	36.75	6.529	0.000
+REST	Ivory Tower	bow	44	5.912	60.02	5.756	0.000
+REST	Ivory Tower	mage	44	3.190	11.45	4.507	5.296
+REST	Ivory Tower	tank	46	6.683	17.87	6.399	0.000
+REST	Ivory Tower	melee	46	5.727	32.35	7.151	0.000
+REST	Ivory Tower	bow	46	5.704	53.88	6.197	0.000
+REST	Ivory Tower	mage	46	3.190	11.45	4.507	5.296
+REST	Devil's Isle	tank	43	7.546	35.02	5.944	0.000
+REST	Devil's Isle	melee	43	6.408	55.70	6.529	0.000
+REST	Devil's Isle	bow	43	6.480	85.98	5.756	0.000
+REST	Devil's Isle	mage	43	3.383	22.47	3.913	8.683
+REST	Devil's Isle	tank	46	7.379	31.03	6.399	0.000
+REST	Devil's Isle	melee	46	6.264	50.34	7.151	0.000
+REST	Devil's Isle	bow	46	6.238	78.08	6.197	0.000
+REST	Devil's Isle	mage	46	3.298	18.19	4.507	6.412
+REST	Devil's Isle	tank	48	7.379	31.03	6.399	0.000
+REST	Devil's Isle	melee	48	6.264	50.34	7.151	0.000
+REST	Devil's Isle	bow	48	6.238	78.08	6.197	0.000
+REST	Devil's Isle	mage	48	3.225	14.86	4.889	6.159
+REST	Den of Evil	tank	44	8.063	46.40	5.944	0.000
+REST	Den of Evil	melee	44	6.807	71.11	6.529	0.000
+REST	Den of Evil	bow	44	6.887	107.00	5.756	0.000
+REST	Den of Evil	mage	44	3.467	26.95	4.507	8.161
+REST	Den of Evil	tank	47	7.878	41.86	6.399	0.000
+REST	Den of Evil	melee	47	6.649	65.02	7.151	0.000
+REST	Den of Evil	bow	47	6.620	97.70	6.197	0.000
+REST	Den of Evil	mage	47	3.467	26.95	4.507	8.161
+REST	Den of Evil	tank	50	7.696	37.41	6.868	0.000
+REST	Den of Evil	melee	50	6.399	58.19	7.605	0.000
+REST	Den of Evil	bow	50	6.366	88.86	6.651	0.000
+REST	Den of Evil	mage	50	3.379	22.77	4.889	7.854
+REST	Tanor Canyon	tank	46	8.468	55.99	6.399	0.000
+REST	Tanor Canyon	melee	46	7.104	84.04	7.151	0.000
+REST	Tanor Canyon	bow	46	7.072	123.03	6.197	0.000
+REST	Tanor Canyon	mage	46	3.476	30.93	4.507	8.257
+REST	Tanor Canyon	tank	49	8.267	50.86	6.868	0.000
+REST	Tanor Canyon	melee	49	6.827	75.92	7.605	0.000
+REST	Tanor Canyon	bow	49	6.790	112.48	6.651	0.000
+REST	Tanor Canyon	mage	49	3.387	26.40	4.889	7.947
+REST	Tanor Canyon	tank	51	8.267	50.86	6.868	0.000
+REST	Tanor Canyon	melee	51	6.827	75.92	7.605	0.000
+REST	Tanor Canyon	bow	51	6.790	112.48	6.651	0.000
+REST	Tanor Canyon	mage	51	3.387	26.40	4.889	7.947
+REST	Enchanted Valley, Southern Region	tank	47	8.588	59.00	6.399	0.000
+REST	Enchanted Valley, Southern Region	melee	47	7.196	88.08	7.151	0.000
+REST	Enchanted Valley, Southern Region	bow	47	7.164	128.41	6.197	0.000
+REST	Enchanted Valley, Southern Region	mage	47	3.496	32.46	4.507	8.459
+REST	Enchanted Valley, Southern Region	tank	50	8.382	53.73	6.868	0.000
+REST	Enchanted Valley, Southern Region	melee	50	6.914	79.69	7.605	0.000
+REST	Enchanted Valley, Southern Region	bow	50	6.876	117.50	6.651	0.000
+REST	Enchanted Valley, Southern Region	mage	50	3.405	27.77	4.889	8.143
+REST	Enchanted Valley, Southern Region	tank	52	8.183	28.09	7.352	0.000
+REST	Enchanted Valley, Southern Region	melee	52	6.004	32.76	8.301	0.000
+REST	Enchanted Valley, Southern Region	bow	52	6.054	47.80	7.119	0.000
+REST	Enchanted Valley, Southern Region	mage	52	3.276	9.60	5.333	5.725
+REST	Pavel Ruins	tank	48	8.992	69.81	6.399	0.000
+REST	Pavel Ruins	melee	48	7.509	102.54	7.151	0.000
+REST	Pavel Ruins	bow	48	7.474	147.59	6.197	0.000
+REST	Pavel Ruins	mage	48	3.561	36.81	4.889	9.863
+REST	Pavel Ruins	tank	51	8.773	64.04	6.868	0.000
+REST	Pavel Ruins	melee	51	7.207	93.19	7.605	0.000
+REST	Pavel Ruins	bow	51	7.167	135.41	6.651	0.000
+REST	Pavel Ruins	mage	51	3.561	36.81	4.889	9.863
+REST	Pavel Ruins	tank	52	8.561	35.29	7.352	0.000
+REST	Pavel Ruins	melee	52	6.237	40.21	8.301	0.000
+REST	Pavel Ruins	bow	52	6.290	56.73	7.119	0.000
+REST	Pavel Ruins	mage	52	3.409	14.45	5.333	7.029
+REST	Outlaw Forest	tank	50	10.135	105.29	6.868	0.000
+REST	Outlaw Forest	melee	50	8.229	146.78	7.605	0.000
+REST	Outlaw Forest	bow	50	8.180	206.20	6.651	0.000
+REST	Outlaw Forest	mage	50	3.791	57.99	4.889	12.396
+REST	Outlaw Forest	tank	53	9.876	64.41	7.352	0.000
+REST	Outlaw Forest	melee	53	7.048	70.03	8.301	0.000
+REST	Outlaw Forest	bow	53	7.113	92.25	7.119	0.000
+REST	Outlaw Forest	mage	53	3.606	26.02	5.333	8.948
+REST	Outlaw Forest	tank	56	9.157	53.47	7.849	0.000
+REST	Outlaw Forest	melee	56	6.824	63.42	8.783	0.000
+REST	Outlaw Forest	bow	56	6.843	83.67	7.601	0.000
+REST	Outlaw Forest	mage	56	3.437	19.50	5.746	9.086
+REST	Forest of Mirrors	tank	50	12.729	207.89	6.868	0.000
+REST	Forest of Mirrors	melee	50	10.176	278.47	7.605	0.000
+REST	Forest of Mirrors	bow	50	10.110	378.85	6.651	0.000
+REST	Forest of Mirrors	mage	50	4.074	98.74	4.889	15.516
+REST	Forest of Mirrors	tank	53	12.383	137.94	7.352	0.000
+REST	Forest of Mirrors	melee	53	8.593	144.16	8.301	0.000
+REST	Forest of Mirrors	bow	53	8.680	179.79	7.119	0.000
+REST	Forest of Mirrors	mage	53	3.849	48.47	5.333	11.311
+REST	Forest of Mirrors	tank	56	11.496	120.15	7.849	0.000
+REST	Forest of Mirrors	melee	56	8.294	133.40	8.783	0.000
+REST	Forest of Mirrors	bow	56	8.318	165.56	7.601	0.000
+REST	Forest of Mirrors	mage	56	3.642	38.46	5.746	11.480
+REST	Forest of Mirrors	tank	59	11.164	111.00	8.361	0.000
+REST	Forest of Mirrors	melee	59	8.083	124.77	9.324	0.000
+REST	Forest of Mirrors	bow	59	7.979	152.19	8.097	0.000
+REST	Forest of Mirrors	mage	59	3.549	33.43	6.141	11.915
+REST	Forest of Mirrors	tank	60	10.885	104.15	8.711	0.000
+REST	Forest of Mirrors	melee	60	7.756	114.52	9.662	0.000
+REST	Forest of Mirrors	bow	60	7.767	143.81	8.435	0.000
+REST	Forest of Mirrors	mage	60	3.516	31.45	6.357	10.869
+REST	Hardin's Private Academy	tank	52	10.351	76.44	7.352	0.000
+REST	Hardin's Private Academy	melee	52	7.340	82.25	8.301	0.000
+REST	Hardin's Private Academy	bow	52	7.409	106.75	7.119	0.000
+REST	Hardin's Private Academy	mage	52	3.586	27.58	5.333	8.753
+REST	Hardin's Private Academy	tank	55	9.585	64.17	7.849	0.000
+REST	Hardin's Private Academy	melee	55	7.102	74.95	8.783	0.000
+REST	Hardin's Private Academy	bow	55	7.122	97.21	7.601	0.000
+REST	Hardin's Private Academy	mage	55	3.586	27.58	5.333	8.753
+REST	Hardin's Private Academy	tank	56	9.585	64.17	7.849	0.000
+REST	Hardin's Private Academy	melee	56	7.102	74.95	8.783	0.000
+REST	Hardin's Private Academy	bow	56	7.122	97.21	7.601	0.000
+REST	Hardin's Private Academy	mage	56	3.420	20.83	5.746	8.888
+REST	Forsaken Plains	tank	54	11.098	97.09	7.352	0.000
+REST	Forsaken Plains	melee	54	7.801	103.13	8.301	0.000
+REST	Forsaken Plains	bow	54	7.877	131.44	7.119	0.000
+REST	Forsaken Plains	mage	54	3.673	34.33	5.333	9.602
+REST	Forsaken Plains	tank	57	10.259	82.56	7.849	0.000
+REST	Forsaken Plains	melee	57	7.541	94.65	8.783	0.000
+REST	Forsaken Plains	bow	57	7.562	120.31	7.601	0.000
+REST	Forsaken Plains	mage	57	3.494	26.52	5.746	9.749
+REST	Forsaken Plains	tank	59	9.977	75.28	8.361	0.000
+REST	Forsaken Plains	melee	59	7.358	87.71	9.324	0.000
+REST	Forsaken Plains	bow	59	7.267	109.84	8.097	0.000
+REST	Forsaken Plains	mage	59	3.413	22.51	6.141	10.128
+REST	Silent Valley	tank	55	10.820	97.87	7.849	0.000
+REST	Silent Valley	melee	55	7.859	109.96	8.783	0.000
+REST	Silent Valley	bow	55	7.882	138.23	7.601	0.000
+REST	Silent Valley	mage	55	3.748	39.96	5.333	10.327
+REST	Silent Valley	tank	58	10.449	88.94	8.361	0.000
+REST	Silent Valley	melee	58	7.664	102.35	9.324	0.000
+REST	Silent Valley	bow	58	7.568	126.61	8.097	0.000
+REST	Silent Valley	mage	58	3.470	26.85	6.141	10.885
+REST	Silent Valley	tank	61	9.675	66.05	8.606	0.000
+REST	Silent Valley	melee	61	6.754	69.27	9.552	0.000
+REST	Silent Valley	bow	61	7.372	111.68	8.606	0.000
+REST	Silent Valley	mage	61	3.304	15.73	6.467	7.478
+REST	Seal of Shilen	tank	55	11.282	113.11	7.849	0.000
+REST	Seal of Shilen	melee	55	8.156	125.99	8.783	0.000
+REST	Seal of Shilen	bow	55	8.180	156.91	7.601	0.000
+REST	Seal of Shilen	mage	55	3.809	45.46	5.333	10.926
+REST	Seal of Shilen	tank	58	10.958	104.29	8.361	0.000
+REST	Seal of Shilen	melee	58	7.951	117.68	9.324	0.000
+REST	Seal of Shilen	bow	58	7.849	144.10	8.097	0.000
+REST	Seal of Shilen	mage	58	3.518	31.10	6.141	11.512
+REST	Seal of Shilen	tank	61	10.073	77.73	8.606	0.000
+REST	Seal of Shilen	melee	61	6.990	80.64	9.552	0.000
+REST	Seal of Shilen	bow	61	7.643	127.64	8.606	0.000
+REST	Seal of Shilen	mage	61	3.343	18.85	6.467	7.937
+REST	Seal of Shilen	tank	63	9.935	74.76	8.779	0.000
+REST	Seal of Shilen	melee	63	6.896	77.73	9.720	0.000
+REST	Seal of Shilen	bow	63	7.465	121.76	8.779	0.000
+REST	Seal of Shilen	mage	63	3.305	17.16	6.578	7.839
+REST	Skyshadow Meadow	tank	56	11.380	115.29	7.849	0.000
+REST	Skyshadow Meadow	melee	56	8.219	128.34	8.783	0.000
+REST	Skyshadow Meadow	bow	56	8.243	159.69	7.601	0.000
+REST	Skyshadow Meadow	mage	56	3.627	36.92	5.746	11.306
+REST	Skyshadow Meadow	tank	59	11.052	106.36	8.361	0.000
+REST	Skyshadow Meadow	melee	59	8.012	119.92	9.324	0.000
+REST	Skyshadow Meadow	bow	59	7.908	146.69	8.097	0.000
+REST	Skyshadow Meadow	mage	59	3.535	32.01	6.141	11.735
+REST	Skyshadow Meadow	tank	61	10.158	79.38	8.606	0.000
+REST	Skyshadow Meadow	melee	61	7.040	82.29	9.552	0.000
+REST	Skyshadow Meadow	bow	61	7.700	130.00	8.606	0.000
+REST	Skyshadow Meadow	mage	61	3.357	19.51	6.467	8.100
+REST	Fields of Massacre	tank	58	12.587	161.01	8.361	0.000
+REST	Fields of Massacre	melee	58	9.000	177.42	9.324	0.000
+REST	Fields of Massacre	bow	58	8.879	212.16	8.097	0.000
+REST	Fields of Massacre	mage	58	3.726	49.05	6.141	14.233
+REST	Fields of Massacre	tank	61	11.575	124.16	8.606	0.000
+REST	Fields of Massacre	melee	61	7.855	125.00	9.552	0.000
+REST	Fields of Massacre	bow	61	8.633	189.80	8.606	0.000
+REST	Fields of Massacre	mage	61	3.515	31.99	6.467	9.929
+REST	Fields of Massacre	tank	64	11.189	113.92	9.130	0.000
+REST	Fields of Massacre	melee	64	7.611	115.69	10.058	0.000
+REST	Fields of Massacre	bow	64	8.200	172.15	9.130	0.000
+REST	Fields of Massacre	mage	64	3.432	26.96	7.029	9.562
+REST	Fields of Massacre	tank	67	10.949	107.45	9.486	0.000
+REST	Fields of Massacre	melee	67	7.460	109.85	10.403	0.000
+REST	Fields of Massacre	bow	67	7.991	163.14	9.486	0.000
+REST	Fields of Massacre	mage	67	3.384	24.37	7.258	9.213
+REST	Fields of Massacre	tank	70	10.576	96.26	10.217	0.000
+REST	Fields of Massacre	melee	70	6.872	89.39	11.429	0.000
+REST	Fields of Massacre	bow	70	7.611	146.56	10.217	0.000
+REST	Fields of Massacre	mage	70	3.127	12.32	7.726	7.397
+REST	Valley of Saints	tank	60	11.943	137.86	8.711	0.000
+REST	Valley of Saints	melee	60	8.373	148.02	9.662	0.000
+REST	Valley of Saints	bow	60	8.386	182.86	8.435	0.000
+REST	Valley of Saints	mage	60	3.634	41.56	6.357	12.356
+REST	Valley of Saints	tank	63	11.050	107.30	8.779	0.000
+REST	Valley of Saints	melee	63	7.531	108.77	9.720	0.000
+REST	Valley of Saints	bow	63	8.184	164.74	8.779	0.000
+REST	Valley of Saints	mage	63	3.426	26.09	6.578	9.297
+REST	Valley of Saints	tank	64	10.801	100.94	9.130	0.000
+REST	Valley of Saints	melee	64	7.405	103.76	10.058	0.000
+REST	Valley of Saints	bow	64	7.971	155.92	9.130	0.000
+REST	Valley of Saints	mage	64	3.390	23.51	7.029	9.059
+REST	Forest of the Dead	tank	62	13.021	179.43	8.779	0.000
+REST	Forest of the Dead	melee	62	8.692	177.71	9.720	0.000
+REST	Forest of the Dead	bow	62	9.494	259.64	8.779	0.000
+REST	Forest of the Dead	mage	62	3.639	45.29	6.578	11.859
+REST	Forest of the Dead	tank	65	12.763	171.35	9.130	0.000
+REST	Forest of the Dead	melee	65	8.537	170.70	10.058	0.000
+REST	Forest of the Dead	bow	65	9.233	246.96	9.130	0.000
+REST	Forest of the Dead	mage	65	3.595	41.91	7.029	11.565
+REST	Forest of the Dead	tank	68	12.297	156.32	9.849	0.000
+REST	Forest of the Dead	melee	68	8.221	154.71	11.072	0.000
+REST	Forest of the Dead	bow	68	8.754	223.61	9.849	0.000
+REST	Forest of the Dead	mage	68	3.261	24.10	7.490	9.368
+REST	Tower of Insolence	tank	64	13.781	214.72	9.130	0.000
+REST	Tower of Insolence	melee	64	9.135	211.94	10.058	0.000
+REST	Tower of Insolence	bow	64	9.900	302.82	9.130	0.000
+REST	Tower of Insolence	mage	64	3.705	53.21	7.029	12.904
+REST	Tower of Insolence	tank	67	13.519	205.82	9.486	0.000
+REST	Tower of Insolence	melee	67	8.939	202.89	10.403	0.000
+REST	Tower of Insolence	bow	67	9.629	288.59	9.486	0.000
+REST	Tower of Insolence	mage	67	3.644	49.25	7.258	12.454
+REST	Tower of Insolence	tank	70	13.030	188.93	10.217	0.000
+REST	Tower of Insolence	melee	70	8.176	170.41	11.429	0.000
+REST	Tower of Insolence	bow	70	9.135	262.51	10.217	0.000
+REST	Tower of Insolence	mage	70	3.310	29.88	7.726	10.105
+REST	Tower of Insolence	tank	73	12.752	179.92	10.592	0.000
+REST	Tower of Insolence	melee	73	7.915	159.52	11.791	0.000
+REST	Tower of Insolence	bow	73	8.892	249.74	10.592	0.000
+REST	Tower of Insolence	mage	73	3.117	18.84	7.966	6.532
+REST	Swamp of Screams	tank	66	13.317	196.19	9.486	0.000
+REST	Swamp of Screams	melee	66	8.821	193.82	10.403	0.000
+REST	Swamp of Screams	bow	66	9.498	276.41	9.486	0.000
+REST	Swamp of Screams	mage	66	3.734	52.78	7.258	13.577
+REST	Swamp of Screams	tank	69	13.070	187.84	9.849	0.000
+REST	Swamp of Screams	melee	69	8.673	184.57	11.072	0.000
+REST	Swamp of Screams	bow	69	9.248	263.47	9.849	0.000
+REST	Swamp of Screams	mage	69	3.403	34.50	7.490	11.457
+REST	Swamp of Screams	tank	70	12.837	179.83	10.217	0.000
+REST	Swamp of Screams	melee	70	8.072	162.49	11.429	0.000
+REST	Swamp of Screams	bow	70	9.014	251.25	10.217	0.000
+REST	Swamp of Screams	mage	70	3.374	32.36	7.726	11.043
+REST	Wall of Argos	tank	67	13.584	207.74	9.486	0.000
+REST	Wall of Argos	melee	67	8.977	204.74	10.403	0.000
+REST	Wall of Argos	bow	67	9.671	291.11	9.486	0.000
+REST	Wall of Argos	mage	67	3.651	49.76	7.258	12.538
+REST	Wall of Argos	tank	70	13.093	190.73	10.217	0.000
+REST	Wall of Argos	melee	70	8.209	172.02	11.429	0.000
+REST	Wall of Argos	bow	70	9.175	264.84	10.217	0.000
+REST	Wall of Argos	mage	70	3.315	30.24	7.726	10.176
+REST	Wall of Argos	tank	71	13.093	190.73	10.217	0.000
+REST	Wall of Argos	melee	71	8.209	172.02	11.429	0.000
+REST	Wall of Argos	bow	71	9.175	264.84	10.217	0.000
+REST	Wall of Argos	mage	71	3.315	30.24	7.726	10.176
+REST	Blazing Swamp	tank	70	14.754	268.42	10.217	0.000
+REST	Blazing Swamp	melee	70	9.105	239.68	11.429	0.000
+REST	Blazing Swamp	bow	70	10.221	361.11	10.217	0.000
+REST	Blazing Swamp	mage	70	3.443	44.82	7.726	12.061
+REST	Blazing Swamp	tank	73	14.430	256.85	10.592	0.000
+REST	Blazing Swamp	melee	73	8.801	225.36	11.791	0.000
+REST	Blazing Swamp	bow	73	9.938	344.43	10.592	0.000
+REST	Blazing Swamp	mage	73	3.218	30.20	7.966	7.902
+REST	Blazing Swamp	tank	75	14.176	247.01	10.973	0.000
+REST	Blazing Swamp	melee	75	9.093	232.51	12.433	0.000
+REST	Blazing Swamp	bow	75	9.698	329.97	10.973	0.000
+REST	Blazing Swamp	mage	75	3.202	28.51	8.256	7.489
+REST	Hot Springs	tank	72	15.090	290.37	10.592	0.000
+REST	Hot Springs	melee	72	9.150	253.92	11.791	0.000
+REST	Hot Springs	bow	72	10.350	385.39	10.592	0.000
+REST	Hot Springs	mage	72	3.258	35.09	7.966	8.440
+REST	Hot Springs	tank	75	14.822	279.63	10.973	0.000
+REST	Hot Springs	melee	75	9.458	262.22	12.433	0.000
+REST	Hot Springs	bow	75	10.096	369.50	10.973	0.000
+REST	Hot Springs	mage	75	3.241	33.29	8.256	8.004
+REST	Hot Springs	tank	76	9.943	114.15	11.360	0.000
+REST	Hot Springs	melee	76	9.383	193.72	12.807	0.000
+REST	Hot Springs	bow	76	8.066	225.31	11.360	0.000
+REST	Hot Springs	mage	76	3.273	29.51	8.504	5.280
+REST	Ketra Orc Outpost	tank	72	19.259	532.80	10.592	0.000
+REST	Ketra Orc Outpost	melee	72	11.373	460.61	11.791	0.000
+REST	Ketra Orc Outpost	bow	72	12.974	680.95	10.592	0.000
+REST	Ketra Orc Outpost	mage	72	3.546	73.19	7.966	12.337
+REST	Ketra Orc Outpost	tank	75	18.902	515.79	10.973	0.000
+REST	Ketra Orc Outpost	melee	75	11.784	477.38	12.433	0.000
+REST	Ketra Orc Outpost	bow	75	12.636	654.81	10.973	0.000
+REST	Ketra Orc Outpost	mage	75	3.522	70.48	8.256	11.736
+REST	Ketra Orc Outpost	tank	78	12.480	228.26	11.360	0.000
+REST	Ketra Orc Outpost	melee	78	10.950	329.32	13.188	0.000
+REST	Ketra Orc Outpost	bow	78	9.311	369.98	11.753	0.000
+REST	Ketra Orc Outpost	mage	78	3.541	61.80	8.756	7.656
+REST	Ketra Orc Outpost	tank	80	12.273	215.97	12.153	0.000
+REST	Ketra Orc Outpost	melee	80	10.868	322.79	13.574	0.000
+REST	Ketra Orc Outpost	bow	80	9.264	364.53	12.153	0.000
+REST	Ketra Orc Outpost	mage	80	3.530	60.29	9.011	7.468
+REST	Varka Silenos Stronghold	tank	76	11.082	161.30	11.360	0.000
+REST	Varka Silenos Stronghold	melee	76	10.398	263.46	12.807	0.000
+REST	Varka Silenos Stronghold	bow	76	8.887	300.75	11.360	0.000
+REST	Varka Silenos Stronghold	mage	76	3.475	48.63	8.504	7.137
+REST	Varka Silenos Stronghold	tank	79	11.082	161.30	11.360	0.000
+REST	Varka Silenos Stronghold	melee	79	9.767	237.80	13.188	0.000
+REST	Varka Silenos Stronghold	bow	79	8.357	271.69	11.753	0.000
+REST	Varka Silenos Stronghold	mage	79	3.452	46.44	8.756	6.841
+REST	Varka Silenos Stronghold	tank	80	10.904	151.19	12.153	0.000
+REST	Varka Silenos Stronghold	melee	80	9.696	232.50	13.574	0.000
+REST	Varka Silenos Stronghold	bow	80	8.316	267.20	12.153	0.000
+REST	Varka Silenos Stronghold	mage	80	3.441	45.12	9.011	6.670
+REST	Monastery of Silence	tank	78	12.077	207.94	11.360	0.000
+REST	Monastery of Silence	melee	78	10.609	301.60	13.188	0.000
+REST	Monastery of Silence	bow	78	9.036	340.27	11.753	0.000
+REST	Monastery of Silence	mage	78	3.562	60.61	8.756	7.849
+REST	Monastery of Silence	tank	80	11.879	196.30	12.153	0.000
+REST	Monastery of Silence	melee	80	10.530	295.44	13.574	0.000
+REST	Monastery of Silence	bow	80	8.991	335.10	12.153	0.000
+REST	Monastery of Silence	mage	80	3.551	59.11	9.011	7.658
