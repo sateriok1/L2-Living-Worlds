@@ -1,0 +1,1041 @@
+#HEAL	line	level	skillId	power	mana	castSeconds	reuseSeconds   (heals a line can cast on itself, and Servitor Heal 1127; see tools/combat_sim/build_heal_rows.py)
+HEAL	arcana lord	1	1216	42	9	5.0	10.0
+HEAL	arcana lord	7	1011	67	14	5.0	10.0
+HEAL	arcana lord	7	1216	42	9	5.0	10.0
+HEAL	arcana lord	14	1011	107	22	5.0	10.0
+HEAL	arcana lord	14	1015	107	32	2.0	3.0
+HEAL	arcana lord	14	1216	42	9	5.0	10.0
+HEAL	arcana lord	20	1011	107	22	5.0	10.0
+HEAL	arcana lord	20	1015	107	32	2.0	3.0
+HEAL	arcana lord	20	1127	181	30	4.0	10.0
+HEAL	arcana lord	20	1216	42	9	5.0	10.0
+HEAL	arcana lord	25	1011	107	22	5.0	10.0
+HEAL	arcana lord	25	1015	107	32	2.0	3.0
+HEAL	arcana lord	25	1127	234	37	4.0	10.0
+HEAL	arcana lord	25	1216	42	9	5.0	10.0
+HEAL	arcana lord	30	1011	107	22	5.0	10.0
+HEAL	arcana lord	30	1015	107	32	2.0	3.0
+HEAL	arcana lord	30	1127	294	44	4.0	10.0
+HEAL	arcana lord	30	1216	42	9	5.0	10.0
+HEAL	arcana lord	35	1011	107	22	5.0	10.0
+HEAL	arcana lord	35	1015	107	32	2.0	3.0
+HEAL	arcana lord	35	1127	361	52	4.0	10.0
+HEAL	arcana lord	35	1216	42	9	5.0	10.0
+HEAL	arcana lord	40	1011	107	22	5.0	10.0
+HEAL	arcana lord	40	1015	107	32	2.0	3.0
+HEAL	arcana lord	40	1127	434	62	4.0	10.0
+HEAL	arcana lord	40	1216	42	9	5.0	10.0
+HEAL	arcana lord	44	1011	107	22	5.0	10.0
+HEAL	arcana lord	44	1015	107	32	2.0	3.0
+HEAL	arcana lord	44	1127	496	68	4.0	10.0
+HEAL	arcana lord	44	1216	42	9	5.0	10.0
+HEAL	arcana lord	48	1011	107	22	5.0	10.0
+HEAL	arcana lord	48	1015	107	32	2.0	3.0
+HEAL	arcana lord	48	1127	561	77	4.0	10.0
+HEAL	arcana lord	48	1216	42	9	5.0	10.0
+HEAL	arcana lord	52	1011	107	22	5.0	10.0
+HEAL	arcana lord	52	1015	107	32	2.0	3.0
+HEAL	arcana lord	52	1127	626	83	4.0	10.0
+HEAL	arcana lord	52	1216	42	9	5.0	10.0
+HEAL	arcana lord	56	1011	107	22	5.0	10.0
+HEAL	arcana lord	56	1015	107	32	2.0	3.0
+HEAL	arcana lord	56	1127	690	90	4.0	10.0
+HEAL	arcana lord	56	1216	42	9	5.0	10.0
+HEAL	arcana lord	58	1011	107	22	5.0	10.0
+HEAL	arcana lord	58	1015	107	32	2.0	3.0
+HEAL	arcana lord	58	1127	722	95	4.0	10.0
+HEAL	arcana lord	58	1216	42	9	5.0	10.0
+HEAL	arcana lord	60	1011	107	22	5.0	10.0
+HEAL	arcana lord	60	1015	107	32	2.0	3.0
+HEAL	arcana lord	60	1127	753	98	4.0	10.0
+HEAL	arcana lord	60	1216	42	9	5.0	10.0
+HEAL	arcana lord	61	1011	107	22	5.0	10.0
+HEAL	arcana lord	61	1015	107	32	2.0	3.0
+HEAL	arcana lord	61	1127	753	98	4.0	10.0
+HEAL	arcana lord	61	1216	42	9	5.0	10.0
+HEAL	arcana lord	62	1011	107	22	5.0	10.0
+HEAL	arcana lord	62	1015	107	32	2.0	3.0
+HEAL	arcana lord	62	1127	783	100	4.0	10.0
+HEAL	arcana lord	62	1216	42	9	5.0	10.0
+HEAL	arcana lord	64	1011	107	22	5.0	10.0
+HEAL	arcana lord	64	1015	107	32	2.0	3.0
+HEAL	arcana lord	64	1127	812	104	4.0	10.0
+HEAL	arcana lord	64	1216	42	9	5.0	10.0
+HEAL	arcana lord	66	1011	107	22	5.0	10.0
+HEAL	arcana lord	66	1015	107	32	2.0	3.0
+HEAL	arcana lord	66	1127	840	108	4.0	10.0
+HEAL	arcana lord	66	1216	42	9	5.0	10.0
+HEAL	arcana lord	68	1011	107	22	5.0	10.0
+HEAL	arcana lord	68	1015	107	32	2.0	3.0
+HEAL	arcana lord	68	1127	867	112	4.0	10.0
+HEAL	arcana lord	68	1216	42	9	5.0	10.0
+HEAL	arcana lord	70	1011	107	22	5.0	10.0
+HEAL	arcana lord	70	1015	107	32	2.0	3.0
+HEAL	arcana lord	70	1127	892	114	4.0	10.0
+HEAL	arcana lord	70	1216	42	9	5.0	10.0
+HEAL	arcana lord	72	1011	107	22	5.0	10.0
+HEAL	arcana lord	72	1015	107	32	2.0	3.0
+HEAL	arcana lord	72	1127	915	117	4.0	10.0
+HEAL	arcana lord	72	1216	42	9	5.0	10.0
+HEAL	arcana lord	74	1011	107	22	5.0	10.0
+HEAL	arcana lord	74	1015	107	32	2.0	3.0
+HEAL	arcana lord	74	1127	936	120	4.0	10.0
+HEAL	arcana lord	74	1216	42	9	5.0	10.0
+HEAL	arcana lord	76	1011	107	22	5.0	10.0
+HEAL	arcana lord	76	1015	107	32	2.0	3.0
+HEAL	arcana lord	76	1127	936	120	4.0	10.0
+HEAL	arcana lord	76	1216	42	9	5.0	10.0
+HEAL	arcana lord	77	1011	107	22	5.0	10.0
+HEAL	arcana lord	77	1015	107	32	2.0	3.0
+HEAL	arcana lord	77	1127	936	120	4.0	10.0
+HEAL	arcana lord	77	1216	42	9	5.0	10.0
+HEAL	arcana lord	78	1011	107	22	5.0	10.0
+HEAL	arcana lord	78	1015	107	32	2.0	3.0
+HEAL	arcana lord	78	1127	936	120	4.0	10.0
+HEAL	arcana lord	78	1216	42	9	5.0	10.0
+HEAL	arcana lord	80	1011	107	22	5.0	10.0
+HEAL	arcana lord	80	1015	107	32	2.0	3.0
+HEAL	arcana lord	80	1127	936	120	4.0	10.0
+HEAL	arcana lord	80	1216	42	9	5.0	10.0
+HEAL	archmage	1	1216	42	9	5.0	10.0
+HEAL	archmage	7	1011	67	14	5.0	10.0
+HEAL	archmage	7	1216	42	9	5.0	10.0
+HEAL	archmage	14	1011	107	22	5.0	10.0
+HEAL	archmage	14	1015	107	32	2.0	3.0
+HEAL	archmage	14	1216	42	9	5.0	10.0
+HEAL	archmage	20	1011	107	22	5.0	10.0
+HEAL	archmage	20	1015	107	32	2.0	3.0
+HEAL	archmage	20	1127	181	30	4.0	10.0
+HEAL	archmage	20	1216	42	9	5.0	10.0
+HEAL	archmage	25	1011	107	22	5.0	10.0
+HEAL	archmage	25	1015	107	32	2.0	3.0
+HEAL	archmage	25	1127	234	37	4.0	10.0
+HEAL	archmage	25	1216	42	9	5.0	10.0
+HEAL	archmage	30	1011	107	22	5.0	10.0
+HEAL	archmage	30	1015	107	32	2.0	3.0
+HEAL	archmage	30	1127	294	44	4.0	10.0
+HEAL	archmage	30	1216	42	9	5.0	10.0
+HEAL	archmage	35	1011	107	22	5.0	10.0
+HEAL	archmage	35	1015	107	32	2.0	3.0
+HEAL	archmage	35	1127	361	52	4.0	10.0
+HEAL	archmage	35	1216	42	9	5.0	10.0
+HEAL	archmage	40	1011	107	22	5.0	10.0
+HEAL	archmage	40	1015	107	32	2.0	3.0
+HEAL	archmage	40	1127	361	52	4.0	10.0
+HEAL	archmage	40	1216	42	9	5.0	10.0
+HEAL	archmage	44	1011	107	22	5.0	10.0
+HEAL	archmage	44	1015	107	32	2.0	3.0
+HEAL	archmage	44	1127	361	52	4.0	10.0
+HEAL	archmage	44	1216	42	9	5.0	10.0
+HEAL	archmage	48	1011	107	22	5.0	10.0
+HEAL	archmage	48	1015	107	32	2.0	3.0
+HEAL	archmage	48	1127	361	52	4.0	10.0
+HEAL	archmage	48	1216	42	9	5.0	10.0
+HEAL	archmage	52	1011	107	22	5.0	10.0
+HEAL	archmage	52	1015	107	32	2.0	3.0
+HEAL	archmage	52	1127	361	52	4.0	10.0
+HEAL	archmage	52	1216	42	9	5.0	10.0
+HEAL	archmage	56	1011	107	22	5.0	10.0
+HEAL	archmage	56	1015	107	32	2.0	3.0
+HEAL	archmage	56	1127	361	52	4.0	10.0
+HEAL	archmage	56	1216	42	9	5.0	10.0
+HEAL	archmage	58	1011	107	22	5.0	10.0
+HEAL	archmage	58	1015	107	32	2.0	3.0
+HEAL	archmage	58	1127	361	52	4.0	10.0
+HEAL	archmage	58	1216	42	9	5.0	10.0
+HEAL	archmage	60	1011	107	22	5.0	10.0
+HEAL	archmage	60	1015	107	32	2.0	3.0
+HEAL	archmage	60	1127	361	52	4.0	10.0
+HEAL	archmage	60	1216	42	9	5.0	10.0
+HEAL	archmage	61	1011	107	22	5.0	10.0
+HEAL	archmage	61	1015	107	32	2.0	3.0
+HEAL	archmage	61	1127	361	52	4.0	10.0
+HEAL	archmage	61	1216	42	9	5.0	10.0
+HEAL	archmage	62	1011	107	22	5.0	10.0
+HEAL	archmage	62	1015	107	32	2.0	3.0
+HEAL	archmage	62	1127	361	52	4.0	10.0
+HEAL	archmage	62	1216	42	9	5.0	10.0
+HEAL	archmage	64	1011	107	22	5.0	10.0
+HEAL	archmage	64	1015	107	32	2.0	3.0
+HEAL	archmage	64	1127	361	52	4.0	10.0
+HEAL	archmage	64	1216	42	9	5.0	10.0
+HEAL	archmage	66	1011	107	22	5.0	10.0
+HEAL	archmage	66	1015	107	32	2.0	3.0
+HEAL	archmage	66	1127	361	52	4.0	10.0
+HEAL	archmage	66	1216	42	9	5.0	10.0
+HEAL	archmage	68	1011	107	22	5.0	10.0
+HEAL	archmage	68	1015	107	32	2.0	3.0
+HEAL	archmage	68	1127	361	52	4.0	10.0
+HEAL	archmage	68	1216	42	9	5.0	10.0
+HEAL	archmage	70	1011	107	22	5.0	10.0
+HEAL	archmage	70	1015	107	32	2.0	3.0
+HEAL	archmage	70	1127	361	52	4.0	10.0
+HEAL	archmage	70	1216	42	9	5.0	10.0
+HEAL	archmage	72	1011	107	22	5.0	10.0
+HEAL	archmage	72	1015	107	32	2.0	3.0
+HEAL	archmage	72	1127	361	52	4.0	10.0
+HEAL	archmage	72	1216	42	9	5.0	10.0
+HEAL	archmage	74	1011	107	22	5.0	10.0
+HEAL	archmage	74	1015	107	32	2.0	3.0
+HEAL	archmage	74	1127	361	52	4.0	10.0
+HEAL	archmage	74	1216	42	9	5.0	10.0
+HEAL	archmage	76	1011	107	22	5.0	10.0
+HEAL	archmage	76	1015	107	32	2.0	3.0
+HEAL	archmage	76	1127	361	52	4.0	10.0
+HEAL	archmage	76	1216	42	9	5.0	10.0
+HEAL	archmage	77	1011	107	22	5.0	10.0
+HEAL	archmage	77	1015	107	32	2.0	3.0
+HEAL	archmage	77	1127	361	52	4.0	10.0
+HEAL	archmage	77	1216	42	9	5.0	10.0
+HEAL	archmage	78	1011	107	22	5.0	10.0
+HEAL	archmage	78	1015	107	32	2.0	3.0
+HEAL	archmage	78	1127	361	52	4.0	10.0
+HEAL	archmage	78	1216	42	9	5.0	10.0
+HEAL	archmage	80	1011	107	22	5.0	10.0
+HEAL	archmage	80	1015	107	32	2.0	3.0
+HEAL	archmage	80	1127	361	52	4.0	10.0
+HEAL	archmage	80	1216	42	9	5.0	10.0
+HEAL	cardinal	1	1216	42	9	5.0	10.0
+HEAL	cardinal	7	1011	67	14	5.0	10.0
+HEAL	cardinal	7	1216	42	9	5.0	10.0
+HEAL	cardinal	14	1011	107	22	5.0	10.0
+HEAL	cardinal	14	1015	107	32	2.0	3.0
+HEAL	cardinal	14	1216	42	9	5.0	10.0
+HEAL	cardinal	20	1011	151	30	5.0	10.0
+HEAL	cardinal	20	1015	151	44	2.0	3.0
+HEAL	cardinal	20	1216	42	9	5.0	10.0
+HEAL	cardinal	25	1011	195	37	5.0	10.0
+HEAL	cardinal	25	1015	195	54	2.0	3.0
+HEAL	cardinal	25	1216	42	9	5.0	10.0
+HEAL	cardinal	30	1011	245	44	5.0	10.0
+HEAL	cardinal	30	1015	245	67	2.0	3.0
+HEAL	cardinal	30	1216	42	9	5.0	10.0
+HEAL	cardinal	35	1011	301	52	5.0	10.0
+HEAL	cardinal	35	1015	301	78	2.0	3.0
+HEAL	cardinal	35	1216	42	9	5.0	10.0
+HEAL	cardinal	40	1011	301	52	5.0	10.0
+HEAL	cardinal	40	1015	301	78	2.0	3.0
+HEAL	cardinal	40	1216	42	9	5.0	10.0
+HEAL	cardinal	40	1217	335	62	5.0	10.0
+HEAL	cardinal	40	1218	398	92	2.0	3.0
+HEAL	cardinal	44	1011	301	52	5.0	10.0
+HEAL	cardinal	44	1015	301	78	2.0	3.0
+HEAL	cardinal	44	1216	42	9	5.0	10.0
+HEAL	cardinal	44	1217	382	68	5.0	10.0
+HEAL	cardinal	44	1218	455	102	2.0	3.0
+HEAL	cardinal	48	1011	301	52	5.0	10.0
+HEAL	cardinal	48	1015	301	78	2.0	3.0
+HEAL	cardinal	48	1216	42	9	5.0	10.0
+HEAL	cardinal	48	1217	432	77	5.0	10.0
+HEAL	cardinal	48	1218	514	114	2.0	3.0
+HEAL	cardinal	52	1011	301	52	5.0	10.0
+HEAL	cardinal	52	1015	301	78	2.0	3.0
+HEAL	cardinal	52	1216	42	9	5.0	10.0
+HEAL	cardinal	52	1217	482	83	5.0	10.0
+HEAL	cardinal	52	1218	573	123	2.0	3.0
+HEAL	cardinal	56	1011	301	52	5.0	10.0
+HEAL	cardinal	56	1015	301	78	2.0	3.0
+HEAL	cardinal	56	1216	42	9	5.0	10.0
+HEAL	cardinal	56	1217	532	90	5.0	10.0
+HEAL	cardinal	56	1218	633	135	2.0	3.0
+HEAL	cardinal	56	1401	690	60	5.0	6.0
+HEAL	cardinal	58	1011	301	52	5.0	10.0
+HEAL	cardinal	58	1015	301	78	2.0	3.0
+HEAL	cardinal	58	1216	42	9	5.0	10.0
+HEAL	cardinal	58	1217	556	95	5.0	10.0
+HEAL	cardinal	58	1218	662	142	2.0	3.0
+HEAL	cardinal	58	1401	722	64	5.0	6.0
+HEAL	cardinal	60	1011	301	52	5.0	10.0
+HEAL	cardinal	60	1015	301	78	2.0	3.0
+HEAL	cardinal	60	1216	42	9	5.0	10.0
+HEAL	cardinal	60	1217	580	98	5.0	10.0
+HEAL	cardinal	60	1218	690	147	2.0	3.0
+HEAL	cardinal	60	1401	753	65	5.0	6.0
+HEAL	cardinal	61	1011	301	52	5.0	10.0
+HEAL	cardinal	61	1015	301	78	2.0	3.0
+HEAL	cardinal	61	1216	42	9	5.0	10.0
+HEAL	cardinal	61	1217	580	98	5.0	10.0
+HEAL	cardinal	61	1218	690	147	2.0	3.0
+HEAL	cardinal	61	1401	753	65	5.0	6.0
+HEAL	cardinal	62	1011	301	52	5.0	10.0
+HEAL	cardinal	62	1015	301	78	2.0	3.0
+HEAL	cardinal	62	1216	42	9	5.0	10.0
+HEAL	cardinal	62	1217	603	100	5.0	10.0
+HEAL	cardinal	62	1218	718	150	2.0	3.0
+HEAL	cardinal	62	1401	783	67	5.0	6.0
+HEAL	cardinal	64	1011	301	52	5.0	10.0
+HEAL	cardinal	64	1015	301	78	2.0	3.0
+HEAL	cardinal	64	1216	42	9	5.0	10.0
+HEAL	cardinal	64	1217	626	104	5.0	10.0
+HEAL	cardinal	64	1218	745	155	2.0	3.0
+HEAL	cardinal	64	1401	812	69	5.0	6.0
+HEAL	cardinal	66	1011	301	52	5.0	10.0
+HEAL	cardinal	66	1015	301	78	2.0	3.0
+HEAL	cardinal	66	1216	42	9	5.0	10.0
+HEAL	cardinal	66	1217	647	108	5.0	10.0
+HEAL	cardinal	66	1218	770	160	2.0	3.0
+HEAL	cardinal	66	1401	840	72	5.0	6.0
+HEAL	cardinal	68	1011	301	52	5.0	10.0
+HEAL	cardinal	68	1015	301	78	2.0	3.0
+HEAL	cardinal	68	1216	42	9	5.0	10.0
+HEAL	cardinal	68	1217	668	112	5.0	10.0
+HEAL	cardinal	68	1218	795	167	2.0	3.0
+HEAL	cardinal	68	1401	867	74	5.0	6.0
+HEAL	cardinal	70	1011	301	52	5.0	10.0
+HEAL	cardinal	70	1015	301	78	2.0	3.0
+HEAL	cardinal	70	1216	42	9	5.0	10.0
+HEAL	cardinal	70	1217	686	114	5.0	10.0
+HEAL	cardinal	70	1218	817	170	2.0	3.0
+HEAL	cardinal	70	1401	892	77	5.0	6.0
+HEAL	cardinal	72	1011	301	52	5.0	10.0
+HEAL	cardinal	72	1015	301	78	2.0	3.0
+HEAL	cardinal	72	1216	42	9	5.0	10.0
+HEAL	cardinal	72	1217	705	117	5.0	10.0
+HEAL	cardinal	72	1218	839	175	2.0	3.0
+HEAL	cardinal	72	1401	915	78	5.0	6.0
+HEAL	cardinal	74	1011	301	52	5.0	10.0
+HEAL	cardinal	74	1015	301	78	2.0	3.0
+HEAL	cardinal	74	1216	42	9	5.0	10.0
+HEAL	cardinal	74	1217	721	120	5.0	10.0
+HEAL	cardinal	74	1218	858	179	2.0	3.0
+HEAL	cardinal	74	1401	946	80	5.0	6.0
+HEAL	cardinal	76	1011	301	52	5.0	10.0
+HEAL	cardinal	76	1015	301	78	2.0	3.0
+HEAL	cardinal	76	1216	42	9	5.0	10.0
+HEAL	cardinal	76	1217	721	120	5.0	10.0
+HEAL	cardinal	76	1218	858	179	2.0	3.0
+HEAL	cardinal	76	1401	946	80	5.0	6.0
+HEAL	cardinal	77	1011	301	52	5.0	10.0
+HEAL	cardinal	77	1015	301	78	2.0	3.0
+HEAL	cardinal	77	1216	42	9	5.0	10.0
+HEAL	cardinal	77	1217	721	120	5.0	10.0
+HEAL	cardinal	77	1218	858	179	2.0	3.0
+HEAL	cardinal	77	1401	946	80	5.0	6.0
+HEAL	cardinal	78	1011	301	52	5.0	10.0
+HEAL	cardinal	78	1015	301	78	2.0	3.0
+HEAL	cardinal	78	1216	42	9	5.0	10.0
+HEAL	cardinal	78	1217	721	120	5.0	10.0
+HEAL	cardinal	78	1218	858	179	2.0	3.0
+HEAL	cardinal	78	1401	946	80	5.0	6.0
+HEAL	cardinal	80	1011	301	52	5.0	10.0
+HEAL	cardinal	80	1015	301	78	2.0	3.0
+HEAL	cardinal	80	1216	42	9	5.0	10.0
+HEAL	cardinal	80	1217	721	120	5.0	10.0
+HEAL	cardinal	80	1218	858	179	2.0	3.0
+HEAL	cardinal	80	1401	946	80	5.0	6.0
+HEAL	elemental master	1	1216	42	9	5.0	10.0
+HEAL	elemental master	7	1011	67	14	5.0	10.0
+HEAL	elemental master	7	1216	42	9	5.0	10.0
+HEAL	elemental master	14	1011	107	22	5.0	10.0
+HEAL	elemental master	14	1015	107	32	2.0	3.0
+HEAL	elemental master	14	1216	42	9	5.0	10.0
+HEAL	elemental master	20	1011	107	22	5.0	10.0
+HEAL	elemental master	20	1015	107	32	2.0	3.0
+HEAL	elemental master	20	1127	181	30	4.0	10.0
+HEAL	elemental master	20	1216	42	9	5.0	10.0
+HEAL	elemental master	25	1011	107	22	5.0	10.0
+HEAL	elemental master	25	1015	107	32	2.0	3.0
+HEAL	elemental master	25	1127	234	37	4.0	10.0
+HEAL	elemental master	25	1216	42	9	5.0	10.0
+HEAL	elemental master	30	1011	107	22	5.0	10.0
+HEAL	elemental master	30	1015	107	32	2.0	3.0
+HEAL	elemental master	30	1127	294	44	4.0	10.0
+HEAL	elemental master	30	1216	42	9	5.0	10.0
+HEAL	elemental master	35	1011	107	22	5.0	10.0
+HEAL	elemental master	35	1015	107	32	2.0	3.0
+HEAL	elemental master	35	1127	361	52	4.0	10.0
+HEAL	elemental master	35	1216	42	9	5.0	10.0
+HEAL	elemental master	40	1011	107	22	5.0	10.0
+HEAL	elemental master	40	1015	107	32	2.0	3.0
+HEAL	elemental master	40	1127	434	62	4.0	10.0
+HEAL	elemental master	40	1216	42	9	5.0	10.0
+HEAL	elemental master	52	1011	107	22	5.0	10.0
+HEAL	elemental master	52	1015	107	32	2.0	3.0
+HEAL	elemental master	52	1127	626	83	4.0	10.0
+HEAL	elemental master	52	1216	42	9	5.0	10.0
+HEAL	elemental master	61	1011	107	22	5.0	10.0
+HEAL	elemental master	61	1015	107	32	2.0	3.0
+HEAL	elemental master	61	1127	753	98	4.0	10.0
+HEAL	elemental master	61	1216	42	9	5.0	10.0
+HEAL	elemental master	76	1011	107	22	5.0	10.0
+HEAL	elemental master	76	1015	107	32	2.0	3.0
+HEAL	elemental master	76	1127	936	120	4.0	10.0
+HEAL	elemental master	76	1216	42	9	5.0	10.0
+HEAL	elemental master	77	1011	107	22	5.0	10.0
+HEAL	elemental master	77	1015	107	32	2.0	3.0
+HEAL	elemental master	77	1127	936	120	4.0	10.0
+HEAL	elemental master	77	1216	42	9	5.0	10.0
+HEAL	elemental master	78	1011	107	22	5.0	10.0
+HEAL	elemental master	78	1015	107	32	2.0	3.0
+HEAL	elemental master	78	1127	936	120	4.0	10.0
+HEAL	elemental master	78	1216	42	9	5.0	10.0
+HEAL	elemental master	80	1011	107	22	5.0	10.0
+HEAL	elemental master	80	1015	107	32	2.0	3.0
+HEAL	elemental master	80	1127	936	120	4.0	10.0
+HEAL	elemental master	80	1216	42	9	5.0	10.0
+HEAL	eva's saint	1	1216	42	9	5.0	10.0
+HEAL	eva's saint	7	1011	67	14	5.0	10.0
+HEAL	eva's saint	7	1216	42	9	5.0	10.0
+HEAL	eva's saint	14	1011	107	22	5.0	10.0
+HEAL	eva's saint	14	1015	107	32	2.0	3.0
+HEAL	eva's saint	14	1216	42	9	5.0	10.0
+HEAL	eva's saint	20	1011	151	30	5.0	10.0
+HEAL	eva's saint	20	1015	151	44	2.0	3.0
+HEAL	eva's saint	20	1216	42	9	5.0	10.0
+HEAL	eva's saint	25	1011	195	37	5.0	10.0
+HEAL	eva's saint	25	1015	195	54	2.0	3.0
+HEAL	eva's saint	25	1216	42	9	5.0	10.0
+HEAL	eva's saint	30	1011	245	44	5.0	10.0
+HEAL	eva's saint	30	1015	245	67	2.0	3.0
+HEAL	eva's saint	30	1216	42	9	5.0	10.0
+HEAL	eva's saint	35	1011	301	52	5.0	10.0
+HEAL	eva's saint	35	1015	301	78	2.0	3.0
+HEAL	eva's saint	35	1216	42	9	5.0	10.0
+HEAL	eva's saint	40	1011	301	52	5.0	10.0
+HEAL	eva's saint	40	1015	301	78	2.0	3.0
+HEAL	eva's saint	40	1216	42	9	5.0	10.0
+HEAL	eva's saint	44	1011	301	52	5.0	10.0
+HEAL	eva's saint	44	1015	301	78	2.0	3.0
+HEAL	eva's saint	44	1216	42	9	5.0	10.0
+HEAL	eva's saint	48	1011	301	52	5.0	10.0
+HEAL	eva's saint	48	1015	301	78	2.0	3.0
+HEAL	eva's saint	48	1216	42	9	5.0	10.0
+HEAL	eva's saint	48	1217	335	62	5.0	10.0
+HEAL	eva's saint	52	1011	301	52	5.0	10.0
+HEAL	eva's saint	52	1015	301	78	2.0	3.0
+HEAL	eva's saint	52	1216	42	9	5.0	10.0
+HEAL	eva's saint	52	1217	382	68	5.0	10.0
+HEAL	eva's saint	56	1011	301	52	5.0	10.0
+HEAL	eva's saint	56	1015	301	78	2.0	3.0
+HEAL	eva's saint	56	1216	42	9	5.0	10.0
+HEAL	eva's saint	56	1217	432	77	5.0	10.0
+HEAL	eva's saint	56	1401	690	60	5.0	6.0
+HEAL	eva's saint	58	1011	301	52	5.0	10.0
+HEAL	eva's saint	58	1015	301	78	2.0	3.0
+HEAL	eva's saint	58	1216	42	9	5.0	10.0
+HEAL	eva's saint	58	1217	482	83	5.0	10.0
+HEAL	eva's saint	58	1401	722	64	5.0	6.0
+HEAL	eva's saint	60	1011	301	52	5.0	10.0
+HEAL	eva's saint	60	1015	301	78	2.0	3.0
+HEAL	eva's saint	60	1216	42	9	5.0	10.0
+HEAL	eva's saint	60	1217	532	90	5.0	10.0
+HEAL	eva's saint	60	1401	753	65	5.0	6.0
+HEAL	eva's saint	61	1011	301	52	5.0	10.0
+HEAL	eva's saint	61	1015	301	78	2.0	3.0
+HEAL	eva's saint	61	1216	42	9	5.0	10.0
+HEAL	eva's saint	61	1217	532	90	5.0	10.0
+HEAL	eva's saint	61	1401	753	65	5.0	6.0
+HEAL	eva's saint	62	1011	301	52	5.0	10.0
+HEAL	eva's saint	62	1015	301	78	2.0	3.0
+HEAL	eva's saint	62	1216	42	9	5.0	10.0
+HEAL	eva's saint	62	1217	556	95	5.0	10.0
+HEAL	eva's saint	62	1401	783	67	5.0	6.0
+HEAL	eva's saint	64	1011	301	52	5.0	10.0
+HEAL	eva's saint	64	1015	301	78	2.0	3.0
+HEAL	eva's saint	64	1216	42	9	5.0	10.0
+HEAL	eva's saint	64	1217	580	98	5.0	10.0
+HEAL	eva's saint	64	1401	812	69	5.0	6.0
+HEAL	eva's saint	66	1011	301	52	5.0	10.0
+HEAL	eva's saint	66	1015	301	78	2.0	3.0
+HEAL	eva's saint	66	1216	42	9	5.0	10.0
+HEAL	eva's saint	66	1217	603	100	5.0	10.0
+HEAL	eva's saint	66	1401	840	72	5.0	6.0
+HEAL	eva's saint	68	1011	301	52	5.0	10.0
+HEAL	eva's saint	68	1015	301	78	2.0	3.0
+HEAL	eva's saint	68	1216	42	9	5.0	10.0
+HEAL	eva's saint	68	1217	626	104	5.0	10.0
+HEAL	eva's saint	68	1401	867	74	5.0	6.0
+HEAL	eva's saint	70	1011	301	52	5.0	10.0
+HEAL	eva's saint	70	1015	301	78	2.0	3.0
+HEAL	eva's saint	70	1216	42	9	5.0	10.0
+HEAL	eva's saint	70	1217	647	108	5.0	10.0
+HEAL	eva's saint	70	1401	892	77	5.0	6.0
+HEAL	eva's saint	72	1011	301	52	5.0	10.0
+HEAL	eva's saint	72	1015	301	78	2.0	3.0
+HEAL	eva's saint	72	1216	42	9	5.0	10.0
+HEAL	eva's saint	72	1217	668	112	5.0	10.0
+HEAL	eva's saint	72	1401	915	78	5.0	6.0
+HEAL	eva's saint	74	1011	301	52	5.0	10.0
+HEAL	eva's saint	74	1015	301	78	2.0	3.0
+HEAL	eva's saint	74	1216	42	9	5.0	10.0
+HEAL	eva's saint	74	1217	686	114	5.0	10.0
+HEAL	eva's saint	74	1401	946	80	5.0	6.0
+HEAL	eva's saint	76	1011	301	52	5.0	10.0
+HEAL	eva's saint	76	1015	301	78	2.0	3.0
+HEAL	eva's saint	76	1216	42	9	5.0	10.0
+HEAL	eva's saint	76	1217	686	114	5.0	10.0
+HEAL	eva's saint	76	1401	946	80	5.0	6.0
+HEAL	eva's saint	77	1011	301	52	5.0	10.0
+HEAL	eva's saint	77	1015	301	78	2.0	3.0
+HEAL	eva's saint	77	1216	42	9	5.0	10.0
+HEAL	eva's saint	77	1217	686	114	5.0	10.0
+HEAL	eva's saint	77	1401	946	80	5.0	6.0
+HEAL	eva's saint	78	1011	301	52	5.0	10.0
+HEAL	eva's saint	78	1015	301	78	2.0	3.0
+HEAL	eva's saint	78	1216	42	9	5.0	10.0
+HEAL	eva's saint	78	1217	686	114	5.0	10.0
+HEAL	eva's saint	78	1401	946	80	5.0	6.0
+HEAL	eva's saint	80	1011	301	52	5.0	10.0
+HEAL	eva's saint	80	1015	301	78	2.0	3.0
+HEAL	eva's saint	80	1216	42	9	5.0	10.0
+HEAL	eva's saint	80	1217	686	114	5.0	10.0
+HEAL	eva's saint	80	1401	946	80	5.0	6.0
+HEAL	hierophant	1	1216	42	9	5.0	10.0
+HEAL	hierophant	7	1011	67	14	5.0	10.0
+HEAL	hierophant	7	1216	42	9	5.0	10.0
+HEAL	hierophant	14	1011	107	22	5.0	10.0
+HEAL	hierophant	14	1015	107	32	2.0	3.0
+HEAL	hierophant	14	1216	42	9	5.0	10.0
+HEAL	hierophant	20	1011	151	30	5.0	10.0
+HEAL	hierophant	20	1015	151	44	2.0	3.0
+HEAL	hierophant	20	1216	42	9	5.0	10.0
+HEAL	hierophant	25	1011	195	37	5.0	10.0
+HEAL	hierophant	25	1015	195	54	2.0	3.0
+HEAL	hierophant	25	1216	42	9	5.0	10.0
+HEAL	hierophant	30	1011	245	44	5.0	10.0
+HEAL	hierophant	30	1015	245	67	2.0	3.0
+HEAL	hierophant	30	1216	42	9	5.0	10.0
+HEAL	hierophant	35	1011	301	52	5.0	10.0
+HEAL	hierophant	35	1015	301	78	2.0	3.0
+HEAL	hierophant	35	1216	42	9	5.0	10.0
+HEAL	hierophant	40	1011	301	52	5.0	10.0
+HEAL	hierophant	40	1015	301	78	2.0	3.0
+HEAL	hierophant	40	1216	42	9	5.0	10.0
+HEAL	hierophant	44	1011	301	52	5.0	10.0
+HEAL	hierophant	44	1015	301	78	2.0	3.0
+HEAL	hierophant	44	1216	42	9	5.0	10.0
+HEAL	hierophant	48	1011	301	52	5.0	10.0
+HEAL	hierophant	48	1015	301	78	2.0	3.0
+HEAL	hierophant	48	1216	42	9	5.0	10.0
+HEAL	hierophant	52	1011	301	52	5.0	10.0
+HEAL	hierophant	52	1015	301	78	2.0	3.0
+HEAL	hierophant	52	1216	42	9	5.0	10.0
+HEAL	hierophant	56	1011	301	52	5.0	10.0
+HEAL	hierophant	56	1015	301	78	2.0	3.0
+HEAL	hierophant	56	1216	42	9	5.0	10.0
+HEAL	hierophant	58	1011	301	52	5.0	10.0
+HEAL	hierophant	58	1015	301	78	2.0	3.0
+HEAL	hierophant	58	1216	42	9	5.0	10.0
+HEAL	hierophant	60	1011	301	52	5.0	10.0
+HEAL	hierophant	60	1015	301	78	2.0	3.0
+HEAL	hierophant	60	1216	42	9	5.0	10.0
+HEAL	hierophant	61	1011	301	52	5.0	10.0
+HEAL	hierophant	61	1015	301	78	2.0	3.0
+HEAL	hierophant	61	1216	42	9	5.0	10.0
+HEAL	hierophant	62	1011	301	52	5.0	10.0
+HEAL	hierophant	62	1015	301	78	2.0	3.0
+HEAL	hierophant	62	1216	42	9	5.0	10.0
+HEAL	hierophant	64	1011	301	52	5.0	10.0
+HEAL	hierophant	64	1015	301	78	2.0	3.0
+HEAL	hierophant	64	1216	42	9	5.0	10.0
+HEAL	hierophant	66	1011	301	52	5.0	10.0
+HEAL	hierophant	66	1015	301	78	2.0	3.0
+HEAL	hierophant	66	1216	42	9	5.0	10.0
+HEAL	hierophant	68	1011	301	52	5.0	10.0
+HEAL	hierophant	68	1015	301	78	2.0	3.0
+HEAL	hierophant	68	1216	42	9	5.0	10.0
+HEAL	hierophant	70	1011	301	52	5.0	10.0
+HEAL	hierophant	70	1015	301	78	2.0	3.0
+HEAL	hierophant	70	1216	42	9	5.0	10.0
+HEAL	hierophant	72	1011	301	52	5.0	10.0
+HEAL	hierophant	72	1015	301	78	2.0	3.0
+HEAL	hierophant	72	1216	42	9	5.0	10.0
+HEAL	hierophant	74	1011	301	52	5.0	10.0
+HEAL	hierophant	74	1015	301	78	2.0	3.0
+HEAL	hierophant	74	1216	42	9	5.0	10.0
+HEAL	hierophant	76	1011	301	52	5.0	10.0
+HEAL	hierophant	76	1015	301	78	2.0	3.0
+HEAL	hierophant	76	1216	42	9	5.0	10.0
+HEAL	hierophant	77	1011	301	52	5.0	10.0
+HEAL	hierophant	77	1015	301	78	2.0	3.0
+HEAL	hierophant	77	1216	42	9	5.0	10.0
+HEAL	hierophant	78	1011	301	52	5.0	10.0
+HEAL	hierophant	78	1015	301	78	2.0	3.0
+HEAL	hierophant	78	1216	42	9	5.0	10.0
+HEAL	hierophant	80	1011	301	52	5.0	10.0
+HEAL	hierophant	80	1015	301	78	2.0	3.0
+HEAL	hierophant	80	1216	42	9	5.0	10.0
+HEAL	mystic muse	1	1216	42	9	5.0	10.0
+HEAL	mystic muse	7	1011	67	14	5.0	10.0
+HEAL	mystic muse	7	1216	42	9	5.0	10.0
+HEAL	mystic muse	14	1011	107	22	5.0	10.0
+HEAL	mystic muse	14	1015	107	32	2.0	3.0
+HEAL	mystic muse	14	1216	42	9	5.0	10.0
+HEAL	mystic muse	20	1011	107	22	5.0	10.0
+HEAL	mystic muse	20	1015	107	32	2.0	3.0
+HEAL	mystic muse	20	1127	181	30	4.0	10.0
+HEAL	mystic muse	20	1216	42	9	5.0	10.0
+HEAL	mystic muse	25	1011	107	22	5.0	10.0
+HEAL	mystic muse	25	1015	107	32	2.0	3.0
+HEAL	mystic muse	25	1127	234	37	4.0	10.0
+HEAL	mystic muse	25	1216	42	9	5.0	10.0
+HEAL	mystic muse	30	1011	107	22	5.0	10.0
+HEAL	mystic muse	30	1015	107	32	2.0	3.0
+HEAL	mystic muse	30	1127	294	44	4.0	10.0
+HEAL	mystic muse	30	1216	42	9	5.0	10.0
+HEAL	mystic muse	35	1011	107	22	5.0	10.0
+HEAL	mystic muse	35	1015	107	32	2.0	3.0
+HEAL	mystic muse	35	1127	361	52	4.0	10.0
+HEAL	mystic muse	35	1216	42	9	5.0	10.0
+HEAL	mystic muse	40	1011	107	22	5.0	10.0
+HEAL	mystic muse	40	1015	107	32	2.0	3.0
+HEAL	mystic muse	40	1127	361	52	4.0	10.0
+HEAL	mystic muse	40	1216	42	9	5.0	10.0
+HEAL	mystic muse	44	1011	107	22	5.0	10.0
+HEAL	mystic muse	44	1015	107	32	2.0	3.0
+HEAL	mystic muse	44	1127	361	52	4.0	10.0
+HEAL	mystic muse	44	1216	42	9	5.0	10.0
+HEAL	mystic muse	48	1011	107	22	5.0	10.0
+HEAL	mystic muse	48	1015	107	32	2.0	3.0
+HEAL	mystic muse	48	1127	361	52	4.0	10.0
+HEAL	mystic muse	48	1216	42	9	5.0	10.0
+HEAL	mystic muse	52	1011	107	22	5.0	10.0
+HEAL	mystic muse	52	1015	107	32	2.0	3.0
+HEAL	mystic muse	52	1127	361	52	4.0	10.0
+HEAL	mystic muse	52	1216	42	9	5.0	10.0
+HEAL	mystic muse	56	1011	107	22	5.0	10.0
+HEAL	mystic muse	56	1015	107	32	2.0	3.0
+HEAL	mystic muse	56	1127	361	52	4.0	10.0
+HEAL	mystic muse	56	1216	42	9	5.0	10.0
+HEAL	mystic muse	58	1011	107	22	5.0	10.0
+HEAL	mystic muse	58	1015	107	32	2.0	3.0
+HEAL	mystic muse	58	1127	361	52	4.0	10.0
+HEAL	mystic muse	58	1216	42	9	5.0	10.0
+HEAL	mystic muse	60	1011	107	22	5.0	10.0
+HEAL	mystic muse	60	1015	107	32	2.0	3.0
+HEAL	mystic muse	60	1127	361	52	4.0	10.0
+HEAL	mystic muse	60	1216	42	9	5.0	10.0
+HEAL	mystic muse	61	1011	107	22	5.0	10.0
+HEAL	mystic muse	61	1015	107	32	2.0	3.0
+HEAL	mystic muse	61	1127	361	52	4.0	10.0
+HEAL	mystic muse	61	1216	42	9	5.0	10.0
+HEAL	mystic muse	62	1011	107	22	5.0	10.0
+HEAL	mystic muse	62	1015	107	32	2.0	3.0
+HEAL	mystic muse	62	1127	361	52	4.0	10.0
+HEAL	mystic muse	62	1216	42	9	5.0	10.0
+HEAL	mystic muse	64	1011	107	22	5.0	10.0
+HEAL	mystic muse	64	1015	107	32	2.0	3.0
+HEAL	mystic muse	64	1127	361	52	4.0	10.0
+HEAL	mystic muse	64	1216	42	9	5.0	10.0
+HEAL	mystic muse	66	1011	107	22	5.0	10.0
+HEAL	mystic muse	66	1015	107	32	2.0	3.0
+HEAL	mystic muse	66	1127	361	52	4.0	10.0
+HEAL	mystic muse	66	1216	42	9	5.0	10.0
+HEAL	mystic muse	68	1011	107	22	5.0	10.0
+HEAL	mystic muse	68	1015	107	32	2.0	3.0
+HEAL	mystic muse	68	1127	361	52	4.0	10.0
+HEAL	mystic muse	68	1216	42	9	5.0	10.0
+HEAL	mystic muse	70	1011	107	22	5.0	10.0
+HEAL	mystic muse	70	1015	107	32	2.0	3.0
+HEAL	mystic muse	70	1127	361	52	4.0	10.0
+HEAL	mystic muse	70	1216	42	9	5.0	10.0
+HEAL	mystic muse	72	1011	107	22	5.0	10.0
+HEAL	mystic muse	72	1015	107	32	2.0	3.0
+HEAL	mystic muse	72	1127	361	52	4.0	10.0
+HEAL	mystic muse	72	1216	42	9	5.0	10.0
+HEAL	mystic muse	74	1011	107	22	5.0	10.0
+HEAL	mystic muse	74	1015	107	32	2.0	3.0
+HEAL	mystic muse	74	1127	361	52	4.0	10.0
+HEAL	mystic muse	74	1216	42	9	5.0	10.0
+HEAL	mystic muse	76	1011	107	22	5.0	10.0
+HEAL	mystic muse	76	1015	107	32	2.0	3.0
+HEAL	mystic muse	76	1127	361	52	4.0	10.0
+HEAL	mystic muse	76	1216	42	9	5.0	10.0
+HEAL	mystic muse	77	1011	107	22	5.0	10.0
+HEAL	mystic muse	77	1015	107	32	2.0	3.0
+HEAL	mystic muse	77	1127	361	52	4.0	10.0
+HEAL	mystic muse	77	1216	42	9	5.0	10.0
+HEAL	mystic muse	78	1011	107	22	5.0	10.0
+HEAL	mystic muse	78	1015	107	32	2.0	3.0
+HEAL	mystic muse	78	1127	361	52	4.0	10.0
+HEAL	mystic muse	78	1216	42	9	5.0	10.0
+HEAL	mystic muse	80	1011	107	22	5.0	10.0
+HEAL	mystic muse	80	1015	107	32	2.0	3.0
+HEAL	mystic muse	80	1127	361	52	4.0	10.0
+HEAL	mystic muse	80	1216	42	9	5.0	10.0
+HEAL	shillien saint	1	1216	42	9	5.0	10.0
+HEAL	shillien saint	7	1011	67	14	5.0	10.0
+HEAL	shillien saint	7	1216	42	9	5.0	10.0
+HEAL	shillien saint	14	1011	107	22	5.0	10.0
+HEAL	shillien saint	14	1015	107	32	2.0	3.0
+HEAL	shillien saint	14	1216	42	9	5.0	10.0
+HEAL	shillien saint	20	1011	151	30	5.0	10.0
+HEAL	shillien saint	20	1015	151	44	2.0	3.0
+HEAL	shillien saint	20	1216	42	9	5.0	10.0
+HEAL	shillien saint	25	1011	195	37	5.0	10.0
+HEAL	shillien saint	25	1015	195	54	2.0	3.0
+HEAL	shillien saint	25	1216	42	9	5.0	10.0
+HEAL	shillien saint	30	1011	245	44	5.0	10.0
+HEAL	shillien saint	30	1015	245	67	2.0	3.0
+HEAL	shillien saint	30	1216	42	9	5.0	10.0
+HEAL	shillien saint	35	1011	301	52	5.0	10.0
+HEAL	shillien saint	35	1015	301	78	2.0	3.0
+HEAL	shillien saint	35	1216	42	9	5.0	10.0
+HEAL	shillien saint	40	1011	301	52	5.0	10.0
+HEAL	shillien saint	40	1015	301	78	2.0	3.0
+HEAL	shillien saint	40	1216	42	9	5.0	10.0
+HEAL	shillien saint	44	1011	301	52	5.0	10.0
+HEAL	shillien saint	44	1015	301	78	2.0	3.0
+HEAL	shillien saint	44	1216	42	9	5.0	10.0
+HEAL	shillien saint	48	1011	301	52	5.0	10.0
+HEAL	shillien saint	48	1015	301	78	2.0	3.0
+HEAL	shillien saint	48	1216	42	9	5.0	10.0
+HEAL	shillien saint	48	1217	335	62	5.0	10.0
+HEAL	shillien saint	52	1011	301	52	5.0	10.0
+HEAL	shillien saint	52	1015	301	78	2.0	3.0
+HEAL	shillien saint	52	1216	42	9	5.0	10.0
+HEAL	shillien saint	52	1217	382	68	5.0	10.0
+HEAL	shillien saint	56	1011	301	52	5.0	10.0
+HEAL	shillien saint	56	1015	301	78	2.0	3.0
+HEAL	shillien saint	56	1216	42	9	5.0	10.0
+HEAL	shillien saint	56	1217	432	77	5.0	10.0
+HEAL	shillien saint	58	1011	301	52	5.0	10.0
+HEAL	shillien saint	58	1015	301	78	2.0	3.0
+HEAL	shillien saint	58	1216	42	9	5.0	10.0
+HEAL	shillien saint	58	1217	482	83	5.0	10.0
+HEAL	shillien saint	60	1011	301	52	5.0	10.0
+HEAL	shillien saint	60	1015	301	78	2.0	3.0
+HEAL	shillien saint	60	1216	42	9	5.0	10.0
+HEAL	shillien saint	60	1217	532	90	5.0	10.0
+HEAL	shillien saint	61	1011	301	52	5.0	10.0
+HEAL	shillien saint	61	1015	301	78	2.0	3.0
+HEAL	shillien saint	61	1216	42	9	5.0	10.0
+HEAL	shillien saint	61	1217	532	90	5.0	10.0
+HEAL	shillien saint	62	1011	301	52	5.0	10.0
+HEAL	shillien saint	62	1015	301	78	2.0	3.0
+HEAL	shillien saint	62	1216	42	9	5.0	10.0
+HEAL	shillien saint	62	1217	556	95	5.0	10.0
+HEAL	shillien saint	64	1011	301	52	5.0	10.0
+HEAL	shillien saint	64	1015	301	78	2.0	3.0
+HEAL	shillien saint	64	1216	42	9	5.0	10.0
+HEAL	shillien saint	64	1217	580	98	5.0	10.0
+HEAL	shillien saint	66	1011	301	52	5.0	10.0
+HEAL	shillien saint	66	1015	301	78	2.0	3.0
+HEAL	shillien saint	66	1216	42	9	5.0	10.0
+HEAL	shillien saint	66	1217	603	100	5.0	10.0
+HEAL	shillien saint	68	1011	301	52	5.0	10.0
+HEAL	shillien saint	68	1015	301	78	2.0	3.0
+HEAL	shillien saint	68	1216	42	9	5.0	10.0
+HEAL	shillien saint	68	1217	626	104	5.0	10.0
+HEAL	shillien saint	70	1011	301	52	5.0	10.0
+HEAL	shillien saint	70	1015	301	78	2.0	3.0
+HEAL	shillien saint	70	1216	42	9	5.0	10.0
+HEAL	shillien saint	70	1217	647	108	5.0	10.0
+HEAL	shillien saint	72	1011	301	52	5.0	10.0
+HEAL	shillien saint	72	1015	301	78	2.0	3.0
+HEAL	shillien saint	72	1216	42	9	5.0	10.0
+HEAL	shillien saint	72	1217	668	112	5.0	10.0
+HEAL	shillien saint	74	1011	301	52	5.0	10.0
+HEAL	shillien saint	74	1015	301	78	2.0	3.0
+HEAL	shillien saint	74	1216	42	9	5.0	10.0
+HEAL	shillien saint	74	1217	686	114	5.0	10.0
+HEAL	shillien saint	76	1011	301	52	5.0	10.0
+HEAL	shillien saint	76	1015	301	78	2.0	3.0
+HEAL	shillien saint	76	1216	42	9	5.0	10.0
+HEAL	shillien saint	76	1217	686	114	5.0	10.0
+HEAL	shillien saint	77	1011	301	52	5.0	10.0
+HEAL	shillien saint	77	1015	301	78	2.0	3.0
+HEAL	shillien saint	77	1216	42	9	5.0	10.0
+HEAL	shillien saint	77	1217	686	114	5.0	10.0
+HEAL	shillien saint	78	1011	301	52	5.0	10.0
+HEAL	shillien saint	78	1015	301	78	2.0	3.0
+HEAL	shillien saint	78	1216	42	9	5.0	10.0
+HEAL	shillien saint	78	1217	686	114	5.0	10.0
+HEAL	shillien saint	80	1011	301	52	5.0	10.0
+HEAL	shillien saint	80	1015	301	78	2.0	3.0
+HEAL	shillien saint	80	1216	42	9	5.0	10.0
+HEAL	shillien saint	80	1217	686	114	5.0	10.0
+HEAL	soultaker	1	1216	42	9	5.0	10.0
+HEAL	soultaker	7	1011	67	14	5.0	10.0
+HEAL	soultaker	7	1216	42	9	5.0	10.0
+HEAL	soultaker	14	1011	107	22	5.0	10.0
+HEAL	soultaker	14	1015	107	32	2.0	3.0
+HEAL	soultaker	14	1216	42	9	5.0	10.0
+HEAL	soultaker	20	1011	107	22	5.0	10.0
+HEAL	soultaker	20	1015	107	32	2.0	3.0
+HEAL	soultaker	20	1127	181	30	4.0	10.0
+HEAL	soultaker	20	1216	42	9	5.0	10.0
+HEAL	soultaker	25	1011	107	22	5.0	10.0
+HEAL	soultaker	25	1015	107	32	2.0	3.0
+HEAL	soultaker	25	1127	234	37	4.0	10.0
+HEAL	soultaker	25	1216	42	9	5.0	10.0
+HEAL	soultaker	30	1011	107	22	5.0	10.0
+HEAL	soultaker	30	1015	107	32	2.0	3.0
+HEAL	soultaker	30	1127	294	44	4.0	10.0
+HEAL	soultaker	30	1216	42	9	5.0	10.0
+HEAL	soultaker	35	1011	107	22	5.0	10.0
+HEAL	soultaker	35	1015	107	32	2.0	3.0
+HEAL	soultaker	35	1127	361	52	4.0	10.0
+HEAL	soultaker	35	1216	42	9	5.0	10.0
+HEAL	soultaker	40	1011	107	22	5.0	10.0
+HEAL	soultaker	40	1015	107	32	2.0	3.0
+HEAL	soultaker	40	1127	361	52	4.0	10.0
+HEAL	soultaker	40	1216	42	9	5.0	10.0
+HEAL	soultaker	44	1011	107	22	5.0	10.0
+HEAL	soultaker	44	1015	107	32	2.0	3.0
+HEAL	soultaker	44	1127	361	52	4.0	10.0
+HEAL	soultaker	44	1216	42	9	5.0	10.0
+HEAL	soultaker	48	1011	107	22	5.0	10.0
+HEAL	soultaker	48	1015	107	32	2.0	3.0
+HEAL	soultaker	48	1127	361	52	4.0	10.0
+HEAL	soultaker	48	1216	42	9	5.0	10.0
+HEAL	soultaker	52	1011	107	22	5.0	10.0
+HEAL	soultaker	52	1015	107	32	2.0	3.0
+HEAL	soultaker	52	1127	361	52	4.0	10.0
+HEAL	soultaker	52	1216	42	9	5.0	10.0
+HEAL	soultaker	56	1011	107	22	5.0	10.0
+HEAL	soultaker	56	1015	107	32	2.0	3.0
+HEAL	soultaker	56	1127	361	52	4.0	10.0
+HEAL	soultaker	56	1216	42	9	5.0	10.0
+HEAL	soultaker	58	1011	107	22	5.0	10.0
+HEAL	soultaker	58	1015	107	32	2.0	3.0
+HEAL	soultaker	58	1127	361	52	4.0	10.0
+HEAL	soultaker	58	1216	42	9	5.0	10.0
+HEAL	soultaker	60	1011	107	22	5.0	10.0
+HEAL	soultaker	60	1015	107	32	2.0	3.0
+HEAL	soultaker	60	1127	361	52	4.0	10.0
+HEAL	soultaker	60	1216	42	9	5.0	10.0
+HEAL	soultaker	61	1011	107	22	5.0	10.0
+HEAL	soultaker	61	1015	107	32	2.0	3.0
+HEAL	soultaker	61	1127	361	52	4.0	10.0
+HEAL	soultaker	61	1216	42	9	5.0	10.0
+HEAL	soultaker	62	1011	107	22	5.0	10.0
+HEAL	soultaker	62	1015	107	32	2.0	3.0
+HEAL	soultaker	62	1127	361	52	4.0	10.0
+HEAL	soultaker	62	1216	42	9	5.0	10.0
+HEAL	soultaker	64	1011	107	22	5.0	10.0
+HEAL	soultaker	64	1015	107	32	2.0	3.0
+HEAL	soultaker	64	1127	361	52	4.0	10.0
+HEAL	soultaker	64	1216	42	9	5.0	10.0
+HEAL	soultaker	66	1011	107	22	5.0	10.0
+HEAL	soultaker	66	1015	107	32	2.0	3.0
+HEAL	soultaker	66	1127	361	52	4.0	10.0
+HEAL	soultaker	66	1216	42	9	5.0	10.0
+HEAL	soultaker	68	1011	107	22	5.0	10.0
+HEAL	soultaker	68	1015	107	32	2.0	3.0
+HEAL	soultaker	68	1127	361	52	4.0	10.0
+HEAL	soultaker	68	1216	42	9	5.0	10.0
+HEAL	soultaker	70	1011	107	22	5.0	10.0
+HEAL	soultaker	70	1015	107	32	2.0	3.0
+HEAL	soultaker	70	1127	361	52	4.0	10.0
+HEAL	soultaker	70	1216	42	9	5.0	10.0
+HEAL	soultaker	72	1011	107	22	5.0	10.0
+HEAL	soultaker	72	1015	107	32	2.0	3.0
+HEAL	soultaker	72	1127	361	52	4.0	10.0
+HEAL	soultaker	72	1216	42	9	5.0	10.0
+HEAL	soultaker	74	1011	107	22	5.0	10.0
+HEAL	soultaker	74	1015	107	32	2.0	3.0
+HEAL	soultaker	74	1127	361	52	4.0	10.0
+HEAL	soultaker	74	1216	42	9	5.0	10.0
+HEAL	soultaker	76	1011	107	22	5.0	10.0
+HEAL	soultaker	76	1015	107	32	2.0	3.0
+HEAL	soultaker	76	1127	361	52	4.0	10.0
+HEAL	soultaker	76	1216	42	9	5.0	10.0
+HEAL	soultaker	77	1011	107	22	5.0	10.0
+HEAL	soultaker	77	1015	107	32	2.0	3.0
+HEAL	soultaker	77	1127	361	52	4.0	10.0
+HEAL	soultaker	77	1216	42	9	5.0	10.0
+HEAL	soultaker	78	1011	107	22	5.0	10.0
+HEAL	soultaker	78	1015	107	32	2.0	3.0
+HEAL	soultaker	78	1127	361	52	4.0	10.0
+HEAL	soultaker	78	1216	42	9	5.0	10.0
+HEAL	soultaker	80	1011	107	22	5.0	10.0
+HEAL	soultaker	80	1015	107	32	2.0	3.0
+HEAL	soultaker	80	1127	361	52	4.0	10.0
+HEAL	soultaker	80	1216	42	9	5.0	10.0
+HEAL	spectral master	1	1216	42	9	5.0	10.0
+HEAL	spectral master	7	1011	67	14	5.0	10.0
+HEAL	spectral master	7	1216	42	9	5.0	10.0
+HEAL	spectral master	14	1011	107	22	5.0	10.0
+HEAL	spectral master	14	1015	107	32	2.0	3.0
+HEAL	spectral master	14	1216	42	9	5.0	10.0
+HEAL	spectral master	20	1011	107	22	5.0	10.0
+HEAL	spectral master	20	1015	107	32	2.0	3.0
+HEAL	spectral master	20	1127	181	30	4.0	10.0
+HEAL	spectral master	20	1216	42	9	5.0	10.0
+HEAL	spectral master	25	1011	107	22	5.0	10.0
+HEAL	spectral master	25	1015	107	32	2.0	3.0
+HEAL	spectral master	25	1127	234	37	4.0	10.0
+HEAL	spectral master	25	1216	42	9	5.0	10.0
+HEAL	spectral master	30	1011	107	22	5.0	10.0
+HEAL	spectral master	30	1015	107	32	2.0	3.0
+HEAL	spectral master	30	1127	294	44	4.0	10.0
+HEAL	spectral master	30	1216	42	9	5.0	10.0
+HEAL	spectral master	35	1011	107	22	5.0	10.0
+HEAL	spectral master	35	1015	107	32	2.0	3.0
+HEAL	spectral master	35	1127	361	52	4.0	10.0
+HEAL	spectral master	35	1216	42	9	5.0	10.0
+HEAL	spectral master	40	1011	107	22	5.0	10.0
+HEAL	spectral master	40	1015	107	32	2.0	3.0
+HEAL	spectral master	40	1127	434	62	4.0	10.0
+HEAL	spectral master	40	1216	42	9	5.0	10.0
+HEAL	spectral master	44	1011	107	22	5.0	10.0
+HEAL	spectral master	44	1015	107	32	2.0	3.0
+HEAL	spectral master	44	1127	496	68	4.0	10.0
+HEAL	spectral master	44	1216	42	9	5.0	10.0
+HEAL	spectral master	48	1011	107	22	5.0	10.0
+HEAL	spectral master	48	1015	107	32	2.0	3.0
+HEAL	spectral master	48	1127	561	77	4.0	10.0
+HEAL	spectral master	48	1216	42	9	5.0	10.0
+HEAL	spectral master	52	1011	107	22	5.0	10.0
+HEAL	spectral master	52	1015	107	32	2.0	3.0
+HEAL	spectral master	52	1127	626	83	4.0	10.0
+HEAL	spectral master	52	1216	42	9	5.0	10.0
+HEAL	spectral master	56	1011	107	22	5.0	10.0
+HEAL	spectral master	56	1015	107	32	2.0	3.0
+HEAL	spectral master	56	1127	690	90	4.0	10.0
+HEAL	spectral master	56	1216	42	9	5.0	10.0
+HEAL	spectral master	58	1011	107	22	5.0	10.0
+HEAL	spectral master	58	1015	107	32	2.0	3.0
+HEAL	spectral master	58	1127	722	95	4.0	10.0
+HEAL	spectral master	58	1216	42	9	5.0	10.0
+HEAL	spectral master	60	1011	107	22	5.0	10.0
+HEAL	spectral master	60	1015	107	32	2.0	3.0
+HEAL	spectral master	60	1127	753	98	4.0	10.0
+HEAL	spectral master	60	1216	42	9	5.0	10.0
+HEAL	spectral master	61	1011	107	22	5.0	10.0
+HEAL	spectral master	61	1015	107	32	2.0	3.0
+HEAL	spectral master	61	1127	753	98	4.0	10.0
+HEAL	spectral master	61	1216	42	9	5.0	10.0
+HEAL	spectral master	62	1011	107	22	5.0	10.0
+HEAL	spectral master	62	1015	107	32	2.0	3.0
+HEAL	spectral master	62	1127	783	100	4.0	10.0
+HEAL	spectral master	62	1216	42	9	5.0	10.0
+HEAL	spectral master	64	1011	107	22	5.0	10.0
+HEAL	spectral master	64	1015	107	32	2.0	3.0
+HEAL	spectral master	64	1127	812	104	4.0	10.0
+HEAL	spectral master	64	1216	42	9	5.0	10.0
+HEAL	spectral master	66	1011	107	22	5.0	10.0
+HEAL	spectral master	66	1015	107	32	2.0	3.0
+HEAL	spectral master	66	1127	840	108	4.0	10.0
+HEAL	spectral master	66	1216	42	9	5.0	10.0
+HEAL	spectral master	68	1011	107	22	5.0	10.0
+HEAL	spectral master	68	1015	107	32	2.0	3.0
+HEAL	spectral master	68	1127	867	112	4.0	10.0
+HEAL	spectral master	68	1216	42	9	5.0	10.0
+HEAL	spectral master	70	1011	107	22	5.0	10.0
+HEAL	spectral master	70	1015	107	32	2.0	3.0
+HEAL	spectral master	70	1127	892	114	4.0	10.0
+HEAL	spectral master	70	1216	42	9	5.0	10.0
+HEAL	spectral master	72	1011	107	22	5.0	10.0
+HEAL	spectral master	72	1015	107	32	2.0	3.0
+HEAL	spectral master	72	1127	915	117	4.0	10.0
+HEAL	spectral master	72	1216	42	9	5.0	10.0
+HEAL	spectral master	74	1011	107	22	5.0	10.0
+HEAL	spectral master	74	1015	107	32	2.0	3.0
+HEAL	spectral master	74	1127	936	120	4.0	10.0
+HEAL	spectral master	74	1216	42	9	5.0	10.0
+HEAL	spectral master	76	1011	107	22	5.0	10.0
+HEAL	spectral master	76	1015	107	32	2.0	3.0
+HEAL	spectral master	76	1127	936	120	4.0	10.0
+HEAL	spectral master	76	1216	42	9	5.0	10.0
+HEAL	spectral master	77	1011	107	22	5.0	10.0
+HEAL	spectral master	77	1015	107	32	2.0	3.0
+HEAL	spectral master	77	1127	936	120	4.0	10.0
+HEAL	spectral master	77	1216	42	9	5.0	10.0
+HEAL	spectral master	78	1011	107	22	5.0	10.0
+HEAL	spectral master	78	1015	107	32	2.0	3.0
+HEAL	spectral master	78	1127	936	120	4.0	10.0
+HEAL	spectral master	78	1216	42	9	5.0	10.0
+HEAL	spectral master	80	1011	107	22	5.0	10.0
+HEAL	spectral master	80	1015	107	32	2.0	3.0
+HEAL	spectral master	80	1127	936	120	4.0	10.0
+HEAL	spectral master	80	1216	42	9	5.0	10.0
+HEAL	storm screamer	1	1216	42	9	5.0	10.0
+HEAL	storm screamer	7	1011	67	14	5.0	10.0
+HEAL	storm screamer	7	1216	42	9	5.0	10.0
+HEAL	storm screamer	14	1011	107	22	5.0	10.0
+HEAL	storm screamer	14	1015	107	32	2.0	3.0
+HEAL	storm screamer	14	1216	42	9	5.0	10.0
+HEAL	storm screamer	20	1011	107	22	5.0	10.0
+HEAL	storm screamer	20	1015	107	32	2.0	3.0
+HEAL	storm screamer	20	1127	181	30	4.0	10.0
+HEAL	storm screamer	20	1216	42	9	5.0	10.0
+HEAL	storm screamer	25	1011	107	22	5.0	10.0
+HEAL	storm screamer	25	1015	107	32	2.0	3.0
+HEAL	storm screamer	25	1127	234	37	4.0	10.0
+HEAL	storm screamer	25	1216	42	9	5.0	10.0
+HEAL	storm screamer	30	1011	107	22	5.0	10.0
+HEAL	storm screamer	30	1015	107	32	2.0	3.0
+HEAL	storm screamer	30	1127	294	44	4.0	10.0
+HEAL	storm screamer	30	1216	42	9	5.0	10.0
+HEAL	storm screamer	35	1011	107	22	5.0	10.0
+HEAL	storm screamer	35	1015	107	32	2.0	3.0
+HEAL	storm screamer	35	1127	361	52	4.0	10.0
+HEAL	storm screamer	35	1216	42	9	5.0	10.0
+HEAL	storm screamer	40	1011	107	22	5.0	10.0
+HEAL	storm screamer	40	1015	107	32	2.0	3.0
+HEAL	storm screamer	40	1127	361	52	4.0	10.0
+HEAL	storm screamer	40	1216	42	9	5.0	10.0
+HEAL	storm screamer	44	1011	107	22	5.0	10.0
+HEAL	storm screamer	44	1015	107	32	2.0	3.0
+HEAL	storm screamer	44	1127	361	52	4.0	10.0
+HEAL	storm screamer	44	1216	42	9	5.0	10.0
+HEAL	storm screamer	48	1011	107	22	5.0	10.0
+HEAL	storm screamer	48	1015	107	32	2.0	3.0
+HEAL	storm screamer	48	1127	361	52	4.0	10.0
+HEAL	storm screamer	48	1216	42	9	5.0	10.0
+HEAL	storm screamer	52	1011	107	22	5.0	10.0
+HEAL	storm screamer	52	1015	107	32	2.0	3.0
+HEAL	storm screamer	52	1127	361	52	4.0	10.0
+HEAL	storm screamer	52	1216	42	9	5.0	10.0
+HEAL	storm screamer	56	1011	107	22	5.0	10.0
+HEAL	storm screamer	56	1015	107	32	2.0	3.0
+HEAL	storm screamer	56	1127	361	52	4.0	10.0
+HEAL	storm screamer	56	1216	42	9	5.0	10.0
+HEAL	storm screamer	58	1011	107	22	5.0	10.0
+HEAL	storm screamer	58	1015	107	32	2.0	3.0
+HEAL	storm screamer	58	1127	361	52	4.0	10.0
+HEAL	storm screamer	58	1216	42	9	5.0	10.0
+HEAL	storm screamer	60	1011	107	22	5.0	10.0
+HEAL	storm screamer	60	1015	107	32	2.0	3.0
+HEAL	storm screamer	60	1127	361	52	4.0	10.0
+HEAL	storm screamer	60	1216	42	9	5.0	10.0
+HEAL	storm screamer	61	1011	107	22	5.0	10.0
+HEAL	storm screamer	61	1015	107	32	2.0	3.0
+HEAL	storm screamer	61	1127	361	52	4.0	10.0
+HEAL	storm screamer	61	1216	42	9	5.0	10.0
+HEAL	storm screamer	62	1011	107	22	5.0	10.0
+HEAL	storm screamer	62	1015	107	32	2.0	3.0
+HEAL	storm screamer	62	1127	361	52	4.0	10.0
+HEAL	storm screamer	62	1216	42	9	5.0	10.0
+HEAL	storm screamer	64	1011	107	22	5.0	10.0
+HEAL	storm screamer	64	1015	107	32	2.0	3.0
+HEAL	storm screamer	64	1127	361	52	4.0	10.0
+HEAL	storm screamer	64	1216	42	9	5.0	10.0
+HEAL	storm screamer	66	1011	107	22	5.0	10.0
+HEAL	storm screamer	66	1015	107	32	2.0	3.0
+HEAL	storm screamer	66	1127	361	52	4.0	10.0
+HEAL	storm screamer	66	1216	42	9	5.0	10.0
+HEAL	storm screamer	68	1011	107	22	5.0	10.0
+HEAL	storm screamer	68	1015	107	32	2.0	3.0
+HEAL	storm screamer	68	1127	361	52	4.0	10.0
+HEAL	storm screamer	68	1216	42	9	5.0	10.0
+HEAL	storm screamer	70	1011	107	22	5.0	10.0
+HEAL	storm screamer	70	1015	107	32	2.0	3.0
+HEAL	storm screamer	70	1127	361	52	4.0	10.0
+HEAL	storm screamer	70	1216	42	9	5.0	10.0
+HEAL	storm screamer	72	1011	107	22	5.0	10.0
+HEAL	storm screamer	72	1015	107	32	2.0	3.0
+HEAL	storm screamer	72	1127	361	52	4.0	10.0
+HEAL	storm screamer	72	1216	42	9	5.0	10.0
+HEAL	storm screamer	74	1011	107	22	5.0	10.0
+HEAL	storm screamer	74	1015	107	32	2.0	3.0
+HEAL	storm screamer	74	1127	361	52	4.0	10.0
+HEAL	storm screamer	74	1216	42	9	5.0	10.0
+HEAL	storm screamer	76	1011	107	22	5.0	10.0
+HEAL	storm screamer	76	1015	107	32	2.0	3.0
+HEAL	storm screamer	76	1127	361	52	4.0	10.0
+HEAL	storm screamer	76	1216	42	9	5.0	10.0
+HEAL	storm screamer	77	1011	107	22	5.0	10.0
+HEAL	storm screamer	77	1015	107	32	2.0	3.0
+HEAL	storm screamer	77	1127	361	52	4.0	10.0
+HEAL	storm screamer	77	1216	42	9	5.0	10.0
+HEAL	storm screamer	78	1011	107	22	5.0	10.0
+HEAL	storm screamer	78	1015	107	32	2.0	3.0
+HEAL	storm screamer	78	1127	361	52	4.0	10.0
+HEAL	storm screamer	78	1216	42	9	5.0	10.0
+HEAL	storm screamer	80	1011	107	22	5.0	10.0
+HEAL	storm screamer	80	1015	107	32	2.0	3.0
+HEAL	storm screamer	80	1127	361	52	4.0	10.0
+HEAL	storm screamer	80	1216	42	9	5.0	10.0

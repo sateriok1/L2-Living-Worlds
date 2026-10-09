@@ -55,4 +55,7 @@ with open(out, "w", encoding="utf-8", newline="") as f:
     rr = os.path.join(HERE, "rotation_rows.tsv")
     if os.path.exists(rr):                                  # sim best rotations per line and level (real time-to-kill option)
         f.write(open(rr, encoding="utf-8").read())
+    hr = os.path.join(HERE, "heal_rows.tsv")
+    if os.path.exists(hr):                                  # the heals each line can cast on itself, and Servitor Heal (self heals)
+        f.write(open(hr, encoding="utf-8").read())
 print(len(seen), "zones,", len(CURVES), "curves ->", out)
