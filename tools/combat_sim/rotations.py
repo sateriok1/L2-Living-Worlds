@@ -90,9 +90,37 @@ def temp_set(name):
     return ((RAGE_ID, None),) if split_name(name)[1] else ()
 
 
+SELF_STATS = {"pAtk", "pAtkSpd", "critRate", "critDmg", "critDmgAdd", "blowRate", "pDef", "mDef", "mAtk", "mAtkSpd", "pReuse", "skillCriticalProbability", "mReuse"}
+SELF_SKIP = {176, 139, 420, 414, 413, 406, 130, 4, 230, 451, 288, 318, 322, 339, 340, 196, 197, 111, 287, 297, 421, 423, 86, 439, 447, 1262}   # low-HP and short burst buffs (Frenzy, Guts, Zealot, Dead Eye, Rapid Fire, Angelic Icon, Thrill Fight), run speed, stances, reflect, pvp, utility
+
+
+def self_set(learned, w):
+    """Every damage or defence self buff the class has learned at the level (Attack Aura, Rapid Shot, Rage, Dead Eye ...): free and permanent (user decision),
+    one per abnormal type (the highest skill id wins when two share a slot)."""
+    els = S._skill_elements()
+    by_type = {}
+    for sid, lv in learned.items():
+        e = els.get(sid)
+        if e is None or (e.findtext("targetType") or "").strip() != "SELF" or (e.findtext("operateType") or "") not in ("A2", "T") or sid in SELF_SKIP:
+            continue
+        ent = S.passive_entries(sid, lv, w["weapon_type"], w.get("hands"))
+        if not any(x[1] in SELF_STATS for x in ent):
+            continue
+        slot = (e.findtext("abnormalType") or str(sid)).strip()
+        if slot not in by_type or sid > by_type[slot]:
+            by_type[slot] = sid
+    return tuple((sid, None) for sid in sorted(by_type.values()))
+
+
 def setup(level, cid, w, a, learned, bname, focus=None):
     """(stats with every buff, the actor, the actor that continues after Rage expires or None)."""
+    selfall = bname.endswith("_selfall")
+    if selfall:
+        bname = bname[:-len("_selfall")]
     perm, temp = buff_set(bname), temp_set(bname)
+    if selfall:
+        have = {i for i, _ in perm}
+        perm = perm + tuple(x for x in self_set(learned, w) if x[0] not in have)
     if focus:
         perm = perm + ((focus, None),)      # Focus Death / Focus Power: one per fight (shared buff slot), chosen per gear row
     if split_name(bname)[0] == "party":

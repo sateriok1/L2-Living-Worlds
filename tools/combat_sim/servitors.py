@@ -18,7 +18,8 @@ def load_npcs():
             if a is None:
                 continue
             par = {p.get("name"): (int(p.get("id")), int(p.get("level"))) for p in n.findall("parameters/skill")}
-            out[int(n.get("id"))] = dict(name=n.get("name"), level=int(n.get("level")), patk=float(a.get("physical")), matk=float(a.get("magical")), spd=float(a.get("attackSpeed")), crit=float(a.get("critical")),
+            v = n.find("stats/vitals"); d = n.find("stats/defence")
+            out[int(n.get("id"))] = dict(hp=float(v.get("hp")) if v is not None else 0.0, pdef=float(d.get("physical")) if d is not None else 1.0, name=n.get("name"), level=int(n.get("level")), patk=float(a.get("physical")), matk=float(a.get("magical")), spd=float(a.get("attackSpeed")), crit=float(a.get("critical")),
                                          dd=par.get("DDMagic") or par.get("RangeDD"), support=[(k, v) for k, v in par.items() if k not in ("DDMagic", "RangeDD")])
     return out
 
