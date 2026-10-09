@@ -29,6 +29,10 @@ with open(out, "w", encoding="utf-8", newline="") as f:
             continue
         seen.add(r["zone"])
         f.write("ZONE\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (r["zone"], r["min_level"], r["max_level"], r["mob_level_avg"], r["hp"], r["p_def"], r["m_def"], r["p_atk"], r["m_atk"], r["respawn_per_min"], r["spots"], r["aggressive_pct"], r["exp"], r["accuracy"]))
+    f.write("#ZUNDEAD\tzone\tshare   (share of the zone's monsters that are undead: healers and Phoenix Knight use their undead rotation for that share)\n")
+    for r in csv.DictReader(open(os.path.join(HERE, "zone_monsters.csv"), encoding="utf-8")):
+        if r.get("undead_pct") and float(r["undead_pct"]) > 0 and r["zone"] in seen:
+            f.write("ZUNDEAD\t%s\t%.3f\n" % (r["zone"], float(r["undead_pct"]) / 100.0))
     bf = os.path.join(HERE, "buff_factors.tsv")
     if os.path.exists(bf):                                  # full-buffer-party multipliers by role and level (buffed leveling option)
         f.write("#BUFF\trole\tlevel\tdamageMult\tpDefMult\tmDefMult   (full buffer party; see tools/combat_sim/build_buff_factors.py)\n")

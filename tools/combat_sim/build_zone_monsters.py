@@ -27,7 +27,7 @@ for p in glob.glob(os.path.join(L.DATA, "stats/npcs/*.xml")):
         npcs[int(n.get("id"))] = dict(name=n.get("name"), level=int(n.get("level")), type=n.get("type"), hp=float(v.get("hp")), mp=float(v.get("mp")),
             patk=float(a.get("physical")), matk=float(a.get("magical")), aspd=float(a.get("attackSpeed")), crit=float(a.get("critical", 0)), acc=float(a.get("accuracy", 0)),
             pdef=float(d.get("physical")), mdef=float(d.get("magical")), exp=float(acq.get("exp", 0)) if acq is not None else 0, sp=float(acq.get("sp", 0)) if acq is not None else 0,
-            aggro=(ai is not None and float(ai.get("aggroRange", 0) or 0) > 0 and ai.get("isAggressive") != "false"), run=float((st.find("speed/run") or ET.Element("x")).get("ground", 0) or 0))
+            race=((n.findtext("race") or "").strip().upper()), aggro=(ai is not None and float(ai.get("aggroRange", 0) or 0) > 0 and ai.get("isAggressive") != "false"), run=float((st.find("speed/run") or ET.Element("x")).get("ground", 0) or 0))
 root = ET.parse(zones_file).getroot()
 rows = []
 for z in root.iter("zone"):
@@ -48,7 +48,7 @@ for z in root.iter("zone"):
         hp=round(wm("hp")), p_def=round(wm("pdef"), 1), m_def=round(wm("mdef"), 1), p_atk=round(wm("patk"), 1), m_atk=round(wm("matk"), 1),
         atk_speed=round(wm("aspd")), crit=round(wm("crit"), 1), accuracy=round(wm("acc"), 1), exp=round(wm("exp")), sp=round(wm("sp"), 1),
         aggressive_pct=round(100 * sum(c for m, c in known if m["aggro"]) / tw), non_monster_pct=round(100 * other / tw),
-        spots=len(z.findall("spot")), respawn_per_min=round(per_s * 60, 1)))
+        undead_pct=round(100 * sum(c for m, c in known if m["race"] == "UNDEAD") / tw), spots=len(z.findall("spot")), respawn_per_min=round(per_s * 60, 1)))
 rows.sort(key=lambda r: (int(r["min_level"]), int(r["max_level"]), r["zone"]))
 with open(os.path.join(HERE, "zone_monsters.csv"), "w", newline="") as f:
     w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)

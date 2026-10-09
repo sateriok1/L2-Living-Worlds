@@ -31,7 +31,7 @@ for path in glob.glob(os.path.join(HERE, "rotations_*.json")):
         name = stem.replace("_", " ")
     if name in by_name:
         lines[name] = (by_name[name], json.load(open(path)))
-rows, skills, classes, selfrows, servrows = [], [], {}, [], []
+rows, skills, classes, selfrows, servrows, undeadrows = [], [], {}, [], [], []
 SUMMONERS = {"arcana lord", "elemental master", "spectral master"}
 servitors = json.load(open(os.path.join(HERE, "servitors.json"))) if os.path.exists(os.path.join(HERE, "servitors.json")) else {}
 pet_hp = {}
@@ -60,6 +60,13 @@ for name, (leaf, data) in sorted(lines.items()):
                 if any(r > 1.0005 for r in ratio) or abs(b["pdef_mul"] - 1) > 1e-6 or abs(b["mdef_mul"] - 1) > 1e-6:
                     selfrows.append("ROTSELF\t%s\t%d\t%s\t%.3f\t%.3f\t%s" % (name, key, "\t".join("%.4f" % r for r in ratio), b["pdef_mul"], b["mdef_mul"], ",".join(str(i) for i in b["selfbuffs"]) or "-"))
         rows.append("ROT\t%s\t%d\t%.3f\t%s" % (name, key, auto, "\t".join("%.3f" % d for d in dps)))
+        up = os.path.join(HERE, "rotations_%s_undead.json" % name.replace(" ", "_"))      # healers (Turn Undead style skills) and Phoenix Knight have an undead rotation
+        if os.path.exists(up):
+            ud = json.load(open(up)).get(str(key))
+            if ud:
+                uwin = {int(w): v for w, v in ud[0]["windows"].items()}
+                udps = [uwin[w]["dps"] if w in uwin else uwin[max(uwin)]["dps"] for w in WINDOWS]
+                undeadrows.append("ROTU\t%s\t%d\t%.3f\t%s" % (name, key, auto, "\t".join("%.3f" % d for d in udps)))
         skills.append("ROTSKILLS\t%s\t%d\t%s" % (name, key, ",".join(str(s) for s in sorted(int(i) for i in row["skills"]))))
     if name in SUMMONERS and name.title() in servitors:
         for lv_, tiers in sorted(servitors[name.title()].items(), key=lambda kv: int(kv[0])):
@@ -75,6 +82,7 @@ with open(OUT, "w", encoding="utf-8", newline="") as f:
     f.write("\n".join(rows) + "\n")
     f.write("#ROTSELF\tline\tlevel\tx5..x120\tpDefMul\tmDefMul\tskillIds (dps with the self buffs the class has learned over without; free, permanent)\tpDefMul\tmDefMul\n" + "\n".join(selfrows) + "\n")
     f.write("#SERV\tline\tlevel\tservitorDps\tservitorHp\tservitorPDef\tautoDps\tskillDps (summoner lines; best summon at the level)\n" + "\n".join(servrows) + "\n")
+    f.write("#ROTU\tline\tlevel\tautoDps\tdps5..dps120   (the same against undead monsters; used for the undead share of a zone, see ZUNDEAD)\n" + "\n".join(undeadrows) + "\n")
     f.write("#ROTCLASS\tclassId\tline\n" + "\n".join("ROTCLASS\t%d\t%s" % (c, n) for c, n in sorted(classes.items())) + "\n")
 print(len(lines), "lines,", len(rows), "rows,", len(classes), "classes ->", OUT)
 print(sorted(lines))
