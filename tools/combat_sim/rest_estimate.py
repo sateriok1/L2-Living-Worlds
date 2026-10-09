@@ -88,7 +88,7 @@ def estimate(role, zone_name, level):
     n_mp = (st["mp_max"] * (1 - REST_MP)) / mp_def if mp_def > 0 else float("inf")
     return dict(role=role, zone=zone_name, level=level, sim_level=key, kill_s=tk, skill_share=skill_share, hp_loss=hp_loss, hp_pool=st["hp_max"], hp_def=hp_def, mp_loss=mp_loss, mp_pool=st["mp_max"], mp_def=mp_def,
                 kills_before_rest=min(n_hp, n_mp), limit="HP" if sit_hp >= sit_mp and sit_hp > 0 else ("MP" if sit_mp > 0 else "-"), sit_s=sit, factor=cycle / (cycle + sit),
-                cycle=cycle, hp_sit_regen=(st["hp_regen_3s"] / 3.0) * SIT, sit_mp=sit_mp)
+                cycle=cycle, hp_sit_regen=(st["hp_regen_3s"] / 3.0) * SIT, sit_mp=sit_mp, mp_sit_regen=(st["mp_regen_3s"] / 3.0) * SIT)
 
 
 if __name__ == "__main__":

@@ -21,8 +21,8 @@ for name, z in R.zones.items():
                 e = R.estimate(role, name, level)
             except Exception:
                 continue
-            rows.append("REST\t%s\t%s\t%d\t%.3f\t%.2f\t%.3f\t%.3f" % (name, role, level, e["cycle"], e["hp_def"], e["hp_sit_regen"], e["sit_mp"]))
+            rows.append("REST\t%s\t%s\t%d\t%.3f\t%.2f\t%.3f\t%.3f\t%.3f" % (name, role, level, e["cycle"], e["hp_def"], e["hp_sit_regen"], e["sit_mp"], e["mp_sit_regen"]))
 with open(out, "w", encoding="utf-8", newline="") as f:
-    f.write("#REST\tzone\trole\tlevel\tcycleSeconds\thpDeficitPerKill\thpSitRegenPerSecond\tmpSitSeconds   (see tools/combat_sim/build_rest_table.py)\n")
+    f.write("#REST\tzone\trole\tlevel\tcycleSeconds\thpDeficitPerKill\thpSitRegenPerSecond\tmpSitSeconds\tmpSitRegenPerSecond   (see tools/combat_sim/build_rest_table.py)\n")
     f.write("\n".join(rows) + "\n")
 print(len(rows), "rows ->", out)
