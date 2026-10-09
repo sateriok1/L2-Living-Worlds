@@ -39,6 +39,9 @@ with open(out, "w", encoding="utf-8", newline="") as f:
         ep = os.path.join(HERE, extra)
         if os.path.exists(ep):
             f.write(open(ep, encoding="utf-8").read())
+    nb = os.path.join(HERE, "newbie_buff_rows.tsv")
+    if os.path.exists(nb):                                  # Newbie Helper buffs, levels 8-25
+        f.write(open(nb, encoding="utf-8").read())
     pb = os.path.join(HERE, "party_buff_rows.tsv")
     if os.path.exists(pb):                                  # one buffer line's multipliers per role and level (cold party model)
         f.write(open(pb, encoding="utf-8").read())
