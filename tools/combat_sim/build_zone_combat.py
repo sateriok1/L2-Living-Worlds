@@ -1,5 +1,5 @@
 """Writes zone_combat.tsv for the Living Population cold-state model: the hunting-area monster averages (zone_monsters.csv) and the
-gear curves (curves_points.csv) in one small file the module reads at start. Run build_zone_monsters.py, build_curves.py and build_buff_factors.py first.
+gear curves (curves_points.csv) in one small file the module reads at start. Run build_zone_monsters.py, build_curves.py, build_buff_factors.py and build_rotation_table.py first.
 Usage: python3 build_zone_combat.py [out.tsv]"""
 import csv, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -35,4 +35,7 @@ with open(out, "w", encoding="utf-8", newline="") as f:
         for line in open(bf, encoding="utf-8"):
             if line.startswith("BUFF"):
                 f.write(line)
+    rr = os.path.join(HERE, "rotation_rows.tsv")
+    if os.path.exists(rr):                                  # sim best rotations per line and level (real time-to-kill option)
+        f.write(open(rr, encoding="utf-8").read())
 print(len(seen), "zones,", len(CURVES), "curves ->", out)
