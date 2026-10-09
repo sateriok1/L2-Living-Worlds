@@ -103,4 +103,5 @@ def main():
         print(role, "  ".join(f"L{lv}: dmg x{d:.2f} pdef x{pdm:.2f} mdef x{mdm:.2f}" for lv, (d, pdm, mdm) in pts.items()))
 
 
-main()
+if __name__ == "__main__":
+    main()

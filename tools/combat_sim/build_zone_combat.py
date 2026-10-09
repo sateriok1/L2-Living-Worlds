@@ -39,6 +39,9 @@ with open(out, "w", encoding="utf-8", newline="") as f:
         ep = os.path.join(HERE, extra)
         if os.path.exists(ep):
             f.write(open(ep, encoding="utf-8").read())
+    pb = os.path.join(HERE, "party_buff_rows.tsv")
+    if os.path.exists(pb):                                  # one buffer line's multipliers per role and level (cold party model)
+        f.write(open(pb, encoding="utf-8").read())
     rr = os.path.join(HERE, "rotation_rows.tsv")
     if os.path.exists(rr):                                  # sim best rotations per line and level (real time-to-kill option)
         f.write(open(rr, encoding="utf-8").read())
