@@ -42,6 +42,9 @@ with open(out, "w", encoding="utf-8", newline="") as f:
     nb = os.path.join(HERE, "newbie_buff_rows.tsv")
     if os.path.exists(nb):                                  # Newbie Helper buffs, levels 8-25
         f.write(open(nb, encoding="utf-8").read())
+    bb = os.path.join(HERE, "buffer_extra_rows.tsv")
+    if os.path.exists(bb):                                  # Hierophant / Doom Cryer run speed, HP regen, absorb, HP for solo bots from level 26
+        f.write(open(bb, encoding="utf-8").read())
     pb = os.path.join(HERE, "party_buff_rows.tsv")
     if os.path.exists(pb):                                  # one buffer line's multipliers per role and level (cold party model)
         f.write(open(pb, encoding="utf-8").read())
