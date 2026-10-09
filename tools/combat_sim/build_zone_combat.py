@@ -1,5 +1,5 @@
 """Writes zone_combat.tsv for the Living Population cold-state model: the hunting-area monster averages (zone_monsters.csv) and the
-gear curves (curves_points.csv) in one small file the module reads at start. Run build_zone_monsters.py and build_curves.py first.
+gear curves (curves_points.csv) in one small file the module reads at start. Run build_zone_monsters.py, build_curves.py and build_buff_factors.py first.
 Usage: python3 build_zone_combat.py [out.tsv]"""
 import csv, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,4 +29,10 @@ with open(out, "w", encoding="utf-8", newline="") as f:
             continue
         seen.add(r["zone"])
         f.write("ZONE\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (r["zone"], r["min_level"], r["max_level"], r["mob_level_avg"], r["hp"], r["p_def"], r["m_def"], r["p_atk"], r["m_atk"]))
+    bf = os.path.join(HERE, "buff_factors.tsv")
+    if os.path.exists(bf):                                  # full-buffer-party multipliers by role and level (buffed leveling option)
+        f.write("#BUFF\trole\tlevel\tdamageMult\tpDefMult\tmDefMult   (full buffer party; see tools/combat_sim/build_buff_factors.py)\n")
+        for line in open(bf, encoding="utf-8"):
+            if line.startswith("BUFF"):
+                f.write(line)
 print(len(seen), "zones,", len(CURVES), "curves ->", out)
