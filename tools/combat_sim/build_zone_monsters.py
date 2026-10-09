@@ -27,7 +27,7 @@ for p in glob.glob(os.path.join(L.DATA, "stats/npcs/*.xml")):
         npcs[int(n.get("id"))] = dict(name=n.get("name"), level=int(n.get("level")), type=n.get("type"), hp=float(v.get("hp")), mp=float(v.get("mp")),
             patk=float(a.get("physical")), matk=float(a.get("magical")), aspd=float(a.get("attackSpeed")), crit=float(a.get("critical", 0)), acc=float(a.get("accuracy", 0)),
             pdef=float(d.get("physical")), mdef=float(d.get("magical")), exp=float(acq.get("exp", 0)) if acq is not None else 0, sp=float(acq.get("sp", 0)) if acq is not None else 0,
-            aggro=(ai is not None and ai.get("isAggressive") == "true"), run=float((st.find("speed/run") or ET.Element("x")).get("ground", 0) or 0))
+            aggro=(ai is not None and float(ai.get("aggroRange", 0) or 0) > 0 and ai.get("isAggressive") != "false"), run=float((st.find("speed/run") or ET.Element("x")).get("ground", 0) or 0))
 root = ET.parse(zones_file).getroot()
 rows = []
 for z in root.iter("zone"):
