@@ -41,7 +41,8 @@ def main():
                 for sid, _l in R.self_set(learned, w):
                     ent += S.passive_entries(sid, learned[sid], w["weapon_type"], w.get("hands"))
                 pm, md = S._apply(ent, "pDef")[0], S._apply(ent, "mDef")[0]
-                res.append({"pdef_mul": pm, "mdef_mul": md, "weapon": row["weapon"], "armor": row["armor"], "focus_id": row.get("focus_id"), "stats": _st, "skills": row["skills"], "windows": new,
+                run_add = max([S.passive_entries(sid, learned[sid], w["weapon_type"], w.get("hands"))[0][2] for sid in (4, 230, 451) if sid in learned and S.passive_entries(sid, learned[sid], w["weapon_type"], w.get("hands"))] or [0.0])
+                res.append({"run_add": run_add, "pdef_mul": pm, "mdef_mul": md, "weapon": row["weapon"], "armor": row["armor"], "focus_id": row.get("focus_id"), "stats": _st, "skills": row["skills"], "windows": new,
                             "selfbuffs": [sid for sid, _ in R.self_set(learned, w)]})
             out[level] = res
             if res:

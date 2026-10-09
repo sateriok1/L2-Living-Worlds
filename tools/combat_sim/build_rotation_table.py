@@ -15,6 +15,7 @@ import l2data as L
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "rotation_rows.tsv")
 WINDOWS = [5, 15, 30, 45, 60, 90, 120]
 SIM_PDEF = 400.0
+BASE_RUN = 120.0          # a player's base run speed; Dash, Sprint and Sonic Move add to it, which shortens the walk between monsters
 DAGGER = {"adventurer", "wind rider", "ghost hunter"}
 BOW = {"sagittarius", "moonlight sentinel", "ghost sentinel"}
 CASTER = {"archmage", "soultaker", "arcana lord", "cardinal", "hierophant", "eva's saint", "shillien saint", "mystic muse", "elemental master", "storm screamer", "spectral master", "doom cryer", "dominator"}
@@ -57,15 +58,16 @@ for name, (leaf, data) in sorted(lines.items()):
                 b = max(sd, key=lambda r: r["windows"]["60"]["dps"])
                 sw = {int(w): v for w, v in b["windows"].items()}
                 ratio = [max(1.0, (sw[w]["dps"] if w in sw else sw[max(sw)]["dps"]) / max(1e-9, d)) for w, d in zip(WINDOWS, dps)]
-                if any(r > 1.0005 for r in ratio) or abs(b["pdef_mul"] - 1) > 1e-6 or abs(b["mdef_mul"] - 1) > 1e-6:
-                    selfrows.append("ROTSELF\t%s\t%d\t%s\t%.3f\t%.3f\t%s" % (name, key, "\t".join("%.4f" % r for r in ratio), b["pdef_mul"], b["mdef_mul"], ",".join(str(i) for i in b["selfbuffs"]) or "-"))
+                run = (BASE_RUN + b.get("run_add", 0.0)) / BASE_RUN
+                if any(r > 1.0005 for r in ratio) or abs(b["pdef_mul"] - 1) > 1e-6 or abs(b["mdef_mul"] - 1) > 1e-6 or run > 1.0005:
+                    selfrows.append("ROTSELF\t%s\t%d\t%s\t%.3f\t%.3f\t%s" % (name, key, "\t".join("%.4f" % r for r in ratio), b["pdef_mul"], b["mdef_mul"], ",".join(str(i) for i in b["selfbuffs"]) or "-") + "\t%.4f" % run)
         rows.append("ROT\t%s\t%d\t%.3f\t%s" % (name, key, auto, "\t".join("%.3f" % d for d in dps)))
         skills.append("ROTSKILLS\t%s\t%d\t%s" % (name, key, ",".join(str(s) for s in sorted(int(i) for i in row["skills"]))))
     if name in SUMMONERS and name.title() in servitors:
         for lv_, tiers in sorted(servitors[name.title()].items(), key=lambda kv: int(kv[0])):
             t = tiers["none"]; n = pet_hp.get((t["npc"], t["npc_level"]))
             if n:
-                servrows.append("SERV\t%s\t%s\t%.1f\t%.1f\t%.1f" % (name, lv_, t["dps"], n["hp"], n["pdef"]))
+                servrows.append("SERV\t%s\t%s\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f" % (name, lv_, t["dps"], n["hp"], n["pdef"], t["auto"], t["skill"]))
     cid = leaf
     while cid is not None:
         classes.setdefault(cid, name)       # the first line (alphabetical) that grows from a shared ancestor wins
@@ -74,7 +76,7 @@ with open(OUT, "w", encoding="utf-8", newline="") as f:
     f.write("#ROT\tline\tlevel\tautoDps\tdps5\tdps15\tdps30\tdps45\tdps60\tdps90\tdps120   (sim best rotation vs P.Def 400 / M.Def 300; see build_rotation_table.py)\n")
     f.write("\n".join(rows) + "\n")
     f.write("#ROTSELF\tline\tlevel\tx5..x120\tpDefMul\tmDefMul\tskillIds (dps with the self buffs the class has learned over without; free, permanent)\tpDefMul\tmDefMul\n" + "\n".join(selfrows) + "\n")
-    f.write("#SERV\tline\tlevel\tservitorDps\tservitorHp\tservitorPDef (summoner lines; best summon at the level)\n" + "\n".join(servrows) + "\n")
+    f.write("#SERV\tline\tlevel\tservitorDps\tservitorHp\tservitorPDef\tautoDps\tskillDps (summoner lines; best summon at the level)\n" + "\n".join(servrows) + "\n")
     f.write("#ROTCLASS\tclassId\tline\n" + "\n".join("ROTCLASS\t%d\t%s" % (c, n) for c, n in sorted(classes.items())) + "\n")
 print(len(lines), "lines,", len(rows), "rows,", len(classes), "classes ->", OUT)
 print(sorted(lines))
