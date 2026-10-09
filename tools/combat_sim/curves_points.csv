@@ -1,0 +1,41 @@
+curve,L1,L20,L40,L52,L61,L76,"best items (NG, D, C, B, A, S)"
+M.Atk BLUNT 1H,21.0,54.0,83.0,99.0,121.0,132.0,NG: Flanged Mace | D: Bonebreaker | C: Yaksa Mace | B: Art of Battle Axe | A: Barakiel's Axe | S: Basalt Battlehammer
+M.Atk BLUNT 2H,,47.0,83.0,99.0,121.0,132.0,NG: - | D: Titan Hammer | C: Dwarven Hammer | B: Star Buster | A: Behemoth's Tuning Fork | S: Dragon Hunter Axe
+M.Atk BOW 2H,21.0,54.0,83.0,99.0,133.0,133.0,NG: Composite Bow | D: Light Crossbow | C: Eminence Bow | B: Bow of Peril | A: Shyeed's Bow | S: Shyeed's Bow
+M.Atk DAGGER 1H,21.0,54.0,83.0,99.0,121.0,132.0,NG: Sword Breaker | D: Mithril Dagger | C: Crystal Dagger | B: Demon's Dagger | A: Naga Storm | S: Angel Slayer
+M.Atk DUAL 2H,,51.0,83.0,99.0,121.0,132.0,NG: - | D: Artisan's Sword*Crimson Sword | C: Katana*Katana | B: Samurai Long Sword*Samurai Long Sword | A: Damascus * Tallum Blade | S: Tallum Blade*Dark Legion's Edge
+M.Atk DUALFIST 2H,21.0,54.0,83.0,99.0,121.0,132.0,NG: Viper Fang | D: Scallop Jamadhr | C: Great Pata | B: Bellion Cestus | A: Sobekk's Hurricane | S: Demon Splinter
+M.Atk POLE 2H,21.0,54.0,83.0,99.0,121.0,132.0,NG: Great Spear | D: Glaive | C: Orcish Poleaxe | B: Lance | A: Tiphon's Spear | S: Saint Spear
+M.Atk SWORD 1H,21.0,54.0,83.0,99.0,121.0,132.0,NG: Falchion | D: Elven Long Sword | C: Samurai Longsword | B: Sword of Damascus | A: Sirra's Blade | S: Forgotten Blade
+M.Atk SWORD 2H,21.0,54.0,83.0,99.0,121.0,132.0,NG: Zweihander | D: Claymore | C: Berserker Blade | B: Guardian Sword | A: Sword of Ipos | S: Heaven's Divider
+M.Atk magic BLUNT 1H,13.0,72.0,111.0,132.0,161.0,175.0,NG: Wand of Adept | D: Staff of Life | C: Ecliptic Axe | B: Kaim Vanul's Bones | A: Cabrio's Hand | S: Arcana Mace
+M.Atk magic BLUNT 2H,31.0,79.0,122.0,145.0,167.0,193.0,NG: Mage Staff | D: Atuba Hammer | C: Deadman's Staff | B: Staff of Evil Spirits | A: Branch of the Mother Tree | S: Imperial Staff
+M.Atk magic DAGGER 1H,,52.0,91.0,122.0,122.0,122.0,NG: - | D: Conjurer's Knife | C: Soulfire Dirk | B: Hell Knife | A: Hell Knife | S: Hell Knife
+M.Atk magic SWORD 1H,,63.0,111.0,132.0,161.0,161.0,NG: - | D: Sword of Magic Fog | C: Ecliptic Sword | B: Wizard's Tear | A: Themis' Tongue | S: Themis' Tongue
+M.Def heavy,98.0,168.0,224.0,276.0,333.0,333.0,NG: jewelry x set bonus | D: jewelry x set bonus | C: jewelry x set bonus | B: jewelry x set bonus | A: jewelry x set bonus | S: jewelry x set bonus
+M.Def jewelry (5 pieces),98.0,168.0,224.0,276.0,333.0,333.0,"NG: Blue Diamond Necklace, Coral Earring x2, Blue Coral Ring x2 | D: Necklace of Darkness, Omen Beast's Eye Earring x2, Mithril Ring x2 | C: Blessed Necklace, Blessed Earring x2, Blessed Ring x2 | B: Elemental Necklace, Earring of Black Ore x2, Ring of Queen Ant x2 | A: Necklace of Frintezza, Earring of Orfen x2, Ring of Queen Ant x2 | S: Necklace of Frintezza, Earring of Orfen x2, Ring of Queen Ant x2"
+M.Def light,98.0,168.0,224.0,276.0,346.3,346.3,NG: jewelry x set bonus | D: jewelry x set bonus | C: jewelry x set bonus | B: jewelry x set bonus | A: jewelry x set bonus | S: jewelry x set bonus
+M.Def robe,98.0,168.0,224.0,276.0,333.0,333.0,NG: jewelry x set bonus | D: jewelry x set bonus | C: jewelry x set bonus | B: jewelry x set bonus | A: jewelry x set bonus | S: jewelry x set bonus
+P.Atk BLUNT 1H,31.0,92.0,156.0,194.0,251.0,281.0,NG: Flanged Mace | D: Bonebreaker | C: Yaksa Mace | B: Art of Battle Axe | A: Barakiel's Axe | S: Basalt Battlehammer
+P.Atk BLUNT 2H,,96.0,190.0,236.0,305.0,342.0,NG: - | D: Titan Hammer | C: Dwarven Hammer | B: Star Buster | A: Behemoth's Tuning Fork | S: Dragon Hunter Axe
+P.Atk BOW 2H,64.0,191.0,323.0,400.0,570.0,581.0,NG: Composite Bow | D: Light Crossbow | C: Eminence Bow | B: Bow of Peril | A: Shyeed's Bow | S: Draconic Bow
+P.Atk DAGGER 1H,27.0,80.0,136.0,170.0,220.0,246.0,NG: Sword Breaker | D: Mithril Dagger | C: Crystal Dagger | B: Demon's Dagger | A: Naga Storm | S: Angel Slayer
+P.Atk DUAL 2H,,107.0,190.0,236.0,305.0,342.0,NG: - | D: Artisan's Sword*Crimson Sword | C: Katana*Katana | B: Samurai Long Sword*Samurai Long Sword | A: Damascus * Tallum Blade | S: Tallum Blade*Dark Legion's Edge
+P.Atk DUALFIST 2H,38.0,112.0,190.0,236.0,305.0,342.0,NG: Viper Fang | D: Scallop Jamadhr | C: Great Pata | B: Bellion Cestus | A: Sobekk's Hurricane | S: Demon Splinter
+P.Atk POLE 2H,31.0,92.0,156.0,194.0,251.0,281.0,NG: Great Spear | D: Glaive | C: Orcish Poleaxe | B: Lance | A: Tiphon's Spear | S: Saint Spear
+P.Atk SWORD 1H,31.0,92.0,156.0,194.0,251.0,281.0,NG: Falchion | D: Elven Long Sword | C: Samurai Longsword | B: Sword of Damascus | A: Sirra's Blade | S: Forgotten Blade
+P.Atk SWORD 2H,38.0,112.0,190.0,236.0,305.0,342.0,NG: Zweihander | D: Claymore | C: Berserker Blade | B: Guardian Sword | A: Sword of Ipos | S: Heaven's Divider
+P.Atk magic BLUNT 1H,11.0,74.0,125.0,155.0,202.0,225.0,NG: Wand of Adept | D: Staff of Life | C: Ecliptic Axe | B: Kaim Vanul's Bones | A: Cabrio's Hand | S: Arcana Mace
+P.Atk magic BLUNT 2H,30.0,90.0,152.0,189.0,226.0,274.0,NG: Mage Staff | D: Atuba Hammer | C: Deadman's Staff | B: Staff of Evil Spirits | A: Branch of the Mother Tree | S: Imperial Staff
+P.Atk magic DAGGER 1H,,45.0,86.0,122.0,122.0,122.0,NG: - | D: Conjurer's Knife | C: Soulfire Dirk | B: Hell Knife | A: Hell Knife | S: Hell Knife
+P.Atk magic SWORD 1H,,63.0,125.0,155.0,202.0,202.0,NG: - | D: Sword of Magic Fog | C: Ecliptic Sword | B: Wizard's Tear | A: Themis' Tongue | S: Themis' Tongue
+P.Def heavy,80,238.4,316.0,428.0,468.0,572.4,NG: (naked) | D: Brigandine Tunic | C: Full Plate Armor | B: Blue Wolf Breastplate | A: Armor of Nightmare | S: Imperial Crusader Breastplate
+P.Def heavy +shield,170.0,400.1,519.0,666.3,724.0,885.6,NG: (naked) | D: Brigandine Tunic | C: Full Plate Armor | B: Zubei's Breastplate | A: Armor of Nightmare | S: Imperial Crusader Breastplate
+P.Def light,116.5,176.0,245.3,378.9,395.0,446.0,NG: Wooden Breastplate | D: Manticore Skin Shirt | C: Theca Leather Armor | B: Blue Wolf Leather Armor | A: Leather Armor of Nightmare | S: Draconic Leather Armor
+P.Def light +shield,208.5,330.0,458.9,621.0,651.0,736.0,NG: Wooden Breastplate | D: Manticore Skin Shirt | C: Theca Leather Armor | B: Blue Wolf Leather Armor | A: Leather Armor of Nightmare | S: Draconic Leather Armor
+P.Def robe,91.0,134.0,191.6,293.0,328.3,363.0,NG: Tunic of Devotion | D: Mithril Tunic | C: Divine Tunic | B: Blue Wolf Tunic | A: Dark Crystal Robe | S: Major Arcana Robe
+P.Def robe +shield,181.0,288.0,405.3,531.6,604.8,653.0,NG: Tunic of Devotion | D: Mithril Tunic | C: Divine Tunic | B: Avadon Robe | A: Dark Crystal Robe | S: Major Arcana Robe
+monster regular P.Def,46,87,156,209,254,323,spawn-weighted mean within +-2 levels (bosses -3..+5)
+monster regular M.Def,31,58,106,143,169,221,spawn-weighted mean within +-2 levels (bosses -3..+5)
+monster boss P.Def,,287,515,693,908,1399,spawn-weighted mean within +-2 levels (bosses -3..+5)
+monster boss M.Def,,140,240,311,397,567,spawn-weighted mean within +-2 levels (bosses -3..+5)
